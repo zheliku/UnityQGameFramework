@@ -1,0 +1,32 @@
+{
+  "name": "com.zheliku.unityqgameframework",
+  "version": "0.1.0-exp.1",
+  "displayName": "UnityQGameFramework",
+  "description": "Unity 6 game framework based on UnityGameFramework, with QFramework-inspired architecture and a planned Luban workflow. Experimental development version; compilation verified on Unity 6000.3.24f1, runtime migration in progress.",
+  "unity": "6000.0",
+  "keywords": [
+    "game-framework",
+    "unity6",
+    "architecture",
+    "luban"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "zheliku",
+    "url": "https://github.com/zheliku"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zheliku/UnityQGameFramework.git",
+    "directory": "Packages/com.zheliku.unityqgameframework"
+  },
+  "dependencies": {
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0"
+  }
+}
