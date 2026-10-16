@@ -1,17 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源生成器。
@@ -23,15 +21,11 @@ namespace UnityGameFramework.Editor.ResourceTools
         private int m_CompressionHelperTypeNameIndex = 0;
         private int m_BuildEventHandlerTypeNameIndex = 0;
 
-        [MenuItem("Game Framework/Resource Tools/Resource Builder", false, 40)]
+        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Builder", false, 40)]
         private static void Open()
         {
             ResourceBuilder window = GetWindow<ResourceBuilder>("Resource Builder", true);
-#if UNITY_2019_3_OR_NEWER
             window.minSize = new Vector2(800f, 640f);
-#else
-            window.minSize = new Vector2(800f, 600f);
-#endif
         }
 
         private void OnEnable()
@@ -122,8 +116,8 @@ namespace UnityGameFramework.Editor.ResourceTools
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUILayout.LabelField("Game Framework Version", GUILayout.Width(160f));
-                        EditorGUILayout.LabelField(m_Controller.GameFrameworkVersion);
+                        EditorGUILayout.LabelField("Unity Q Game Framework Version", GUILayout.Width(160f));
+                        EditorGUILayout.LabelField(m_Controller.FrameworkVersion);
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();

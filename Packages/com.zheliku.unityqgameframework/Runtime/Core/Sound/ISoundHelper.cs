@@ -1,0 +1,19 @@
+﻿//------------------------------------------------------------
+// Unity Q Game Framework
+// Copyright © 2013-2021 Jiang Yin. All rights reserved.
+//------------------------------------------------------------
+
+namespace UnityQGameFramework.Core.Sound
+{
+    /// <summary>
+    /// 声音辅助器接口。
+    /// </summary>
+    public interface ISoundHelper
+    {
+        /// <summary>
+        /// 释放声音资源。
+        /// </summary>
+        /// <param name="soundAsset">要释放的声音资源。</param>
+        void ReleaseSoundAsset(object soundAsset);
+    }
+}

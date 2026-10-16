@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源。
@@ -36,31 +34,13 @@ namespace UnityGameFramework.Editor.ResourceTools
             }
         }
 
-        public string Name
-        {
-            get;
-            private set;
-        }
+        public string Name { get; private set; }
 
-        public string Variant
-        {
-            get;
-            private set;
-        }
+        public string Variant { get; private set; }
 
-        public string FullName
-        {
-            get
-            {
-                return Variant != null ? Utility.Text.Format("{0}.{1}", Name, Variant) : Name;
-            }
-        }
+        public string FullName => Variant != null ? Utility.Text.Format("{0}.{1}", Name, Variant) : Name;
 
-        public AssetType AssetType
-        {
-            get;
-            private set;
-        }
+        public AssetType AssetType { get; private set; }
 
         public bool IsLoadFromBinary
         {
@@ -70,23 +50,11 @@ namespace UnityGameFramework.Editor.ResourceTools
             }
         }
 
-        public string FileSystem
-        {
-            get;
-            set;
-        }
+        public string FileSystem { get; set; }
 
-        public LoadType LoadType
-        {
-            get;
-            set;
-        }
+        public LoadType LoadType { get; set; }
 
-        public bool Packed
-        {
-            get;
-            set;
-        }
+        public bool Packed { get; set; }
 
         public static Resource Create(string name, string variant, string fileSystem, LoadType loadType, bool packed, string[] resourceGroups)
         {

@@ -1,8 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -29,23 +27,11 @@ namespace StarForce
         /// <summary>
         /// 拥有者编号。
         /// </summary>
-        public int OwnerId
-        {
-            get
-            {
-                return m_OwnerId;
-            }
-        }
+        public int OwnerId => m_OwnerId;
 
         /// <summary>
         /// 拥有者阵营。
         /// </summary>
-        public CampType OwnerCamp
-        {
-            get
-            {
-                return m_OwnerCamp;
-            }
-        }
+        public CampType OwnerCamp => m_OwnerCamp;
     }
 }

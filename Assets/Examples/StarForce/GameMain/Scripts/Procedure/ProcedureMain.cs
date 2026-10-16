@@ -1,13 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
-using UnityGameFramework.Runtime;
-using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
+using UnityQGameFramework.Runtime;
+using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
 
 namespace StarForce
 {
@@ -20,13 +18,7 @@ namespace StarForce
         private bool m_GotoMenu = false;
         private float m_GotoMenuDelaySeconds = 0f;
 
-        public override bool UseNativeDialog
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool UseNativeDialog => false;
 
         public void GotoMenu()
         {

@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.DataTable;
-using GameFramework.Sound;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core.Sound;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {

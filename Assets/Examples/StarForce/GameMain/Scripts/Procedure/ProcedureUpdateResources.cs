@@ -1,9 +1,9 @@
-﻿using GameFramework;
-using GameFramework.Event;
+﻿using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Event;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityGameFramework.Runtime;
-using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
+using UnityQGameFramework.Runtime;
+using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
 
 namespace StarForce
 {
@@ -16,13 +16,7 @@ namespace StarForce
         private List<UpdateLengthData> m_UpdateLengthData = new List<UpdateLengthData>();
         private UpdateResourceForm m_UpdateResourceForm = null;
 
-        public override bool UseNativeDialog
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool UseNativeDialog => true;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
@@ -52,7 +46,7 @@ namespace StarForce
                     ConfirmText = GameEntry.Localization.GetString("UpdateResourceViaCarrierDataNetwork.UpdateButton"),
                     OnClickConfirm = StartUpdateResources,
                     CancelText = GameEntry.Localization.GetString("UpdateResourceViaCarrierDataNetwork.QuitButton"),
-                    OnClickCancel = delegate (object userData) { UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
+                    OnClickCancel = delegate (object userData) { UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
                 });
 
                 return;
@@ -148,7 +142,7 @@ namespace StarForce
             return Utility.Text.Format("{0:F2} EB", byteLength / 1152921504606846976f);
         }
 
-        private void OnUpdateResourcesComplete(GameFramework.Resource.IResourceGroup resourceGroup, bool result)
+        private void OnUpdateResourcesComplete(UnityQGameFramework.Core.Resource.IResourceGroup resourceGroup, bool result)
         {
             if (result)
             {
@@ -243,26 +237,14 @@ namespace StarForce
 
         private class UpdateLengthData
         {
-            private readonly string m_Name;
-
             public UpdateLengthData(string name)
             {
-                m_Name = name;
+                Name = name;
             }
 
-            public string Name
-            {
-                get
-                {
-                    return m_Name;
-                }
-            }
+            public string Name { get; }
 
-            public int Length
-            {
-                get;
-                set;
-            }
+            public int Length { get; set; }
         }
     }
 }

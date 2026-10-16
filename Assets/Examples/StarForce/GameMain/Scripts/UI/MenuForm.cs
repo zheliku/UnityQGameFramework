@@ -1,12 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -39,15 +37,11 @@ namespace StarForce
                 Mode = 2,
                 Title = GameEntry.Localization.GetString("AskQuitGame.Title"),
                 Message = GameEntry.Localization.GetString("AskQuitGame.Message"),
-                OnClickConfirm = delegate (object userData) { UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
+                OnClickConfirm = delegate (object userData) { UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
             });
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
-#else
-        protected internal override void OnOpen(object userData)
-#endif
         {
             base.OnOpen(userData);
 
@@ -61,11 +55,7 @@ namespace StarForce
             m_QuitButton.SetActive(Application.platform != RuntimePlatform.IPhonePlayer);
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnClose(bool isShutdown, object userData)
-#else
-        protected internal override void OnClose(bool isShutdown, object userData)
-#endif
         {
             m_ProcedureMenu = null;
 

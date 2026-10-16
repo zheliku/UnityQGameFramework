@@ -1,8 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -22,12 +20,6 @@ namespace StarForce
             m_KeepTime = 3f;
         }
 
-        public float KeepTime
-        {
-            get
-            {
-                return m_KeepTime;
-            }
-        }
+        public float KeepTime => m_KeepTime;
     }
 }

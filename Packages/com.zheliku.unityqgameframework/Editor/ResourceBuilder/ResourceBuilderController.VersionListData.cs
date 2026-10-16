@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed partial class ResourceBuilderController
     {
@@ -20,35 +18,15 @@ namespace UnityGameFramework.Editor.ResourceTools
                 CompressedHashCode = compressedHashCode;
             }
 
-            public string Path
-            {
-                get;
-                private set;
-            }
+            public string Path { get; private set; }
 
-            public int Length
-            {
-                get;
-                private set;
-            }
+            public int Length { get; private set; }
 
-            public int HashCode
-            {
-                get;
-                private set;
-            }
+            public int HashCode { get; private set; }
 
-            public int CompressedLength
-            {
-                get;
-                private set;
-            }
+            public int CompressedLength { get; private set; }
 
-            public int CompressedHashCode
-            {
-                get;
-                private set;
-            }
+            public int CompressedHashCode { get; private set; }
         }
     }
 }

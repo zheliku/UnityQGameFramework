@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -54,7 +52,7 @@ namespace StarForce.Editor.DataTableTools
                     return dataProcessor;
                 }
 
-                throw new GameFrameworkException(Utility.Text.Format("Not supported data processor type '{0}'.", type));
+                throw new FrameworkException(Utility.Text.Format("Not supported data processor type '{0}'.", type));
             }
         }
     }

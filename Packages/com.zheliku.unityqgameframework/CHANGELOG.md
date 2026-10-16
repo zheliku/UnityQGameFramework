@@ -1,22 +1,20 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-exp.2 — 基础维护版
 
-- 替换 Unity 6 弃用 API：刷新率改用 `refreshRateRatio.value`，对象查找改用 `FindFirstObjectByType` / `FindObjectsByType`，脚本宏定义读写改用 `NamedBuildTarget` API；保留原有查找行为与宏定义工具接口。
-- 安卓文件流改用 `AndroidJNI.NewSByteArray` / `FromSByteArray`，使用 `Buffer.BlockCopy` 保留原始字节内容，并移除对应的弃用警告屏蔽。
-- 修复 Unity 6 对 `BuildAssetBundleOptions.DeterministicAssetBundle` 的编译错误，改用默认选项。
-- 调试器复制功能改用 `GUIUtility.systemCopyBuffer`，避免静态创建 TextEditor 导致初始化异常。
-- 声音代理只在存在 AudioClip 时设置播放时间，修复 Unity 6 在初始化与回收声音时的空资源寻址警告。
-- 导入官方 StarForce `d4ce803353f89852c4d58df65b2482a3b08eb11f` 到宿主 `Assets/Examples/StarForce`，调整资源与编辑器工具路径。
-- 新增发行暂存工具，从开发示例生成 `Samples~/StarForce`、样例元数据与 UPM `.tgz`，不维护第二份手工编辑的示例源码。
-- StarForce 保留原版鼠标玩法，仅增加 Input System 鼠标 API 兼容分支，并忽略已回收实体的碰撞回调；Layer 配置由宿主提供，不自动修改项目设置。
-- 将 StarForce 的 21 个材质转换为 URP Lit、Unlit 和 Particles/Unlit，保留贴图及 GUID。
-- 通过官方 Unity CLI 验证 Unity 6000.3.24f1 框架与示例编译；完整游戏回归与 Player 构建尚未验证。
+- 整理重复的字段/属性及简单 getter，保留 Unity 序列化字段和访问权限；增加 C# 代码约定与 IDE 建议。
+- 修复链表范围包含 null 元素时的查询，以及默认值类型键的哈希计算；保留合法键的原有哈希结果。
+- 统一 Unity Q Game Framework 名称、菜单、默认预制体、程序集与公共命名空间；同步示例、反射类型字符串、资源工具 XML 和 linker 配置。
+- 清理旧项目帮助、宣传与演示服务链接；来源记录和许可证集中保留。运行时版本改为当前包版本。
+- 最低 Unity 版本提升为 2022.3，移除仅用于更早版本的条件分支及未生效的 WWW 辅助器。
+- 更新对象查找、刷新率、脚本宏定义、JNI 和资源打包 API，保留原有功能及数据格式。
+- 编辑器类型发现支持业务 asmdef，使用 TypeCache；核心类型查找支持后加载程序集并容忍部分类型加载失败。
+- 缓存模块及组件查找，保留模块更新/关闭顺序；修复未初始化配置模块关闭异常、组件注册残留和低内存订阅释放。
+- 流程初始化改为等待其他组件 Start 完成后的下一帧，支持无图形 Player；初始化前读取流程状态安全返回空状态。
+- 提供独立消费者验证工具，覆盖核心语义、资源包构建读取与 Windows Player 启动。具体版本结果见 Documentation~/compatibility.md。
 
-## 0.1.0-exp.1 — 2026-10-16
+## 0.1.0-exp.1 — 初始接入
 
-- 导入 UnityGameFramework `e7eb3ef11393df0ac504204c480cdb839752b05f` 的运行时、编辑器工具与预制体。
-- 导入 GameFramework `d0c010b05167c58e92350449d04864a91ca13fd2` 核心源码，取代上游 GameFramework.dll。
-- 建立 embedded UPM package、核心/运行时/编辑器程序集边界，以及 Git URL 与 unitypackage 发布规划。
-- 保留上游 C#、预制体和已有 GUID，记录第三方来源及许可证。
-- Unity 6 编译与运行兼容性、QFramework 架构和 Luban 接入留待后续阶段。
+- 建立单一 embedded UPM package 与可调试 StarForce 示例，提供 Samples~ 发行暂存工具。
+- 修复废弃 AssetBundle 选项、Debugger 剪贴板初始化和空音频资源时间设置。
+- 保留原版鼠标控制，兼容新输入系统；转换 21 个示例 URP 材质，并跳过已回收实体的延迟碰撞。

@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +13,7 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源集合。
@@ -32,32 +30,20 @@ namespace UnityGameFramework.Editor.ResourceTools
 
         public ResourceCollection()
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceCollectionConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "GameFramework/Configs/ResourceCollection.xml"));
+            m_ConfigurationPath = Type.GetConfigurationPath<ResourceCollectionConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceCollection.xml"));
             m_Resources = new SortedDictionary<string, Resource>(StringComparer.Ordinal);
             m_Assets = new SortedDictionary<string, Asset>(StringComparer.Ordinal);
         }
 
-        public int ResourceCount
-        {
-            get
-            {
-                return m_Resources.Count;
-            }
-        }
+        public int ResourceCount => m_Resources.Count;
 
-        public int AssetCount
-        {
-            get
-            {
-                return m_Assets.Count;
-            }
-        }
+        public int AssetCount => m_Assets.Count;
 
-        public event GameFrameworkAction<int, int> OnLoadingResource = null;
+        public event FrameworkAction<int, int> OnLoadingResource = null;
 
-        public event GameFrameworkAction<int, int> OnLoadingAsset = null;
+        public event FrameworkAction<int, int> OnLoadingAsset = null;
 
-        public event GameFrameworkAction OnLoadCompleted = null;
+        public event FrameworkAction OnLoadCompleted = null;
 
         public void Clear()
         {
@@ -78,7 +64,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityGameFramework");
+                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
                 XmlNode xmlCollection = xmlRoot.SelectSingleNode("ResourceCollection");
                 XmlNode xmlResources = xmlCollection.SelectSingleNode("Resources");
                 XmlNode xmlAssets = xmlCollection.SelectSingleNode("Assets");
@@ -176,7 +162,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityGameFramework");
+                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
                 xmlDocument.AppendChild(xmlRoot);
 
                 XmlElement xmlCollection = xmlDocument.CreateElement("ResourceCollection");

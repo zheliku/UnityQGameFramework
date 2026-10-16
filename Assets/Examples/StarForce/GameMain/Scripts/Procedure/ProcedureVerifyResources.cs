@@ -1,6 +1,6 @@
-﻿using GameFramework.Event;
-using UnityGameFramework.Runtime;
-using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
+﻿using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Runtime;
+using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
 
 namespace StarForce
 {
@@ -8,13 +8,7 @@ namespace StarForce
     {
         private bool m_VerifyResourcesComplete = false;
 
-        public override bool UseNativeDialog
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool UseNativeDialog => true;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {

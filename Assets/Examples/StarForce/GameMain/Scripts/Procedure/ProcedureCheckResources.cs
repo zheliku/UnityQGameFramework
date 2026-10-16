@@ -1,5 +1,5 @@
-﻿using UnityGameFramework.Runtime;
-using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
+﻿using UnityQGameFramework.Runtime;
+using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
 
 namespace StarForce
 {
@@ -10,13 +10,7 @@ namespace StarForce
         private int m_UpdateResourceCount = 0;
         private long m_UpdateResourceTotalCompressedLength = 0L;
 
-        public override bool UseNativeDialog
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool UseNativeDialog => true;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {

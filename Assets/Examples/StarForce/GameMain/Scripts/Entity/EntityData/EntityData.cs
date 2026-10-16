@@ -1,8 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -34,38 +32,20 @@ namespace StarForce
         /// <summary>
         /// 实体编号。
         /// </summary>
-        public int Id
-        {
-            get
-            {
-                return m_Id;
-            }
-        }
+        public int Id => m_Id;
 
         /// <summary>
         /// 实体类型编号。
         /// </summary>
-        public int TypeId
-        {
-            get
-            {
-                return m_TypeId;
-            }
-        }
+        public int TypeId => m_TypeId;
 
         /// <summary>
         /// 实体位置。
         /// </summary>
         public Vector3 Position
         {
-            get
-            {
-                return m_Position;
-            }
-            set
-            {
-                m_Position = value;
-            }
+            get => m_Position;
+            set => m_Position = value;
         }
 
         /// <summary>
@@ -73,14 +53,8 @@ namespace StarForce
         /// </summary>
         public Quaternion Rotation
         {
-            get
-            {
-                return m_Rotation;
-            }
-            set
-            {
-                m_Rotation = value;
-            }
+            get => m_Rotation;
+            set => m_Rotation = value;
         }
     }
 }

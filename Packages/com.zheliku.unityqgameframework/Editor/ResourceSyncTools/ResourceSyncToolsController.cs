@@ -1,16 +1,14 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed class ResourceSyncToolsController
     {
@@ -18,13 +16,13 @@ namespace UnityGameFramework.Editor.ResourceTools
         {
         }
 
-        public event GameFrameworkAction<int, int> OnLoadingResource = null;
+        public event FrameworkAction<int, int> OnLoadingResource = null;
 
-        public event GameFrameworkAction<int, int> OnLoadingAsset = null;
+        public event FrameworkAction<int, int> OnLoadingAsset = null;
 
-        public event GameFrameworkAction OnCompleted = null;
+        public event FrameworkAction OnCompleted = null;
 
-        public event GameFrameworkAction<int, int, string> OnResourceDataChanged = null;
+        public event FrameworkAction<int, int, string> OnResourceDataChanged = null;
 
         public string[] GetAllAssetBundleNames()
         {

@@ -1,13 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed class DependencyData
     {
@@ -22,29 +20,11 @@ namespace UnityGameFramework.Editor.ResourceTools
             m_ScatteredDependencyAssetNames = new List<string>();
         }
 
-        public int DependencyResourceCount
-        {
-            get
-            {
-                return m_DependencyResources.Count;
-            }
-        }
+        public int DependencyResourceCount => m_DependencyResources.Count;
 
-        public int DependencyAssetCount
-        {
-            get
-            {
-                return m_DependencyAssets.Count;
-            }
-        }
+        public int DependencyAssetCount => m_DependencyAssets.Count;
 
-        public int ScatteredDependencyAssetCount
-        {
-            get
-            {
-                return m_ScatteredDependencyAssetNames.Count;
-            }
-        }
+        public int ScatteredDependencyAssetCount => m_ScatteredDependencyAssetNames.Count;
 
         public void AddDependencyAsset(Asset asset)
         {

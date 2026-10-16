@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<UnityGameFramework>
+<UnityQGameFramework>
   <ResourceEditor>
     <Settings>
       <SourceAssetRootPath>Assets/GameMain</SourceAssetRootPath>
@@ -13,4 +13,4 @@
       <AssetSorter>Path</AssetSorter>
     </Settings>
   </ResourceEditor>
-</UnityGameFramework>
+</UnityQGameFramework>

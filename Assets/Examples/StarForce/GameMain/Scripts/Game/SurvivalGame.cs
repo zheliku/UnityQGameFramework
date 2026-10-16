@@ -1,12 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.DataTable;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.DataTable;
 using UnityEngine;
 
 namespace StarForce
@@ -15,13 +13,7 @@ namespace StarForce
     {
         private float m_ElapseSeconds = 0f;
 
-        public override GameMode GameMode
-        {
-            get
-            {
-                return GameMode.Survival;
-            }
-        }
+        public override GameMode GameMode => GameMode.Survival;
 
         public override void Update(float elapseSeconds, float realElapseSeconds)
         {

@@ -1,16 +1,14 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源包生成器。
@@ -32,7 +30,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         private bool[] m_SourceVersionIndexes = null;
         private int m_SourceVersionCount = 0;
 
-        [MenuItem("Game Framework/Resource Tools/Resource Pack Builder", false, 43)]
+        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Pack Builder", false, 43)]
         private static void Open()
         {
             ResourcePackBuilder window = GetWindow<ResourcePackBuilder>("Resource Pack Builder", true);
@@ -96,8 +94,8 @@ namespace UnityGameFramework.Editor.ResourceTools
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUILayout.LabelField("Game Framework Version", GUILayout.Width(160f));
-                        EditorGUILayout.LabelField(m_Controller.GameFrameworkVersion);
+                        EditorGUILayout.LabelField("Unity Q Game Framework Version", GUILayout.Width(160f));
+                        EditorGUILayout.LabelField(m_Controller.FrameworkVersion);
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();

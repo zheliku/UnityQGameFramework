@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
 // 生成时间：2026-10-16 17:33:14.003
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -28,94 +26,52 @@ namespace StarForce
         /// <summary>
         /// 获取战机编号。
         /// </summary>
-        public override int Id
-        {
-            get
-            {
-                return m_Id;
-            }
-        }
+        public override int Id => m_Id;
 
         /// <summary>
         /// 获取推进器编号。
         /// </summary>
-        public int ThrusterId
-        {
-            get;
-            private set;
-        }
+        public int ThrusterId { get; private set; }
 
         /// <summary>
         /// 获取武器编号0。
         /// </summary>
-        public int WeaponId0
-        {
-            get;
-            private set;
-        }
+        public int WeaponId0 { get; private set; }
 
         /// <summary>
         /// 获取武器编号1。
         /// </summary>
-        public int WeaponId1
-        {
-            get;
-            private set;
-        }
+        public int WeaponId1 { get; private set; }
 
         /// <summary>
         /// 获取武器编号2。
         /// </summary>
-        public int WeaponId2
-        {
-            get;
-            private set;
-        }
+        public int WeaponId2 { get; private set; }
 
         /// <summary>
         /// 获取装甲编号0。
         /// </summary>
-        public int ArmorId0
-        {
-            get;
-            private set;
-        }
+        public int ArmorId0 { get; private set; }
 
         /// <summary>
         /// 获取装甲编号1。
         /// </summary>
-        public int ArmorId1
-        {
-            get;
-            private set;
-        }
+        public int ArmorId1 { get; private set; }
 
         /// <summary>
         /// 获取装甲编号2。
         /// </summary>
-        public int ArmorId2
-        {
-            get;
-            private set;
-        }
+        public int ArmorId2 { get; private set; }
 
         /// <summary>
         /// 获取死亡特效编号。
         /// </summary>
-        public int DeadEffectId
-        {
-            get;
-            private set;
-        }
+        public int DeadEffectId { get; private set; }
 
         /// <summary>
         /// 获取死亡声音编号。
         /// </summary>
-        public int DeadSoundId
-        {
-            get;
-            private set;
-        }
+        public int DeadSoundId { get; private set; }
 
         public override bool ParseDataRow(string dataRowString, object userData)
         {
@@ -168,13 +124,7 @@ namespace StarForce
 
         private KeyValuePair<int, int>[] m_WeaponId = null;
 
-        public int WeaponIdCount
-        {
-            get
-            {
-                return m_WeaponId.Length;
-            }
-        }
+        public int WeaponIdCount => m_WeaponId.Length;
 
         public int GetWeaponId(int id)
         {
@@ -186,14 +136,14 @@ namespace StarForce
                 }
             }
 
-            throw new GameFrameworkException(Utility.Text.Format("GetWeaponId with invalid id '{0}'.", id));
+            throw new FrameworkException(Utility.Text.Format("GetWeaponId with invalid id '{0}'.", id));
         }
 
         public int GetWeaponIdAt(int index)
         {
             if (index < 0 || index >= m_WeaponId.Length)
             {
-                throw new GameFrameworkException(Utility.Text.Format("GetWeaponIdAt with invalid index '{0}'.", index));
+                throw new FrameworkException(Utility.Text.Format("GetWeaponIdAt with invalid index '{0}'.", index));
             }
 
             return m_WeaponId[index].Value;
@@ -201,13 +151,7 @@ namespace StarForce
 
         private KeyValuePair<int, int>[] m_ArmorId = null;
 
-        public int ArmorIdCount
-        {
-            get
-            {
-                return m_ArmorId.Length;
-            }
-        }
+        public int ArmorIdCount => m_ArmorId.Length;
 
         public int GetArmorId(int id)
         {
@@ -219,14 +163,14 @@ namespace StarForce
                 }
             }
 
-            throw new GameFrameworkException(Utility.Text.Format("GetArmorId with invalid id '{0}'.", id));
+            throw new FrameworkException(Utility.Text.Format("GetArmorId with invalid id '{0}'.", id));
         }
 
         public int GetArmorIdAt(int index)
         {
             if (index < 0 || index >= m_ArmorId.Length)
             {
-                throw new GameFrameworkException(Utility.Text.Format("GetArmorIdAt with invalid index '{0}'.", index));
+                throw new FrameworkException(Utility.Text.Format("GetArmorIdAt with invalid index '{0}'.", index));
             }
 
             return m_ArmorId[index].Value;

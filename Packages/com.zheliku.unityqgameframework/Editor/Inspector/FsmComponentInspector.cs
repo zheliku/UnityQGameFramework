@@ -1,19 +1,17 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Fsm;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Fsm;
 using UnityEditor;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(FsmComponent))]
-    internal sealed class FsmComponentInspector : GameFrameworkInspector
+    internal sealed class FsmComponentInspector : FrameworkInspector
     {
         public override void OnInspectorGUI()
         {

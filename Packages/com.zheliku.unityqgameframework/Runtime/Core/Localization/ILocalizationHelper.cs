@@ -1,0 +1,18 @@
+﻿//------------------------------------------------------------
+// Unity Q Game Framework
+// Copyright © 2013-2021 Jiang Yin. All rights reserved.
+//------------------------------------------------------------
+
+namespace UnityQGameFramework.Core.Localization
+{
+    /// <summary>
+    /// 本地化辅助器接口。
+    /// </summary>
+    public interface ILocalizationHelper
+    {
+        /// <summary>
+        /// 获取系统语言。
+        /// </summary>
+        Language SystemLanguage { get; }
+    }
+}

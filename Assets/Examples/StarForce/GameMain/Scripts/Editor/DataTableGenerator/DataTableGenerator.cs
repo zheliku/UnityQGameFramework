@@ -1,11 +1,9 @@
 //------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -300,14 +298,14 @@ namespace StarForce.Editor.DataTableTools
                     .AppendLine("                }")
                     .AppendLine("            }")
                     .AppendLine()
-                    .AppendFormat("            throw new GameFrameworkException(Utility.Text.Format(\"Get{0} with invalid id '{{0}}'.\", id));", propertyCollection.Name).AppendLine()
+                    .AppendFormat("            throw new FrameworkException(Utility.Text.Format(\"Get{0} with invalid id '{{0}}'.\", id));", propertyCollection.Name).AppendLine()
                     .AppendLine("        }")
                     .AppendLine()
                     .AppendFormat("        public {1} Get{0}At(int index)", propertyCollection.Name, propertyCollection.LanguageKeyword).AppendLine()
                     .AppendLine("        {")
                     .AppendFormat("            if (index < 0 || index >= m_{0}.Length)", propertyCollection.Name).AppendLine()
                     .AppendLine("            {")
-                    .AppendFormat("                throw new GameFrameworkException(Utility.Text.Format(\"Get{0}At with invalid index '{{0}}'.\", index));", propertyCollection.Name).AppendLine()
+                    .AppendFormat("                throw new FrameworkException(Utility.Text.Format(\"Get{0}At with invalid index '{{0}}'.\", index));", propertyCollection.Name).AppendLine()
                     .AppendLine("            }")
                     .AppendLine()
                     .AppendFormat("            return m_{0}[index].Value;", propertyCollection.Name).AppendLine()
@@ -358,46 +356,26 @@ namespace StarForce.Editor.DataTableTools
 
         private sealed class PropertyCollection
         {
-            private readonly string m_Name;
-            private readonly string m_LanguageKeyword;
             private readonly List<KeyValuePair<int, string>> m_Items;
 
             public PropertyCollection(string name, string languageKeyword)
             {
-                m_Name = name;
-                m_LanguageKeyword = languageKeyword;
+                Name = name;
+                LanguageKeyword = languageKeyword;
                 m_Items = new List<KeyValuePair<int, string>>();
             }
 
-            public string Name
-            {
-                get
-                {
-                    return m_Name;
-                }
-            }
+            public string Name { get; }
 
-            public string LanguageKeyword
-            {
-                get
-                {
-                    return m_LanguageKeyword;
-                }
-            }
+            public string LanguageKeyword { get; }
 
-            public int ItemCount
-            {
-                get
-                {
-                    return m_Items.Count;
-                }
-            }
+            public int ItemCount => m_Items.Count;
 
             public KeyValuePair<int, string> GetItem(int index)
             {
                 if (index < 0 || index >= m_Items.Count)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("GetItem with invalid index '{0}'.", index));
+                    throw new FrameworkException(Utility.Text.Format("GetItem with invalid index '{0}'.", index));
                 }
 
                 return m_Items[index];

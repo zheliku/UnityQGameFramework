@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 生成资源事件处理函数。
@@ -18,10 +16,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         /// <summary>
         /// 获取当某个平台生成失败时，是否继续生成下一个平台。
         /// </summary>
-        bool ContinueOnFailure
-        {
-            get;
-        }
+        bool ContinueOnFailure { get; }
 
         /// <summary>
         /// 所有平台生成开始前的预处理事件。
@@ -29,7 +24,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         /// <param name="productName">产品名称。</param>
         /// <param name="companyName">公司名称。</param>
         /// <param name="gameIdentifier">游戏识别号。</param>
-        /// <param name="gameFrameworkVersion">游戏框架版本。</param>
+        /// <param name="frameworkVersion">游戏框架版本。</param>
         /// <param name="unityVersion">Unity 版本。</param>
         /// <param name="applicableGameVersion">适用游戏版本。</param>
         /// <param name="internalResourceVersion">内部资源版本。</param>
@@ -49,7 +44,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         /// <param name="outputPackedSelected">是否生成可更新模式所需的本地文件。</param>
         /// <param name="outputPackedPath">为可更新模式生成的本地文件存放于此路径。若游戏是网络游戏，生成结束后将此目录中对应平台的文件拷贝至 StreamingAssets 后打包 App 即可。</param>
         /// <param name="buildReportPath">生成报告路径。</param>
-        void OnPreprocessAllPlatforms(string productName, string companyName, string gameIdentifier, string gameFrameworkVersion, string unityVersion, string applicableGameVersion, int internalResourceVersion,
+        void OnPreprocessAllPlatforms(string productName, string companyName, string gameIdentifier, string frameworkVersion, string unityVersion, string applicableGameVersion, int internalResourceVersion,
             Platform platforms, AssetBundleCompressionType assetBundleCompression, string compressionHelperTypeName, bool additionalCompressionSelected, bool forceRebuildAssetBundleSelected, string buildEventHandlerTypeName, string outputDirectory, BuildAssetBundleOptions buildAssetBundleOptions,
             string workingPath, bool outputPackageSelected, string outputPackagePath, bool outputFullSelected, string outputFullPath, bool outputPackedSelected, string outputPackedPath, string buildReportPath);
 
@@ -111,7 +106,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         /// <param name="productName">产品名称。</param>
         /// <param name="companyName">公司名称。</param>
         /// <param name="gameIdentifier">游戏识别号。</param>
-        /// <param name="gameFrameworkVersion">游戏框架版本。</param>
+        /// <param name="frameworkVersion">游戏框架版本。</param>
         /// <param name="unityVersion">Unity 版本。</param>
         /// <param name="applicableGameVersion">适用游戏版本。</param>
         /// <param name="internalResourceVersion">内部资源版本。</param>
@@ -131,7 +126,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         /// <param name="outputPackedSelected">是否生成可更新模式所需的本地文件。</param>
         /// <param name="outputPackedPath">为可更新模式生成的本地文件存放于此路径。若游戏是网络游戏，生成结束后将此目录中对应平台的文件拷贝至 StreamingAssets 后打包 App 即可。</param>
         /// <param name="buildReportPath">生成报告路径。</param>
-        void OnPostprocessAllPlatforms(string productName, string companyName, string gameIdentifier, string gameFrameworkVersion, string unityVersion, string applicableGameVersion, int internalResourceVersion,
+        void OnPostprocessAllPlatforms(string productName, string companyName, string gameIdentifier, string frameworkVersion, string unityVersion, string applicableGameVersion, int internalResourceVersion,
             Platform platforms, AssetBundleCompressionType assetBundleCompression, string compressionHelperTypeName, bool additionalCompressionSelected, bool forceRebuildAssetBundleSelected, string buildEventHandlerTypeName, string outputDirectory, BuildAssetBundleOptions buildAssetBundleOptions,
             string workingPath, bool outputPackageSelected, string outputPackagePath, bool outputFullSelected, string outputFullPath, bool outputPackedSelected, string outputPackedPath, string buildReportPath);
     }

@@ -1,16 +1,14 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Event;
-using GameFramework.Resource;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core.Resource;
 using UnityEngine;
-using UnityGameFramework.Runtime;
-using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
+using UnityQGameFramework.Runtime;
+using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
 
 namespace StarForce
 {
@@ -20,13 +18,7 @@ namespace StarForce
         private bool m_NeedUpdateVersion = false;
         private VersionInfo m_VersionInfo = null;
 
-        public override bool UseNativeDialog
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool UseNativeDialog => true;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
@@ -40,6 +32,12 @@ namespace StarForce
             GameEntry.Event.Subscribe(WebRequestFailureEventArgs.EventId, OnWebRequestFailure);
 
             // 向服务器请求版本信息
+            if (string.IsNullOrWhiteSpace(GameEntry.BuiltinData.BuildInfo.CheckVersionUrl))
+            {
+                Log.Error("Configure CheckVersionUrl in GameMain/Configs/BuildInfo.txt before using updatable resources.");
+                return;
+            }
+
             GameEntry.WebRequest.AddWebRequest(Utility.Text.Format(GameEntry.BuiltinData.BuildInfo.CheckVersionUrl, GetPlatformPath()), this);
         }
 
@@ -123,7 +121,7 @@ namespace StarForce
                     ConfirmText = GameEntry.Localization.GetString("ForceUpdate.UpdateButton"),
                     OnClickConfirm = GotoUpdateApp,
                     CancelText = GameEntry.Localization.GetString("ForceUpdate.QuitButton"),
-                    OnClickCancel = delegate (object userData) { UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
+                    OnClickCancel = delegate (object userData) { UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
                 });
 
                 return;

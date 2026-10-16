@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<UnityGameFramework>
+<UnityQGameFramework>
   <BuildSettings>
     <DefaultScenes>
       <DefaultScene Name="Assets/StarForce Launcher.unity" />
@@ -8,4 +8,4 @@
       <SearchScenePath Path="Assets" />
     </SearchScenePaths>
   </BuildSettings>
-</UnityGameFramework>
+</UnityQGameFramework>

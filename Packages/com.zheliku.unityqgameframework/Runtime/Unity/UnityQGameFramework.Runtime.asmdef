@@ -1,0 +1,9 @@
+{
+    "name": "UnityQGameFramework.Runtime",
+    "rootNamespace": "UnityQGameFramework.Runtime",
+    "references": [
+        "UnityQGameFramework.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

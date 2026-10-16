@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Network;
+using UnityQGameFramework.Core.Network;
 using ProtoBuf;
 
 namespace StarForce
@@ -19,10 +17,7 @@ namespace StarForce
             m_ExtensionObject = null;
         }
 
-        public abstract PacketType PacketType
-        {
-            get;
-        }
+        public abstract PacketType PacketType { get; }
 
         IExtension IExtensible.GetExtensionObject(bool createIfMissing)
         {

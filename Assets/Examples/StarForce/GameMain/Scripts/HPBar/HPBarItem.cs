@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -24,16 +22,9 @@ namespace StarForce
         private Canvas m_ParentCanvas = null;
         private RectTransform m_CachedTransform = null;
         private CanvasGroup m_CachedCanvasGroup = null;
-        private Entity m_Owner = null;
         private int m_OwnerId = 0;
 
-        public Entity Owner
-        {
-            get
-            {
-                return m_Owner;
-            }
-        }
+        public Entity Owner { get; private set; }
 
         public void Init(Entity owner, Canvas parentCanvas, float fromHPRatio, float toHPRatio)
         {
@@ -49,10 +40,10 @@ namespace StarForce
             StopAllCoroutines();
 
             m_CachedCanvasGroup.alpha = 1f;
-            if (m_Owner != owner || m_OwnerId != owner.Id)
+            if (Owner != owner || m_OwnerId != owner.Id)
             {
                 m_HPBar.value = fromHPRatio;
-                m_Owner = owner;
+                Owner = owner;
                 m_OwnerId = owner.Id;
             }
 
@@ -68,9 +59,9 @@ namespace StarForce
                 return false;
             }
 
-            if (m_Owner != null && Owner.Available && Owner.Id == m_OwnerId)
+            if (Owner != null && Owner.Available && Owner.Id == m_OwnerId)
             {
-                Vector3 worldPosition = m_Owner.CachedTransform.position + Vector3.forward;
+                Vector3 worldPosition = Owner.CachedTransform.position + Vector3.forward;
                 Vector3 screenPosition = GameEntry.Scene.MainCamera.WorldToScreenPoint(worldPosition);
 
                 Vector2 position;
@@ -89,7 +80,7 @@ namespace StarForce
             StopAllCoroutines();
             m_CachedCanvasGroup.alpha = 1f;
             m_HPBar.value = 1f;
-            m_Owner = null;
+            Owner = null;
             gameObject.SetActive(false);
         }
 

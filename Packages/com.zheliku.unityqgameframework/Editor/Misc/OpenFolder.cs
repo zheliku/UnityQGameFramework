@@ -1,16 +1,14 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     /// <summary>
     /// 打开文件夹相关的实用函数。
@@ -20,7 +18,7 @@ namespace UnityGameFramework.Editor
         /// <summary>
         /// 打开 Data Path 文件夹。
         /// </summary>
-        [MenuItem("Game Framework/Open Folder/Data Path", false, 10)]
+        [MenuItem("Unity Q Game Framework/Open Folder/Data Path", false, 10)]
         public static void OpenFolderDataPath()
         {
             Execute(Application.dataPath);
@@ -29,7 +27,7 @@ namespace UnityGameFramework.Editor
         /// <summary>
         /// 打开 Persistent Data Path 文件夹。
         /// </summary>
-        [MenuItem("Game Framework/Open Folder/Persistent Data Path", false, 11)]
+        [MenuItem("Unity Q Game Framework/Open Folder/Persistent Data Path", false, 11)]
         public static void OpenFolderPersistentDataPath()
         {
             Execute(Application.persistentDataPath);
@@ -38,7 +36,7 @@ namespace UnityGameFramework.Editor
         /// <summary>
         /// 打开 Streaming Assets Path 文件夹。
         /// </summary>
-        [MenuItem("Game Framework/Open Folder/Streaming Assets Path", false, 12)]
+        [MenuItem("Unity Q Game Framework/Open Folder/Streaming Assets Path", false, 12)]
         public static void OpenFolderStreamingAssetsPath()
         {
             Execute(Application.streamingAssetsPath);
@@ -47,24 +45,22 @@ namespace UnityGameFramework.Editor
         /// <summary>
         /// 打开 Temporary Cache Path 文件夹。
         /// </summary>
-        [MenuItem("Game Framework/Open Folder/Temporary Cache Path", false, 13)]
+        [MenuItem("Unity Q Game Framework/Open Folder/Temporary Cache Path", false, 13)]
         public static void OpenFolderTemporaryCachePath()
         {
             Execute(Application.temporaryCachePath);
         }
 
-#if UNITY_2018_3_OR_NEWER
 
         /// <summary>
         /// 打开 Console Log Path 文件夹。
         /// </summary>
-        [MenuItem("Game Framework/Open Folder/Console Log Path", false, 14)]
+        [MenuItem("Unity Q Game Framework/Open Folder/Console Log Path", false, 14)]
         public static void OpenFolderConsoleLogPath()
         {
             Execute(System.IO.Path.GetDirectoryName(Application.consoleLogPath));
         }
 
-#endif
 
         /// <summary>
         /// 打开指定路径的文件夹。
@@ -84,7 +80,7 @@ namespace UnityGameFramework.Editor
                     break;
 
                 default:
-                    throw new GameFrameworkException(Utility.Text.Format("Not support open folder on '{0}' platform.", Application.platform));
+                    throw new FrameworkException(Utility.Text.Format("Not support open folder on '{0}' platform.", Application.platform));
             }
         }
     }

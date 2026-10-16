@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(BaseComponent))]
-    internal sealed class BaseComponentInspector : GameFrameworkInspector
+    internal sealed class BaseComponentInspector : FrameworkInspector
     {
         private const string NoneOptionName = "<None>";
         private static readonly float[] GameSpeed = new float[] { 0f, 0.01f, 0.1f, 0.25f, 0.5f, 1f, 1.5f, 2f, 4f, 8f };
@@ -55,7 +53,7 @@ namespace UnityGameFramework.Editor
             {
                 m_EditorResourceMode.boolValue = EditorGUILayout.BeginToggleGroup("Editor Resource Mode", m_EditorResourceMode.boolValue);
                 {
-                    EditorGUILayout.HelpBox("Editor resource mode option is only for editor mode. Game Framework will use editor resource files, which you should validate first.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Editor resource mode option is only for editor mode. Unity Q Game Framework will use editor resource files, which you should validate first.", MessageType.Warning);
                     EditorGUILayout.PropertyField(m_EditorLanguage);
                     EditorGUILayout.HelpBox("Editor language option is only use for localization test in editor mode.", MessageType.Info);
                 }
@@ -236,7 +234,7 @@ namespace UnityGameFramework.Editor
                 NoneOptionName
             };
 
-            logHelperTypeNames.AddRange(Type.GetRuntimeTypeNames(typeof(GameFrameworkLog.ILogHelper)));
+            logHelperTypeNames.AddRange(Type.GetRuntimeTypeNames(typeof(FrameworkLog.ILogHelper)));
             m_LogHelperTypeNames = logHelperTypeNames.ToArray();
             m_LogHelperTypeNameIndex = 0;
             if (!string.IsNullOrEmpty(m_LogHelperTypeName.stringValue))

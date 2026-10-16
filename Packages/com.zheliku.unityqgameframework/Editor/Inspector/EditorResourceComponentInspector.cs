@@ -1,17 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using UnityEditor;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(EditorResourceComponent))]
-    internal sealed class EditorResourceComponentInspector : GameFrameworkInspector
+    internal sealed class EditorResourceComponentInspector : FrameworkInspector
     {
         private SerializedProperty m_EnableCachedAssets = null;
         private SerializedProperty m_LoadAssetCountPerFrame = null;

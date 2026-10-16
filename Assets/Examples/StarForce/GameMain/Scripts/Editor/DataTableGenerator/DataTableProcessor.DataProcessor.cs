@@ -1,8 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.IO;
@@ -13,30 +11,15 @@ namespace StarForce.Editor.DataTableTools
     {
         public abstract class DataProcessor
         {
-            public abstract System.Type Type
-            {
-                get;
-            }
+            public abstract System.Type Type { get; }
 
-            public abstract bool IsId
-            {
-                get;
-            }
+            public abstract bool IsId { get; }
 
-            public abstract bool IsComment
-            {
-                get;
-            }
+            public abstract bool IsComment { get; }
 
-            public abstract bool IsSystem
-            {
-                get;
-            }
+            public abstract bool IsSystem { get; }
 
-            public abstract string LanguageKeyword
-            {
-                get;
-            }
+            public abstract string LanguageKeyword { get; }
 
             public abstract string[] GetTypeStrings();
 

@@ -1,8 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.IO;
@@ -13,21 +11,9 @@ namespace StarForce.Editor.DataTableTools
     {
         private sealed class Int16Processor : GenericDataProcessor<short>
         {
-            public override bool IsSystem
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool IsSystem => true;
 
-            public override string LanguageKeyword
-            {
-                get
-                {
-                    return "short";
-                }
-            }
+            public override string LanguageKeyword => "short";
 
             public override string[] GetTypeStrings()
             {

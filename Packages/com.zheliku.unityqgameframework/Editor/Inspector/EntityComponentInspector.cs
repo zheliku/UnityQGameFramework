@@ -1,19 +1,17 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Entity;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Entity;
 using UnityEditor;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(EntityComponent))]
-    internal sealed class EntityComponentInspector : GameFrameworkInspector
+    internal sealed class EntityComponentInspector : FrameworkInspector
     {
         private SerializedProperty m_EnableShowEntityUpdateEvent = null;
         private SerializedProperty m_EnableShowEntityDependencyAssetEvent = null;

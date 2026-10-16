@@ -1,15 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed class SourceAsset
     {
@@ -19,7 +17,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         {
             if (folder == null)
             {
-                throw new GameFrameworkException("Source asset folder is invalid.");
+                throw new FrameworkException("Source asset folder is invalid.");
             }
 
             Guid = guid;
@@ -29,45 +27,17 @@ namespace UnityGameFramework.Editor.ResourceTools
             m_CachedIcon = null;
         }
 
-        public string Guid
-        {
-            get;
-            private set;
-        }
+        public string Guid { get; private set; }
 
-        public string Path
-        {
-            get;
-            private set;
-        }
+        public string Path { get; private set; }
 
-        public string Name
-        {
-            get;
-            private set;
-        }
+        public string Name { get; private set; }
 
-        public SourceFolder Folder
-        {
-            get;
-            private set;
-        }
+        public SourceFolder Folder { get; private set; }
 
-        public string FromRootPath
-        {
-            get
-            {
-                return Folder.Folder == null ? Name : Utility.Text.Format("{0}/{1}", Folder.FromRootPath, Name);
-            }
-        }
+        public string FromRootPath => Folder.Folder == null ? Name : Utility.Text.Format("{0}/{1}", Folder.FromRootPath, Name);
 
-        public int Depth
-        {
-            get
-            {
-                return Folder != null ? Folder.Depth + 1 : 0;
-            }
-        }
+        public int Depth => Folder != null ? Folder.Depth + 1 : 0;
 
         public Texture Icon
         {

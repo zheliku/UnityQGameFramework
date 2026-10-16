@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Localization;
+using UnityQGameFramework.Core.Localization;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -138,14 +136,10 @@ namespace StarForce
             GameEntry.Setting.Save();
 
             GameEntry.Sound.StopMusic();
-            UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
+            UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
-#else
-        protected internal override void OnOpen(object userData)
-#endif
         {
             base.OnOpen(userData);
 
@@ -182,11 +176,7 @@ namespace StarForce
             }
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
-#else
-        protected internal override void OnUpdate(float elapseSeconds, float realElapseSeconds)
-#endif
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 

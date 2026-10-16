@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataTable;
+using UnityQGameFramework.Core.DataTable;
 using System;
 using UnityEngine;
 
@@ -33,12 +31,6 @@ namespace StarForce
         /// <summary>
         /// 速度。
         /// </summary>
-        public float Speed
-        {
-            get
-            {
-                return m_Speed;
-            }
-        }
+        public float Speed => m_Speed;
     }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "UnityQGameFramework.Core",
+  "rootNamespace": "UnityQGameFramework.Core",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": true,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

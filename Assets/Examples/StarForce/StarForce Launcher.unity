@@ -1045,7 +1045,7 @@ GameObject:
   - component: {fileID: 1852670053}
   - component: {fileID: 1852670054}
   m_Layer: 0
-  m_Name: Game Framework
+  m_Name: Unity Q Game Framework
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

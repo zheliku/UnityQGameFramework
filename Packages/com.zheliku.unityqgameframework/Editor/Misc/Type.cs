@@ -1,41 +1,21 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
+using UnityEditor.Compilation;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     /// <summary>
     /// 类型相关的实用函数。
     /// </summary>
     internal static class Type
     {
-        private static readonly string[] RuntimeAssemblyNames =
-        {
-#if UNITY_2017_3_OR_NEWER
-            "UnityGameFramework.Runtime",
-#endif
-            "Assembly-CSharp",
-        };
-
-        private static readonly string[] RuntimeOrEditorAssemblyNames =
-        {
-#if UNITY_2017_3_OR_NEWER
-            "UnityGameFramework.Runtime",
-#endif
-            "Assembly-CSharp",
-#if UNITY_2017_3_OR_NEWER
-            "UnityGameFramework.Editor",
-#endif
-            "Assembly-CSharp-Editor",
-        };
-
         /// <summary>
         /// 获取配置路径。
         /// </summary>
@@ -77,7 +57,7 @@ namespace UnityGameFramework.Editor
         /// <returns>指定基类的所有子类的名称。</returns>
         internal static string[] GetRuntimeTypeNames(System.Type typeBase)
         {
-            return GetTypeNames(typeBase, RuntimeAssemblyNames);
+            return GetTypeNames(typeBase, AssembliesType.PlayerWithoutTestAssemblies);
         }
 
         /// <summary>
@@ -87,36 +67,24 @@ namespace UnityGameFramework.Editor
         /// <returns>指定基类的所有子类的名称。</returns>
         internal static string[] GetRuntimeOrEditorTypeNames(System.Type typeBase)
         {
-            return GetTypeNames(typeBase, RuntimeOrEditorAssemblyNames);
+            return GetTypeNames(typeBase, AssembliesType.Editor);
         }
 
-        private static string[] GetTypeNames(System.Type typeBase, string[] assemblyNames)
+        private static string[] GetTypeNames(System.Type typeBase, AssembliesType assembliesType)
         {
-            List<string> typeNames = new List<string>();
-            foreach (string assemblyName in assemblyNames)
+            HashSet<string> assemblyNames = new HashSet<string>();
+            foreach (UnityEditor.Compilation.Assembly assembly in CompilationPipeline.GetAssemblies(assembliesType))
             {
-                Assembly assembly = null;
-                try
-                {
-                    assembly = Assembly.Load(assemblyName);
-                }
-                catch
-                {
-                    continue;
-                }
+                assemblyNames.Add(assembly.name);
+            }
 
-                if (assembly == null)
+            List<string> typeNames = new List<string>();
+            foreach (System.Type type in TypeCache.GetTypesDerivedFrom(typeBase))
+            {
+                if (type.IsClass && !type.IsAbstract && !type.ContainsGenericParameters &&
+                    assemblyNames.Contains(type.Assembly.GetName().Name))
                 {
-                    continue;
-                }
-
-                System.Type[] types = assembly.GetTypes();
-                foreach (System.Type type in types)
-                {
-                    if (type.IsClass && !type.IsAbstract && typeBase.IsAssignableFrom(type))
-                    {
-                        typeNames.Add(type.FullName);
-                    }
+                    typeNames.Add(type.FullName);
                 }
             }
 

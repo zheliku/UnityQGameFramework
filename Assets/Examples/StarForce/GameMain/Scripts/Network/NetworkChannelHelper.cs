@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Event;
-using GameFramework.Network;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core.Network;
 using ProtoBuf;
 using ProtoBuf.Meta;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -27,13 +25,7 @@ namespace StarForce
         /// <summary>
         /// 获取消息包头长度。
         /// </summary>
-        public int PacketHeaderLength
-        {
-            get
-            {
-                return sizeof(int);
-            }
-        }
+        public int PacketHeaderLength => sizeof(int);
 
         /// <summary>
         /// 初始化网络频道辅助器。
@@ -74,11 +66,11 @@ namespace StarForce
                 }
             }
 
-            GameEntry.Event.Subscribe(UnityGameFramework.Runtime.NetworkConnectedEventArgs.EventId, OnNetworkConnected);
-            GameEntry.Event.Subscribe(UnityGameFramework.Runtime.NetworkClosedEventArgs.EventId, OnNetworkClosed);
-            GameEntry.Event.Subscribe(UnityGameFramework.Runtime.NetworkMissHeartBeatEventArgs.EventId, OnNetworkMissHeartBeat);
-            GameEntry.Event.Subscribe(UnityGameFramework.Runtime.NetworkErrorEventArgs.EventId, OnNetworkError);
-            GameEntry.Event.Subscribe(UnityGameFramework.Runtime.NetworkCustomErrorEventArgs.EventId, OnNetworkCustomError);
+            GameEntry.Event.Subscribe(UnityQGameFramework.Runtime.NetworkConnectedEventArgs.EventId, OnNetworkConnected);
+            GameEntry.Event.Subscribe(UnityQGameFramework.Runtime.NetworkClosedEventArgs.EventId, OnNetworkClosed);
+            GameEntry.Event.Subscribe(UnityQGameFramework.Runtime.NetworkMissHeartBeatEventArgs.EventId, OnNetworkMissHeartBeat);
+            GameEntry.Event.Subscribe(UnityQGameFramework.Runtime.NetworkErrorEventArgs.EventId, OnNetworkError);
+            GameEntry.Event.Subscribe(UnityQGameFramework.Runtime.NetworkCustomErrorEventArgs.EventId, OnNetworkCustomError);
         }
 
         /// <summary>
@@ -86,11 +78,11 @@ namespace StarForce
         /// </summary>
         public void Shutdown()
         {
-            GameEntry.Event.Unsubscribe(UnityGameFramework.Runtime.NetworkConnectedEventArgs.EventId, OnNetworkConnected);
-            GameEntry.Event.Unsubscribe(UnityGameFramework.Runtime.NetworkClosedEventArgs.EventId, OnNetworkClosed);
-            GameEntry.Event.Unsubscribe(UnityGameFramework.Runtime.NetworkMissHeartBeatEventArgs.EventId, OnNetworkMissHeartBeat);
-            GameEntry.Event.Unsubscribe(UnityGameFramework.Runtime.NetworkErrorEventArgs.EventId, OnNetworkError);
-            GameEntry.Event.Unsubscribe(UnityGameFramework.Runtime.NetworkCustomErrorEventArgs.EventId, OnNetworkCustomError);
+            GameEntry.Event.Unsubscribe(UnityQGameFramework.Runtime.NetworkConnectedEventArgs.EventId, OnNetworkConnected);
+            GameEntry.Event.Unsubscribe(UnityQGameFramework.Runtime.NetworkClosedEventArgs.EventId, OnNetworkClosed);
+            GameEntry.Event.Unsubscribe(UnityQGameFramework.Runtime.NetworkMissHeartBeatEventArgs.EventId, OnNetworkMissHeartBeat);
+            GameEntry.Event.Unsubscribe(UnityQGameFramework.Runtime.NetworkErrorEventArgs.EventId, OnNetworkError);
+            GameEntry.Event.Unsubscribe(UnityQGameFramework.Runtime.NetworkCustomErrorEventArgs.EventId, OnNetworkCustomError);
 
             m_NetworkChannel = null;
         }
@@ -217,7 +209,7 @@ namespace StarForce
 
         private void OnNetworkConnected(object sender, GameEventArgs e)
         {
-            UnityGameFramework.Runtime.NetworkConnectedEventArgs ne = (UnityGameFramework.Runtime.NetworkConnectedEventArgs)e;
+            UnityQGameFramework.Runtime.NetworkConnectedEventArgs ne = (UnityQGameFramework.Runtime.NetworkConnectedEventArgs)e;
             if (ne.NetworkChannel != m_NetworkChannel)
             {
                 return;
@@ -228,7 +220,7 @@ namespace StarForce
 
         private void OnNetworkClosed(object sender, GameEventArgs e)
         {
-            UnityGameFramework.Runtime.NetworkClosedEventArgs ne = (UnityGameFramework.Runtime.NetworkClosedEventArgs)e;
+            UnityQGameFramework.Runtime.NetworkClosedEventArgs ne = (UnityQGameFramework.Runtime.NetworkClosedEventArgs)e;
             if (ne.NetworkChannel != m_NetworkChannel)
             {
                 return;
@@ -239,7 +231,7 @@ namespace StarForce
 
         private void OnNetworkMissHeartBeat(object sender, GameEventArgs e)
         {
-            UnityGameFramework.Runtime.NetworkMissHeartBeatEventArgs ne = (UnityGameFramework.Runtime.NetworkMissHeartBeatEventArgs)e;
+            UnityQGameFramework.Runtime.NetworkMissHeartBeatEventArgs ne = (UnityQGameFramework.Runtime.NetworkMissHeartBeatEventArgs)e;
             if (ne.NetworkChannel != m_NetworkChannel)
             {
                 return;
@@ -257,7 +249,7 @@ namespace StarForce
 
         private void OnNetworkError(object sender, GameEventArgs e)
         {
-            UnityGameFramework.Runtime.NetworkErrorEventArgs ne = (UnityGameFramework.Runtime.NetworkErrorEventArgs)e;
+            UnityQGameFramework.Runtime.NetworkErrorEventArgs ne = (UnityQGameFramework.Runtime.NetworkErrorEventArgs)e;
             if (ne.NetworkChannel != m_NetworkChannel)
             {
                 return;
@@ -270,7 +262,7 @@ namespace StarForce
 
         private void OnNetworkCustomError(object sender, GameEventArgs e)
         {
-            UnityGameFramework.Runtime.NetworkCustomErrorEventArgs ne = (UnityGameFramework.Runtime.NetworkCustomErrorEventArgs)e;
+            UnityQGameFramework.Runtime.NetworkCustomErrorEventArgs ne = (UnityQGameFramework.Runtime.NetworkCustomErrorEventArgs)e;
             if (ne.NetworkChannel != m_NetworkChannel)
             {
                 return;

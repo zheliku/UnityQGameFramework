@@ -1,0 +1,12 @@
+{
+    "name": "UnityQGameFramework.Editor",
+    "rootNamespace": "UnityQGameFramework.Editor",
+    "references": [
+        "UnityQGameFramework.Core",
+        "UnityQGameFramework.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

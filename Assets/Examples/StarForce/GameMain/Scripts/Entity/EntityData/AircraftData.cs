@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataTable;
+using UnityQGameFramework.Core.DataTable;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,51 +65,21 @@ namespace StarForce
         /// <summary>
         /// 最大生命。
         /// </summary>
-        public override int MaxHP
-        {
-            get
-            {
-                return m_MaxHP;
-            }
-        }
+        public override int MaxHP => m_MaxHP;
 
         /// <summary>
         /// 防御。
         /// </summary>
-        public int Defense
-        {
-            get
-            {
-                return m_Defense;
-            }
-        }
+        public int Defense => m_Defense;
 
         /// <summary>
         /// 速度。
         /// </summary>
-        public float Speed
-        {
-            get
-            {
-                return m_ThrusterData.Speed;
-            }
-        }
+        public float Speed => m_ThrusterData.Speed;
 
-        public int DeadEffectId
-        {
-            get
-            {
-                return m_DeadEffectId;
-            }
-        }
+        public int DeadEffectId => m_DeadEffectId;
 
-        public int DeadSoundId
-        {
-            get
-            {
-                return m_DeadSoundId;
-            }
-        }
+        public int DeadSoundId => m_DeadSoundId;
 
         public ThrusterData GetThrusterData()
         {

@@ -1,16 +1,14 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     internal sealed partial class ResourceEditor : EditorWindow
     {
@@ -30,17 +28,9 @@ namespace UnityGameFramework.Editor.ResourceTools
                 Folder = folder;
             }
 
-            public string Name
-            {
-                get;
-                private set;
-            }
+            public string Name { get; private set; }
 
-            public ResourceFolder Folder
-            {
-                get;
-                private set;
-            }
+            public ResourceFolder Folder { get; private set; }
 
             public string FromRootPath
             {
@@ -50,13 +40,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 }
             }
 
-            public int Depth
-            {
-                get
-                {
-                    return Folder != null ? Folder.Depth + 1 : 0;
-                }
-            }
+            public int Depth => Folder != null ? Folder.Depth + 1 : 0;
 
             public static Texture Icon
             {
@@ -86,7 +70,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new GameFrameworkException("Resource folder name is invalid.");
+                    throw new FrameworkException("Resource folder name is invalid.");
                 }
 
                 foreach (ResourceFolder folder in m_Folders)
@@ -104,13 +88,13 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new GameFrameworkException("Resource folder name is invalid.");
+                    throw new FrameworkException("Resource folder name is invalid.");
                 }
 
                 ResourceFolder folder = GetFolder(name);
                 if (folder != null)
                 {
-                    throw new GameFrameworkException("Resource folder is already exist.");
+                    throw new FrameworkException("Resource folder is already exist.");
                 }
 
                 folder = new ResourceFolder(name, this);
@@ -128,7 +112,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new GameFrameworkException("Resource item name is invalid.");
+                    throw new FrameworkException("Resource item name is invalid.");
                 }
 
                 foreach (ResourceItem item in m_Items)
@@ -147,7 +131,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 ResourceItem item = GetItem(name);
                 if (item != null)
                 {
-                    throw new GameFrameworkException("Resource item is already exist.");
+                    throw new FrameworkException("Resource item is already exist.");
                 }
 
                 item = new ResourceItem(name, resource, this);

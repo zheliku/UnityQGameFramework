@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,8 +23,6 @@ namespace StarForce.Editor.DataTableTools
         private readonly string[] m_TypeRow;
         private readonly string[] m_DefaultValueRow;
         private readonly string[] m_CommentRow;
-        private readonly int m_ContentStartRow;
-        private readonly int m_IdColumn;
 
         private readonly DataProcessor[] m_DataProcessor;
         private readonly string[][] m_RawValues;
@@ -39,17 +35,17 @@ namespace StarForce.Editor.DataTableTools
         {
             if (string.IsNullOrEmpty(dataTableFileName))
             {
-                throw new GameFrameworkException("Data table file name is invalid.");
+                throw new FrameworkException("Data table file name is invalid.");
             }
 
             if (!dataTableFileName.EndsWith(".txt", StringComparison.Ordinal))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Data table file '{0}' is not a txt.", dataTableFileName));
+                throw new FrameworkException(Utility.Text.Format("Data table file '{0}' is not a txt.", dataTableFileName));
             }
 
             if (!File.Exists(dataTableFileName))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Data table file '{0}' is not exist.", dataTableFileName));
+                throw new FrameworkException(Utility.Text.Format("Data table file '{0}' is not exist.", dataTableFileName));
             }
 
             string[] lines = File.ReadAllLines(dataTableFileName, encoding);
@@ -71,7 +67,7 @@ namespace StarForce.Editor.DataTableTools
                 }
                 else if (rawValue.Length != rawColumnCount)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Data table file '{0}', raw Column is '{2}', but line '{1}' column is '{3}'.", dataTableFileName, i, rawColumnCount, rawValue.Length));
+                    throw new FrameworkException(Utility.Text.Format("Data table file '{0}', raw Column is '{2}', but line '{1}' column is '{3}'.", dataTableFileName, i, rawColumnCount, rawValue.Length));
                 }
 
                 rawValues.Add(rawValue);
@@ -81,60 +77,60 @@ namespace StarForce.Editor.DataTableTools
 
             if (nameRow < 0)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Name row '{0}' is invalid.", nameRow));
+                throw new FrameworkException(Utility.Text.Format("Name row '{0}' is invalid.", nameRow));
             }
 
             if (typeRow < 0)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Type row '{0}' is invalid.", typeRow));
+                throw new FrameworkException(Utility.Text.Format("Type row '{0}' is invalid.", typeRow));
             }
 
             if (contentStartRow < 0)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Content start row '{0}' is invalid.", contentStartRow));
+                throw new FrameworkException(Utility.Text.Format("Content start row '{0}' is invalid.", contentStartRow));
             }
 
             if (idColumn < 0)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Id column '{0}' is invalid.", idColumn));
+                throw new FrameworkException(Utility.Text.Format("Id column '{0}' is invalid.", idColumn));
             }
 
             if (nameRow >= rawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Name row '{0}' >= raw row count '{1}' is not allow.", nameRow, rawRowCount));
+                throw new FrameworkException(Utility.Text.Format("Name row '{0}' >= raw row count '{1}' is not allow.", nameRow, rawRowCount));
             }
 
             if (typeRow >= rawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Type row '{0}' >= raw row count '{1}' is not allow.", typeRow, rawRowCount));
+                throw new FrameworkException(Utility.Text.Format("Type row '{0}' >= raw row count '{1}' is not allow.", typeRow, rawRowCount));
             }
 
             if (defaultValueRow.HasValue && defaultValueRow.Value >= rawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Default value row '{0}' >= raw row count '{1}' is not allow.", defaultValueRow.Value, rawRowCount));
+                throw new FrameworkException(Utility.Text.Format("Default value row '{0}' >= raw row count '{1}' is not allow.", defaultValueRow.Value, rawRowCount));
             }
 
             if (commentRow.HasValue && commentRow.Value >= rawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Comment row '{0}' >= raw row count '{1}' is not allow.", commentRow.Value, rawRowCount));
+                throw new FrameworkException(Utility.Text.Format("Comment row '{0}' >= raw row count '{1}' is not allow.", commentRow.Value, rawRowCount));
             }
 
             if (contentStartRow > rawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Content start row '{0}' > raw row count '{1}' is not allow.", contentStartRow, rawRowCount));
+                throw new FrameworkException(Utility.Text.Format("Content start row '{0}' > raw row count '{1}' is not allow.", contentStartRow, rawRowCount));
             }
 
             if (idColumn >= rawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Id column '{0}' >= raw column count '{1}' is not allow.", idColumn, rawColumnCount));
+                throw new FrameworkException(Utility.Text.Format("Id column '{0}' >= raw column count '{1}' is not allow.", idColumn, rawColumnCount));
             }
 
             m_NameRow = m_RawValues[nameRow];
             m_TypeRow = m_RawValues[typeRow];
             m_DefaultValueRow = defaultValueRow.HasValue ? m_RawValues[defaultValueRow.Value] : null;
             m_CommentRow = commentRow.HasValue ? m_RawValues[commentRow.Value] : null;
-            m_ContentStartRow = contentStartRow;
-            m_IdColumn = idColumn;
+            ContentStartRow = contentStartRow;
+            IdColumn = idColumn;
 
             m_DataProcessor = new DataProcessor[rawColumnCount];
             for (int i = 0; i < rawColumnCount; i++)
@@ -182,51 +178,21 @@ namespace StarForce.Editor.DataTableTools
             m_CodeGenerator = null;
         }
 
-        public int RawRowCount
-        {
-            get
-            {
-                return m_RawValues.Length;
-            }
-        }
+        public int RawRowCount => m_RawValues.Length;
 
-        public int RawColumnCount
-        {
-            get
-            {
-                return m_RawValues.Length > 0 ? m_RawValues[0].Length : 0;
-            }
-        }
+        public int RawColumnCount => m_RawValues.Length > 0 ? m_RawValues[0].Length : 0;
 
-        public int StringCount
-        {
-            get
-            {
-                return m_Strings.Length;
-            }
-        }
+        public int StringCount => m_Strings.Length;
 
-        public int ContentStartRow
-        {
-            get
-            {
-                return m_ContentStartRow;
-            }
-        }
+        public int ContentStartRow { get; }
 
-        public int IdColumn
-        {
-            get
-            {
-                return m_IdColumn;
-            }
-        }
+        public int IdColumn { get; }
 
         public bool IsIdColumn(int rawColumn)
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_DataProcessor[rawColumn].IsId;
@@ -236,7 +202,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawRow < 0 || rawRow >= RawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw row '{0}' is out of range.", rawRow));
+                throw new FrameworkException(Utility.Text.Format("Raw row '{0}' is out of range.", rawRow));
             }
 
             return GetValue(rawRow, 0).StartsWith(CommentLineSeparator, StringComparison.Ordinal);
@@ -246,7 +212,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return string.IsNullOrEmpty(GetName(rawColumn)) || m_DataProcessor[rawColumn].IsComment;
@@ -256,7 +222,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             if (IsIdColumn(rawColumn))
@@ -271,7 +237,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_DataProcessor[rawColumn].IsSystem;
@@ -281,7 +247,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_DataProcessor[rawColumn].Type;
@@ -291,7 +257,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_DataProcessor[rawColumn].LanguageKeyword;
@@ -301,7 +267,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_DefaultValueRow != null ? m_DefaultValueRow[rawColumn] : null;
@@ -311,7 +277,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_CommentRow != null ? m_CommentRow[rawColumn] : null;
@@ -321,12 +287,12 @@ namespace StarForce.Editor.DataTableTools
         {
             if (rawRow < 0 || rawRow >= RawRowCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw row '{0}' is out of range.", rawRow));
+                throw new FrameworkException(Utility.Text.Format("Raw row '{0}' is out of range.", rawRow));
             }
 
             if (rawColumn < 0 || rawColumn >= RawColumnCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
+                throw new FrameworkException(Utility.Text.Format("Raw column '{0}' is out of range.", rawColumn));
             }
 
             return m_RawValues[rawRow][rawColumn];
@@ -336,7 +302,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (index < 0 || index >= StringCount)
             {
-                throw new GameFrameworkException(Utility.Text.Format("String index '{0}' is out of range.", index));
+                throw new FrameworkException(Utility.Text.Format("String index '{0}' is out of range.", index));
             }
 
             return m_Strings[index];
@@ -359,7 +325,7 @@ namespace StarForce.Editor.DataTableTools
         {
             if (string.IsNullOrEmpty(outputFileName))
             {
-                throw new GameFrameworkException("Output file name is invalid.");
+                throw new FrameworkException("Output file name is invalid.");
             }
 
             try
@@ -416,12 +382,12 @@ namespace StarForce.Editor.DataTableTools
         {
             if (string.IsNullOrEmpty(m_CodeTemplate))
             {
-                throw new GameFrameworkException("You must set code template first.");
+                throw new FrameworkException("You must set code template first.");
             }
 
             if (string.IsNullOrEmpty(outputFileName))
             {
-                throw new GameFrameworkException("Output file name is invalid.");
+                throw new FrameworkException("Output file name is invalid.");
             }
 
             try

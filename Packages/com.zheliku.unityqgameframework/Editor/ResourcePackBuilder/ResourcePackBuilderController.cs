@@ -1,25 +1,23 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Resource;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed class ResourcePackBuilderController
     {
-        private const string DefaultResourcePackName = "GameFrameworkResourcePack";
+        private const string DefaultResourcePackName = "FrameworkResourcePack";
         private const string DefaultExtension = "dat";
         private const string NoneOptionName = "<None>";
         private static readonly string[] EmptyStringArray = new string[0];
@@ -32,7 +30,7 @@ namespace UnityGameFramework.Editor.ResourceTools
 
         public ResourcePackBuilderController()
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "GameFramework/Configs/ResourceBuilder.xml"));
+            m_ConfigurationPath = Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.xml"));
 
             m_UpdatableVersionListSerializer = new UpdatableVersionListSerializer();
             m_UpdatableVersionListSerializer.RegisterDeserializeCallback(0, BuiltinVersionListSerializer.UpdatableVersionListDeserializeCallback_V0);
@@ -53,93 +51,29 @@ namespace UnityGameFramework.Editor.ResourceTools
             CompressionHelperTypeName = string.Empty;
         }
 
-        public string ProductName
-        {
-            get
-            {
-                return PlayerSettings.productName;
-            }
-        }
+        public string ProductName => PlayerSettings.productName;
 
-        public string CompanyName
-        {
-            get
-            {
-                return PlayerSettings.companyName;
-            }
-        }
+        public string CompanyName => PlayerSettings.companyName;
 
-        public string GameIdentifier
-        {
-            get
-            {
-#if UNITY_5_6_OR_NEWER
-                return PlayerSettings.applicationIdentifier;
-#else
-                return PlayerSettings.bundleIdentifier;
-#endif
-            }
-        }
+        public string GameIdentifier => PlayerSettings.applicationIdentifier;
 
-        public string GameFrameworkVersion
-        {
-            get
-            {
-                return GameFramework.Version.GameFrameworkVersion;
-            }
-        }
+        public string FrameworkVersion => UnityQGameFramework.Core.Version.FrameworkVersion;
 
-        public string UnityVersion
-        {
-            get
-            {
-                return Application.unityVersion;
-            }
-        }
+        public string UnityVersion => Application.unityVersion;
 
-        public string ApplicableGameVersion
-        {
-            get
-            {
-                return Application.version;
-            }
-        }
+        public string ApplicableGameVersion => Application.version;
 
-        public string WorkingDirectory
-        {
-            get;
-            set;
-        }
+        public string WorkingDirectory { get; set; }
 
-        public Platform Platform
-        {
-            get;
-            set;
-        }
+        public Platform Platform { get; set; }
 
-        public string CompressionHelperTypeName
-        {
-            get;
-            set;
-        }
+        public string CompressionHelperTypeName { get; set; }
 
-        public bool BackupDiff
-        {
-            get;
-            set;
-        }
+        public bool BackupDiff { get; set; }
 
-        public bool BackupVersion
-        {
-            get;
-            set;
-        }
+        public bool BackupVersion { get; set; }
 
-        public int LengthLimit
-        {
-            get;
-            set;
-        }
+        public int LengthLimit { get; set; }
 
         public bool IsValidWorkingDirectory
         {
@@ -198,13 +132,13 @@ namespace UnityGameFramework.Editor.ResourceTools
             }
         }
 
-        public event GameFrameworkAction<int> OnBuildResourcePacksStarted = null;
+        public event FrameworkAction<int> OnBuildResourcePacksStarted = null;
 
-        public event GameFrameworkAction<int, int> OnBuildResourcePacksCompleted = null;
+        public event FrameworkAction<int, int> OnBuildResourcePacksCompleted = null;
 
-        public event GameFrameworkAction<int, int, string, string> OnBuildResourcePackSuccess = null;
+        public event FrameworkAction<int, int, string, string> OnBuildResourcePackSuccess = null;
 
-        public event GameFrameworkAction<int, int, string, string> OnBuildResourcePackFailure = null;
+        public event FrameworkAction<int, int, string, string> OnBuildResourcePackFailure = null;
 
         public bool Load()
         {
@@ -217,7 +151,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityGameFramework");
+                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
                 XmlNode xmlEditor = xmlRoot.SelectSingleNode("ResourceBuilder");
                 XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
 

@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +11,7 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed class ResourceEditorController
     {
@@ -24,7 +22,6 @@ namespace UnityGameFramework.Editor.ResourceTools
         private readonly List<string> m_SourceAssetSearchPaths;
         private readonly List<string> m_SourceAssetSearchRelativePaths;
         private readonly Dictionary<string, SourceAsset> m_SourceAssets;
-        private SourceFolder m_SourceAssetRoot;
         private string m_SourceAssetRootPath;
         private string m_SourceAssetUnionTypeFilter;
         private string m_SourceAssetUnionLabelFilter;
@@ -34,7 +31,7 @@ namespace UnityGameFramework.Editor.ResourceTools
 
         public ResourceEditorController()
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceEditorConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "GameFramework/Configs/ResourceEditor.xml"));
+            m_ConfigurationPath = Type.GetConfigurationPath<ResourceEditorConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceEditor.xml"));
             m_ResourceCollection = new ResourceCollection();
             m_ResourceCollection.OnLoadingResource += delegate (int index, int count)
             {
@@ -63,7 +60,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             m_SourceAssetSearchPaths = new List<string>();
             m_SourceAssetSearchRelativePaths = new List<string>();
             m_SourceAssets = new Dictionary<string, SourceAsset>(StringComparer.Ordinal);
-            m_SourceAssetRoot = null;
+            SourceAssetRoot = null;
             m_SourceAssetRootPath = null;
             m_SourceAssetUnionTypeFilter = null;
             m_SourceAssetUnionLabelFilter = null;
@@ -74,29 +71,11 @@ namespace UnityGameFramework.Editor.ResourceTools
             SourceAssetRootPath = DefaultSourceAssetRootPath;
         }
 
-        public int ResourceCount
-        {
-            get
-            {
-                return m_ResourceCollection.ResourceCount;
-            }
-        }
+        public int ResourceCount => m_ResourceCollection.ResourceCount;
 
-        public int AssetCount
-        {
-            get
-            {
-                return m_ResourceCollection.AssetCount;
-            }
-        }
+        public int AssetCount => m_ResourceCollection.AssetCount;
 
-        public SourceFolder SourceAssetRoot
-        {
-            get
-            {
-                return m_SourceAssetRoot;
-            }
-        }
+        public SourceFolder SourceAssetRoot { get; private set; }
 
         public string SourceAssetRootPath
         {
@@ -112,7 +91,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 }
 
                 m_SourceAssetRootPath = value.Replace('\\', '/');
-                m_SourceAssetRoot = new SourceFolder(m_SourceAssetRootPath, null);
+                SourceAssetRoot = new SourceFolder(m_SourceAssetRootPath, null);
                 RefreshSourceAssetSearchPaths();
             }
         }
@@ -202,15 +181,15 @@ namespace UnityGameFramework.Editor.ResourceTools
             }
         }
 
-        public event GameFrameworkAction<int, int> OnLoadingResource = null;
+        public event FrameworkAction<int, int> OnLoadingResource = null;
 
-        public event GameFrameworkAction<int, int> OnLoadingAsset = null;
+        public event FrameworkAction<int, int> OnLoadingAsset = null;
 
-        public event GameFrameworkAction OnLoadCompleted = null;
+        public event FrameworkAction OnLoadCompleted = null;
 
-        public event GameFrameworkAction<SourceAsset[]> OnAssetAssigned = null;
+        public event FrameworkAction<SourceAsset[]> OnAssetAssigned = null;
 
-        public event GameFrameworkAction<SourceAsset[]> OnAssetUnassigned = null;
+        public event FrameworkAction<SourceAsset[]> OnAssetUnassigned = null;
 
         public bool Load()
         {
@@ -223,7 +202,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityGameFramework");
+                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
                 XmlNode xmlEditor = xmlRoot.SelectSingleNode("ResourceEditor");
                 XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
 
@@ -300,7 +279,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityGameFramework");
+                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
                 xmlDocument.AppendChild(xmlRoot);
 
                 XmlElement xmlEditor = xmlDocument.CreateElement("ResourceEditor");
@@ -542,7 +521,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         public void ScanSourceAssets()
         {
             m_SourceAssets.Clear();
-            m_SourceAssetRoot.Clear();
+            SourceAssetRoot.Clear();
 
             string[] sourceAssetSearchPaths = m_SourceAssetSearchPaths.ToArray();
             HashSet<string> tempGuids = new HashSet<string>();
@@ -563,7 +542,7 @@ namespace UnityGameFramework.Editor.ResourceTools
 
                 string assetPath = fullPath.Substring(SourceAssetRootPath.Length + 1);
                 string[] splitedPath = assetPath.Split('/');
-                SourceFolder folder = m_SourceAssetRoot;
+                SourceFolder folder = SourceAssetRoot;
                 for (int i = 0; i < splitedPath.Length - 1; i++)
                 {
                     SourceFolder subFolder = folder.GetFolder(splitedPath[i]);

@@ -1,15 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -190,30 +188,15 @@ namespace StarForce
         [StructLayout(LayoutKind.Auto)]
         private struct CampPair
         {
-            private readonly CampType m_First;
-            private readonly CampType m_Second;
-
             public CampPair(CampType first, CampType second)
             {
-                m_First = first;
-                m_Second = second;
+                First = first;
+                Second = second;
             }
 
-            public CampType First
-            {
-                get
-                {
-                    return m_First;
-                }
-            }
+            public CampType First { get; }
 
-            public CampType Second
-            {
-                get
-                {
-                    return m_Second;
-                }
-            }
+            public CampType Second { get; }
         }
     }
 }

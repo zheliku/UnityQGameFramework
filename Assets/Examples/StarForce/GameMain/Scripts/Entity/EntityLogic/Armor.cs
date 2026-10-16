@@ -1,13 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -21,20 +19,12 @@ namespace StarForce
         [SerializeField]
         private ArmorData m_ArmorData = null;
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnInit(object userData)
-#else
-        protected internal override void OnInit(object userData)
-#endif
         {
             base.OnInit(userData);
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnShow(object userData)
-#else
-        protected internal override void OnShow(object userData)
-#endif
         {
             base.OnShow(userData);
 
@@ -48,11 +38,7 @@ namespace StarForce
             GameEntry.Entity.AttachEntity(Entity, m_ArmorData.OwnerId, AttachPoint);
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnAttachTo(EntityLogic parentEntity, Transform parentTransform, object userData)
-#else
-        protected internal override void OnAttachTo(EntityLogic parentEntity, Transform parentTransform, object userData)
-#endif
         {
             base.OnAttachTo(parentEntity, parentTransform, userData);
 

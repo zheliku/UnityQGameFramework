@@ -1,18 +1,16 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.ObjectPool;
+using UnityQGameFramework.Core.ObjectPool;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
-    public class HPBarComponent : GameFrameworkComponent
+    public class HPBarComponent : FrameworkComponent
     {
         [SerializeField]
         private HPBarItem m_HPBarItemTemplate = null;

@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataTable;
+using UnityQGameFramework.Core.DataTable;
 using System;
 using UnityEngine;
 
@@ -49,56 +47,26 @@ namespace StarForce
         /// <summary>
         /// 攻击力。
         /// </summary>
-        public int Attack
-        {
-            get
-            {
-                return m_Attack;
-            }
-        }
+        public int Attack => m_Attack;
 
         /// <summary>
         /// 攻击间隔。
         /// </summary>
-        public float AttackInterval
-        {
-            get
-            {
-                return m_AttackInterval;
-            }
-        }
+        public float AttackInterval => m_AttackInterval;
 
         /// <summary>
         /// 子弹编号。
         /// </summary>
-        public int BulletId
-        {
-            get
-            {
-                return m_BulletId;
-            }
-        }
+        public int BulletId => m_BulletId;
 
         /// <summary>
         /// 子弹速度。
         /// </summary>
-        public float BulletSpeed
-        {
-            get
-            {
-                return m_BulletSpeed;
-            }
-        }
+        public float BulletSpeed => m_BulletSpeed;
 
         /// <summary>
         /// 子弹声音编号。
         /// </summary>
-        public int BulletSoundId
-        {
-            get
-            {
-                return m_BulletSoundId;
-            }
-        }
+        public int BulletSoundId => m_BulletSoundId;
     }
 }

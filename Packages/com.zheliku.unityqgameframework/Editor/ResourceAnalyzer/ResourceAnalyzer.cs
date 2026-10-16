@@ -1,16 +1,14 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源分析器。
@@ -47,7 +45,7 @@ namespace UnityGameFramework.Editor.ResourceTools
         private string[][] m_CachedCircularDependencyDatas = null;
         private Vector2 m_CircularDependencyScroll = Vector2.zero;
 
-        [MenuItem("Game Framework/Resource Tools/Resource Analyzer", false, 42)]
+        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Analyzer", false, 42)]
         private static void Open()
         {
             ResourceAnalyzer window = GetWindow<ResourceAnalyzer>("Resource Analyzer", true);

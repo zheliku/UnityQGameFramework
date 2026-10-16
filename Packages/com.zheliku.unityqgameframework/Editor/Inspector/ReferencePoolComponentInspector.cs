@@ -1,23 +1,21 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(ReferencePoolComponent))]
-    internal sealed class ReferencePoolComponentInspector : GameFrameworkInspector
+    internal sealed class ReferencePoolComponentInspector : FrameworkInspector
     {
         private readonly Dictionary<string, List<ReferencePoolInfo>> m_ReferencePoolInfos = new Dictionary<string, List<ReferencePoolInfo>>(StringComparer.Ordinal);
         private readonly HashSet<string> m_OpenedItems = new HashSet<string>();

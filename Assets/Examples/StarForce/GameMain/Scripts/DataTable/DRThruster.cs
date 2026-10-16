@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
 // 生成时间：2026-10-16 17:33:14.020
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -28,22 +26,12 @@ namespace StarForce
         /// <summary>
         /// 获取推进器编号。
         /// </summary>
-        public override int Id
-        {
-            get
-            {
-                return m_Id;
-            }
-        }
+        public override int Id => m_Id;
 
         /// <summary>
         /// 获取。
         /// </summary>
-        public float Speed
-        {
-            get;
-            private set;
-        }
+        public float Speed { get; private set; }
 
         public override bool ParseDataRow(string dataRowString, object userData)
         {

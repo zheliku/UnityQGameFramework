@@ -1,34 +1,21 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Event;
+using UnityQGameFramework.Core.Event;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
     public abstract class GameBase
     {
-        public abstract GameMode GameMode
-        {
-            get;
-        }
+        public abstract GameMode GameMode { get; }
 
-        protected ScrollableBackground SceneBackground
-        {
-            get;
-            private set;
-        }
+        protected ScrollableBackground SceneBackground { get; private set; }
 
-        public bool GameOver
-        {
-            get;
-            protected set;
-        }
+        public bool GameOver { get; protected set; }
 
         private MyAircraft m_MyAircraft = null;
 

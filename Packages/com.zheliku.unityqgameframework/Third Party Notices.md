@@ -8,7 +8,7 @@ UnityQGameFramework 的框架源码沿用 MIT 许可；下列组件保留各自�
 - License: MIT.
 - Sources: https://github.com/EllanJiang/UnityGameFramework and https://github.com/EllanJiang/GameFramework.
 - Exact commits and mappings: [upstream.md](Documentation~/upstream.md).
-- Full license texts: [UnityGameFramework](Documentation~/Licenses/UnityGameFramework-MIT.md), [GameFramework](Documentation~/Licenses/GameFramework-MIT.md), and [LICENSE.md](LICENSE.md).
+- Full license texts: [UnityGameFramework](Documentation~/Licenses/UnityGameFramework-MIT.md), [GameFramework](Documentation~/Licenses/Framework-MIT.md), and [LICENSE.md](LICENSE.md).
 
 ## SharpZipLib 0.86.0.518
 

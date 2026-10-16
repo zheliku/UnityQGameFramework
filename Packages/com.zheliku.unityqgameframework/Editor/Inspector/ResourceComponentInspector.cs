@@ -1,23 +1,21 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(ResourceComponent))]
-    internal sealed class ResourceComponentInspector : GameFrameworkInspector
+    internal sealed class ResourceComponentInspector : FrameworkInspector
     {
         private static readonly string[] ResourceModeNames = new string[] { "Package", "Updatable", "Updatable While Playing" };
 

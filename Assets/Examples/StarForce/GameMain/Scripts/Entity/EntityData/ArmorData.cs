@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataTable;
+using UnityQGameFramework.Core.DataTable;
 using System;
 using UnityEngine;
 
@@ -37,23 +35,11 @@ namespace StarForce
         /// <summary>
         /// 最大生命。
         /// </summary>
-        public int MaxHP
-        {
-            get
-            {
-                return m_MaxHP;
-            }
-        }
+        public int MaxHP => m_MaxHP;
 
         /// <summary>
         /// 防御力。
         /// </summary>
-        public int Defense
-        {
-            get
-            {
-                return m_Defense;
-            }
-        }
+        public int Defense => m_Defense;
     }
 }

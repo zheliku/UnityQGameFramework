@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataTable;
+using UnityQGameFramework.Core.DataTable;
 using System;
 using UnityEngine;
 
@@ -50,52 +48,16 @@ namespace StarForce
             m_DeadSoundId = drAsteroid.DeadSoundId;
         }
 
-        public override int MaxHP
-        {
-            get
-            {
-                return m_MaxHP;
-            }
-        }
+        public override int MaxHP => m_MaxHP;
 
-        public int Attack
-        {
-            get
-            {
-                return m_Attack;
-            }
-        }
+        public int Attack => m_Attack;
 
-        public float Speed
-        {
-            get
-            {
-                return m_Speed;
-            }
-        }
+        public float Speed => m_Speed;
 
-        public float AngularSpeed
-        {
-            get
-            {
-                return m_AngularSpeed;
-            }
-        }
+        public float AngularSpeed => m_AngularSpeed;
 
-        public int DeadEffectId
-        {
-            get
-            {
-                return m_DeadEffectId;
-            }
-        }
+        public int DeadEffectId => m_DeadEffectId;
 
-        public int DeadSoundId
-        {
-            get
-            {
-                return m_DeadSoundId;
-            }
-        }
+        public int DeadSoundId => m_DeadSoundId;
     }
 }

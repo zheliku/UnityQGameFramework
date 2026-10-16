@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<UnityGameFramework>
+<UnityQGameFramework>
   <ResourceCollection>
     <Resources>
       <Resource Name="Configs" FileSystem="GameData" LoadType="0" Packed="True" ResourceGroups="Base" />
@@ -155,4 +155,4 @@
       <Asset Guid="fedd25a3c60e7ae499fc6efab9ee180b" ResourceName="Entities" />
     </Assets>
   </ResourceCollection>
-</UnityGameFramework>
+</UnityQGameFramework>

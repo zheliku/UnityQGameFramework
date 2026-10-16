@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Debugger;
-using GameFramework.Localization;
+using UnityQGameFramework.Core.Debugger;
+using UnityQGameFramework.Core.Localization;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -38,7 +36,7 @@ namespace StarForce
             if (m_NeedRestart)
             {
                 m_NeedRestart = false;
-                UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
+                UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
             }
         }
 

@@ -1,17 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
-    public class BuiltinDataComponent : GameFrameworkComponent
+    public class BuiltinDataComponent : FrameworkComponent
     {
         [SerializeField]
         private TextAsset m_BuildInfoTextAsset = null;
@@ -22,23 +20,9 @@ namespace StarForce
         [SerializeField]
         private UpdateResourceForm m_UpdateResourceFormTemplate = null;
 
-        private BuildInfo m_BuildInfo = null;
+        public BuildInfo BuildInfo { get; private set; }
 
-        public BuildInfo BuildInfo
-        {
-            get
-            {
-                return m_BuildInfo;
-            }
-        }
-
-        public UpdateResourceForm UpdateResourceFormTemplate
-        {
-            get
-            {
-                return m_UpdateResourceFormTemplate;
-            }
-        }
+        public UpdateResourceForm UpdateResourceFormTemplate => m_UpdateResourceFormTemplate;
 
         public void InitBuildInfo()
         {
@@ -48,8 +32,8 @@ namespace StarForce
                 return;
             }
 
-            m_BuildInfo = Utility.Json.ToObject<BuildInfo>(m_BuildInfoTextAsset.text);
-            if (m_BuildInfo == null)
+            BuildInfo = Utility.Json.ToObject<BuildInfo>(m_BuildInfoTextAsset.text);
+            if (BuildInfo == null)
             {
                 Log.Warning("Parse build info failure.");
                 return;

@@ -1,15 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源同步工具。
@@ -20,15 +18,11 @@ namespace UnityGameFramework.Editor.ResourceTools
         private const float ButtonSpace = 5f;
         private ResourceSyncToolsController m_Controller = null;
 
-        [MenuItem("Game Framework/Resource Tools/Resource Sync Tools", false, 44)]
+        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Sync Tools", false, 44)]
         private static void Open()
         {
             ResourceSyncTools window = GetWindow<ResourceSyncTools>("Resource Sync Tools", true);
-#if UNITY_2019_3_OR_NEWER
             window.minSize = new Vector2(400, 195f);
-#else
-            window.minSize = new Vector2(400, 205f);
-#endif
         }
 
         private void OnEnable()

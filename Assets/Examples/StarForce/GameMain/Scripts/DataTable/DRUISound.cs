@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
 // 生成时间：2026-10-16 17:33:14.023
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -28,40 +26,22 @@ namespace StarForce
         /// <summary>
         /// 获取声音编号。
         /// </summary>
-        public override int Id
-        {
-            get
-            {
-                return m_Id;
-            }
-        }
+        public override int Id => m_Id;
 
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string AssetName
-        {
-            get;
-            private set;
-        }
+        public string AssetName { get; private set; }
 
         /// <summary>
         /// 获取优先级（默认0，128最高，-128最低）。
         /// </summary>
-        public int Priority
-        {
-            get;
-            private set;
-        }
+        public int Priority { get; private set; }
 
         /// <summary>
         /// 获取音量（0~1）。
         /// </summary>
-        public float Volume
-        {
-            get;
-            private set;
-        }
+        public float Volume { get; private set; }
 
         public override bool ParseDataRow(string dataRowString, object userData)
         {

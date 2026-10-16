@@ -1,19 +1,17 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.FileSystem;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.FileSystem;
 using UnityEditor;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(FileSystemComponent))]
-    internal sealed class FileSystemComponentInspector : GameFrameworkInspector
+    internal sealed class FileSystemComponentInspector : FrameworkInspector
     {
         private HelperInfo<FileSystemHelperBase> m_FileSystemHelperInfo = new HelperInfo<FileSystemHelperBase>("FileSystem");
 

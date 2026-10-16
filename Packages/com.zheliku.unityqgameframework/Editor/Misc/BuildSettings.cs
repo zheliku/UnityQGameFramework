@@ -1,18 +1,16 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     /// <summary>
     /// 构建配置相关的实用函数。
@@ -25,7 +23,7 @@ namespace UnityGameFramework.Editor
 
         static BuildSettings()
         {
-            s_ConfigurationPath = Type.GetConfigurationPath<BuildSettingsConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "GameFramework/Configs/BuildSettings.xml"));
+            s_ConfigurationPath = Type.GetConfigurationPath<BuildSettingsConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/BuildSettings.xml"));
             s_DefaultSceneNames.Clear();
             s_SearchScenePaths.Clear();
 
@@ -38,7 +36,7 @@ namespace UnityGameFramework.Editor
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(s_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityGameFramework");
+                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
                 XmlNode xmlBuildSettings = xmlRoot.SelectSingleNode("BuildSettings");
                 XmlNode xmlDefaultScenes = xmlBuildSettings.SelectSingleNode("DefaultScenes");
                 XmlNode xmlSearchScenePaths = xmlBuildSettings.SelectSingleNode("SearchScenePaths");
@@ -80,7 +78,7 @@ namespace UnityGameFramework.Editor
         /// <summary>
         /// 将构建场景设置为默认。
         /// </summary>
-        [MenuItem("Game Framework/Scenes in Build Settings/Default Scenes", false, 20)]
+        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/Default Scenes", false, 20)]
         public static void DefaultScenes()
         {
             HashSet<string> sceneNames = new HashSet<string>();
@@ -103,7 +101,7 @@ namespace UnityGameFramework.Editor
         /// <summary>
         /// 将构建场景设置为所有。
         /// </summary>
-        [MenuItem("Game Framework/Scenes in Build Settings/All Scenes", false, 21)]
+        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/All Scenes", false, 21)]
         public static void AllScenes()
         {
             HashSet<string> sceneNames = new HashSet<string>();

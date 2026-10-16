@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Network;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.Network;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(NetworkComponent))]
-    internal sealed class NetworkComponentInspector : GameFrameworkInspector
+    internal sealed class NetworkComponentInspector : FrameworkInspector
     {
         public override void OnInspectorGUI()
         {

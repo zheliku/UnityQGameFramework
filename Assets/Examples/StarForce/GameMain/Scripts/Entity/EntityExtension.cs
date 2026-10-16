@@ -1,13 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataTable;
+using UnityQGameFramework.Core.DataTable;
 using System;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -21,7 +19,7 @@ namespace StarForce
 
         public static Entity GetGameEntity(this EntityComponent entityComponent, int entityId)
         {
-            UnityGameFramework.Runtime.Entity entity = entityComponent.GetEntity(entityId);
+            UnityQGameFramework.Runtime.Entity entity = entityComponent.GetEntity(entityId);
             if (entity == null)
             {
                 return null;

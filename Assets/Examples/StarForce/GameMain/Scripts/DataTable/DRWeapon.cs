@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
 // 生成时间：2026-10-16 17:33:14.023
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -28,58 +26,32 @@ namespace StarForce
         /// <summary>
         /// 获取武器编号。
         /// </summary>
-        public override int Id
-        {
-            get
-            {
-                return m_Id;
-            }
-        }
+        public override int Id => m_Id;
 
         /// <summary>
         /// 获取攻击力。
         /// </summary>
-        public int Attack
-        {
-            get;
-            private set;
-        }
+        public int Attack { get; private set; }
 
         /// <summary>
         /// 获取攻击间隔。
         /// </summary>
-        public float AttackInterval
-        {
-            get;
-            private set;
-        }
+        public float AttackInterval { get; private set; }
 
         /// <summary>
         /// 获取子弹编号。
         /// </summary>
-        public int BulletId
-        {
-            get;
-            private set;
-        }
+        public int BulletId { get; private set; }
 
         /// <summary>
         /// 获取子弹速度。
         /// </summary>
-        public float BulletSpeed
-        {
-            get;
-            private set;
-        }
+        public float BulletSpeed { get; private set; }
 
         /// <summary>
         /// 获取子弹声音编号。
         /// </summary>
-        public int BulletSoundId
-        {
-            get;
-            private set;
-        }
+        public int BulletSoundId { get; private set; }
 
         public override bool ParseDataRow(string dataRowString, object userData)
         {

@@ -1,94 +1,51 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed partial class ResourceBuilderController
     {
         private sealed class ResourceData
         {
-            private readonly string m_Name;
-            private readonly string m_Variant;
-            private readonly string m_FileSystem;
-            private readonly LoadType m_LoadType;
-            private readonly bool m_Packed;
             private readonly string[] m_ResourceGroups;
             private readonly List<AssetData> m_AssetDatas;
             private readonly List<ResourceCode> m_Codes;
 
             public ResourceData(string name, string variant, string fileSystem, LoadType loadType, bool packed, string[] resourceGroups)
             {
-                m_Name = name;
-                m_Variant = variant;
-                m_FileSystem = fileSystem;
-                m_LoadType = loadType;
-                m_Packed = packed;
+                Name = name;
+                Variant = variant;
+                FileSystem = fileSystem;
+                LoadType = loadType;
+                Packed = packed;
                 m_ResourceGroups = resourceGroups;
                 m_AssetDatas = new List<AssetData>();
                 m_Codes = new List<ResourceCode>();
             }
 
-            public string Name
-            {
-                get
-                {
-                    return m_Name;
-                }
-            }
+            public string Name { get; }
 
-            public string Variant
-            {
-                get
-                {
-                    return m_Variant;
-                }
-            }
+            public string Variant { get; }
 
-            public string FileSystem
-            {
-                get
-                {
-                    return m_FileSystem;
-                }
-            }
+            public string FileSystem { get; }
 
             public bool IsLoadFromBinary
             {
                 get
                 {
-                    return m_LoadType == LoadType.LoadFromBinary || m_LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || m_LoadType == LoadType.LoadFromBinaryAndDecrypt;
+                    return LoadType == LoadType.LoadFromBinary || LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || LoadType == LoadType.LoadFromBinaryAndDecrypt;
                 }
             }
 
-            public LoadType LoadType
-            {
-                get
-                {
-                    return m_LoadType;
-                }
-            }
+            public LoadType LoadType { get; }
 
-            public bool Packed
-            {
-                get
-                {
-                    return m_Packed;
-                }
-            }
+            public bool Packed { get; }
 
-            public int AssetCount
-            {
-                get
-                {
-                    return m_AssetDatas.Count;
-                }
-            }
+            public int AssetCount => m_AssetDatas.Count;
 
             public string[] GetResourceGroups()
             {

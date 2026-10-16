@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
 using UnityEditor;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     /// <summary>
     /// 资源。
@@ -21,25 +19,11 @@ namespace UnityGameFramework.Editor.ResourceTools
             Resource = resource;
         }
 
-        public string Guid
-        {
-            get;
-            private set;
-        }
+        public string Guid { get; private set; }
 
-        public string Name
-        {
-            get
-            {
-                return AssetDatabase.GUIDToAssetPath(Guid);
-            }
-        }
+        public string Name => AssetDatabase.GUIDToAssetPath(Guid);
 
-        public Resource Resource
-        {
-            get;
-            set;
-        }
+        public Resource Resource { get; set; }
 
         public int CompareTo(Asset asset)
         {

@@ -1,14 +1,14 @@
 {
   "name": "com.zheliku.unityqgameframework",
-  "version": "0.1.0-exp.1",
+  "version": "0.1.0-exp.2",
   "displayName": "UnityQGameFramework",
-  "description": "Unity 6 game framework based on UnityGameFramework, with QFramework-inspired architecture and a planned Luban workflow. Experimental development version; compilation verified on Unity 6000.3.24f1, runtime migration in progress.",
-  "unity": "6000.0",
+  "description": "Unity Q Game Framework foundation: modular C# core, Unity runtime components and editor tools for Unity 2022.3 LTS and Unity 6. Architecture integration and data workflow upgrades are planned separately.",
+  "unity": "2022.3",
   "keywords": [
     "game-framework",
     "unity6",
-    "architecture",
-    "luban"
+    "modular",
+    "upm"
   ],
   "license": "MIT",
   "author": {
@@ -27,6 +27,7 @@
     "com.unity.modules.audio": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0"
   }
 }

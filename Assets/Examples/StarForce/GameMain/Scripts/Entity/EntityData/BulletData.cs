@@ -1,8 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -34,36 +32,12 @@ namespace StarForce
             m_Speed = speed;
         }
 
-        public int OwnerId
-        {
-            get
-            {
-                return m_OwnerId;
-            }
-        }
+        public int OwnerId => m_OwnerId;
 
-        public CampType OwnerCamp
-        {
-            get
-            {
-                return m_OwnerCamp;
-            }
-        }
+        public CampType OwnerCamp => m_OwnerCamp;
 
-        public int Attack
-        {
-            get
-            {
-                return m_Attack;
-            }
-        }
+        public int Attack => m_Attack;
 
-        public float Speed
-        {
-            get
-            {
-                return m_Speed;
-            }
-        }
+        public float Speed => m_Speed;
     }
 }

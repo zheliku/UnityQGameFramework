@@ -1,14 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
@@ -33,35 +31,15 @@ namespace StarForce
         private Text[] m_OtherTexts = null;
 
         private int m_DialogMode = 1;
-        private bool m_PauseGame = false;
-        private object m_UserData = null;
-        private GameFrameworkAction<object> m_OnClickConfirm = null;
-        private GameFrameworkAction<object> m_OnClickCancel = null;
-        private GameFrameworkAction<object> m_OnClickOther = null;
+        private FrameworkAction<object> m_OnClickConfirm = null;
+        private FrameworkAction<object> m_OnClickCancel = null;
+        private FrameworkAction<object> m_OnClickOther = null;
 
-        public int DialogMode
-        {
-            get
-            {
-                return m_DialogMode;
-            }
-        }
+        public int DialogMode => m_DialogMode;
 
-        public bool PauseGame
-        {
-            get
-            {
-                return m_PauseGame;
-            }
-        }
+        public bool PauseGame { get; private set; }
 
-        public object UserData
-        {
-            get
-            {
-                return m_UserData;
-            }
-        }
+        public object UserData { get; private set; }
 
         public void OnConfirmButtonClick()
         {
@@ -69,7 +47,7 @@ namespace StarForce
 
             if (m_OnClickConfirm != null)
             {
-                m_OnClickConfirm(m_UserData);
+                m_OnClickConfirm(UserData);
             }
         }
 
@@ -79,7 +57,7 @@ namespace StarForce
 
             if (m_OnClickCancel != null)
             {
-                m_OnClickCancel(m_UserData);
+                m_OnClickCancel(UserData);
             }
         }
 
@@ -89,15 +67,11 @@ namespace StarForce
 
             if (m_OnClickOther != null)
             {
-                m_OnClickOther(m_UserData);
+                m_OnClickOther(UserData);
             }
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnOpen(object userData)
-#else
-        protected internal override void OnOpen(object userData)
-#endif
         {
             base.OnOpen(userData);
 
@@ -114,10 +88,10 @@ namespace StarForce
             m_TitleText.text = dialogParams.Title;
             m_MessageText.text = dialogParams.Message;
 
-            m_PauseGame = dialogParams.PauseGame;
+            PauseGame = dialogParams.PauseGame;
             RefreshPauseGame();
 
-            m_UserData = dialogParams.UserData;
+            UserData = dialogParams.UserData;
 
             RefreshConfirmText(dialogParams.ConfirmText);
             m_OnClickConfirm = dialogParams.OnClickConfirm;
@@ -129,13 +103,9 @@ namespace StarForce
             m_OnClickOther = dialogParams.OnClickOther;
         }
 
-#if UNITY_2017_3_OR_NEWER
         protected override void OnClose(bool isShutdown, object userData)
-#else
-        protected internal override void OnClose(bool isShutdown, object userData)
-#endif
         {
-            if (m_PauseGame)
+            if (PauseGame)
             {
                 GameEntry.Base.ResumeGame();
             }
@@ -143,8 +113,8 @@ namespace StarForce
             m_DialogMode = 1;
             m_TitleText.text = string.Empty;
             m_MessageText.text = string.Empty;
-            m_PauseGame = false;
-            m_UserData = null;
+            PauseGame = false;
+            UserData = null;
 
             RefreshConfirmText(string.Empty);
             m_OnClickConfirm = null;
@@ -168,7 +138,7 @@ namespace StarForce
 
         private void RefreshPauseGame()
         {
-            if (m_PauseGame)
+            if (PauseGame)
             {
                 GameEntry.Base.PauseGame();
             }

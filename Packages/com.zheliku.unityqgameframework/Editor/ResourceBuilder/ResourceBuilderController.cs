@@ -1,13 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.FileSystem;
-using GameFramework.Resource;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.FileSystem;
+using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,9 +13,9 @@ using System.Linq;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed partial class ResourceBuilderController
     {
@@ -41,7 +39,7 @@ namespace UnityGameFramework.Editor.ResourceTools
 
         public ResourceBuilderController()
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "GameFramework/Configs/ResourceBuilder.xml"));
+            m_ConfigurationPath = Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.xml"));
 
             m_ResourceCollection = new ResourceCollection();
             m_ResourceCollection.OnLoadingResource += delegate (int index, int count)
@@ -116,123 +114,39 @@ namespace UnityGameFramework.Editor.ResourceTools
             OutputPackageSelected = OutputFullSelected = OutputPackedSelected = true;
         }
 
-        public string ProductName
-        {
-            get
-            {
-                return PlayerSettings.productName;
-            }
-        }
+        public string ProductName => PlayerSettings.productName;
 
-        public string CompanyName
-        {
-            get
-            {
-                return PlayerSettings.companyName;
-            }
-        }
+        public string CompanyName => PlayerSettings.companyName;
 
-        public string GameIdentifier
-        {
-            get
-            {
-#if UNITY_5_6_OR_NEWER
-                return PlayerSettings.applicationIdentifier;
-#else
-                return PlayerSettings.bundleIdentifier;
-#endif
-            }
-        }
+        public string GameIdentifier => PlayerSettings.applicationIdentifier;
 
-        public string GameFrameworkVersion
-        {
-            get
-            {
-                return GameFramework.Version.GameFrameworkVersion;
-            }
-        }
+        public string FrameworkVersion => UnityQGameFramework.Core.Version.FrameworkVersion;
 
-        public string UnityVersion
-        {
-            get
-            {
-                return Application.unityVersion;
-            }
-        }
+        public string UnityVersion => Application.unityVersion;
 
-        public string ApplicableGameVersion
-        {
-            get
-            {
-                return Application.version;
-            }
-        }
+        public string ApplicableGameVersion => Application.version;
 
-        public int InternalResourceVersion
-        {
-            get;
-            set;
-        }
+        public int InternalResourceVersion { get; set; }
 
-        public Platform Platforms
-        {
-            get;
-            set;
-        }
+        public Platform Platforms { get; set; }
 
-        public AssetBundleCompressionType AssetBundleCompression
-        {
-            get;
-            set;
-        }
+        public AssetBundleCompressionType AssetBundleCompression { get; set; }
 
-        public string CompressionHelperTypeName
-        {
-            get;
-            set;
-        }
+        public string CompressionHelperTypeName { get; set; }
 
-        public bool AdditionalCompressionSelected
-        {
-            get;
-            set;
-        }
+        public bool AdditionalCompressionSelected { get; set; }
 
-        public bool ForceRebuildAssetBundleSelected
-        {
-            get;
-            set;
-        }
+        public bool ForceRebuildAssetBundleSelected { get; set; }
 
-        public string BuildEventHandlerTypeName
-        {
-            get;
-            set;
-        }
+        public string BuildEventHandlerTypeName { get; set; }
 
-        public string OutputDirectory
-        {
-            get;
-            set;
-        }
+        public string OutputDirectory { get; set; }
 
-        public bool OutputPackageSelected
-        {
-            get;
-            set;
-        }
+        public bool OutputPackageSelected { get; set; }
 
-        public bool OutputFullSelected
-        {
-            get;
-            set;
-        }
+        public bool OutputFullSelected { get; set; }
 
-        public bool OutputPackedSelected
-        {
-            get;
-            set;
-        }
+        public bool OutputPackedSelected { get; set; }
 
         public bool IsValidOutputDirectory
         {
@@ -317,23 +231,23 @@ namespace UnityGameFramework.Editor.ResourceTools
             }
         }
 
-        public event GameFrameworkAction<int, int> OnLoadingResource = null;
+        public event FrameworkAction<int, int> OnLoadingResource = null;
 
-        public event GameFrameworkAction<int, int> OnLoadingAsset = null;
+        public event FrameworkAction<int, int> OnLoadingAsset = null;
 
-        public event GameFrameworkAction OnLoadCompleted = null;
+        public event FrameworkAction OnLoadCompleted = null;
 
-        public event GameFrameworkAction<int, int> OnAnalyzingAsset = null;
+        public event FrameworkAction<int, int> OnAnalyzingAsset = null;
 
-        public event GameFrameworkAction OnAnalyzeCompleted = null;
+        public event FrameworkAction OnAnalyzeCompleted = null;
 
-        public event GameFrameworkFunc<string, float, bool> ProcessingAssetBundle = null;
+        public event FrameworkFunc<string, float, bool> ProcessingAssetBundle = null;
 
-        public event GameFrameworkFunc<string, float, bool> ProcessingBinary = null;
+        public event FrameworkFunc<string, float, bool> ProcessingBinary = null;
 
-        public event GameFrameworkAction<Platform> ProcessResourceComplete = null;
+        public event FrameworkAction<Platform> ProcessResourceComplete = null;
 
-        public event GameFrameworkAction<string> BuildResourceError = null;
+        public event FrameworkAction<string> BuildResourceError = null;
 
         public bool Load()
         {
@@ -346,7 +260,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityGameFramework");
+                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
                 XmlNode xmlEditor = xmlRoot.SelectSingleNode("ResourceBuilder");
                 XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
 
@@ -421,7 +335,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityGameFramework");
+                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
                 xmlDocument.AppendChild(xmlRoot);
 
                 XmlElement xmlBuilder = xmlDocument.CreateElement("ResourceBuilder");
@@ -602,7 +516,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             Directory.CreateDirectory(BuildReportPath);
 
             BuildAssetBundleOptions buildAssetBundleOptions = GetBuildAssetBundleOptions();
-            m_BuildReport.Initialize(BuildReportPath, ProductName, CompanyName, GameIdentifier, GameFrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
+            m_BuildReport.Initialize(BuildReportPath, ProductName, CompanyName, GameIdentifier, FrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
                 Platforms, AssetBundleCompression, CompressionHelperTypeName, AdditionalCompressionSelected, ForceRebuildAssetBundleSelected, BuildEventHandlerTypeName, OutputDirectory, buildAssetBundleOptions, m_ResourceDatas);
 
             try
@@ -612,7 +526,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 if (m_BuildEventHandler != null)
                 {
                     m_BuildReport.LogInfo("Execute build event handler 'OnPreprocessAllPlatforms'...");
-                    m_BuildEventHandler.OnPreprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, GameFrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
+                    m_BuildEventHandler.OnPreprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, FrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
                         Platforms, AssetBundleCompression, CompressionHelperTypeName, AdditionalCompressionSelected, ForceRebuildAssetBundleSelected, BuildEventHandlerTypeName, OutputDirectory, buildAssetBundleOptions,
                         WorkingPath, OutputPackageSelected, OutputPackagePath, OutputFullSelected, OutputFullPath, OutputPackedSelected, OutputPackedPath, BuildReportPath);
                 }
@@ -625,7 +539,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                     if (m_BuildEventHandler != null)
                     {
                         m_BuildReport.LogInfo("Execute build event handler 'OnPostprocessAllPlatforms'...");
-                        m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, GameFrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
+                        m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, FrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
                             Platforms, AssetBundleCompression, CompressionHelperTypeName, AdditionalCompressionSelected, ForceRebuildAssetBundleSelected, BuildEventHandlerTypeName, OutputDirectory, buildAssetBundleOptions,
                             WorkingPath, OutputPackageSelected, OutputPackagePath, OutputFullSelected, OutputFullPath, OutputPackedSelected, OutputPackedPath, BuildReportPath);
                     }
@@ -641,7 +555,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                     if (m_BuildEventHandler != null)
                     {
                         m_BuildReport.LogInfo("Execute build event handler 'OnPostprocessAllPlatforms'...");
-                        m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, GameFrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
+                        m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, FrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
                             Platforms, AssetBundleCompression, CompressionHelperTypeName, AdditionalCompressionSelected, ForceRebuildAssetBundleSelected, BuildEventHandlerTypeName, OutputDirectory, buildAssetBundleOptions,
                             WorkingPath, OutputPackageSelected, OutputPackagePath, OutputFullSelected, OutputFullPath, OutputPackedSelected, OutputPackedPath, BuildReportPath);
                     }
@@ -668,7 +582,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                     if (m_BuildEventHandler != null)
                     {
                         m_BuildReport.LogInfo("Execute build event handler 'OnPostprocessAllPlatforms'...");
-                        m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, GameFrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
+                        m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, FrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
                             Platforms, AssetBundleCompression, CompressionHelperTypeName, AdditionalCompressionSelected, ForceRebuildAssetBundleSelected, BuildEventHandlerTypeName, OutputDirectory, buildAssetBundleOptions,
                             WorkingPath, OutputPackageSelected, OutputPackagePath, OutputFullSelected, OutputFullPath, OutputPackedSelected, OutputPackedPath, BuildReportPath);
                     }
@@ -722,7 +636,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 if (m_BuildEventHandler != null)
                 {
                     m_BuildReport.LogInfo("Execute build event handler 'OnPostprocessAllPlatforms'...");
-                    m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, GameFrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
+                    m_BuildEventHandler.OnPostprocessAllPlatforms(ProductName, CompanyName, GameIdentifier, FrameworkVersion, UnityVersion, ApplicableGameVersion, InternalResourceVersion,
                         Platforms, AssetBundleCompression, CompressionHelperTypeName, AdditionalCompressionSelected, ForceRebuildAssetBundleSelected, BuildEventHandlerTypeName, OutputDirectory, buildAssetBundleOptions,
                         WorkingPath, OutputPackageSelected, OutputPackagePath, OutputFullSelected, OutputFullPath, OutputPackedSelected, OutputPackedPath, BuildReportPath);
                 }
@@ -750,7 +664,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 m_OutputPackedFileSystems.Clear();
                 if (m_FileSystemManager != null)
                 {
-                    GameFrameworkEntry.Shutdown();
+                    FrameworkEntry.Shutdown();
                     m_FileSystemManager = null;
                 }
             }
@@ -1082,7 +996,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 if (!serializer.Serialize(fileStream, versionList))
                 {
-                    throw new GameFrameworkException("Serialize package version list failure.");
+                    throw new FrameworkException("Serialize package version list failure.");
                 }
             }
         }
@@ -1131,7 +1045,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 if (!serializer.Serialize(fileStream, versionList))
                 {
-                    throw new GameFrameworkException("Serialize updatable version list failure.");
+                    throw new FrameworkException("Serialize updatable version list failure.");
                 }
             }
 
@@ -1179,7 +1093,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             {
                 if (!serializer.Serialize(fileStream, versionList))
                 {
-                    throw new GameFrameworkException("Serialize read-only version list failure.");
+                    throw new FrameworkException("Serialize read-only version list failure.");
                 }
             }
         }
@@ -1215,7 +1129,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 assetIndexes[i] = Array.BinarySearch(assets, m_ResourceCollection.GetAsset(assetGuids[i]));
                 if (assetIndexes[i] < 0)
                 {
-                    throw new GameFrameworkException("Asset is invalid.");
+                    throw new FrameworkException("Asset is invalid.");
                 }
             }
 
@@ -1314,7 +1228,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             string[] fileSystemNames = GetFileSystemNames(resourceDatas);
             if (fileSystemNames.Length > 0 && m_FileSystemManager == null)
             {
-                m_FileSystemManager = GameFrameworkEntry.GetModule<IFileSystemManager>();
+                m_FileSystemManager = FrameworkEntry.GetModule<IFileSystemManager>();
                 m_FileSystemManager.SetFileSystemHelper(new FileSystemHelper());
             }
 
@@ -1525,11 +1439,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                     return BuildTarget.StandaloneWindows64;
 
                 case Platform.MacOS:
-#if UNITY_2017_3_OR_NEWER
                     return BuildTarget.StandaloneOSX;
-#else
-                    return BuildTarget.StandaloneOSXUniversal;
-#endif
                 case Platform.Linux:
                     return BuildTarget.StandaloneLinux64;
 
@@ -1546,7 +1456,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                     return BuildTarget.WebGL;
 
                 default:
-                    throw new GameFrameworkException("Platform is invalid.");
+                    throw new FrameworkException("Platform is invalid.");
             }
         }
 

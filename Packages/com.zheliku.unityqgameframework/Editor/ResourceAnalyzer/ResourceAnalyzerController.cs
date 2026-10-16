@@ -1,18 +1,16 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed partial class ResourceAnalyzerController
     {
@@ -62,15 +60,15 @@ namespace UnityGameFramework.Editor.ResourceTools
             m_CircularDependencyDatas = new List<string[]>();
         }
 
-        public event GameFrameworkAction<int, int> OnLoadingResource = null;
+        public event FrameworkAction<int, int> OnLoadingResource = null;
 
-        public event GameFrameworkAction<int, int> OnLoadingAsset = null;
+        public event FrameworkAction<int, int> OnLoadingAsset = null;
 
-        public event GameFrameworkAction OnLoadCompleted = null;
+        public event FrameworkAction OnLoadCompleted = null;
 
-        public event GameFrameworkAction<int, int> OnAnalyzingAsset = null;
+        public event FrameworkAction<int, int> OnAnalyzingAsset = null;
 
-        public event GameFrameworkAction OnAnalyzeCompleted = null;
+        public event FrameworkAction OnAnalyzeCompleted = null;
 
         public void Clear()
         {

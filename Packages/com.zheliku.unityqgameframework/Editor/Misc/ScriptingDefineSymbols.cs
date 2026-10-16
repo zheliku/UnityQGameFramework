@@ -1,15 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Build;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     /// <summary>
     /// 脚本宏定义。

@@ -1,11 +1,9 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +11,7 @@ using System.Text;
 using System.Xml;
 using UnityEditor;
 
-namespace UnityGameFramework.Editor.ResourceTools
+namespace UnityQGameFramework.Editor.ResourceTools
 {
     public sealed partial class ResourceBuilderController
     {
@@ -27,7 +25,7 @@ namespace UnityGameFramework.Editor.ResourceTools
             private string m_ProductName = null;
             private string m_CompanyName = null;
             private string m_GameIdentifier = null;
-            private string m_GameFrameworkVersion = null;
+            private string m_FrameworkVersion = null;
             private string m_UnityVersion = null;
             private string m_ApplicableGameVersion = null;
             private int m_InternalResourceVersion = 0;
@@ -42,12 +40,12 @@ namespace UnityGameFramework.Editor.ResourceTools
             private StringBuilder m_LogBuilder = null;
             private SortedDictionary<string, ResourceData> m_ResourceDatas = null;
 
-            public void Initialize(string buildReportPath, string productName, string companyName, string gameIdentifier, string gameFrameworkVersion, string unityVersion, string applicableGameVersion, int internalResourceVersion,
+            public void Initialize(string buildReportPath, string productName, string companyName, string gameIdentifier, string frameworkVersion, string unityVersion, string applicableGameVersion, int internalResourceVersion,
                 Platform platforms, AssetBundleCompressionType assetBundleCompression, string compressionHelperTypeName, bool additionalCompressionSelected, bool forceRebuildAssetBundleSelected, string buildEventHandlerTypeName, string outputDirectory, BuildAssetBundleOptions buildAssetBundleOptions, SortedDictionary<string, ResourceData> resourceDatas)
             {
                 if (string.IsNullOrEmpty(buildReportPath))
                 {
-                    throw new GameFrameworkException("Build report path is invalid.");
+                    throw new FrameworkException("Build report path is invalid.");
                 }
 
                 m_BuildReportName = Utility.Path.GetRegularPath(Path.Combine(buildReportPath, BuildReportName));
@@ -55,7 +53,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 m_ProductName = productName;
                 m_CompanyName = companyName;
                 m_GameIdentifier = gameIdentifier;
-                m_GameFrameworkVersion = gameFrameworkVersion;
+                m_FrameworkVersion = frameworkVersion;
                 m_UnityVersion = unityVersion;
                 m_ApplicableGameVersion = applicableGameVersion;
                 m_InternalResourceVersion = internalResourceVersion;
@@ -99,7 +97,7 @@ namespace UnityGameFramework.Editor.ResourceTools
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityGameFramework");
+                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
                 xmlDocument.AppendChild(xmlRoot);
 
                 XmlElement xmlBuildReport = xmlDocument.CreateElement("BuildReport");
@@ -117,8 +115,8 @@ namespace UnityGameFramework.Editor.ResourceTools
                 xmlElement = xmlDocument.CreateElement("GameIdentifier");
                 xmlElement.InnerText = m_GameIdentifier;
                 xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("GameFrameworkVersion");
-                xmlElement.InnerText = m_GameFrameworkVersion;
+                xmlElement = xmlDocument.CreateElement("FrameworkVersion");
+                xmlElement.InnerText = m_FrameworkVersion;
                 xmlSummary.AppendChild(xmlElement);
                 xmlElement = xmlDocument.CreateElement("UnityVersion");
                 xmlElement.InnerText = m_UnityVersion;

@@ -1,18 +1,16 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.DataNode;
+using UnityQGameFramework.Core.DataNode;
 using UnityEditor;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(DataNodeComponent))]
-    internal sealed class DataNodeComponentInspector : GameFrameworkInspector
+    internal sealed class DataNodeComponentInspector : FrameworkInspector
     {
         public override void OnInspectorGUI()
         {

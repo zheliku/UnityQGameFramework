@@ -1,22 +1,20 @@
 ﻿//------------------------------------------------------------
-// Game Framework
+// Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
-// Homepage: https://gameframework.cn/
-// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
+using UnityQGameFramework.Core;
 using System;
 using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+using UnityQGameFramework.Runtime;
 
-namespace UnityGameFramework.Editor
+namespace UnityQGameFramework.Editor
 {
     [CustomEditor(typeof(WebRequestComponent))]
-    internal sealed class WebRequestComponentInspector : GameFrameworkInspector
+    internal sealed class WebRequestComponentInspector : FrameworkInspector
     {
         private SerializedProperty m_InstanceRoot = null;
         private SerializedProperty m_WebRequestAgentHelperCount = null;
