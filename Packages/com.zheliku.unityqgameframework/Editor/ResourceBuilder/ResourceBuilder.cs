@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private int m_CompressionHelperTypeNameIndex = 0;
         private int m_BuildEventHandlerTypeNameIndex = 0;
 
-        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Builder", false, 40)]
+        [MenuItem("QGF/Resources/Build", false, 40)]
         private static void Open()
         {
             ResourceBuilder window = GetWindow<ResourceBuilder>("Resource Builder", true);

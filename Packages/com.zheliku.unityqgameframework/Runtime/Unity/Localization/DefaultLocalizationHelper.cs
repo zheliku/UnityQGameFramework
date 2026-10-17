@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,7 +6,6 @@
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Localization;
 using System;
-using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -17,9 +16,7 @@ namespace UnityQGameFramework.Runtime
     /// </summary>
     public class DefaultLocalizationHelper : LocalizationHelperBase
     {
-        private static readonly string[] ColumnSplitSeparator = new string[] { "\t" };
-        private static readonly string BytesAssetExtension = ".bytes";
-        private const int ColumnCount = 4;
+        private static readonly Encoding Utf8 = new UTF8Encoding(false, true);
 
         private ResourceComponent m_ResourceComponent = null;
 
@@ -90,20 +87,8 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否读取字典成功。</returns>
         public override bool ReadData(ILocalizationManager localizationManager, string dictionaryAssetName, object dictionaryAsset, object userData)
         {
-            TextAsset dictionaryTextAsset = dictionaryAsset as TextAsset;
-            if (dictionaryTextAsset != null)
-            {
-                if (dictionaryAssetName.EndsWith(BytesAssetExtension, StringComparison.Ordinal))
-                {
-                    return localizationManager.ParseData(dictionaryTextAsset.bytes, userData);
-                }
-                else
-                {
-                    return localizationManager.ParseData(dictionaryTextAsset.text, userData);
-                }
-            }
-
-            Log.Warning("Dictionary asset '{0}' is invalid.", dictionaryAssetName);
+            if (dictionaryAsset is TextAsset text) return localizationManager.ParseData(text.text, userData);
+            Log.Warning("Dictionary asset '{0}' is not a TextAsset.", dictionaryAssetName);
             return false;
         }
 
@@ -119,14 +104,7 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否读取字典成功。</returns>
         public override bool ReadData(ILocalizationManager localizationManager, string dictionaryAssetName, byte[] dictionaryBytes, int startIndex, int length, object userData)
         {
-            if (dictionaryAssetName.EndsWith(BytesAssetExtension, StringComparison.Ordinal))
-            {
-                return localizationManager.ParseData(dictionaryBytes, startIndex, length, userData);
-            }
-            else
-            {
-                return localizationManager.ParseData(Utility.Converter.GetString(dictionaryBytes, startIndex, length), userData);
-            }
+            return ParseData(localizationManager, dictionaryBytes, startIndex, length, userData);
         }
 
         /// <summary>
@@ -138,40 +116,8 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否解析字典成功。</returns>
         public override bool ParseData(ILocalizationManager localizationManager, string dictionaryString, object userData)
         {
-            try
-            {
-                int position = 0;
-                string dictionaryLineString = null;
-                while ((dictionaryLineString = dictionaryString.ReadLine(ref position)) != null)
-                {
-                    if (dictionaryLineString[0] == '#')
-                    {
-                        continue;
-                    }
-
-                    string[] splitedLine = dictionaryLineString.Split(ColumnSplitSeparator, StringSplitOptions.None);
-                    if (splitedLine.Length != ColumnCount)
-                    {
-                        Log.Warning("Can not parse dictionary line string '{0}' which column count is invalid.", dictionaryLineString);
-                        return false;
-                    }
-
-                    string dictionaryKey = splitedLine[1];
-                    string dictionaryValue = splitedLine[3];
-                    if (!localizationManager.AddRawString(dictionaryKey, dictionaryValue))
-                    {
-                        Log.Warning("Can not add raw string with dictionary key '{0}' which may be invalid or duplicate.", dictionaryKey);
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception exception)
-            {
-                Log.Warning("Can not parse dictionary string with exception '{0}'.", exception);
-                return false;
-            }
+            try { TomlLocalizationParser.ParseAndAdd(localizationManager, dictionaryString); return true; }
+            catch (Exception exception) { Log.Warning("Cannot parse TOML dictionary: {0}", exception.Message); return false; }
         }
 
         /// <summary>
@@ -185,32 +131,8 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否解析字典成功。</returns>
         public override bool ParseData(ILocalizationManager localizationManager, byte[] dictionaryBytes, int startIndex, int length, object userData)
         {
-            try
-            {
-                using (MemoryStream memoryStream = new MemoryStream(dictionaryBytes, startIndex, length, false))
-                {
-                    using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
-                    {
-                        while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
-                        {
-                            string dictionaryKey = binaryReader.ReadString();
-                            string dictionaryValue = binaryReader.ReadString();
-                            if (!localizationManager.AddRawString(dictionaryKey, dictionaryValue))
-                            {
-                                Log.Warning("Can not add raw string with dictionary key '{0}' which may be invalid or duplicate.", dictionaryKey);
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception exception)
-            {
-                Log.Warning("Can not parse dictionary bytes with exception '{0}'.", exception);
-                return false;
-            }
+            try { return ParseData(localizationManager, Utf8.GetString(dictionaryBytes, startIndex, length), userData); }
+            catch (Exception exception) { Log.Warning("Cannot decode UTF-8 dictionary: {0}", exception.Message); return false; }
         }
 
         /// <summary>

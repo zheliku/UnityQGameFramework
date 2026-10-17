@@ -6,7 +6,7 @@ namespace UnityQGameFramework.Editor
 {
     internal static class ConfigurationPath
     {
-        // Assets/... remains project-relative; other paths are relative to the XML file.
+        // Assets/... remains project-relative; other paths are relative to the configuration file.
         internal static string ResolveAssetPath(string configuration, string path)
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("配置中的资源路径不能为空。");

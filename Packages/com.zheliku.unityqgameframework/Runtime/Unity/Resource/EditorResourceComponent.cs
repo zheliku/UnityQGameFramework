@@ -1134,7 +1134,12 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
+#if UNITY_EDITOR
+            AsyncOperation asyncOperation = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(
+                sceneAssetName, new LoadSceneParameters(LoadSceneMode.Additive));
+#else
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneAssetName, LoadSceneMode.Additive);
+#endif
             if (asyncOperation == null)
             {
                 return;

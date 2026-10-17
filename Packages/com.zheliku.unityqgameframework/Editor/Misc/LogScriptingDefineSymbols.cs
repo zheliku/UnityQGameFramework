@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -45,7 +45,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 禁用所有日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Disable All Logs", false, 30)]
+        [MenuItem("QGF/Logging/Off", false, 30)]
         public static void DisableAllLogs()
         {
             ScriptingDefineSymbols.RemoveScriptingDefineSymbol(EnableLogScriptingDefineSymbol);
@@ -64,7 +64,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 开启所有日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Enable All Logs", false, 31)]
+        [MenuItem("QGF/Logging/All", false, 31)]
         public static void EnableAllLogs()
         {
             DisableAllLogs();
@@ -74,7 +74,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 开启调试及以上级别的日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Enable Debug And Above Logs", false, 32)]
+        [MenuItem("QGF/Logging/Debug", false, 32)]
         public static void EnableDebugAndAboveLogs()
         {
             SetAboveLogScriptingDefineSymbol(EnableDebugAndAboveLogScriptingDefineSymbol);
@@ -83,7 +83,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 开启信息及以上级别的日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Enable Info And Above Logs", false, 33)]
+        [MenuItem("QGF/Logging/Info", false, 33)]
         public static void EnableInfoAndAboveLogs()
         {
             SetAboveLogScriptingDefineSymbol(EnableInfoAndAboveLogScriptingDefineSymbol);
@@ -92,7 +92,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 开启警告及以上级别的日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Enable Warning And Above Logs", false, 34)]
+        [MenuItem("QGF/Logging/Warning", false, 34)]
         public static void EnableWarningAndAboveLogs()
         {
             SetAboveLogScriptingDefineSymbol(EnableWarningAndAboveLogScriptingDefineSymbol);
@@ -101,7 +101,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 开启错误及以上级别的日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Enable Error And Above Logs", false, 35)]
+        [MenuItem("QGF/Logging/Error", false, 35)]
         public static void EnableErrorAndAboveLogs()
         {
             SetAboveLogScriptingDefineSymbol(EnableErrorAndAboveLogScriptingDefineSymbol);
@@ -110,7 +110,7 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 开启严重错误及以上级别的日志脚本宏定义。
         /// </summary>
-        [MenuItem("Unity Q Game Framework/Log Scripting Define Symbols/Enable Fatal And Above Logs", false, 36)]
+        [MenuItem("QGF/Logging/Fatal", false, 36)]
         public static void EnableFatalAndAboveLogs()
         {
             SetAboveLogScriptingDefineSymbol(EnableFatalAndAboveLogScriptingDefineSymbol);

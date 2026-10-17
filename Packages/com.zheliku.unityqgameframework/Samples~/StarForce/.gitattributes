@@ -1,0 +1,12 @@
+# Distributable example assets are regular Git bytes, independent of host LFS.
+*.dll -filter -diff -merge -text
+*.png -filter -diff -merge -text
+*.jpg -filter -diff -merge -text
+*.tga -filter -diff -merge -text
+*.psd -filter -diff -merge -text
+*.fbx -filter -diff -merge -text
+*.FBX -filter -diff -merge -text
+*.wav -filter -diff -merge -text
+*.mp3 -filter -diff -merge -text
+*.ogg -filter -diff -merge -text
+*.ttf -filter -diff -merge -text

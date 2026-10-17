@@ -69,19 +69,11 @@ def main():
         check.append('--require-committed')
     subprocess.run(check, check=True)
 
-    # One editable source in Assets. Only this ignored staging tree gets Samples~.
+    # Samples~ is already present in the Git package; reject a stale mirror.
     staged_package = output / "Packages" / manifest["name"]
     shutil.copytree(package_source, staged_package)
     staged_sample = staged_package / "Samples~/StarForce"
-    shutil.copytree(example_source, staged_sample)
     sample_files = verify_copy(example_source, staged_sample)
-    manifest["samples"] = [
-        {
-            "displayName": "StarForce",
-            "description": "StarForce example. Import it, read its README and open StarForce Launcher.",
-            "path": "Samples~/StarForce",
-        }
-    ]
     (staged_package / "package.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )

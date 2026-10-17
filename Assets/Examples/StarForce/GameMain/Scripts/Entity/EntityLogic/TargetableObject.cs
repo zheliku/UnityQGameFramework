@@ -39,7 +39,7 @@ namespace StarForce
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
-            gameObject.SetLayerRecursively(Constant.Layer.TargetableObjectLayerId);
+            gameObject.SetLayerRecursively(Constant.Layer.DefaultLayerId);
         }
 
         protected override void OnShow(object userData)

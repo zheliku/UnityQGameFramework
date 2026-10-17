@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -7,7 +7,8 @@ using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
+using System.Linq;
+using Tomlyn.Model;
 using UnityEditor;
 using UnityEngine;
 
@@ -29,10 +30,10 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private string m_SourceAssetExceptLabelFilter;
         private AssetSorterType m_AssetSorter;
 
-        public ResourceEditorController()
+        public ResourceEditorController(string configurationPath = null, string collectionPath = null)
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceEditorConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceEditor.xml"));
-            m_ResourceCollection = new ResourceCollection();
+            m_ConfigurationPath = configurationPath ?? Type.GetConfigurationPath<ResourceEditorConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceEditor.toml"));
+            m_ResourceCollection = new ResourceCollection(collectionPath);
             m_ResourceCollection.OnLoadingResource += delegate (int index, int count)
             {
                 if (OnLoadingResource != null)
@@ -193,152 +194,59 @@ namespace UnityQGameFramework.Editor.ResourceTools
 
         public bool Load()
         {
-            if (!File.Exists(m_ConfigurationPath))
-            {
-                return false;
-            }
-
+            if (!File.Exists(m_ConfigurationPath)) return false;
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
-                XmlNode xmlEditor = xmlRoot.SelectSingleNode("ResourceEditor");
-                XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
-
-                XmlNodeList xmlNodeList = null;
-                XmlNode xmlNode = null;
-
-                xmlNodeList = xmlSettings.ChildNodes;
-                for (int i = 0; i < xmlNodeList.Count; i++)
-                {
-                    xmlNode = xmlNodeList.Item(i);
-                    switch (xmlNode.Name)
-                    {
-                        case "SourceAssetRootPath":
-                            SourceAssetRootPath = ConfigurationPath.ResolveAssetPath(m_ConfigurationPath, xmlNode.InnerText);
-                            break;
-
-                        case "SourceAssetSearchPaths":
-                            m_SourceAssetSearchRelativePaths.Clear();
-                            XmlNodeList xmlNodeListInner = xmlNode.ChildNodes;
-                            XmlNode xmlNodeInner = null;
-                            for (int j = 0; j < xmlNodeListInner.Count; j++)
-                            {
-                                xmlNodeInner = xmlNodeListInner.Item(j);
-                                if (xmlNodeInner.Name != "SourceAssetSearchPath")
-                                {
-                                    continue;
-                                }
-
-                                m_SourceAssetSearchRelativePaths.Add(xmlNodeInner.Attributes.GetNamedItem("RelativePath").Value);
-                            }
-                            break;
-
-                        case "SourceAssetUnionTypeFilter":
-                            SourceAssetUnionTypeFilter = xmlNode.InnerText;
-                            break;
-
-                        case "SourceAssetUnionLabelFilter":
-                            SourceAssetUnionLabelFilter = xmlNode.InnerText;
-                            break;
-
-                        case "SourceAssetExceptTypeFilter":
-                            SourceAssetExceptTypeFilter = xmlNode.InnerText;
-                            break;
-
-                        case "SourceAssetExceptLabelFilter":
-                            SourceAssetExceptLabelFilter = xmlNode.InnerText;
-                            break;
-
-                        case "AssetSorter":
-                            AssetSorter = (AssetSorterType)Enum.Parse(typeof(AssetSorterType), xmlNode.InnerText);
-                            break;
-                    }
-                }
-
+                var settings = EditorToml.Read(m_ConfigurationPath).Table("ResourceEditor");
+                string root = ConfigurationPath.ResolveAssetPath(m_ConfigurationPath, settings.String("SourceAssetRootPath"));
+                string[] paths = settings.Strings("SourceAssetSearchPaths");
+                var sorter = settings.EnumValue<AssetSorterType>("AssetSorter");
+                string unionType = settings.String("SourceAssetUnionTypeFilter", string.Empty);
+                string unionLabel = settings.String("SourceAssetUnionLabelFilter", string.Empty);
+                string exceptType = settings.String("SourceAssetExceptTypeFilter", string.Empty);
+                string exceptLabel = settings.String("SourceAssetExceptLabelFilter", string.Empty);
+                SourceAssetRootPath = root;
+                m_SourceAssetSearchRelativePaths.Clear();
+                m_SourceAssetSearchRelativePaths.AddRange(paths);
+                SourceAssetUnionTypeFilter = unionType;
+                SourceAssetUnionLabelFilter = unionLabel;
+                SourceAssetExceptTypeFilter = exceptType;
+                SourceAssetExceptLabelFilter = exceptLabel;
+                AssetSorter = sorter;
                 RefreshSourceAssetSearchPaths();
+                ScanSourceAssets();
+                return m_ResourceCollection.Load();
             }
             catch (Exception exception)
             {
-                Debug.LogWarning("无法读取资源编辑器配置，已保留原文件：" + m_ConfigurationPath + "\n" + exception.Message);
+                Debug.LogWarning("Cannot load resource editor settings: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
-
-            ScanSourceAssets();
-
-            m_ResourceCollection.Load();
-
-            return true;
         }
 
         public bool Save()
         {
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
-
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
-                xmlDocument.AppendChild(xmlRoot);
-
-                XmlElement xmlEditor = xmlDocument.CreateElement("ResourceEditor");
-                xmlRoot.AppendChild(xmlEditor);
-
-                XmlElement xmlSettings = xmlDocument.CreateElement("Settings");
-                xmlEditor.AppendChild(xmlSettings);
-
-                XmlElement xmlElement = null;
-                XmlAttribute xmlAttribute = null;
-
-                xmlElement = xmlDocument.CreateElement("SourceAssetRootPath");
-                xmlElement.InnerText = ConfigurationPath.RelativeToConfiguration(m_ConfigurationPath, SourceAssetRootPath);
-                xmlSettings.AppendChild(xmlElement);
-
-                xmlElement = xmlDocument.CreateElement("SourceAssetSearchPaths");
-                xmlSettings.AppendChild(xmlElement);
-
-                foreach (string sourceAssetSearchRelativePath in m_SourceAssetSearchRelativePaths)
+                var settings = new TomlTable
                 {
-                    XmlElement xmlElementInner = xmlDocument.CreateElement("SourceAssetSearchPath");
-                    xmlAttribute = xmlDocument.CreateAttribute("RelativePath");
-                    xmlAttribute.Value = sourceAssetSearchRelativePath;
-                    xmlElementInner.Attributes.SetNamedItem(xmlAttribute);
-                    xmlElement.AppendChild(xmlElementInner);
-                }
-
-                xmlElement = xmlDocument.CreateElement("SourceAssetUnionTypeFilter");
-                xmlElement.InnerText = SourceAssetUnionTypeFilter ?? string.Empty;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("SourceAssetUnionLabelFilter");
-                xmlElement.InnerText = SourceAssetUnionLabelFilter ?? string.Empty;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("SourceAssetExceptTypeFilter");
-                xmlElement.InnerText = SourceAssetExceptTypeFilter ?? string.Empty;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("SourceAssetExceptLabelFilter");
-                xmlElement.InnerText = SourceAssetExceptLabelFilter ?? string.Empty;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("AssetSorter");
-                xmlElement.InnerText = AssetSorter.ToString();
-                xmlSettings.AppendChild(xmlElement);
-
-                string configurationDirectoryName = Path.GetDirectoryName(m_ConfigurationPath);
-                if (!Directory.Exists(configurationDirectoryName))
-                {
-                    Directory.CreateDirectory(configurationDirectoryName);
-                }
-
-                xmlDocument.Save(m_ConfigurationPath);
+                    ["SourceAssetRootPath"] = ConfigurationPath.RelativeToConfiguration(m_ConfigurationPath, SourceAssetRootPath),
+                    ["SourceAssetSearchPaths"] = EditorToml.ArrayOf(m_SourceAssetSearchRelativePaths.ToArray()),
+                    ["SourceAssetUnionTypeFilter"] = SourceAssetUnionTypeFilter ?? string.Empty,
+                    ["SourceAssetUnionLabelFilter"] = SourceAssetUnionLabelFilter ?? string.Empty,
+                    ["SourceAssetExceptTypeFilter"] = SourceAssetExceptTypeFilter ?? string.Empty,
+                    ["SourceAssetExceptLabelFilter"] = SourceAssetExceptLabelFilter ?? string.Empty,
+                    ["AssetSorter"] = AssetSorter.ToString()
+                };
+                EditorToml.Write(m_ConfigurationPath, new TomlTable { ["ResourceEditor"] = settings });
                 AssetDatabase.Refresh();
+                return m_ResourceCollection.Save();
             }
             catch (Exception exception)
             {
-                Debug.LogWarning("无法保存资源编辑器配置：" + m_ConfigurationPath + "\n" + exception.Message);
+                Debug.LogWarning("Cannot save resource editor settings: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
-
-            return m_ResourceCollection.Save();
         }
 
         public Resource[] GetResources()

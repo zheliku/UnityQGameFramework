@@ -1,0 +1,8 @@
+[ResourceEditor]
+SourceAssetRootPath = ".."
+SourceAssetSearchPaths = [""]
+SourceAssetUnionTypeFilter = "t:Scene t:Prefab t:Shader t:Model t:Material t:Texture t:AudioClip t:AnimationClip t:AnimatorController t:Font t:TextAsset t:ScriptableObject"
+SourceAssetUnionLabelFilter = "l:ResourceInclusive"
+SourceAssetExceptTypeFilter = "t:Script"
+SourceAssetExceptLabelFilter = "l:ResourceExclusive"
+AssetSorter = "Path"

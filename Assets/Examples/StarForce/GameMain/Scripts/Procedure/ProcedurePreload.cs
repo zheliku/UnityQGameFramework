@@ -88,7 +88,7 @@ namespace StarForce
 
         private void LoadDictionary(string dictionaryName)
         {
-            string dictionaryAssetName = AssetUtility.GetDictionaryAsset(dictionaryName, false);
+            string dictionaryAssetName = AssetUtility.GetDictionaryAsset(dictionaryName);
             m_LoadedFlag.Add(dictionaryAssetName, false);
             GameEntry.Localization.ReadData(dictionaryAssetName, this);
         }

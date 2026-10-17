@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace StarForce
             // 向服务器请求版本信息
             if (string.IsNullOrWhiteSpace(GameEntry.BuiltinData.BuildInfo.CheckVersionUrl))
             {
-                Log.Error("Configure CheckVersionUrl in GameMain/Configs/BuildInfo.txt before using updatable resources.");
+                Log.Error("Configure CheckVersionUrl in GameMain/Configs/BuildInfo.toml before using updatable resources.");
                 return;
             }
 

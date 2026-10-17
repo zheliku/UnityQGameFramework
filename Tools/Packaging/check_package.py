@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import subprocess
 import zipfile
+from sync_samples import differences
 
 
 def git(root, *args):
@@ -23,6 +24,11 @@ def main():
     errors = []
     if manifest['name'] != package.name:
         errors.append('Package name does not match its directory.')
+    if not any(s.get('path') == 'Samples~/StarForce' for s in manifest.get('samples', [])):
+        errors.append('StarForce is not registered in package.json.')
+    stale_sample = differences(root / 'Assets/Examples/StarForce', package / 'Samples~/StarForce')
+    if stale_sample:
+        errors.append('StarForce sample mirror is stale: ' + ', '.join(stale_sample[:10]))
     guid_paths = defaultdict(list)
     asset_count = 0
     for scope in (package, root / 'Assets'):

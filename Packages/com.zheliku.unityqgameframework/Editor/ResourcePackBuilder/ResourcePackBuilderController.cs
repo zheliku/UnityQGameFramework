@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -8,7 +8,6 @@ using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
@@ -28,9 +27,9 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private readonly UpdatableVersionListSerializer m_UpdatableVersionListSerializer;
         private readonly ResourcePackVersionListSerializer m_ResourcePackVersionListSerializer;
 
-        public ResourcePackBuilderController()
+        public ResourcePackBuilderController(string configurationPath = null)
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.xml"));
+            m_ConfigurationPath = configurationPath ?? Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.toml"));
 
             m_UpdatableVersionListSerializer = new UpdatableVersionListSerializer();
             m_UpdatableVersionListSerializer.RegisterDeserializeCallback(0, BuiltinVersionListSerializer.UpdatableVersionListDeserializeCallback_V0);
@@ -142,44 +141,21 @@ namespace UnityQGameFramework.Editor.ResourceTools
 
         public bool Load()
         {
-            if (!File.Exists(m_ConfigurationPath))
-            {
-                return false;
-            }
-
+            if (!File.Exists(m_ConfigurationPath)) return false;
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
-                XmlNode xmlEditor = xmlRoot.SelectSingleNode("ResourceBuilder");
-                XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
-
-                XmlNodeList xmlNodeList = null;
-                XmlNode xmlNode = null;
-
-                xmlNodeList = xmlSettings.ChildNodes;
-                for (int i = 0; i < xmlNodeList.Count; i++)
-                {
-                    xmlNode = xmlNodeList.Item(i);
-                    switch (xmlNode.Name)
-                    {
-                        case "CompressionHelperTypeName":
-                            CompressionHelperTypeName = xmlNode.InnerText;
-                            break;
-
-                        case "OutputDirectory":
-                            WorkingDirectory = xmlNode.InnerText;
-                            break;
-                    }
-                }
+                var settings = EditorToml.Read(m_ConfigurationPath).Table("ResourceBuilder");
+                string helper = settings.String("CompressionHelperTypeName", string.Empty);
+                string output = settings.String("OutputDirectory", string.Empty);
+                CompressionHelperTypeName = helper;
+                WorkingDirectory = output;
+                return true;
             }
-            catch
+            catch (Exception exception)
             {
+                UnityEngine.Debug.LogWarning("Cannot load resource pack settings: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
-
-            return true;
         }
 
         public string[] GetCompressionHelperTypeNames()

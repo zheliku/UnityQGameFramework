@@ -7,7 +7,7 @@ namespace UnityQGameFramework.Editor
     [FilePath("ProjectSettings/UnityQGameFrameworkSettings.asset", FilePathAttribute.Location.ProjectFolder)]
     public sealed class LubanSettings : ScriptableSingleton<LubanSettings>
     {
-        public const string SettingsPath = "Project/Unity Q Game Framework/Luban";
+        public const string SettingsPath = "Project/QGF/Luban";
         public const string DefaultWorkspaceRoot = "Assets/UnityQGameFramework/Config";
 
         [SerializeField] private string m_ProfileGuid;

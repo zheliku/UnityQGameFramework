@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml;
+using Tomlyn.Model;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,9 +28,9 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private readonly SortedDictionary<string, Resource> m_Resources;
         private readonly SortedDictionary<string, Asset> m_Assets;
 
-        public ResourceCollection()
+        public ResourceCollection(string configurationPath = null)
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceCollectionConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceCollection.xml"));
+            m_ConfigurationPath = configurationPath ?? Type.GetConfigurationPath<ResourceCollectionConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceCollection.toml"));
             m_Resources = new SortedDictionary<string, Resource>(StringComparer.Ordinal);
             m_Assets = new SortedDictionary<string, Asset>(StringComparer.Ordinal);
         }
@@ -53,204 +53,69 @@ namespace UnityQGameFramework.Editor.ResourceTools
 
         public bool Load()
         {
-            Clear();
-
-            if (!File.Exists(m_ConfigurationPath))
-            {
-                return false;
-            }
-
+            if (!File.Exists(m_ConfigurationPath)) return false;
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
-                XmlNode xmlCollection = xmlRoot.SelectSingleNode("ResourceCollection");
-                XmlNode xmlResources = xmlCollection.SelectSingleNode("Resources");
-                XmlNode xmlAssets = xmlCollection.SelectSingleNode("Assets");
-
-                XmlNodeList xmlNodeList = null;
-                XmlNode xmlNode = null;
-                int count = 0;
-
-                xmlNodeList = xmlResources.ChildNodes;
-                count = xmlNodeList.Count;
-                for (int i = 0; i < count; i++)
+                var document = EditorToml.Read(m_ConfigurationPath);
+                var staged = new ResourceCollection(m_ConfigurationPath);
+                var resources = document.Tables("Resources");
+                for (int i = 0; i < resources.Count; ++i)
                 {
-                    if (OnLoadingResource != null)
-                    {
-                        OnLoadingResource(i, count);
-                    }
-
-                    xmlNode = xmlNodeList.Item(i);
-                    if (xmlNode.Name != "Resource")
-                    {
-                        continue;
-                    }
-
-                    string name = xmlNode.Attributes.GetNamedItem("Name").Value;
-                    string variant = xmlNode.Attributes.GetNamedItem("Variant") != null ? xmlNode.Attributes.GetNamedItem("Variant").Value : null;
-                    string fileSystem = xmlNode.Attributes.GetNamedItem("FileSystem") != null ? xmlNode.Attributes.GetNamedItem("FileSystem").Value : null;
-                    byte loadType = 0;
-                    if (xmlNode.Attributes.GetNamedItem("LoadType") != null)
-                    {
-                        byte.TryParse(xmlNode.Attributes.GetNamedItem("LoadType").Value, out loadType);
-                    }
-
-                    bool packed = false;
-                    if (xmlNode.Attributes.GetNamedItem("Packed") != null)
-                    {
-                        bool.TryParse(xmlNode.Attributes.GetNamedItem("Packed").Value, out packed);
-                    }
-
-                    string[] resourceGroups = xmlNode.Attributes.GetNamedItem("ResourceGroups") != null ? xmlNode.Attributes.GetNamedItem("ResourceGroups").Value.Split(',') : null;
-                    if (!AddResource(name, variant, fileSystem, (LoadType)loadType, packed, resourceGroups))
-                    {
-                        Debug.LogWarning(Utility.Text.Format("Can not add resource '{0}'.", GetResourceFullName(name, variant)));
-                        continue;
-                    }
+                    OnLoadingResource?.Invoke(i, resources.Count);
+                    var entry = resources[i];
+                    string name = entry.String("Name");
+                    string variant = entry.String("Variant");
+                    if (!staged.AddResource(name, variant, entry.String("FileSystem"), entry.EnumValue<LoadType>("LoadType"), entry.Boolean("Packed"), entry.Strings("ResourceGroups")))
+                        throw new InvalidDataException("Invalid or duplicate resource: " + GetResourceFullName(name, variant));
                 }
-
-                xmlNodeList = xmlAssets.ChildNodes;
-                count = xmlNodeList.Count;
-                for (int i = 0; i < count; i++)
+                var assets = document.Tables("Assets");
+                for (int i = 0; i < assets.Count; ++i)
                 {
-                    if (OnLoadingAsset != null)
-                    {
-                        OnLoadingAsset(i, count);
-                    }
-
-                    xmlNode = xmlNodeList.Item(i);
-                    if (xmlNode.Name != "Asset")
-                    {
-                        continue;
-                    }
-
-                    string guid = xmlNode.Attributes.GetNamedItem("Guid").Value;
-                    string name = xmlNode.Attributes.GetNamedItem("ResourceName").Value;
-                    string variant = xmlNode.Attributes.GetNamedItem("ResourceVariant") != null ? xmlNode.Attributes.GetNamedItem("ResourceVariant").Value : null;
-                    if (!AssignAsset(guid, name, variant))
-                    {
-                        Debug.LogWarning(Utility.Text.Format("Can not assign asset '{0}' to resource '{1}'.", guid, GetResourceFullName(name, variant)));
-                        continue;
-                    }
+                    OnLoadingAsset?.Invoke(i, assets.Count);
+                    var entry = assets[i];
+                    if (staged.m_Assets.ContainsKey(entry.String("Guid")) || !staged.AssignAsset(entry.String("Guid"), entry.String("ResourceName"), entry.String("ResourceVariant")))
+                        throw new InvalidDataException("Cannot assign asset: " + entry.String("Guid"));
                 }
-
-                if (OnLoadCompleted != null)
-                {
-                    OnLoadCompleted();
-                }
-
+                Clear();
+                foreach (var entry in staged.m_Resources) m_Resources.Add(entry.Key, entry.Value);
+                foreach (var entry in staged.m_Assets) m_Assets.Add(entry.Key, entry.Value);
                 return true;
             }
-            catch
+            catch (Exception exception)
             {
-                File.Delete(m_ConfigurationPath);
-                if (OnLoadCompleted != null)
-                {
-                    OnLoadCompleted();
-                }
-
+                Debug.LogWarning("Cannot load resource collection: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
+            finally { OnLoadCompleted?.Invoke(); }
         }
 
         public bool Save()
         {
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
-
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
-                xmlDocument.AppendChild(xmlRoot);
-
-                XmlElement xmlCollection = xmlDocument.CreateElement("ResourceCollection");
-                xmlRoot.AppendChild(xmlCollection);
-
-                XmlElement xmlResources = xmlDocument.CreateElement("Resources");
-                xmlCollection.AppendChild(xmlResources);
-
-                XmlElement xmlAssets = xmlDocument.CreateElement("Assets");
-                xmlCollection.AppendChild(xmlAssets);
-
-                XmlElement xmlElement = null;
-                XmlAttribute xmlAttribute = null;
-
+                var resources = new TomlTableArray();
                 foreach (Resource resource in m_Resources.Values)
                 {
-                    xmlElement = xmlDocument.CreateElement("Resource");
-                    xmlAttribute = xmlDocument.CreateAttribute("Name");
-                    xmlAttribute.Value = resource.Name;
-                    xmlElement.Attributes.SetNamedItem(xmlAttribute);
-
-                    if (resource.Variant != null)
-                    {
-                        xmlAttribute = xmlDocument.CreateAttribute("Variant");
-                        xmlAttribute.Value = resource.Variant;
-                        xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    if (resource.FileSystem != null)
-                    {
-                        xmlAttribute = xmlDocument.CreateAttribute("FileSystem");
-                        xmlAttribute.Value = resource.FileSystem;
-                        xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    xmlAttribute = xmlDocument.CreateAttribute("LoadType");
-                    xmlAttribute.Value = ((byte)resource.LoadType).ToString();
-                    xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    xmlAttribute = xmlDocument.CreateAttribute("Packed");
-                    xmlAttribute.Value = resource.Packed.ToString();
-                    xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    string[] resourceGroups = resource.GetResourceGroups();
-                    if (resourceGroups.Length > 0)
-                    {
-                        xmlAttribute = xmlDocument.CreateAttribute("ResourceGroups");
-                        xmlAttribute.Value = string.Join(",", resourceGroups);
-                        xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    xmlResources.AppendChild(xmlElement);
+                    var entry = new TomlTable { ["Name"] = resource.Name, ["LoadType"] = resource.LoadType.ToString(), ["Packed"] = resource.Packed };
+                    if (resource.Variant != null) entry["Variant"] = resource.Variant;
+                    if (resource.FileSystem != null) entry["FileSystem"] = resource.FileSystem;
+                    entry["ResourceGroups"] = EditorToml.ArrayOf(resource.GetResourceGroups());
+                    resources.Add(entry);
                 }
-
+                var assets = new TomlTableArray();
                 foreach (Asset asset in m_Assets.Values)
                 {
-                    xmlElement = xmlDocument.CreateElement("Asset");
-                    xmlAttribute = xmlDocument.CreateAttribute("Guid");
-                    xmlAttribute.Value = asset.Guid;
-                    xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    xmlAttribute = xmlDocument.CreateAttribute("ResourceName");
-                    xmlAttribute.Value = asset.Resource.Name;
-                    xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    if (asset.Resource.Variant != null)
-                    {
-                        xmlAttribute = xmlDocument.CreateAttribute("ResourceVariant");
-                        xmlAttribute.Value = asset.Resource.Variant;
-                        xmlElement.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    xmlAssets.AppendChild(xmlElement);
+                    var entry = new TomlTable { ["Guid"] = asset.Guid, ["ResourceName"] = asset.Resource.Name };
+                    if (asset.Resource.Variant != null) entry["ResourceVariant"] = asset.Resource.Variant;
+                    assets.Add(entry);
                 }
-
-                string configurationDirectoryName = Path.GetDirectoryName(m_ConfigurationPath);
-                if (!Directory.Exists(configurationDirectoryName))
-                {
-                    Directory.CreateDirectory(configurationDirectoryName);
-                }
-
-                xmlDocument.Save(m_ConfigurationPath);
+                EditorToml.Write(m_ConfigurationPath, new TomlTable { ["Resources"] = resources, ["Assets"] = assets });
                 AssetDatabase.Refresh();
                 return true;
             }
-            catch
+            catch (Exception exception)
             {
-                if (File.Exists(m_ConfigurationPath))
-                {
-                    File.Delete(m_ConfigurationPath);
-                }
-
+                Debug.LogWarning("Cannot save resource collection: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
         }

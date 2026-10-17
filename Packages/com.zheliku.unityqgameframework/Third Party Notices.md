@@ -7,7 +7,7 @@ UnityQGameFramework 的框架源码沿用 MIT 许可；下列组件保留各自�
 - Copyright (c) 2013-2021 Jiang Yin.
 - License: MIT.
 - Sources: https://github.com/EllanJiang/UnityGameFramework and https://github.com/EllanJiang/GameFramework.
-- Exact commits and mappings: [upstream.md](Documentation~/upstream.md).
+- UnityGameFramework baseline: `e7eb3ef11393df0ac504204c480cdb839752b05f`; GameFramework baseline: `d0c010b05167c58e92350449d04864a91ca13fd2`. Initially imported on 2026-10-16; namespaces, assemblies, Unity APIs and data-table implementation have since changed.
 - Full license texts: [UnityGameFramework](Documentation~/Licenses/UnityGameFramework-MIT.md), [GameFramework](Documentation~/Licenses/Framework-MIT.md), and [LICENSE.md](LICENSE.md).
 
 ## SharpZipLib 0.86.0.518

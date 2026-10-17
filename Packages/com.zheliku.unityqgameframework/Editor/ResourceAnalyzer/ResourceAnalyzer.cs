@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -45,7 +45,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private string[][] m_CachedCircularDependencyDatas = null;
         private Vector2 m_CircularDependencyScroll = Vector2.zero;
 
-        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Analyzer", false, 42)]
+        [MenuItem("QGF/Resources/Analyze", false, 42)]
         private static void Open()
         {
             ResourceAnalyzer window = GetWindow<ResourceAnalyzer>("Resource Analyzer", true);
@@ -157,7 +157,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 }
                 else
                 {
-                    EditorUtility.DisplayDialog("Resource Analyze", "Can not parse 'ResourceCollection.xml', please use 'Resource Editor' tool first.", "OK");
+                    EditorUtility.DisplayDialog("Resource Analyze", "Can not parse 'ResourceCollection.toml', please use 'Resource Editor' tool first.", "OK");
                 }
             }
         }

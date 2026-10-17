@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -42,7 +42,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private int m_CurrentResourceRowOnDraw = 0;
         private int m_CurrentSourceRowOnDraw = 0;
 
-        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Editor", false, 41)]
+        [MenuItem("QGF/Resources/Collection", false, 41)]
         private static void Open()
         {
             ResourceEditor window = GetWindow<ResourceEditor>("Resource Editor", true);

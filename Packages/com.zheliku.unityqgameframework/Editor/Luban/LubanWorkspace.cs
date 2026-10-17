@@ -26,7 +26,12 @@ namespace UnityQGameFramework.Editor
         {
             var settings = LubanSettings.instance;
             if (settings.HasProfile)
-                return settings.Profile != null ? settings.Profile : throw new InvalidOperationException("全局 Profile 已丢失，请在 Project Settings > Unity Q Game Framework > Luban 中重新指定。");
+            {
+                if (settings.Profile == null) throw new InvalidOperationException("全局 Profile 已丢失，请在 QGF > Settings 中重新指定。");
+                RepairStarterSchemas(settings.Profile);
+                TrackExistingWorkspace(settings.Profile);
+                return settings.Profile;
+            }
 
             // Migrate the former per-machine choice once, without changing its target.
             string legacyKey = "QGF.Luban.Profile." + Application.dataPath;
@@ -43,7 +48,47 @@ namespace UnityQGameFramework.Editor
             }
             settings.Profile = profile;
             EditorPrefs.DeleteKey(legacyKey);
+            RepairStarterSchemas(profile);
+            TrackExistingWorkspace(profile);
             return profile;
+        }
+
+        // Only the unmodified Item starter can be repaired from bundled templates.
+        // A missing business schema cannot be reconstructed without its original definitions.
+        public static void RepairStarterSchemas(LubanProfile profile)
+        {
+            string source = AssetDatabase.GetAssetPath(profile.SourceFolder);
+            string template = Path.Combine(LubanGenerator.PackageRoot, "Editor/Luban/Starter~");
+            string conf = Path.Combine(source, "luban.conf");
+            string datas = Path.Combine(source, "Datas");
+            if (string.IsNullOrEmpty(source) || !File.Exists(conf) || !Directory.Exists(datas)) return;
+            if (File.ReadAllText(conf).Replace("\r\n", "\n").Trim() != File.ReadAllText(Path.Combine(template, "luban.conf")).Replace("\r\n", "\n").Trim()) return;
+            foreach (string file in Directory.GetFiles(datas, "*.xlsx", SearchOption.AllDirectories))
+            {
+                string name = Path.GetFileName(file);
+                if (name != "Item.xlsx" && name != "__tables__.xlsx" && name != "__beans__.xlsx" && name != "__enums__.xlsx") return;
+            }
+            if (!File.Exists(Path.Combine(datas, "Item.xlsx"))) return;
+            bool repaired = false;
+            foreach (string name in new[] { "__tables__.xlsx", "__beans__.xlsx", "__enums__.xlsx" })
+            {
+                string path = Path.Combine(datas, name);
+                if (File.Exists(path)) continue;
+                File.Copy(Path.Combine(template, "Datas", name), path);
+                repaired = true;
+            }
+            if (repaired) AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+        }
+
+        private static void TrackExistingWorkspace(LubanProfile profile)
+        {
+            string path = AssetDatabase.GetAssetPath(profile);
+            if (!path.EndsWith("/Editor/LubanProfile.asset", StringComparison.Ordinal)) return;
+            string root = path.Substring(0, path.Length - "/Editor/LubanProfile.asset".Length);
+            if (!root.StartsWith("Assets/", StringComparison.Ordinal)) return;
+            if (AssetDatabase.GetAssetPath(profile.SourceFolder) == root + "/Source" &&
+                AssetDatabase.GetAssetPath(profile.CodeFolder) == root + "/Generated" &&
+                AssetDatabase.GetAssetPath(profile.DataFolder) == root + "/Data") QgfProjectAssets.TrackWorkspace(root);
         }
 
         public static string ValidateRoot(string root)
@@ -82,6 +127,7 @@ namespace UnityQGameFramework.Editor
             profile.DataFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(root + "/Data");
             AssetDatabase.CreateAsset(profile, root + "/Editor/LubanProfile.asset");
             AssetDatabase.SaveAssets();
+            QgfProjectAssets.TrackWorkspace(root);
             return profile;
         }
 

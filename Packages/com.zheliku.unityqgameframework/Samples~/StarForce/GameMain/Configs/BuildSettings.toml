@@ -1,0 +1,3 @@
+[BuildSettings]
+DefaultScenes = ["../../StarForce Launcher.unity", "../Scenes/Menu.unity", "../Scenes/Main.unity"]
+SearchScenePaths = ["../Scenes"]

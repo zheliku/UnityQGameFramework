@@ -20,7 +20,7 @@ namespace UnityQGameFramework.Editor
                 return;
             }
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("所选 target 的生成参数", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("生成参数", EditorStyles.boldLabel);
             try
             {
                 var conf = JsonUtility.FromJson<Configuration>(File.ReadAllText(path));
@@ -28,15 +28,17 @@ namespace UnityQGameFramework.Editor
                 if (selected == null) EditorGUILayout.HelpBox("luban.conf 中不存在此 target：" + profile.Target, MessageType.Warning);
                 else
                 {
-                    EditorGUILayout.LabelField("命名空间 (topModule)", selected.topModule ?? string.Empty);
-                    EditorGUILayout.LabelField("入口类名 (manager)", selected.manager ?? string.Empty);
-                    EditorGUILayout.LabelField("导出分组 (groups)", string.Join(", ", selected.groups ?? Array.Empty<string>()));
+                    EditorGUILayout.LabelField("命名空间", selected.topModule ?? string.Empty);
+                    EditorGUILayout.LabelField("入口类", selected.manager ?? string.Empty);
+                    EditorGUILayout.LabelField("分组", string.Join(", ", selected.groups ?? Array.Empty<string>()));
                 }
             }
             catch (Exception exception) { EditorGUILayout.HelpBox(exception.Message, MessageType.Warning); }
-            EditorGUILayout.HelpBox("以上参数以 luban.conf 为准，修改后重新生成。Profile 负责选择 target 和输出目录，不保存第二份命名空间设置。", MessageType.None);
-            if (GUILayout.Button("打开 luban.conf")) EditorUtility.OpenWithDefaultApp(Path.GetFullPath(path));
-            if (GUILayout.Button("定位 Excel 表定义")) Selection.activeObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(source + "/Datas/__tables__.xlsx");
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("编辑配置")) EditorUtility.OpenWithDefaultApp(Path.GetFullPath(path));
+                if (GUILayout.Button("表定义")) Selection.activeObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(source + "/Datas/__tables__.xlsx");
+            }
         }
 
         [Serializable]

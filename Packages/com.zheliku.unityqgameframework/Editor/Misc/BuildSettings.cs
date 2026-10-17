@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,10 +14,10 @@ namespace UnityQGameFramework.Editor
 {
     internal static class BuildSettings
     {
-        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/Default Scenes", false, 20)]
+        [MenuItem("QGF/Scenes/Default Scenes", false, 20)]
         public static void DefaultScenes() => Apply(false);
 
-        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/All Scenes", false, 21)]
+        [MenuItem("QGF/Scenes/All Scenes", false, 21)]
         public static void AllScenes() => Apply(true);
 
         private static void Apply(bool includeSearchPaths)
@@ -36,24 +35,21 @@ namespace UnityQGameFramework.Editor
         internal static string[] ReadScenePaths(bool includeSearchPaths)
         {
             string configuration = Type.GetConfigurationPath<BuildSettingsConfigPathAttribute>()
-                ?? Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/BuildSettings.xml");
+                ?? Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/BuildSettings.toml");
             if (!File.Exists(configuration)) throw new FileNotFoundException("未找到构建场景配置。", configuration);
-            var document = new XmlDocument();
-            document.Load(configuration);
-            XmlNode root = document.SelectSingleNode("/UnityQGameFramework/BuildSettings")
-                ?? throw new InvalidDataException("BuildSettings.xml 缺少 BuildSettings 节点。");
+            var settings = EditorToml.Read(configuration).Table("BuildSettings");
             var scenes = new List<string>();
-            foreach (XmlNode node in root.SelectNodes("DefaultScenes/DefaultScene"))
+            foreach (string scene in settings.Strings("DefaultScenes"))
             {
-                string path = ConfigurationPath.ResolveAssetPath(configuration, node.Attributes?["Name"]?.Value);
+                string path = ConfigurationPath.ResolveAssetPath(configuration, scene);
                 if (AssetDatabase.LoadAssetAtPath<SceneAsset>(path) == null) throw new FileNotFoundException("场景不存在。", path);
                 if (!scenes.Contains(path)) scenes.Add(path);
             }
             if (includeSearchPaths)
             {
-                foreach (XmlNode node in root.SelectNodes("SearchScenePaths/SearchScenePath"))
+                foreach (string directory in settings.Strings("SearchScenePaths"))
                 {
-                    string folder = ConfigurationPath.ResolveAssetPath(configuration, node.Attributes?["Path"]?.Value);
+                    string folder = ConfigurationPath.ResolveAssetPath(configuration, directory);
                     if (!AssetDatabase.IsValidFolder(folder)) throw new DirectoryNotFoundException(folder);
                     foreach (string path in AssetDatabase.FindAssets("t:Scene", new[] { folder }).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p, StringComparer.Ordinal))
                         if (!scenes.Contains(path)) scenes.Add(path);

@@ -1,26 +1,22 @@
-# Unity Q Game Framework
+# UnityQGameFramework
 
-面向 Unity 2022.3 LTS 及 Unity 6 的模块化游戏框架，基础维护版 `0.1.0-exp.2`。
+面向 Unity 2022.3 与 Unity 6 的游戏框架，提供纯 C# 模块、Unity 组件、编辑器资源工具和 StarForce 示例。配置表使用 Luban，游戏全局参数使用 TOML。
 
-- `Runtime/Core`：纯 C# 模块、接口、引用池、任务池和工具，不引用 UnityEngine。
-- `Runtime/Unity`：Unity 组件、默认辅助器与运行时调试器。
-- `Runtime/Prefabs/UnityQGameFramework.prefab`：框架入口，原有资源 GUID 保留。
-- `Editor`：类型发现、Inspector、配置、资源管理与打包工具。
-- `Runtime/Luban`：隔离命名空间的官方最小二进制运行时。
-- `Runtime/Plugins`：压缩与 TOML 依赖，许可见第三方声明。
+## 安装
 
-程序集分别为 `UnityQGameFramework.Core`、`UnityQGameFramework.Runtime`、`UnityQGameFramework.Luban`、`UnityQGameFramework.Editor`。自定义游戏流程和辅助器可放入自己的 asmdef；运行时程序集需引用 Core/Runtime，Luban 生成代码还需引用 Luban，编辑器工具需引用 Editor。
-
-安装地址：
+在 Unity Package Manager 中选择 **Install package from git URL**：
 
 ```text
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-框架不强制安装 URP、Input System、Unity CLI 或开发者的编辑器插件。StarForce 是可选的 URP 示例：本仓库的开发源码放在 `Assets/Examples/StarForce`，发行工具生成 `Samples~/StarForce` 后由消费者导入到 Assets。
+安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。Package Manager 的 Samples 面板可导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
 
-DataTable 已替换为 Luban 后端，保留常用 QGF 查询接口，移除旧 TXT 表生成／解析链路。使用 `Unity Q Game Framework > Generate Data Tables` 一键生成，表源和业务生成代码放在 Assets；见 [Luban 使用说明](Documentation~/luban.md)。QFramework 架构融合尚未开始。
+## 教程
 
-安装、首次生成、发布检查及实际验证范围见 [生产前检查记录](Documentation~/production-readiness.md)。Git URL 直接安装包源码，无需在 Git 中另存 `.tgz`；本地修改只有提交并推送后才会出现在远端安装中。
+- [安装与第一个流程](Documentation~/01-getting-started.md)
+- [用 Luban 制作与读取配置表](Documentation~/02-data-tables.md)
 
-请阅读 [基础 API](Documentation~/api.md)、[架构](Documentation~/architecture.md)、[兼容性](Documentation~/compatibility.md)、[迁移](Documentation~/migration.md)、[目录与发布](Documentation~/repository-layout.md) 和 [第三方声明](Third%20Party%20Notices.md)。来源追溯单独保留于 [upstream.md](Documentation~/upstream.md)。
+框架开发仓库的示例源码位于 `Assets/Examples/StarForce`，包内 `Samples~/StarForce` 是它的发布副本。修改示例后运行 `python Tools/Packaging/sync_samples.py`；`--check` 检查副本是否一致。`python Tools/Packaging/prepare_upm.py` 将同一份包内容打成 `.tgz`，输出到 `Artifacts~`。
+
+当前基于 UGF 维护并接入 Luban，QFramework 的 Architecture、Model、System 尚未迁入。框架采用 MIT 许可，原始版权与依赖许可见 [第三方声明](Third%20Party%20Notices.md)。

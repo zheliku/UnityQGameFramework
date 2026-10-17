@@ -38,7 +38,7 @@ public static class GitLubanInstallValidation
                 Require(File.Exists(source + "/Datas/" + file + ".xlsx"), "Excel schema template is missing: " + file);
             Require(!File.Exists(LubanGenerator.DefaultGenerator) && string.IsNullOrEmpty(LubanGenerator.LocalGenerator), "First-generation compiler cache was not clean.");
             result.automaticWorkspace = true;
-            Require(EditorApplication.ExecuteMenuItem("Unity Q Game Framework/Generate Data Tables"), "Generate menu could not be invoked.");
+            Require(EditorApplication.ExecuteMenuItem("QGF/Generate Tables"), "Generate menu could not be invoked.");
             var generation = Stopwatch.StartNew();
             LubanDataTableCatalog catalog = null;
             do

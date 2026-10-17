@@ -1,9 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core;
+using System;
+using Tomlyn;
+using Tomlyn.Model;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
 
@@ -32,12 +34,27 @@ namespace StarForce
                 return;
             }
 
-            BuildInfo = Utility.Json.ToObject<BuildInfo>(m_BuildInfoTextAsset.text);
-            if (BuildInfo == null)
+            try
             {
-                Log.Warning("Parse build info failure.");
-                return;
+                var document = Toml.ToModel(m_BuildInfoTextAsset.text);
+                var settings = document["BuildInfo"] as TomlTable ?? throw new FormatException("Missing BuildInfo table.");
+                string Text(string key) => settings.TryGetValue(key, out object value) && value is string text
+                    ? text : throw new FormatException("BuildInfo requires string: " + key);
+                if (!(settings["InternalGameVersion"] is long version) || version < 0 || version > int.MaxValue)
+                    throw new FormatException("InternalGameVersion must be a non-negative Int32.");
+                BuildInfo = new BuildInfo
+                {
+                    GameVersion = Text("GameVersion"),
+                    InternalGameVersion = (int)version,
+                    CheckVersionUrl = Text("CheckVersionUrl"),
+                    WindowsAppUrl = Text("WindowsAppUrl"),
+                    MacOSAppUrl = Text("MacOSAppUrl"),
+                    IOSAppUrl = Text("IOSAppUrl"),
+                    AndroidAppUrl = Text("AndroidAppUrl")
+                };
             }
+            catch (Exception exception) { Log.Error("Cannot parse BuildInfo.toml: {0}", exception.Message); }
+
         }
 
         public void InitDefaultDictionary()

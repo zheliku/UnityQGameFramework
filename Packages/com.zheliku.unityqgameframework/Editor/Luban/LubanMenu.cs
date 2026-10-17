@@ -7,11 +7,10 @@ namespace UnityQGameFramework.Editor
 {
     public static class LubanMenu
     {
-        private const string GenerateMenu = "Unity Q Game Framework/Generate Data Tables %#g";
-        private const string WorkspaceMenu = "Unity Q Game Framework/Luban/Create Workspace";
+        private const string GenerateMenu = "QGF/Generate Tables %#g";
         public static bool CanGenerate => !LubanGenerator.IsBusy && !EditorApplication.isCompiling && !EditorApplication.isPlayingOrWillChangePlaymode;
 
-        [MenuItem("Unity Q Game Framework/Project Settings", false, 50)]
+        [MenuItem("QGF/Settings", false, 50)]
         public static void OpenSettings() => SettingsService.OpenProjectSettings(LubanSettings.SettingsPath);
 
         [MenuItem(GenerateMenu, false, 60)]
@@ -30,10 +29,8 @@ namespace UnityQGameFramework.Editor
         }
 
         [MenuItem(GenerateMenu, true)]
-        [MenuItem(WorkspaceMenu, true)]
         private static bool ValidateGeneration() => CanGenerate;
 
-        [MenuItem(WorkspaceMenu, false, 61)]
         public static void CreateWorkspace()
         {
             if (!CanGenerate) return;
@@ -47,14 +44,12 @@ namespace UnityQGameFramework.Editor
             catch (Exception exception) { Debug.LogException(exception); }
         }
 
-        [MenuItem("Unity Q Game Framework/Luban/Select Local Compiler", false, 62)]
         public static void SelectLocalCompiler()
         {
             string path = EditorUtility.OpenFilePanel("选择 Luban " + LubanGenerator.Version + " 的 Luban.dll", string.Empty, "dll");
             if (!string.IsNullOrEmpty(path)) LubanGenerator.LocalGenerator = path;
         }
 
-        [MenuItem("Unity Q Game Framework/Luban/Use Downloaded Compiler", false, 63)]
         public static void UseDownloadedCompiler() => LubanGenerator.LocalGenerator = string.Empty;
     }
 }

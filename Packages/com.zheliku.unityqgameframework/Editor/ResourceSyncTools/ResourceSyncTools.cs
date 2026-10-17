@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -18,7 +18,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private const float ButtonSpace = 5f;
         private ResourceSyncToolsController m_Controller = null;
 
-        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Sync Tools", false, 44)]
+        [MenuItem("QGF/Resources/Sync", false, 44)]
         private static void Open()
         {
             ResourceSyncTools window = GetWindow<ResourceSyncTools>("Resource Sync Tools", true);
@@ -54,30 +54,30 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 }
 
                 GUILayout.Space(ButtonSpace);
-                if (GUILayout.Button("Sync ResourceCollection.xml to Project", GUILayout.Height(ButtonHeight)))
+                if (GUILayout.Button("Sync ResourceCollection.toml to Project", GUILayout.Height(ButtonHeight)))
                 {
                     if (!m_Controller.SyncToProject())
                     {
-                        Debug.LogWarning("Sync ResourceCollection.xml to Project failure.");
+                        Debug.LogWarning("Sync ResourceCollection.toml to Project failure.");
                     }
                     else
                     {
-                        Debug.Log("Sync ResourceCollection.xml to Project completed.");
+                        Debug.Log("Sync ResourceCollection.toml to Project completed.");
                     }
 
                     AssetDatabase.Refresh();
                 }
 
                 GUILayout.Space(ButtonSpace);
-                if (GUILayout.Button("Sync ResourceCollection.xml from Project", GUILayout.Height(ButtonHeight)))
+                if (GUILayout.Button("Sync ResourceCollection.toml from Project", GUILayout.Height(ButtonHeight)))
                 {
                     if (!m_Controller.SyncFromProject())
                     {
-                        Debug.LogWarning("Sync Project to ResourceCollection.xml failure.");
+                        Debug.LogWarning("Sync Project to ResourceCollection.toml failure.");
                     }
                     else
                     {
-                        Debug.Log("Sync Project to ResourceCollection.xml completed.");
+                        Debug.Log("Sync Project to ResourceCollection.toml completed.");
                     }
 
                     AssetDatabase.Refresh();

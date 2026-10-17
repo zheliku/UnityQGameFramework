@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
+using Tomlyn.Model;
 using UnityEditor;
 
 namespace UnityQGameFramework.Editor.ResourceTools
@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
     {
         private sealed class BuildReport
         {
-            private const string BuildReportName = "BuildReport.xml";
+            private const string BuildReportName = "BuildReport.toml";
             private const string BuildLogName = "BuildLog.txt";
 
             private string m_BuildReportName = null;
@@ -91,175 +91,67 @@ namespace UnityQGameFramework.Editor.ResourceTools
 
             public void SaveReport()
             {
-                XmlElement xmlElement = null;
-                XmlAttribute xmlAttribute = null;
-
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
-
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
-                xmlDocument.AppendChild(xmlRoot);
-
-                XmlElement xmlBuildReport = xmlDocument.CreateElement("BuildReport");
-                xmlRoot.AppendChild(xmlBuildReport);
-
-                XmlElement xmlSummary = xmlDocument.CreateElement("Summary");
-                xmlBuildReport.AppendChild(xmlSummary);
-
-                xmlElement = xmlDocument.CreateElement("ProductName");
-                xmlElement.InnerText = m_ProductName;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("CompanyName");
-                xmlElement.InnerText = m_CompanyName;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("GameIdentifier");
-                xmlElement.InnerText = m_GameIdentifier;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("FrameworkVersion");
-                xmlElement.InnerText = m_FrameworkVersion;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("UnityVersion");
-                xmlElement.InnerText = m_UnityVersion;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("ApplicableGameVersion");
-                xmlElement.InnerText = m_ApplicableGameVersion;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("InternalResourceVersion");
-                xmlElement.InnerText = m_InternalResourceVersion.ToString();
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("Platforms");
-                xmlElement.InnerText = m_Platforms.ToString();
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("AssetBundleCompression");
-                xmlElement.InnerText = m_AssetBundleCompression.ToString();
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("CompressionHelperTypeName");
-                xmlElement.InnerText = m_CompressionHelperTypeName;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("AdditionalCompressionSelected");
-                xmlElement.InnerText = m_AdditionalCompressionSelected.ToString();
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("ForceRebuildAssetBundleSelected");
-                xmlElement.InnerText = m_ForceRebuildAssetBundleSelected.ToString();
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("BuildEventHandlerTypeName");
-                xmlElement.InnerText = m_BuildEventHandlerTypeName;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("OutputDirectory");
-                xmlElement.InnerText = m_OutputDirectory;
-                xmlSummary.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("BuildAssetBundleOptions");
-                xmlElement.InnerText = m_BuildAssetBundleOptions.ToString();
-                xmlSummary.AppendChild(xmlElement);
-
-                XmlElement xmlResources = xmlDocument.CreateElement("Resources");
-                xmlAttribute = xmlDocument.CreateAttribute("Count");
-                xmlAttribute.Value = m_ResourceDatas.Count.ToString();
-                xmlResources.Attributes.SetNamedItem(xmlAttribute);
-                xmlBuildReport.AppendChild(xmlResources);
-                foreach (ResourceData resourceData in m_ResourceDatas.Values)
+                var summary = new TomlTable
                 {
-                    XmlElement xmlResource = xmlDocument.CreateElement("Resource");
-                    xmlAttribute = xmlDocument.CreateAttribute("Name");
-                    xmlAttribute.Value = resourceData.Name;
-                    xmlResource.Attributes.SetNamedItem(xmlAttribute);
-                    if (resourceData.Variant != null)
+                    ["ProductName"] = m_ProductName ?? string.Empty,
+                    ["CompanyName"] = m_CompanyName ?? string.Empty,
+                    ["GameIdentifier"] = m_GameIdentifier ?? string.Empty,
+                    ["FrameworkVersion"] = m_FrameworkVersion ?? string.Empty,
+                    ["UnityVersion"] = m_UnityVersion ?? string.Empty,
+                    ["ApplicableGameVersion"] = m_ApplicableGameVersion ?? string.Empty,
+                    ["InternalResourceVersion"] = (long)m_InternalResourceVersion,
+                    ["Platforms"] = m_Platforms.ToString(),
+                    ["AssetBundleCompression"] = m_AssetBundleCompression.ToString(),
+                    ["CompressionHelperTypeName"] = m_CompressionHelperTypeName ?? string.Empty,
+                    ["AdditionalCompressionSelected"] = m_AdditionalCompressionSelected,
+                    ["ForceRebuildAssetBundleSelected"] = m_ForceRebuildAssetBundleSelected,
+                    ["BuildEventHandlerTypeName"] = m_BuildEventHandlerTypeName ?? string.Empty,
+                    ["OutputDirectory"] = m_OutputDirectory ?? string.Empty,
+                    ["BuildAssetBundleOptions"] = m_BuildAssetBundleOptions.ToString(),
+                    ["ResourceCount"] = (long)m_ResourceDatas.Count
+                };
+                var resources = new TomlTableArray();
+                foreach (ResourceData resource in m_ResourceDatas.Values)
+                {
+                    var entry = new TomlTable
                     {
-                        xmlAttribute = xmlDocument.CreateAttribute("Variant");
-                        xmlAttribute.Value = resourceData.Variant;
-                        xmlResource.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    xmlAttribute = xmlDocument.CreateAttribute("Extension");
-                    xmlAttribute.Value = GetExtension(resourceData);
-                    xmlResource.Attributes.SetNamedItem(xmlAttribute);
-
-                    if (resourceData.FileSystem != null)
+                        ["Name"] = resource.Name,
+                        ["Extension"] = GetExtension(resource),
+                        ["LoadType"] = resource.LoadType.ToString(),
+                        ["Packed"] = resource.Packed,
+                        ["ResourceGroups"] = EditorToml.ArrayOf(resource.GetResourceGroups())
+                    };
+                    if (resource.Variant != null) entry["Variant"] = resource.Variant;
+                    if (resource.FileSystem != null) entry["FileSystem"] = resource.FileSystem;
+                    var assets = new TomlTableArray();
+                    foreach (AssetData asset in resource.GetAssetDatas())
                     {
-                        xmlAttribute = xmlDocument.CreateAttribute("FileSystem");
-                        xmlAttribute.Value = resourceData.FileSystem;
-                        xmlResource.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    xmlAttribute = xmlDocument.CreateAttribute("LoadType");
-                    xmlAttribute.Value = ((byte)resourceData.LoadType).ToString();
-                    xmlResource.Attributes.SetNamedItem(xmlAttribute);
-                    xmlAttribute = xmlDocument.CreateAttribute("Packed");
-                    xmlAttribute.Value = resourceData.Packed.ToString();
-                    xmlResource.Attributes.SetNamedItem(xmlAttribute);
-                    string[] resourceGroups = resourceData.GetResourceGroups();
-                    if (resourceGroups.Length > 0)
-                    {
-                        xmlAttribute = xmlDocument.CreateAttribute("ResourceGroups");
-                        xmlAttribute.Value = string.Join(",", resourceGroups);
-                        xmlResource.Attributes.SetNamedItem(xmlAttribute);
-                    }
-
-                    xmlResources.AppendChild(xmlResource);
-
-                    AssetData[] assetDatas = resourceData.GetAssetDatas();
-                    XmlElement xmlAssets = xmlDocument.CreateElement("Assets");
-                    xmlAttribute = xmlDocument.CreateAttribute("Count");
-                    xmlAttribute.Value = assetDatas.Length.ToString();
-                    xmlAssets.Attributes.SetNamedItem(xmlAttribute);
-                    xmlResource.AppendChild(xmlAssets);
-                    foreach (AssetData assetData in assetDatas)
-                    {
-                        XmlElement xmlAsset = xmlDocument.CreateElement("Asset");
-                        xmlAttribute = xmlDocument.CreateAttribute("Guid");
-                        xmlAttribute.Value = assetData.Guid;
-                        xmlAsset.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAttribute = xmlDocument.CreateAttribute("Name");
-                        xmlAttribute.Value = assetData.Name;
-                        xmlAsset.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAttribute = xmlDocument.CreateAttribute("Length");
-                        xmlAttribute.Value = assetData.Length.ToString();
-                        xmlAsset.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAttribute = xmlDocument.CreateAttribute("HashCode");
-                        xmlAttribute.Value = assetData.HashCode.ToString();
-                        xmlAsset.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAssets.AppendChild(xmlAsset);
-                        string[] dependencyAssetNames = assetData.GetDependencyAssetNames();
-                        if (dependencyAssetNames.Length > 0)
+                        assets.Add(new TomlTable
                         {
-                            XmlElement xmlDependencyAssets = xmlDocument.CreateElement("DependencyAssets");
-                            xmlAttribute = xmlDocument.CreateAttribute("Count");
-                            xmlAttribute.Value = dependencyAssetNames.Length.ToString();
-                            xmlDependencyAssets.Attributes.SetNamedItem(xmlAttribute);
-                            xmlAsset.AppendChild(xmlDependencyAssets);
-                            foreach (string dependencyAssetName in dependencyAssetNames)
-                            {
-                                XmlElement xmlDependencyAsset = xmlDocument.CreateElement("DependencyAsset");
-                                xmlAttribute = xmlDocument.CreateAttribute("Name");
-                                xmlAttribute.Value = dependencyAssetName;
-                                xmlDependencyAsset.Attributes.SetNamedItem(xmlAttribute);
-                                xmlDependencyAssets.AppendChild(xmlDependencyAsset);
-                            }
-                        }
+                            ["Guid"] = asset.Guid,
+                            ["Name"] = asset.Name,
+                            ["Length"] = (long)asset.Length,
+                            ["HashCode"] = (long)asset.HashCode,
+                            ["DependencyAssets"] = EditorToml.ArrayOf(asset.GetDependencyAssetNames())
+                        });
                     }
-
-                    XmlElement xmlCodes = xmlDocument.CreateElement("Codes");
-                    xmlResource.AppendChild(xmlCodes);
-                    foreach (ResourceCode resourceCode in resourceData.GetCodes())
+                    entry["Assets"] = assets;
+                    var codes = new TomlTableArray();
+                    foreach (ResourceCode code in resource.GetCodes())
                     {
-                        XmlElement xmlCode = xmlDocument.CreateElement(resourceCode.Platform.ToString());
-                        xmlAttribute = xmlDocument.CreateAttribute("Length");
-                        xmlAttribute.Value = resourceCode.Length.ToString();
-                        xmlCode.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAttribute = xmlDocument.CreateAttribute("HashCode");
-                        xmlAttribute.Value = resourceCode.HashCode.ToString();
-                        xmlCode.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAttribute = xmlDocument.CreateAttribute("CompressedLength");
-                        xmlAttribute.Value = resourceCode.CompressedLength.ToString();
-                        xmlCode.Attributes.SetNamedItem(xmlAttribute);
-                        xmlAttribute = xmlDocument.CreateAttribute("CompressedHashCode");
-                        xmlAttribute.Value = resourceCode.CompressedHashCode.ToString();
-                        xmlCode.Attributes.SetNamedItem(xmlAttribute);
-                        xmlCodes.AppendChild(xmlCode);
+                        codes.Add(new TomlTable
+                        {
+                            ["Platform"] = code.Platform.ToString(),
+                            ["Length"] = (long)code.Length,
+                            ["HashCode"] = (long)code.HashCode,
+                            ["CompressedLength"] = (long)code.CompressedLength,
+                            ["CompressedHashCode"] = (long)code.CompressedHashCode
+                        });
                     }
+                    entry["Codes"] = codes;
+                    resources.Add(entry);
                 }
-
-                xmlDocument.Save(m_BuildReportName);
+                EditorToml.Write(m_BuildReportName, new TomlTable { ["Summary"] = summary, ["Resources"] = resources });
                 File.WriteAllText(m_BuildLogName, m_LogBuilder.ToString());
             }
 

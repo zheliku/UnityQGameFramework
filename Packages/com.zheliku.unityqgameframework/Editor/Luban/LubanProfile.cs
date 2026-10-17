@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UnityQGameFramework.Editor
 {
     /// <summary>Project-owned generation settings. Folder references survive moves within Assets.</summary>
-    [CreateAssetMenu(menuName = "Unity Q Game Framework/Luban Profile", fileName = "LubanProfile")]
+    [CreateAssetMenu(menuName = "QGF/Luban Profile", fileName = "LubanProfile")]
     public sealed class LubanProfile : ScriptableObject
     {
         public DefaultAsset SourceFolder;

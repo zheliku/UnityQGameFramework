@@ -34,9 +34,9 @@ namespace UnityQGameFramework.Editor
             DrawCatalog(catalogProperty);
             serializedObject.ApplyModifiedProperties();
             var component = (DataTableComponent)target;
+            if (!EditorApplication.isPlaying) return;
             EditorGUILayout.LabelField("加载状态", component.IsLoading ? "加载中" : "就绪");
             EditorGUILayout.LabelField("已注册数据表", component.Count.ToString());
-            if (!EditorApplication.isPlaying) return;
             var tables = component.GetAllDataTables();
             if (tables.Length == 0) return;
             var names = Array.ConvertAll(tables, t => t.Type.Name + " · " + t.Count);
@@ -75,25 +75,19 @@ namespace UnityQGameFramework.Editor
                 if (m_Profile == m_LastGlobalProfile) m_Profile = settings.Profile;
                 m_LastGlobalProfile = settings.Profile;
             }
-            EditorGUILayout.LabelField("Luban 配表", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Luban", EditorStyles.boldLabel);
             using (new EditorGUI.DisabledScope(!LubanMenu.CanGenerate))
             {
-                m_Profile = (LubanProfile)EditorGUILayout.ObjectField("生成 Profile", m_Profile, typeof(LubanProfile), false);
+                m_Profile = (LubanProfile)EditorGUILayout.ObjectField(new GUIContent("Profile", "生成使用全局 Profile；选择后点击设为全局。"), m_Profile, typeof(LubanProfile), false);
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     using (new EditorGUI.DisabledScope(m_Profile == null || m_Profile == settings.Profile))
                         if (GUILayout.Button("设为全局")) settings.Profile = m_Profile;
-                    if (GUILayout.Button("项目设置")) LubanMenu.OpenSettings();
+                    if (GUILayout.Button("设置")) LubanMenu.OpenSettings();
                     using (new EditorGUI.DisabledScope(settings.Profile == null))
-                        if (GUILayout.Button("生成全局配置")) LubanMenu.Generate();
+                        if (GUILayout.Button(new GUIContent("生成", "全局 Profile：" + AssetDatabase.GetAssetPath(settings.Profile)))) LubanMenu.Generate();
                 }
             }
-            using (new EditorGUI.DisabledScope(true))
-                EditorGUILayout.ObjectField("当前全局 Profile", settings.Profile, typeof(LubanProfile), false);
-            if (m_Profile != settings.Profile)
-                EditorGUILayout.HelpBox("此处选择的方案尚未设为全局。点击“设为全局”后，菜单和生成按钮才会使用它。", MessageType.Info);
-            using (new EditorGUI.DisabledScope(settings.Profile == null || settings.Profile.SourceFolder == null))
-                if (GUILayout.Button("在 Project 中定位源表")) Selection.activeObject = settings.Profile.SourceFolder;
         }
 
         private void DrawCatalog(SerializedProperty catalogProperty)
@@ -104,17 +98,11 @@ namespace UnityQGameFramework.Editor
             var catalog = catalogProperty.objectReferenceValue as LubanDataTableCatalog;
             if (generated != null && generated != catalog)
             {
-                EditorGUILayout.HelpBox("当前组件的 Catalog 与全局 Profile 的生成结果不同。切换生成方案不会自动修改运行时引用。", MessageType.Info);
                 using (new EditorGUI.DisabledScope(!LubanMenu.CanGenerate))
-                    if (GUILayout.Button("绑定全局 Profile 的 Catalog")) catalogProperty.objectReferenceValue = catalog = generated;
+                    if (GUILayout.Button(new GUIContent("使用全局 Catalog", "将组件的运行时数据切换为全局 Profile 的生成结果。"))) catalogProperty.objectReferenceValue = catalog = generated;
             }
-            if (catalog == null)
-            {
-                EditorGUILayout.HelpBox("请先生成配置，再指定 Catalog；也可由业务通过资源路径加载 Catalog。", MessageType.Info);
-                return;
-            }
-            EditorGUILayout.LabelField("Luban 版本", catalog.GeneratorVersion);
-            m_ShowCatalog = EditorGUILayout.Foldout(m_ShowCatalog, "生成数据（" + catalog.Entries.Count + " 张表）", true);
+            if (catalog == null) return;
+            m_ShowCatalog = EditorGUILayout.Foldout(m_ShowCatalog, "数据表 · " + catalog.Entries.Count, true);
             if (!m_ShowCatalog) return;
             using (new EditorGUI.DisabledScope(true))
                 foreach (var entry in catalog.Entries)

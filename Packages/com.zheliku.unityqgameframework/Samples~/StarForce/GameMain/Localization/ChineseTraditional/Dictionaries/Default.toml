@@ -1,0 +1,35 @@
+[ChineseTraditional.Game]
+Name = "星際力量"
+Description = "Unity Q Game Framework 演示程式"
+Website = "https://github.com/zheliku/UnityQGameFramework"
+Summary = "這是一個使用 Unity Q Game Framework 遊戲框架製作的遊戲演示專案，目的是對此遊戲框架的使用方法做一些示範，供使用者參考。"
+Introduction = "Unity Q Game Framework 是基於 Unity 引擎的遊戲框架，主要對遊戲開發過程中常用模組進行了封裝，很大程度地規範開發過程、加快開發速度並保證產品品質。"
+
+[ChineseTraditional.Menu]
+StartButton = "開始"
+SettingButton = "設置"
+AboutButton = "關於"
+QuitButton = "退出"
+
+[ChineseTraditional.Dialog]
+ConfirmButton = "確定"
+CancelButton = "取消"
+OtherButton = ""
+
+[ChineseTraditional.ForceUpdate]
+Title = "強制更新"
+Message = "當前遊戲版本過舊，是否前往更新？"
+UpdateButton = "更新"
+QuitButton = "退出"
+
+[ChineseTraditional.AskQuitGame]
+Title = "確認退出"
+Message = "是否確認退出遊戲？"
+
+[ChineseTraditional.Setting]
+Title = "設置"
+Music = "音樂"
+Sound = "音效"
+UISound = "介面音效"
+Language = "語言"
+LanguageTips = "更改語言需要重啟遊戲"

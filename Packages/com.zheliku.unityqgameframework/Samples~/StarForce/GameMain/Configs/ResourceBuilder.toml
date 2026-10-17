@@ -1,0 +1,12 @@
+[ResourceBuilder]
+InternalResourceVersion = 0
+Platforms = "Windows"
+AssetBundleCompression = "LZ4"
+CompressionHelperTypeName = "UnityQGameFramework.Runtime.DefaultCompressionHelper"
+AdditionalCompressionSelected = true
+ForceRebuildAssetBundleSelected = false
+BuildEventHandlerTypeName = "StarForce.Editor.StarForceBuildEventHandler"
+OutputDirectory = ""
+OutputPackageSelected = true
+OutputFullSelected = true
+OutputPackedSelected = true

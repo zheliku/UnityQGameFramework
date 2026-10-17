@@ -41,9 +41,9 @@ namespace StarForce
             return Utility.Text.Format(GameMainPath + "/Configs/{0}.toml", assetName);
         }
 
-        public static string GetDictionaryAsset(string assetName, bool fromBytes)
+        public static string GetDictionaryAsset(string assetName)
         {
-            return Utility.Text.Format(GameMainPath + "/Localization/{0}/Dictionaries/{1}.{2}", GameEntry.Localization.Language, assetName, fromBytes ? "bytes" : "xml");
+            return Utility.Text.Format(GameMainPath + "/Localization/{0}/Dictionaries/{1}.toml", GameEntry.Localization.Language, assetName);
         }
 
         public static string GetFontAsset(string assetName)

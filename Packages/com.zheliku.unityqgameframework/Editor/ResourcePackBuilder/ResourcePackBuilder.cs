@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private bool[] m_SourceVersionIndexes = null;
         private int m_SourceVersionCount = 0;
 
-        [MenuItem("Unity Q Game Framework/Resource Tools/Resource Pack Builder", false, 43)]
+        [MenuItem("QGF/Resources/Pack", false, 43)]
         private static void Open()
         {
             ResourcePackBuilder window = GetWindow<ResourcePackBuilder>("Resource Pack Builder", true);

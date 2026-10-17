@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
+using Tomlyn.Model;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
@@ -37,9 +37,9 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private IBuildEventHandler m_BuildEventHandler;
         private IFileSystemManager m_FileSystemManager;
 
-        public ResourceBuilderController()
+        public ResourceBuilderController(string configurationPath = null)
         {
-            m_ConfigurationPath = Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.xml"));
+            m_ConfigurationPath = configurationPath ?? Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.toml"));
 
             m_ResourceCollection = new ResourceCollection();
             m_ResourceCollection.OnLoadingResource += delegate (int index, int count)
@@ -251,152 +251,66 @@ namespace UnityQGameFramework.Editor.ResourceTools
 
         public bool Load()
         {
-            if (!File.Exists(m_ConfigurationPath))
-            {
-                return false;
-            }
-
+            if (!File.Exists(m_ConfigurationPath)) return false;
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(m_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
-                XmlNode xmlEditor = xmlRoot.SelectSingleNode("ResourceBuilder");
-                XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
-
-                XmlNodeList xmlNodeList = null;
-                XmlNode xmlNode = null;
-
-                xmlNodeList = xmlSettings.ChildNodes;
-                for (int i = 0; i < xmlNodeList.Count; i++)
-                {
-                    xmlNode = xmlNodeList.Item(i);
-                    switch (xmlNode.Name)
-                    {
-                        case "InternalResourceVersion":
-                            InternalResourceVersion = int.Parse(xmlNode.InnerText) + 1;
-                            break;
-
-                        case "Platforms":
-                            Platforms = (Platform)int.Parse(xmlNode.InnerText);
-                            break;
-
-                        case "AssetBundleCompression":
-                            AssetBundleCompression = (AssetBundleCompressionType)byte.Parse(xmlNode.InnerText);
-                            break;
-
-                        case "CompressionHelperTypeName":
-                            CompressionHelperTypeName = xmlNode.InnerText;
-                            break;
-
-                        case "AdditionalCompressionSelected":
-                            AdditionalCompressionSelected = bool.Parse(xmlNode.InnerText);
-                            break;
-
-                        case "ForceRebuildAssetBundleSelected":
-                            ForceRebuildAssetBundleSelected = bool.Parse(xmlNode.InnerText);
-                            break;
-
-                        case "BuildEventHandlerTypeName":
-                            BuildEventHandlerTypeName = xmlNode.InnerText;
-                            break;
-
-                        case "OutputDirectory":
-                            OutputDirectory = xmlNode.InnerText;
-                            break;
-
-                        case "OutputPackageSelected":
-                            OutputPackageSelected = bool.Parse(xmlNode.InnerText);
-                            break;
-
-                        case "OutputFullSelected":
-                            OutputFullSelected = bool.Parse(xmlNode.InnerText);
-                            break;
-
-                        case "OutputPackedSelected":
-                            OutputPackedSelected = bool.Parse(xmlNode.InnerText);
-                            break;
-                    }
-                }
+                var settings = EditorToml.Read(m_ConfigurationPath).Table("ResourceBuilder");
+                int version = checked(settings.Integer("InternalResourceVersion") + 1);
+                var platforms = settings.EnumValue<Platform>("Platforms");
+                var compression = settings.EnumValue<AssetBundleCompressionType>("AssetBundleCompression");
+                string helper = settings.String("CompressionHelperTypeName", string.Empty);
+                string handler = settings.String("BuildEventHandlerTypeName", string.Empty);
+                string output = settings.String("OutputDirectory", string.Empty);
+                bool additional = settings.Boolean("AdditionalCompressionSelected");
+                bool rebuild = settings.Boolean("ForceRebuildAssetBundleSelected");
+                bool package = settings.Boolean("OutputPackageSelected");
+                bool full = settings.Boolean("OutputFullSelected");
+                bool packed = settings.Boolean("OutputPackedSelected");
+                InternalResourceVersion = version;
+                Platforms = platforms;
+                AssetBundleCompression = compression;
+                CompressionHelperTypeName = helper;
+                BuildEventHandlerTypeName = handler;
+                OutputDirectory = output;
+                AdditionalCompressionSelected = additional;
+                ForceRebuildAssetBundleSelected = rebuild;
+                OutputPackageSelected = package;
+                OutputFullSelected = full;
+                OutputPackedSelected = packed;
+                return true;
             }
-            catch
+            catch (Exception exception)
             {
-                File.Delete(m_ConfigurationPath);
+                UnityEngine.Debug.LogWarning("Cannot load resource builder settings: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
-
-            return true;
         }
 
         public bool Save()
         {
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null));
-
-                XmlElement xmlRoot = xmlDocument.CreateElement("UnityQGameFramework");
-                xmlDocument.AppendChild(xmlRoot);
-
-                XmlElement xmlBuilder = xmlDocument.CreateElement("ResourceBuilder");
-                xmlRoot.AppendChild(xmlBuilder);
-
-                XmlElement xmlSettings = xmlDocument.CreateElement("Settings");
-                xmlBuilder.AppendChild(xmlSettings);
-
-                XmlElement xmlElement = null;
-
-                xmlElement = xmlDocument.CreateElement("InternalResourceVersion");
-                xmlElement.InnerText = InternalResourceVersion.ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("Platforms");
-                xmlElement.InnerText = ((int)Platforms).ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("AssetBundleCompression");
-                xmlElement.InnerText = ((byte)AssetBundleCompression).ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("CompressionHelperTypeName");
-                xmlElement.InnerText = CompressionHelperTypeName;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("AdditionalCompressionSelected");
-                xmlElement.InnerText = AdditionalCompressionSelected.ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("ForceRebuildAssetBundleSelected");
-                xmlElement.InnerText = ForceRebuildAssetBundleSelected.ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("BuildEventHandlerTypeName");
-                xmlElement.InnerText = BuildEventHandlerTypeName;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("OutputDirectory");
-                xmlElement.InnerText = OutputDirectory;
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("OutputPackageSelected");
-                xmlElement.InnerText = OutputPackageSelected.ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("OutputFullSelected");
-                xmlElement.InnerText = OutputFullSelected.ToString();
-                xmlSettings.AppendChild(xmlElement);
-                xmlElement = xmlDocument.CreateElement("OutputPackedSelected");
-                xmlElement.InnerText = OutputPackedSelected.ToString();
-                xmlSettings.AppendChild(xmlElement);
-
-                string configurationDirectoryName = Path.GetDirectoryName(m_ConfigurationPath);
-                if (!Directory.Exists(configurationDirectoryName))
+                var settings = new TomlTable
                 {
-                    Directory.CreateDirectory(configurationDirectoryName);
-                }
-
-                xmlDocument.Save(m_ConfigurationPath);
+                    ["InternalResourceVersion"] = (long)InternalResourceVersion,
+                    ["Platforms"] = Platforms.ToString(),
+                    ["AssetBundleCompression"] = AssetBundleCompression.ToString(),
+                    ["CompressionHelperTypeName"] = CompressionHelperTypeName ?? string.Empty,
+                    ["AdditionalCompressionSelected"] = AdditionalCompressionSelected,
+                    ["ForceRebuildAssetBundleSelected"] = ForceRebuildAssetBundleSelected,
+                    ["BuildEventHandlerTypeName"] = BuildEventHandlerTypeName ?? string.Empty,
+                    ["OutputDirectory"] = OutputDirectory ?? string.Empty,
+                    ["OutputPackageSelected"] = OutputPackageSelected,
+                    ["OutputFullSelected"] = OutputFullSelected,
+                    ["OutputPackedSelected"] = OutputPackedSelected
+                };
+                EditorToml.Write(m_ConfigurationPath, new TomlTable { ["ResourceBuilder"] = settings });
                 AssetDatabase.Refresh();
                 return true;
             }
-            catch
+            catch (Exception exception)
             {
-                if (File.Exists(m_ConfigurationPath))
-                {
-                    File.Delete(m_ConfigurationPath);
-                }
-
+                UnityEngine.Debug.LogWarning("Cannot save resource builder settings: " + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
         }
@@ -534,7 +448,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 m_BuildReport.LogInfo("Start prepare resource collection...");
                 if (!m_ResourceCollection.Load())
                 {
-                    m_BuildReport.LogError("Can not parse 'ResourceCollection.xml', please use 'Resource Editor' tool first.");
+                    m_BuildReport.LogError("Can not parse 'ResourceCollection.toml', please use 'Resource Editor' tool first.");
 
                     if (m_BuildEventHandler != null)
                     {
@@ -594,43 +508,14 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 m_BuildReport.LogInfo("Prepare resource build data complete.");
                 m_BuildReport.LogInfo("Start build resources for selected platforms...");
 
-                bool watchResult = m_BuildEventHandler == null || !m_BuildEventHandler.ContinueOnFailure;
-                bool isSuccess = false;
-                isSuccess = BuildResources(Platform.Windows, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-
-                if (!watchResult || isSuccess)
+                bool stopOnFailure = m_BuildEventHandler == null || !m_BuildEventHandler.ContinueOnFailure;
+                bool buildSucceeded = true;
+                foreach (Platform platform in new[] { Platform.Windows, Platform.Windows64, Platform.MacOS, Platform.Linux, Platform.IOS, Platform.Android, Platform.WindowsStore, Platform.WebGL })
                 {
-                    isSuccess = BuildResources(Platform.Windows64, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-                }
-
-                if (!watchResult || isSuccess)
-                {
-                    isSuccess = BuildResources(Platform.MacOS, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-                }
-
-                if (!watchResult || isSuccess)
-                {
-                    isSuccess = BuildResources(Platform.Linux, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-                }
-
-                if (!watchResult || isSuccess)
-                {
-                    isSuccess = BuildResources(Platform.IOS, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-                }
-
-                if (!watchResult || isSuccess)
-                {
-                    isSuccess = BuildResources(Platform.Android, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-                }
-
-                if (!watchResult || isSuccess)
-                {
-                    isSuccess = BuildResources(Platform.WindowsStore, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
-                }
-
-                if (!watchResult || isSuccess)
-                {
-                    isSuccess = BuildResources(Platform.WebGL, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
+                    if (!IsPlatformSelected(platform)) continue;
+                    bool succeeded = BuildResources(platform, assetBundleBuildDatas, buildAssetBundleOptions, assetBundleResourceDatas, binaryResourceDatas);
+                    buildSucceeded &= succeeded;
+                    if (!succeeded && stopOnFailure) break;
                 }
 
                 if (m_BuildEventHandler != null)
@@ -644,7 +529,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 m_BuildReport.LogInfo("Build resources for selected platforms complete.");
                 m_BuildReport.SaveReport();
 
-                return true;
+                return buildSucceeded;
             }
             catch (Exception exception)
             {

@@ -78,7 +78,7 @@ namespace UnityQGameFramework.Editor
                 }
                 // bsdtar is included in Windows and macOS. Linux users can supply an extracted local compiler.
                 await RunProcess("tar", new[] { "-xf", archive, "-C", CacheRoot }, CacheRoot);
-                if (!File.Exists(DefaultGenerator)) throw new IOException("Luban.dll was not extracted. Use Unity Q Game Framework > Luban > Select Local Compiler to select Luban " + Version + ".");
+                if (!File.Exists(DefaultGenerator)) throw new IOException("Luban.dll was not extracted. Select the compiler in QGF > Settings > Advanced. Required Luban version: " + Version + ".");
                 LastLog = "Luban " + Version + " installed in " + CacheRoot;
             }
             finally { IsBusy = false; EditorApplication.UnlockReloadAssemblies(); }

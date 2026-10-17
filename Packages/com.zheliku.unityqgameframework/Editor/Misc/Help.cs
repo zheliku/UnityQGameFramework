@@ -4,7 +4,7 @@
 //------------------------------------------------------------
 
 using UnityEditor;
-using UnityEngine;
+using System.IO;
 
 namespace UnityQGameFramework.Editor
 {
@@ -13,21 +13,10 @@ namespace UnityQGameFramework.Editor
     /// </summary>
     public static class Help
     {
-        [MenuItem("Unity Q Game Framework/Documentation", false, 90)]
+        [MenuItem("QGF/Documentation", false, 90)]
         public static void ShowDocumentation()
         {
-            ShowHelp("https://github.com/zheliku/UnityQGameFramework/blob/main/README.md");
-        }
-
-        [MenuItem("Unity Q Game Framework/API Reference", false, 91)]
-        public static void ShowApiReference()
-        {
-            ShowHelp("https://github.com/zheliku/UnityQGameFramework/blob/main/Packages/com.zheliku.unityqgameframework/Documentation~/api.md");
-        }
-
-        private static void ShowHelp(string uri)
-        {
-            Application.OpenURL(uri);
+            EditorUtility.OpenWithDefaultApp(Path.Combine(LubanGenerator.PackageRoot, "Documentation~/README.md"));
         }
     }
 }
