@@ -1,4 +1,5 @@
-// Run in an isolated Unity 6 URP consumer with a QGF Git dependency.
+// Run in a normal (not batch-mode) isolated Unity 6 URP consumer with a QGF Git dependency.
+// Also copy SampleVisualCapture.cs to the consumer's Assets/Validation folder.
 using System;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ public static class SampleLifecycleValidation
     private static double s_Started = EditorApplication.timeSinceStartup;
     private static State s_State;
     private static int s_Errors;
+    private static SampleVisualCapture s_Capture;
 
     [Serializable] private sealed class State
     {
@@ -29,9 +31,11 @@ public static class SampleLifecycleValidation
         public string[] settings;
         public string[] hashes;
         public bool automaticWorkspace, repairedSchemas, importedFromPackage, menuOpened, battleStarted;
+        public bool menuVisible, battleVisible;
         public bool urpShaders, hpBarShown, hpBarRecycled, hpBarReused, reversedStartOrder;
         public bool sampleRemoved, packageRemoved, hostSettingsUnchanged;
         public int materialCount;
+        public int tiffTextures;
         public float damageTime;
         public string failure;
     }
@@ -45,6 +49,7 @@ public static class SampleLifecycleValidation
     public static void Run()
     {
         Directory.CreateDirectory("Results");
+        Require(!Application.isBatchMode, "Visual validation requires a normal Editor and a rendered Game view");
         ShaderUtil.allowAsyncCompilation = false;
         // The host chooses URP before importing the sample; the sample must not change it.
         Directory.CreateDirectory("Assets/HostPipeline");
@@ -127,6 +132,7 @@ public static class SampleLifecycleValidation
                     break;
                 case "ordered":
                     EditorSceneManager.OpenScene(s_State.sample + "/StarForce Launcher.unity");
+                    EditorWindow.GetWindow(Type("UnityEditor.GameView")).Focus();
                     Stage("playing");
                     EditorApplication.isPlaying = true;
                     break;
@@ -134,6 +140,7 @@ public static class SampleLifecycleValidation
                     if (!EditorApplication.isPlaying) return;
                     var menu = UnityEngine.Object.FindFirstObjectByType(Type("StarForce.MenuForm")) as Component;
                     if (menu == null) return;
+                    if (menu.GetComponent<CanvasGroup>().alpha < .99f) return;
                     var builtin = UnityEngine.Object.FindFirstObjectByType(Type("StarForce.BuiltinDataComponent")) as Component;
                     Require(builtin != null && builtin.GetType().GetProperty("BuildInfo").GetValue(builtin) != null, "BuildInfo TOML did not load");
                     var builtinFields = new SerializedObject(builtin);
@@ -148,6 +155,8 @@ public static class SampleLifecycleValidation
                     Require(module.GetType().FullName == "UnityEngine.EventSystems.StandaloneInputModule" &&
                         module.GetType().GetProperty("inputOverride").GetValue(module)?.GetType().FullName == "StarForce.StarForceInput", "UI input bridge missing");
                     s_State.menuOpened = true;
+                    if (!CaptureFrame("urp-menu")) return;
+                    s_State.menuVisible = true;
                     var start = menu.GetComponentsInChildren(Type("StarForce.CommonButton"), true).First(b => b.name == "Start");
                     if (!start.gameObject.activeInHierarchy) return;
                     var pointer = Activator.CreateInstance(Type("UnityEngine.EventSystems.PointerEventData"), eventSystem);
@@ -169,34 +178,24 @@ public static class SampleLifecycleValidation
                     var materials = AssetDatabase.FindAssets("t:Material", new[] { s_State.sample + "/GameMain/Materials" }).Select(g => AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g))).ToArray();
                     Require(materials.Length == 21 && materials.All(m => m.shader.name.StartsWith("Universal Render Pipeline/", StringComparison.Ordinal) && m.shader.isSupported), "Sample must use supported URP shaders");
                     Require(Directory.GetFiles(s_State.sample, "*.shader", SearchOption.AllDirectories).Length == 0, "Custom sample shaders remain");
+                    var textures = Directory.GetFiles(s_State.sample + "/GameMain/Textures", "*.tif");
+                    Require(textures.Length == 21, "Sample TIFF payloads are missing");
+                    foreach (var path in textures)
+                    {
+                        var asset = AssetDatabase.LoadAssetAtPath<Texture2D>(path.Replace('\\', '/'));
+                        Require(asset != null && asset.width >= 32 && asset.height >= 32, "TIFF did not import: " + path);
+                    }
+                    Require(materials.All(m => m.GetTexture("_BaseMap") != null), "A sample material lost its base texture");
+                    s_State.tiffTextures = textures.Length;
                     foreach (var shader in materials.Select(m => m.shader).Distinct()) Require(!ShaderUtil.GetShaderMessages(shader).Any(m => m.severity.ToString() == "Error"), "Shader compilation failed");
-                    var camera = Camera.main;
-                    var texture = new RenderTexture(480, 640, 24);
-                    var previous = RenderTexture.active;
-                    var requestType = Type("UnityEngine.Rendering.Universal.UniversalRenderPipeline+SingleCameraRequest");
-                    var request = Activator.CreateInstance(requestType);
-                    requestType.GetField("destination").SetValue(request, texture);
-                    typeof(RenderPipeline).GetMethod("SubmitRenderRequest", BindingFlags.Public | BindingFlags.Static)
-                        .MakeGenericMethod(requestType).Invoke(null, new[] { camera, request });
-                    RenderTexture.active = texture;
-                    var image = new Texture2D(480, 640, TextureFormat.RGB24, false);
-                    image.ReadPixels(new Rect(0, 0, 480, 640), 0, 0);
-                    image.Apply();
-                    File.WriteAllBytes("Results/urp-battle.png", image.EncodeToPNG());
-                    Require(image.GetPixels().Count(c => c.r > .5f && c.b > .5f && c.r > c.g * 2 && c.b > c.g * 2) < 30, "Rendered error-pink pixels");
-                    camera.targetTexture = null;
-                    RenderTexture.active = previous;
-                    UnityEngine.Object.Destroy(texture);
-                    UnityEngine.Object.Destroy(image);
+                    if (!CaptureFrame("urp-battle")) return;
+                    s_State.battleVisible = true;
                     Require(s_Errors == 0, "Runtime errors occurred: " + s_Errors);
                     s_State.urpShaders = true;
                     s_State.materialCount = materials.Length;
                     plane.GetType().GetMethod("ApplyDamage").Invoke(plane, new object[] { null, 1 });
                     Require(ActiveHPBar(plane) != null, "Damage did not show a player HP bar");
                     s_State.hpBarShown = true;
-                    // WaitForEndOfFrame UI animations do not run in Editor batch mode.
-                    // Exercise the pool's real fade-completion path without changing sample code.
-                    if (Application.isBatchMode) ActiveHPBar(plane).GetComponent<CanvasGroup>().alpha = 0f;
                     s_State.damageTime = Time.time;
                     Stage("damage");
                     break;
@@ -262,4 +261,21 @@ public static class SampleLifecycleValidation
 
     private static Component ActiveHPBar(Component owner) => UnityEngine.Object.FindObjectsByType(Type("StarForce.HPBarItem"), FindObjectsSortMode.None)
         .Cast<Component>().FirstOrDefault(item => item.gameObject.activeInHierarchy && Equals(item.GetType().GetProperty("Owner").GetValue(item), owner));
+
+    private static bool CaptureFrame(string name)
+    {
+        if (s_Capture == null)
+        {
+            s_Capture = new GameObject("Sample visual validation").AddComponent<SampleVisualCapture>();
+            s_Capture.Capture("Results/" + name + ".png");
+            return false;
+        }
+        if (!s_Capture.Complete) return false;
+        Require(s_Capture.WhiteRatio < .9f && s_Capture.BlackRatio < .98f && s_Capture.ColorRatio > .01f,
+            name + " has a blank Game view");
+        Require(s_Capture.PinkRatio < .001f, name + " contains error-pink rendering");
+        UnityEngine.Object.Destroy(s_Capture.gameObject);
+        s_Capture = null;
+        return true;
+    }
 }

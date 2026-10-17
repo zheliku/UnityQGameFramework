@@ -24,6 +24,9 @@ def main():
     errors = []
     if manifest['name'] != package.name:
         errors.append('Package name does not match its directory.')
+    optional_tools = {'com.annulusgames.alchemy', 'com.borodar.rainbow-folders'}
+    if optional_tools.intersection(manifest.get('dependencies', {})):
+        errors.append('Optional editor tools must not be required framework dependencies.')
     version_source = (package / 'Runtime/Core/Base/Version/Version.cs').read_text(encoding='utf-8-sig')
     runtime_version = re.search(r'FrameworkVersionString\s*=\s*"([^"]+)"', version_source)
     if runtime_version is None or runtime_version[1] != manifest['version']:
@@ -62,6 +65,27 @@ def main():
     for dll in package.rglob('*.dll'):
         if dll.read_bytes()[:2] != b'MZ':
             errors.append('DLL is not a binary payload (possible LFS pointer): ' + str(dll.relative_to(root)))
+    payloads = [p for p in package.rglob('*') if p.is_file() and p.name != '.gitattributes']
+    package_files = [p.relative_to(root).as_posix() for p in payloads]
+    for path in payloads:
+        with path.open('rb') as stream:
+            if stream.read(128).startswith(b'version https://git-lfs.github.com/spec/v1'):
+                errors.append('Package contains an LFS pointer: ' + path.relative_to(root).as_posix())
+    attributes = subprocess.check_output(
+        ['git', '-C', str(root), 'check-attr', '-z', '--stdin', 'filter'],
+        input=('\0'.join(package_files) + '\0').encode('utf-8')).decode('utf-8').split('\0')
+    for index in range(0, len(attributes) - 1, 3):
+        if attributes[index + 2] == 'lfs':
+            errors.append('Package file still uses the LFS filter: ' + attributes[index])
+    committed_pointers = subprocess.run(
+        ['git', '-C', str(root), 'grep', '-a', '-l', '^version https://git-lfs[.]github[.]com/spec/v1$',
+         'HEAD', '--', package.relative_to(root).as_posix()],
+        capture_output=True, text=True, encoding='utf-8')
+    if committed_pointers.returncode not in (0, 1):
+        raise RuntimeError('Could not inspect committed package payloads: ' + committed_pointers.stderr)
+    pointer_paths = committed_pointers.stdout.splitlines()
+    if args.require_committed and pointer_paths:
+        errors.append('Committed package contains LFS pointers; commit the real assets: ' + ', '.join(pointer_paths))
     starter = package / 'Editor/Luban/Starter~'
     conf = json.loads((starter / 'luban.conf').read_text(encoding='utf-8-sig'))
     for schema in conf['schemaFiles']:
@@ -85,6 +109,8 @@ def main():
         'package': manifest['name'], 'version': manifest['version'],
         'unityMinimum': manifest['unity'], 'assetsChecked': asset_count,
         'xlsxArchivesChecked': len(workbooks),
+        'packagePayloadsChecked': len(payloads),
+        'committedLfsPointers': pointer_paths,
         'head': git(root, 'rev-parse', 'HEAD')[0],
         'packageFilesChangedSinceHead': len(changed), 'untrackedPackageFiles': untracked,
         'samplesRegisteredInSource': bool(manifest.get('samples')),

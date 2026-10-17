@@ -226,6 +226,21 @@ Git 安装不会根据 `package.json` 的版本号自动追踪 GitHub 最新提�
 
 资源工具首次保存到默认 `Assets/UnityQGameFramework/Configs` 时，也会登记这个配置目录；卸载框架时同样备份并移除。它与 Luban 的 `Config` 工作区用途不同，后者保存 Excel 与生成物。
 
+## 7. 可选编辑器扩展
+
+打开 `QGF > Extensions`，按需安装：
+
+| 工具 | 用途 | 此 Git 包的最低 Unity 版本 |
+| --- | --- | --- |
+| [Alchemy](https://github.com/annulusgames/Alchemy) | Inspector、Hierarchy 和 EditorWindow 增强 | 2021.2 |
+| [Rainbow Folders 2](https://github.com/Borod4r/Rainbow-Folders-2) | Project 文件夹颜色、图标及规则 | 6000.3 |
+
+只有点击安装时，才通过 Package Manager 将工具添加为当前项目的直接 Git 依赖。窗口识别已有的 UPM 安装和本地程序集，保留现有版本；更新、切换固定提交和移除由 Package Manager 管理。卸载 QGF 不会删除独立安装的工具。
+
+框架包的 `package.json` 不声明这些依赖，QGF 的运行时代码、Inspector 和示例也不引用它们的类型。完整开发仓库的 `Packages/manifest.json` 已包含这两个工具，属于开发环境选择，其他项目通过 Git URL 安装 QGF 时不会继承。
+
+Alchemy 的序列化扩展还需要 Unity.Serialization；只使用 Inspector 增强不由 QGF 自动安装额外的序列化库。自己的业务程序集如果开始引用 Alchemy 类型，仍需保留对应引用。后续若为 QGF Inspector 增加 Alchemy 专用适配，应放入独立的可选 Editor 适配程序集。
+
 ## 7. 遇到问题时先检查这里
 
 **Git 包已安装，但没有初始 Excel。** 等待 Unity 完成编译，检查 Console 是否有阻止初始化的错误。确认 `QGF > Settings` 中没有沿用另一个已有 Profile。未改动的 Item 初始工作区缺少三份 schema 时，初始化会补齐缺少文件，保留已有 Excel 和 `.meta`。自定义表定义无法从模板还原，请恢复版本控制中的原件，或在新目录创建完整工作区。

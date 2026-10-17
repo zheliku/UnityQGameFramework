@@ -3,6 +3,8 @@
 *.png -filter -diff -merge -text
 *.jpg -filter -diff -merge -text
 *.tga -filter -diff -merge -text
+*.tif -filter -diff -merge -text
+*.tiff -filter -diff -merge -text
 *.psd -filter -diff -merge -text
 *.fbx -filter -diff -merge -text
 *.FBX -filter -diff -merge -text

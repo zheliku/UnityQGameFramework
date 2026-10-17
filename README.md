@@ -12,6 +12,8 @@ https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.un
 
 安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。在已启用 URP 的工程中，可从 Package Manager 的 Samples 面板导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
 
+`QGF > Extensions` 提供 Alchemy 与 Rainbow Folders 2 的可选安装入口，按需加入当前项目。框架本身不依赖这两个工具。
+
 ## 教程
 
 - [安装与第一个流程](Packages/com.zheliku.unityqgameframework/Documentation~/01-getting-started.md)
