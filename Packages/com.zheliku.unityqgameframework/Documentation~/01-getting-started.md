@@ -98,7 +98,7 @@ Assets/Examples/StarForce/StarForce Launcher.unity
 
 示例自带已生成的表数据，因此运行示例不需要 .NET 或 Luban 编译器。框架会通过包依赖安装 Unity UI；示例的输入桥接同时支持旧 Input Manager 和 Input System。
 
-示例使用随目录提供的 `StarForce/Surface`、`StarForce/Additive` Shader，可用于 Built-in 和 URP。它不指定宿主的渲染管线，不安装 URP，也不改 Active Input Handling、自定义 Layer 或 Build Profiles。编辑器资源模式直接按路径加载 Menu、Main 场景，编辑器试玩不需要先把它们加入构建列表。
+StarForce 使用 URP 内置的 Lit、Unlit、Particles/Unlit Shader。请在已启用 URP 的工程中导入，例如 Unity Hub 的 Universal 3D 模板。已有工程需要安装与 Unity 版本匹配的 Universal RP，并在 Graphics 或当前 Quality 中指定 URP 管线资源。框架核心不依赖 URP，示例不会自动安装 URP、替换宿主的管线资源，也不改 Active Input Handling、自定义 Layer 或 Build Profiles。编辑器资源模式直接按路径加载 Menu、Main 场景，编辑器试玩不需要先把它们加入构建列表。
 
 这里验证的是编辑器运行。制作独立 Player 时，仍需自己选择启动场景、配置构建场景或 AssetBundle 资源，并完成发行资源构建；导入 Sample 不会代替项目做这些决定。
 

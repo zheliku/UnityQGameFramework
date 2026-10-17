@@ -1,4 +1,4 @@
-// Run in an isolated Unity 6 consumer with only a QGF Git dependency.
+// Run in an isolated Unity 6 URP consumer with a QGF Git dependency.
 using System;
 using System.IO;
 using System.Linq;
@@ -9,6 +9,7 @@ using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.UI;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [InitializeOnLoad]
 public static class SampleLifecycleValidation
@@ -27,8 +28,10 @@ public static class SampleLifecycleValidation
         public string[] settings;
         public string[] hashes;
         public bool automaticWorkspace, repairedSchemas, importedFromPackage, menuOpened, battleStarted;
-        public bool independentShaders, sampleRemoved, packageRemoved, hostSettingsUnchanged;
+        public bool urpShaders, hpBarShown, hpBarRecycled, hpBarReused, reversedStartOrder;
+        public bool sampleRemoved, packageRemoved, hostSettingsUnchanged;
         public int materialCount;
+        public float damageTime;
         public string failure;
     }
 
@@ -41,6 +44,19 @@ public static class SampleLifecycleValidation
     public static void Run()
     {
         Directory.CreateDirectory("Results");
+        ShaderUtil.allowAsyncCompilation = false;
+        // The host chooses URP before importing the sample; the sample must not change it.
+        Directory.CreateDirectory("Assets/HostPipeline");
+        AssetDatabase.Refresh();
+        var pipelineType = Type("UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset");
+        Require(pipelineType != null, "Install a compatible URP package in the validation host");
+        var renderer = pipelineType.GetMethod("CreateRendererAsset", BindingFlags.Static | BindingFlags.NonPublic)
+            .Invoke(null, new object[] { "Assets/HostPipeline/Universal.asset", 1, true, "Renderer" });
+        var pipeline = (RenderPipelineAsset)pipelineType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)
+            .Invoke(null, new[] { renderer });
+        AssetDatabase.CreateAsset(pipeline, "Assets/HostPipeline/Universal.asset");
+        GraphicsSettings.defaultRenderPipeline = pipeline;
+        AssetDatabase.SaveAssets();
         s_State = new State { stage = "install" };
         Save();
     }
@@ -102,6 +118,13 @@ public static class SampleLifecycleValidation
                     CheckSettings();
                     s_State.importedFromPackage = true;
                     Require(EditorBuildSettings.scenes.Length == 0, "Test requires an empty host scene list");
+                    // Reproduce the old race deterministically, in the disposable consumer only.
+                    MonoImporter.SetExecutionOrder(AssetDatabase.LoadAssetAtPath<MonoScript>(s_State.sample + "/GameMain/Scripts/HPBar/HPBarComponent.cs"), -1000);
+                    MonoImporter.SetExecutionOrder(AssetDatabase.LoadAssetAtPath<MonoScript>(s_State.sample + "/GameMain/Scripts/Base/GameEntry.cs"), 1000);
+                    s_State.reversedStartOrder = true;
+                    Stage("ordered");
+                    break;
+                case "ordered":
                     EditorSceneManager.OpenScene(s_State.sample + "/StarForce Launcher.unity");
                     Stage("playing");
                     EditorApplication.isPlaying = true;
@@ -135,28 +158,57 @@ public static class SampleLifecycleValidation
                     var plane = UnityEngine.Object.FindFirstObjectByType(Type("StarForce.MyAircraft")) as Component;
                     if (plane == null) return;
                     Require(plane.gameObject.layer == 0, "Player still requires a custom Layer");
-                    s_State.battleStarted = true;
+                    if (!s_State.battleStarted)
+                    {
+                        s_State.battleStarted = true;
+                        s_State.damageTime = Time.time;
+                        return;
+                    }
+                    if (Time.time - s_State.damageTime < .25f) return;
                     var materials = AssetDatabase.FindAssets("t:Material", new[] { s_State.sample + "/GameMain/Materials" }).Select(g => AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g))).ToArray();
-                    Require(materials.Length == 21 && materials.All(m => m.shader.name.StartsWith("StarForce/") && m.shader.isSupported), "Sample shader dependency remains");
+                    Require(materials.Length == 21 && materials.All(m => m.shader.name.StartsWith("Universal Render Pipeline/", StringComparison.Ordinal) && m.shader.isSupported), "Sample must use supported URP shaders");
+                    Require(Directory.GetFiles(s_State.sample, "*.shader", SearchOption.AllDirectories).Length == 0, "Custom sample shaders remain");
                     foreach (var shader in materials.Select(m => m.shader).Distinct()) Require(!ShaderUtil.GetShaderMessages(shader).Any(m => m.severity.ToString() == "Error"), "Shader compilation failed");
                     var camera = Camera.main;
                     var texture = new RenderTexture(480, 640, 24);
                     var previous = RenderTexture.active;
-                    camera.targetTexture = texture;
-                    camera.Render();
+                    var requestType = Type("UnityEngine.Rendering.Universal.UniversalRenderPipeline+SingleCameraRequest");
+                    var request = Activator.CreateInstance(requestType);
+                    requestType.GetField("destination").SetValue(request, texture);
+                    typeof(RenderPipeline).GetMethod("SubmitRenderRequest", BindingFlags.Public | BindingFlags.Static)
+                        .MakeGenericMethod(requestType).Invoke(null, new[] { camera, request });
                     RenderTexture.active = texture;
                     var image = new Texture2D(480, 640, TextureFormat.RGB24, false);
                     image.ReadPixels(new Rect(0, 0, 480, 640), 0, 0);
                     image.Apply();
-                    File.WriteAllBytes("Results/builtin-battle.png", image.EncodeToPNG());
-                    Require(image.GetPixels().Count(c => c.r > .95f && c.g < .05f && c.b > .95f) < 30, "Rendered error-pink pixels");
+                    File.WriteAllBytes("Results/urp-battle.png", image.EncodeToPNG());
+                    Require(image.GetPixels().Count(c => c.r > .5f && c.b > .5f && c.r > c.g * 2 && c.b > c.g * 2) < 30, "Rendered error-pink pixels");
                     camera.targetTexture = null;
                     RenderTexture.active = previous;
                     UnityEngine.Object.Destroy(texture);
                     UnityEngine.Object.Destroy(image);
                     Require(s_Errors == 0, "Runtime errors occurred: " + s_Errors);
-                    s_State.independentShaders = true;
+                    s_State.urpShaders = true;
                     s_State.materialCount = materials.Length;
+                    plane.GetType().GetMethod("ApplyDamage").Invoke(plane, new object[] { null, 1 });
+                    Require(ActiveHPBar(plane) != null, "Damage did not show a player HP bar");
+                    s_State.hpBarShown = true;
+                    // WaitForEndOfFrame UI animations do not run in Editor batch mode.
+                    // Exercise the pool's real fade-completion path without changing sample code.
+                    if (Application.isBatchMode) ActiveHPBar(plane).GetComponent<CanvasGroup>().alpha = 0f;
+                    s_State.damageTime = Time.time;
+                    Stage("damage");
+                    break;
+                case "damage":
+                    if (Time.time - s_State.damageTime < 2f) return;
+                    var damagedPlane = UnityEngine.Object.FindFirstObjectByType(Type("StarForce.MyAircraft")) as Component;
+                    Require(damagedPlane != null, "Player disappeared during HP bar validation");
+                    Require(ActiveHPBar(damagedPlane) == null, "HP bar did not fade and recycle");
+                    s_State.hpBarRecycled = true;
+                    damagedPlane.GetType().GetMethod("ApplyDamage").Invoke(damagedPlane, new object[] { null, 1 });
+                    Require(ActiveHPBar(damagedPlane) != null, "Pooled HP bar could not be reused");
+                    s_State.hpBarReused = true;
+                    Require(s_Errors == 0, "Runtime errors occurred: " + s_Errors);
                     Stage("stop");
                     EditorApplication.isPlaying = false;
                     break;
@@ -206,4 +258,7 @@ public static class SampleLifecycleValidation
             EditorApplication.Exit(1);
         }
     }
+
+    private static Component ActiveHPBar(Component owner) => UnityEngine.Object.FindObjectsByType(Type("StarForce.HPBarItem"), FindObjectsSortMode.None)
+        .Cast<Component>().FirstOrDefault(item => item.gameObject.activeInHierarchy && Equals(item.GetType().GetProperty("Owner").GetValue(item), owner));
 }

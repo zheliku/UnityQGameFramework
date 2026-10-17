@@ -4,7 +4,7 @@ StarForce 展示 QGF 的流程、实体、UI、事件、对象池、音效与 Lu
 
 打开本目录的 `StarForce Launcher.unity`，点击 Play，进入菜单后点击开始。在 Game 视图按住鼠标左键移动并开火。请从 Launcher 启动，它负责初始化框架与预加载。
 
-示例不修改宿主的 Layer、输入后端、渲染管线或构建场景列表。自带 Shader 支持 Built-in 与 URP，UI 输入同时支持旧 Input Manager 和 Input System。编辑器试玩不需要资源打包，也不需要先生成表格。
+示例不修改宿主的 Layer、输入后端、渲染管线或构建场景列表。材质统一使用 URP 内置 Shader，请在已启用 URP 的工程中导入。UI 输入同时支持旧 Input Manager 和 Input System。编辑器试玩不需要资源打包，也不需要先生成表格。
 
 要编辑数据，使用本目录 `UnityQGameFramework/Config/Editor/LubanProfile.asset`，在 `QGF > Settings` 中选为全局 Profile，执行 `QGF > Generate Tables`。表源在 `Config/Source/Datas`，手写扩展放 `Config/Extensions`。游戏参数、发行信息、资源工具配置与多语言字典统一使用 TOML。已有 Launcher 的 Catalog 引用保持不变。
 

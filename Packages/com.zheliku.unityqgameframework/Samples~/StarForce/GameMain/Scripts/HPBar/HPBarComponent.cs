@@ -22,24 +22,29 @@ namespace StarForce
         private int m_InstancePoolCapacity = 16;
 
         private IObjectPool<HPBarItemObject> m_HPBarItemObjectPool = null;
-        private List<HPBarItem> m_ActiveHPBarItems = null;
+        private readonly List<HPBarItem> m_ActiveHPBarItems = new List<HPBarItem>();
         private Canvas m_CachedCanvas = null;
 
         private void Start()
         {
-            if (m_HPBarInstanceRoot == null)
+            if (m_HPBarInstanceRoot == null || m_HPBarItemTemplate == null)
             {
-                Log.Error("You must set HP bar instance root first.");
+                enabled = false;
+                Log.Error("Assign the HP bar template and instance root.");
                 return;
             }
 
             m_CachedCanvas = m_HPBarInstanceRoot.GetComponent<Canvas>();
-            m_HPBarItemObjectPool = GameEntry.ObjectPool.CreateSingleSpawnObjectPool<HPBarItemObject>("HPBarItem", m_InstancePoolCapacity);
-            m_ActiveHPBarItems = new List<HPBarItem>();
-        }
+            var objectPool = UnityQGameFramework.Runtime.GameEntry.GetComponent<ObjectPoolComponent>();
+            if (m_CachedCanvas == null || objectPool == null)
+            {
+                enabled = false;
+                Log.Error("HP bars require a Canvas on the instance root and an ObjectPool component.");
+                return;
+            }
 
-        private void OnDestroy()
-        {
+            // Framework components register in Awake; the sample entry caches them in Start.
+            m_HPBarItemObjectPool = objectPool.CreateSingleSpawnObjectPool<HPBarItemObject>("HPBarItem", m_InstancePoolCapacity);
         }
 
         private void Update()
@@ -58,6 +63,7 @@ namespace StarForce
 
         public void ShowHPBar(Entity entity, float fromHPRatio, float toHPRatio)
         {
+            if (!enabled || m_HPBarItemObjectPool == null) return;
             if (entity == null)
             {
                 Log.Warning("Entity is invalid.");

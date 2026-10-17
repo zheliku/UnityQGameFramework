@@ -36,7 +36,7 @@
   "samples": [
     {
       "displayName": "StarForce",
-      "description": "打开 StarForce Launcher 场景，点击运行。",
+      "description": "在已启用 URP 的工程中，打开 StarForce Launcher 场景，点击运行。",
       "path": "Samples~/StarForce"
     }
   ]

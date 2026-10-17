@@ -10,7 +10,7 @@
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。Package Manager 的 Samples 面板可导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
+安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。在已启用 URP 的工程中，可从 Package Manager 的 Samples 面板导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
 
 ## 教程
 
