@@ -24,6 +24,14 @@ def main():
     errors = []
     if manifest['name'] != package.name:
         errors.append('Package name does not match its directory.')
+    version_source = (package / 'Runtime/Core/Base/Version/Version.cs').read_text(encoding='utf-8-sig')
+    runtime_version = re.search(r'FrameworkVersionString\s*=\s*"([^"]+)"', version_source)
+    if runtime_version is None or runtime_version[1] != manifest['version']:
+        errors.append('Framework display version does not match package.json.')
+    changelog = package / 'CHANGELOG.md'
+    releases = re.findall(r'^## \[([0-9][^\]]*)\]', changelog.read_text(encoding='utf-8-sig'), re.M) if changelog.is_file() else []
+    if not releases or releases[0] != manifest['version']:
+        errors.append('The latest CHANGELOG.md version does not match package.json.')
     if not any(s.get('path') == 'Samples~/StarForce' for s in manifest.get('samples', [])):
         errors.append('StarForce is not registered in package.json.')
     stale_sample = differences(root / 'Assets/Examples/StarForce', package / 'Samples~/StarForce')

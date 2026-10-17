@@ -10,12 +10,13 @@
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。Package Manager 的 Samples 面板可导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
+安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。在已启用 URP 的工程中，可从 Package Manager 的 Samples 面板导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
 
 ## 教程
 
 - [安装与第一个流程](Documentation~/01-getting-started.md)
 - [用 Luban 制作与读取配置表](Documentation~/02-data-tables.md)
+- [版本记录](CHANGELOG.md)
 
 框架开发仓库的示例源码位于 `Assets/Examples/StarForce`，包内 `Samples~/StarForce` 是它的发布副本。修改示例后运行 `python Tools/Packaging/sync_samples.py`；`--check` 检查副本是否一致。`python Tools/Packaging/prepare_upm.py` 将同一份包内容打成 `.tgz`，输出到 `Artifacts~`。
 

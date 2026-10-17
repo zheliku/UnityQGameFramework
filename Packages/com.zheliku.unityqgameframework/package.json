@@ -1,6 +1,6 @@
 {
   "name": "com.zheliku.unityqgameframework",
-  "version": "0.1.0-exp.2",
+  "version": "0.1.0-exp.3",
   "displayName": "UnityQGameFramework",
   "description": "Modular QGF core and Unity components for Unity 2022.3 LTS and Unity 6, with Luban-backed data tables, Excel workflows and Unity editor generation tools.",
   "unity": "2022.3",

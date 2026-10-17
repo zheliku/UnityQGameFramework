@@ -16,6 +16,7 @@ https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.un
 
 - [安装与第一个流程](Packages/com.zheliku.unityqgameframework/Documentation~/01-getting-started.md)
 - [用 Luban 制作与读取配置表](Packages/com.zheliku.unityqgameframework/Documentation~/02-data-tables.md)
+- [版本记录](Packages/com.zheliku.unityqgameframework/CHANGELOG.md)
 
 完整仓库的示例源码位于 `Assets/Examples/StarForce`，包内 `Samples~/StarForce` 是它的发布副本。修改示例后运行 `python Tools/Packaging/sync_samples.py`；`--check` 检查副本是否一致。`python Tools/Packaging/prepare_upm.py` 将同一份包内容打成 `.tgz`，输出到 `Artifacts~`。
 

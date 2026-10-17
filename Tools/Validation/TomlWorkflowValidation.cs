@@ -36,7 +36,8 @@ public static class TomlWorkflowValidation
             if (stage == "import")
             {
                 File.WriteAllText(State, "verify");
-                Require(Sample.FindByPackage("com.zheliku.unityqgameframework", "0.1.0-exp.2").Single().Import(Sample.ImportOptions.OverridePreviousImports), "Could not import sample");
+                string packageVersion = UnityEditor.PackageManager.PackageInfo.GetAllRegisteredPackages().Single(p => p.name == "com.zheliku.unityqgameframework").version;
+                Require(Sample.FindByPackage("com.zheliku.unityqgameframework", packageVersion).Single().Import(Sample.ImportOptions.OverridePreviousImports), "Could not import sample");
                 return;
             }
             if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.GetType("StarForce.MenuForm") == null)) return;

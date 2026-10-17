@@ -15,6 +15,7 @@ using UnityEngine.Rendering;
 public static class SampleLifecycleValidation
 {
     private const string Package = "com.zheliku.unityqgameframework";
+    private static string PackageVersion => UnityEditor.PackageManager.PackageInfo.GetAllRegisteredPackages().Single(p => p.name == Package).version;
     private const string StatePath = "Results/sample-stage.json";
     private const string Workspace = "Assets/UnityQGameFramework/Config";
     private static double s_Started = EditorApplication.timeSinceStartup;
@@ -107,7 +108,7 @@ public static class SampleLifecycleValidation
                     File.WriteAllText("Assets/KeepMe.txt", "Host-owned sentinel");
                     s_State.settings = Directory.GetFiles("ProjectSettings").Where(f => Path.GetFileName(f) != "UnityQGameFrameworkSettings.asset").OrderBy(f => f).ToArray();
                     s_State.hashes = s_State.settings.Select(Hash).ToArray();
-                    var sample = Sample.FindByPackage(Package, "0.1.0-exp.2").Single();
+                    var sample = Sample.FindByPackage(Package, PackageVersion).Single();
                     s_State.sample = Path.GetRelativePath(Directory.GetCurrentDirectory(), sample.importPath).Replace('\\', '/');
                     Stage("imported");
                     Require(sample.Import(Sample.ImportOptions.OverridePreviousImports), "Package sample import failed");
@@ -224,7 +225,7 @@ public static class SampleLifecycleValidation
                     CheckSettings();
                     s_State.sampleRemoved = true;
                     Stage("reimported");
-                    Require(Sample.FindByPackage(Package, "0.1.0-exp.2").Single().Import(Sample.ImportOptions.OverridePreviousImports), "Sample reimport failed");
+                    Require(Sample.FindByPackage(Package, PackageVersion).Single().Import(Sample.ImportOptions.OverridePreviousImports), "Sample reimport failed");
                     break;
                 case "reimported":
                     if (Type("StarForce.MenuForm") == null || !Directory.Exists(s_State.sample)) return;

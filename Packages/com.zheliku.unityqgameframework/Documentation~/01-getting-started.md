@@ -204,9 +204,13 @@ Profile 控制生成到哪里，Luban Catalog 控制组件运行时读哪一份�
 
 Git 包解析后的提交会记录在 `Packages/packages-lock.json`。团队应提交 manifest 和 lock 文件，使用相同的框架版本。要锁定发布标签或提交，在 URL 末尾附加 `#标签或提交`。
 
-更新包时通过 Package Manager 更新 Git 依赖。更新后检查 Console，必要时重新生成表格。生成模板变化时，代码和数据必须成套更新。
+Git 安装不会根据 `package.json` 的版本号自动追踪 GitHub 最新提交。需要更新时，在 Package Manager 的 **Install package from git URL** 中重新提交同一个 Git URL；这会重新解析分支当前提交。若原 URL 的 `#` 后固定了标签或提交，需要改为目标标签、提交或 `#main`。不需要删除整个 `packages-lock.json` 或清空 Library。详见 [Unity 的 Git 依赖说明](https://docs.unity3d.com/6000.3/Documentation/Manual/upm-git.html#git-locks)。
 
-已经导入 Assets 的 Sample 是副本，不会随包更新自动覆盖。先保存自己的改动，再决定是否重新导入。自己的游戏最好放在独立目录，避免修改与示例更新混在一起。
+每次对外发布时，同步更新包根目录 `package.json` 的 `version`、`Core.Version.FrameworkVersion` 和 `CHANGELOG.md`，并提交、推送这些文件。Package Manager 通过包根目录的 Changelog 提供版本记录；发布检查会验证三者一致。
+
+更新后检查 Console，必要时重新生成表格。生成模板变化时，代码和数据必须成套更新。
+
+已经导入 Assets 的 Sample 是副本，不会随包更新自动覆盖。如果要更新示例，先使用 `QGF > Uninstall > StarForce` 备份并移除旧示例，再更新包并导入新版本。不同包版本默认导入到不同版本目录，同时保留两份 StarForce 会导致脚本重复定义。自己的游戏最好放在独立目录，避免修改与示例更新混在一起。
 
 ### 只移除示例
 
