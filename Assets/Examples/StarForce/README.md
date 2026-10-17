@@ -2,7 +2,7 @@
 
 StarForce 是 Unity Q Game Framework 的可运行示例，演示流程、实体、UI、事件、资源加载、对象池和音效的组合使用。源码来源及原作者许可见 [第三方说明](THIRD-PARTY.md)。
 
-示例已迁移至基础维护版的命名空间和 API，资源路径支持开发目录或 UPM 示例导入目录。保留原版鼠标操作，兼容新输入系统；21 个示例材质已转换为 URP 材质。Unity 6000.3.24f1 下已验证菜单进入战斗、鼠标移动和射击。QFramework 架构、Luban 改造及完整示例 Player 构建属于后续阶段。
+示例已迁移至基础维护版的命名空间和 API，资源路径支持开发目录或 UPM 示例导入目录。保留原版鼠标操作，兼容新输入系统；21 个示例材质已转换为 URP 材质。Unity 6000.3.24f1 下已验证菜单进入战斗、鼠标移动和射击。DataTable 已完成 Luban 改造；QFramework 架构与完整示例 Player 构建另行推进。
 
 ## 查看与调试
 
@@ -17,9 +17,15 @@ StarForce 是 Unity Q Game Framework 的可运行示例，演示流程、实体�
 
 材质转换保留原有资源 GUID、贴图及 UV 缩放 / 偏移。飞船与陨石使用 URP Lit，背景使用 URP Unlit，粒子与子弹使用 URP Particles/Unlit 的透明加法混合。已在 Unity 6000.3.24f1 的 Play Mode 真实帧中验证鼠标移动和开火，并检查主场景画面与 Shader 编译。完整游戏回归与 Player 构建尚未验证。
 
-源表、配置、实体、UI、场景及演示脚本保留在 `GameMain/`。没有复制上游 `Assets/GameFramework` 子模块、`ProjectSettings` 或 `.git`；框架来自本工程的 embedded package。
+Luban 源表、生成物和 Profile 位于示例内 `UnityQGameFramework/Config/`。在 `Project Settings > Unity Q Game Framework > Luban` 中将全局 Profile 设为本目录下的 `Config/Editor/LubanProfile.asset`，或在 Launcher 的 DataTable Inspector 中选择该 Profile 并点击“设为全局”。执行 `Unity Q Game Framework > Generate Data Tables`（Ctrl/Cmd + Shift + G）生成，Project 窗口的选择不改变目标。11 张表保留原始数据，预加载通过 DataTable 节点的 Catalog 引用加载；Entity/UI/Sound 继续使用 GetDataTable/GetDataRow。源表可直接在 Excel 编辑；手写扩展放 Extensions，勿编辑 Generated。详见包内 `Documentation~/luban.md`。其他配置、实体、UI、场景及演示脚本保留在 `GameMain/`。没有复制上游 `Assets/GameFramework` 子模块、`ProjectSettings` 或 `.git`；框架来自本工程的 embedded package。
 
 上游资源打包事件处理器会清理项目的 `Assets/StreamingAssets`，本轮未执行该工具。首次资源构建与正式游戏构建将在后续适配中验证。
+
+ResourceCollection 中 DataTables 资源已改为登记 Luban Catalog；bytes 通过 Catalog 的 Unity 依赖自动打包，增删表不必逐条维护旧 TXT／bytes 条目。独立消费者已验证 Catalog 的 AssetBundle 构建与 Windows Player 读取，这不等同于完整 StarForce 资源发行验证。
+
+默认使用 Excel schema：`Source/Datas/__tables__.xlsx` 登记 11 张表，字段定义从 `StarForce.xlsx` 各工作表的标题读取。`__beans__`／`__enums__` 当前是空模板，供新增复用结构与枚举使用。namespace 在 `Source/luban.conf` 对应 target 的 `topModule`；Profile Inspector 可查看并打开配置源。生成仍使用 QGF 菜单，不需要 gen.bat。
+
+游戏全局配置改为 `GameMain/Configs/DefaultConfig.toml`，由 Tomlyn 读取，原 `Game.Id`、`Scene.Menu`、`Scene.Main` 不变；ConfigComponent 的查询接口保留。其余资源工具 XML 与 Localization 各司其职，详见包内 `Documentation~/configuration.md`。
 
 ## 开发与发布
 
@@ -40,7 +46,7 @@ python Tools/Packaging/prepare_upm.py
 ## 已做的接入调整
 
 - 资源路径集中到 `AssetUtility.GameMainPath`，编辑器按 GameMain 目录 GUID 定位；Player 按首个启动场景定位并缓存。
-- 原配置路径与旧读表工具改用同一根路径，不再写死 `Assets/GameMain`。
+- Luban 替换旧 TXT 读表工具；Profile、Catalog 和 bytes 使用 Unity 引用，支持目录移动与 Samples 导入。
 - 保留原版鼠标玩法，只对鼠标输入增加新输入系统兼容分支。
 - 跳过已回收实体的延迟碰撞回调，避免同一颗子弹重复伤害、重复回收。
 - 将 21 个示例材质转换为 URP 材质，不引入自定义 Shader 或新的运行时组件。

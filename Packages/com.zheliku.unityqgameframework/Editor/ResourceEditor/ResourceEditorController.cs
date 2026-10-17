@@ -216,7 +216,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
                     switch (xmlNode.Name)
                     {
                         case "SourceAssetRootPath":
-                            SourceAssetRootPath = xmlNode.InnerText;
+                            SourceAssetRootPath = ConfigurationPath.ResolveAssetPath(m_ConfigurationPath, xmlNode.InnerText);
                             break;
 
                         case "SourceAssetSearchPaths":
@@ -259,9 +259,9 @@ namespace UnityQGameFramework.Editor.ResourceTools
 
                 RefreshSourceAssetSearchPaths();
             }
-            catch
+            catch (Exception exception)
             {
-                File.Delete(m_ConfigurationPath);
+                Debug.LogWarning("无法读取资源编辑器配置，已保留原文件：" + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
 
@@ -292,7 +292,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 XmlAttribute xmlAttribute = null;
 
                 xmlElement = xmlDocument.CreateElement("SourceAssetRootPath");
-                xmlElement.InnerText = SourceAssetRootPath.ToString();
+                xmlElement.InnerText = ConfigurationPath.RelativeToConfiguration(m_ConfigurationPath, SourceAssetRootPath);
                 xmlSettings.AppendChild(xmlElement);
 
                 xmlElement = xmlDocument.CreateElement("SourceAssetSearchPaths");
@@ -332,13 +332,9 @@ namespace UnityQGameFramework.Editor.ResourceTools
                 xmlDocument.Save(m_ConfigurationPath);
                 AssetDatabase.Refresh();
             }
-            catch
+            catch (Exception exception)
             {
-                if (File.Exists(m_ConfigurationPath))
-                {
-                    File.Delete(m_ConfigurationPath);
-                }
-
+                Debug.LogWarning("无法保存资源编辑器配置：" + m_ConfigurationPath + "\n" + exception.Message);
                 return false;
             }
 

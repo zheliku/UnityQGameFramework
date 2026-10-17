@@ -1,131 +1,66 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
 namespace UnityQGameFramework.Editor
 {
-    /// <summary>
-    /// 构建配置相关的实用函数。
-    /// </summary>
     internal static class BuildSettings
     {
-        private static readonly string s_ConfigurationPath = null;
-        private static readonly List<string> s_DefaultSceneNames = new List<string>();
-        private static readonly List<string> s_SearchScenePaths = new List<string>();
+        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/Default Scenes", false, 20)]
+        public static void DefaultScenes() => Apply(false);
 
-        static BuildSettings()
+        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/All Scenes", false, 21)]
+        public static void AllScenes() => Apply(true);
+
+        private static void Apply(bool includeSearchPaths)
         {
-            s_ConfigurationPath = Type.GetConfigurationPath<BuildSettingsConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/BuildSettings.xml"));
-            s_DefaultSceneNames.Clear();
-            s_SearchScenePaths.Clear();
-
-            if (!File.Exists(s_ConfigurationPath))
-            {
-                return;
-            }
-
             try
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(s_ConfigurationPath);
-                XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityQGameFramework");
-                XmlNode xmlBuildSettings = xmlRoot.SelectSingleNode("BuildSettings");
-                XmlNode xmlDefaultScenes = xmlBuildSettings.SelectSingleNode("DefaultScenes");
-                XmlNode xmlSearchScenePaths = xmlBuildSettings.SelectSingleNode("SearchScenePaths");
-
-                XmlNodeList xmlNodeList = null;
-                XmlNode xmlNode = null;
-
-                xmlNodeList = xmlDefaultScenes.ChildNodes;
-                for (int i = 0; i < xmlNodeList.Count; i++)
-                {
-                    xmlNode = xmlNodeList.Item(i);
-                    if (xmlNode.Name != "DefaultScene")
-                    {
-                        continue;
-                    }
-
-                    string defaultSceneName = xmlNode.Attributes.GetNamedItem("Name").Value;
-                    s_DefaultSceneNames.Add(defaultSceneName);
-                }
-
-                xmlNodeList = xmlSearchScenePaths.ChildNodes;
-                for (int i = 0; i < xmlNodeList.Count; i++)
-                {
-                    xmlNode = xmlNodeList.Item(i);
-                    if (xmlNode.Name != "SearchScenePath")
-                    {
-                        continue;
-                    }
-
-                    string searchScenePath = xmlNode.Attributes.GetNamedItem("Path").Value;
-                    s_SearchScenePaths.Add(searchScenePath);
-                }
+                string[] paths = ReadScenePaths(includeSearchPaths);
+                // Validate the complete list before replacing the host project's scenes.
+                EditorBuildSettings.scenes = Array.ConvertAll(paths, path => new EditorBuildSettingsScene(path, true));
+                Debug.Log("QGF 已更新构建场景：" + paths.Length);
             }
-            catch
-            {
-            }
+            catch (Exception exception) { Debug.LogWarning("QGF 未修改构建场景：" + exception.Message); }
         }
 
-        /// <summary>
-        /// 将构建场景设置为默认。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/Default Scenes", false, 20)]
-        public static void DefaultScenes()
+        internal static string[] ReadScenePaths(bool includeSearchPaths)
         {
-            HashSet<string> sceneNames = new HashSet<string>();
-            foreach (string sceneName in s_DefaultSceneNames)
+            string configuration = Type.GetConfigurationPath<BuildSettingsConfigPathAttribute>()
+                ?? Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/BuildSettings.xml");
+            if (!File.Exists(configuration)) throw new FileNotFoundException("未找到构建场景配置。", configuration);
+            var document = new XmlDocument();
+            document.Load(configuration);
+            XmlNode root = document.SelectSingleNode("/UnityQGameFramework/BuildSettings")
+                ?? throw new InvalidDataException("BuildSettings.xml 缺少 BuildSettings 节点。");
+            var scenes = new List<string>();
+            foreach (XmlNode node in root.SelectNodes("DefaultScenes/DefaultScene"))
             {
-                sceneNames.Add(sceneName);
+                string path = ConfigurationPath.ResolveAssetPath(configuration, node.Attributes?["Name"]?.Value);
+                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(path) == null) throw new FileNotFoundException("场景不存在。", path);
+                if (!scenes.Contains(path)) scenes.Add(path);
             }
-
-            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>();
-            foreach (string sceneName in sceneNames)
+            if (includeSearchPaths)
             {
-                scenes.Add(new EditorBuildSettingsScene(sceneName, true));
+                foreach (XmlNode node in root.SelectNodes("SearchScenePaths/SearchScenePath"))
+                {
+                    string folder = ConfigurationPath.ResolveAssetPath(configuration, node.Attributes?["Path"]?.Value);
+                    if (!AssetDatabase.IsValidFolder(folder)) throw new DirectoryNotFoundException(folder);
+                    foreach (string path in AssetDatabase.FindAssets("t:Scene", new[] { folder }).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p, StringComparer.Ordinal))
+                        if (!scenes.Contains(path)) scenes.Add(path);
+                }
             }
-
-            EditorBuildSettings.scenes = scenes.ToArray();
-
-            Debug.Log("Set scenes of build settings to default scenes.");
-        }
-
-        /// <summary>
-        /// 将构建场景设置为所有。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Scenes in Build Settings/All Scenes", false, 21)]
-        public static void AllScenes()
-        {
-            HashSet<string> sceneNames = new HashSet<string>();
-            foreach (string sceneName in s_DefaultSceneNames)
-            {
-                sceneNames.Add(sceneName);
-            }
-
-            string[] sceneGuids = AssetDatabase.FindAssets("t:Scene", s_SearchScenePaths.ToArray());
-            foreach (string sceneGuid in sceneGuids)
-            {
-                string sceneName = AssetDatabase.GUIDToAssetPath(sceneGuid);
-                sceneNames.Add(sceneName);
-            }
-
-            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>();
-            foreach (string sceneName in sceneNames)
-            {
-                scenes.Add(new EditorBuildSettingsScene(sceneName, true));
-            }
-
-            EditorBuildSettings.scenes = scenes.ToArray();
-
-            Debug.Log("Set scenes of build settings to all scenes.");
+            if (scenes.Count == 0) throw new InvalidDataException("配置未指定任何有效场景，不会清空当前场景列表。");
+            return scenes.ToArray();
         }
     }
 }

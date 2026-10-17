@@ -21,9 +21,9 @@ Unity 的 `FrameworkComponent.Awake` 向 `GameEntry` 注册组件。BaseComponen
 | Resource | 资源版本、校验、更新、依赖加载与池化 | Download、FileSystem、ObjectPool | 3 |
 | Scene | 场景加载/卸载状态及回调 | Resource | 2 |
 | Fsm | 具名状态机、状态转换与状态数据 | 引用池 | 1 |
-| Config | 标量配置解析与查询 | Resource、解析辅助器 | 0 |
+| Config | TOML 标量配置解析与查询 | Resource、默认辅助器使用 Tomlyn | 0 |
 | DataNode | 树状数据结点与变量 | 引用池 | 0 |
-| DataTable | 表、行和表解析器 | Resource、读表辅助器 | 0 |
+| DataTable | Luban 记录的只读查询视图与整批注册 | Unity 层加载 Catalog，Core 无引擎依赖 | 0 |
 | Entity | 实体分组、显示、隐藏、挂接和回收 | Resource、ObjectPool | 0 |
 | Localization | 语言与字典解析 | Resource、字典辅助器 | 0 |
 | Network | 频道、连接、收发、心跳及包辅助器 | Socket、引用池 | 0 |
@@ -56,4 +56,4 @@ Unity 版本相关内容集中于 Runtime/Unity、Editor 和可选示例。对�
 
 编辑器使用 TypeCache 和 CompilationPipeline 发现派生类型，支持业务 asmdef，并过滤编辑器专属程序集。核心反射工具读取当前已加载程序集，保留成功的类型缓存，避免首次初始化快照漏掉后加载的程序集；类型加载异常时仍返回可加载类型。
 
-本阶段没有引入第二套事件系统、依赖注入容器或配置生成器。后续架构融合应明确对象所有权、初始化、更新和销毁边界，再接入现有模块。
+DataTableComponent 通过泛型工厂接收业务生成的 Luban Tables，解析全部引用后原子注册 Core 查询视图；框架不引用游戏程序集。生成器、目录分工与生命周期见 [Luban](luban.md)。未引入 QFramework 架构、第二套事件系统或依赖注入容器。

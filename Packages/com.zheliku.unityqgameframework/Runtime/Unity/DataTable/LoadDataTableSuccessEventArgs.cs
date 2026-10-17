@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -51,15 +51,14 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 创建加载数据表成功事件。
         /// </summary>
-        /// <param name="e">内部事件。</param>
         /// <returns>创建的加载数据表成功事件。</returns>
-        public static LoadDataTableSuccessEventArgs Create(ReadDataSuccessEventArgs e)
+        public static LoadDataTableSuccessEventArgs Create(string assetName, float duration, object userData)
         {
-            LoadDataTableSuccessEventArgs loadDataTableSuccessEventArgs = ReferencePool.Acquire<LoadDataTableSuccessEventArgs>();
-            loadDataTableSuccessEventArgs.DataTableAssetName = e.DataAssetName;
-            loadDataTableSuccessEventArgs.Duration = e.Duration;
-            loadDataTableSuccessEventArgs.UserData = e.UserData;
-            return loadDataTableSuccessEventArgs;
+            var args = ReferencePool.Acquire<LoadDataTableSuccessEventArgs>();
+            args.DataTableAssetName = assetName;
+            args.Duration = duration;
+            args.UserData = userData;
+            return args;
         }
 
         /// <summary>

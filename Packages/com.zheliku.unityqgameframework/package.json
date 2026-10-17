@@ -2,7 +2,7 @@
   "name": "com.zheliku.unityqgameframework",
   "version": "0.1.0-exp.2",
   "displayName": "UnityQGameFramework",
-  "description": "Unity Q Game Framework foundation: modular C# core, Unity runtime components and editor tools for Unity 2022.3 LTS and Unity 6. Architecture integration and data workflow upgrades are planned separately.",
+  "description": "Modular QGF core and Unity components for Unity 2022.3 LTS and Unity 6, with Luban-backed data tables, Excel workflows and Unity editor generation tools.",
   "unity": "2022.3",
   "keywords": [
     "game-framework",

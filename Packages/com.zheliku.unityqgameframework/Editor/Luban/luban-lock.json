@@ -1,0 +1,21 @@
+{
+  "generator": {
+    "version": "5.1.0",
+    "commit": "df34215d2e22035073d1af83d44e3ac0744dc3b3",
+    "sha256": "bac9a1b8d69cfeaa7ef1d8c67b34a007324d1cd158e0b14294521b3879ba5213"
+  },
+  "templates": {
+    "version": 1,
+    "base": "Luban 5.1.0 cs-bin"
+  },
+  "runtime": {
+    "packageVersion": "1.2.0",
+    "commit": "061314200e2f03307c4d90b448e1de7b85431905",
+    "source": "https://github.com/focus-creative-games/luban_unity",
+    "upstreamSha256": {
+      "ByteBuf.cs": "27ea3cbaf57c6893cfae65ded367eb265ed96df5443c3c4b1694f86e6b61a3e8",
+      "BeanBase.cs": "ce6c2d7cbbacc1bc868d22698c7163ff7fa65e7790c6b927d07cf191e9497b71",
+      "StringUtil.cs": "0ea8253ea329efccda565ae2968bed511f6eca13a814fa42eb75521b0370e948"
+    }
+  }
+}

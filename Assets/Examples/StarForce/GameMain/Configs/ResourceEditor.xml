@@ -2,7 +2,7 @@
 <UnityQGameFramework>
   <ResourceEditor>
     <Settings>
-      <SourceAssetRootPath>Assets/GameMain</SourceAssetRootPath>
+      <SourceAssetRootPath>..</SourceAssetRootPath>
       <SourceAssetSearchPaths>
         <SourceAssetSearchPath RelativePath="" />
       </SourceAssetSearchPaths>

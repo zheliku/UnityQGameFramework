@@ -1,129 +1,157 @@
-﻿//------------------------------------------------------------
-// Unity Q Game Framework
-// Copyright © 2013-2021 Jiang Yin. All rights reserved.
-//------------------------------------------------------------
-
-using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataTable;
-using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityQGameFramework.Core;
+using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Luban;
 
 namespace UnityQGameFramework.Runtime
 {
-    /// <summary>
-    /// 数据表组件。
-    /// </summary>
+    /// <summary>QGF data-table facade, backed by generated Luban data.</summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("Unity Q Game Framework/Data Table")]
     public sealed class DataTableComponent : FrameworkComponent
     {
-        private const int DefaultPriority = 0;
+        private IDataTableManager m_DataTableManager;
+        private ResourceComponent m_ResourceComponent;
+        private EventComponent m_EventComponent;
+        private int m_LoadSerial;
 
-        private IDataTableManager m_DataTableManager = null;
-        private EventComponent m_EventComponent = null;
+        [SerializeField] private LubanDataTableCatalog m_LubanCatalog;
+        public LubanDataTableCatalog Catalog => m_LubanCatalog;
 
-        [SerializeField]
-        private bool m_EnableLoadDataTableUpdateEvent = false;
+        public int Count => m_DataTableManager?.Count ?? 0;
+        public bool IsLoading { get; private set; }
+        public LubanTableSet LubanTables { get; private set; }
 
-        [SerializeField]
-        private bool m_EnableLoadDataTableDependencyAssetEvent = false;
-
-        [SerializeField]
-        private string m_DataTableHelperTypeName = "UnityQGameFramework.Runtime.DefaultDataTableHelper";
-
-        [SerializeField]
-        private DataTableHelperBase m_CustomDataTableHelper = null;
-
-        [SerializeField]
-        private int m_CachedBytesSize = 0;
-
-        /// <summary>
-        /// 获取数据表数量。
-        /// </summary>
-        public int Count => m_DataTableManager.Count;
-
-        /// <summary>
-        /// 获取缓冲二进制流的大小。
-        /// </summary>
-        public int CachedBytesSize => m_DataTableManager.CachedBytesSize;
-
-        /// <summary>
-        /// 游戏框架组件初始化。
-        /// </summary>
         protected override void Awake()
         {
             base.Awake();
-
             m_DataTableManager = FrameworkEntry.GetModule<IDataTableManager>();
-            if (m_DataTableManager == null)
-            {
-                Log.Fatal("Data table manager is invalid.");
-                return;
-            }
         }
 
         private void Start()
         {
-            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
-            if (baseComponent == null)
-            {
-                Log.Fatal("Base component is invalid.");
-                return;
-            }
-
+            m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
-            if (m_EventComponent == null)
-            {
-                Log.Fatal("Event component is invalid.");
-                return;
-            }
-
-            if (baseComponent.EditorResourceMode)
-            {
-                m_DataTableManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_DataTableManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
-
-            DataTableHelperBase dataTableHelper = Helper.CreateHelper(m_DataTableHelperTypeName, m_CustomDataTableHelper);
-            if (dataTableHelper == null)
-            {
-                Log.Error("Can not create data table helper.");
-                return;
-            }
-
-            dataTableHelper.name = "Data Table Helper";
-            Transform transform = dataTableHelper.transform;
-            transform.SetParent(this.transform);
-            transform.localScale = Vector3.one;
-
-            m_DataTableManager.SetDataProviderHelper(dataTableHelper);
-            m_DataTableManager.SetDataTableHelper(dataTableHelper);
-            if (m_CachedBytesSize > 0)
-            {
-                EnsureCachedBytesSize(m_CachedBytesSize);
-            }
         }
 
-        /// <summary>
-        /// 确保二进制流缓存分配足够大小的内存并缓存。
-        /// </summary>
-        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
-        public void EnsureCachedBytesSize(int ensureSize)
+        /// <summary>Load the catalog assigned in the Inspector. Its asset references survive folder moves.</summary>
+        public void LoadDataTables<T>(Func<Func<string, ByteBuf>, T> factory, object userData = null) where T : LubanTableSet
         {
-            m_DataTableManager.EnsureCachedBytesSize(ensureSize);
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+            if (m_LubanCatalog == null) throw new InvalidOperationException("Assign a Luban catalog on the DataTable component.");
+            if (m_EventComponent == null) throw new InvalidOperationException("DataTableComponent has not started.");
+            if (IsLoading) throw new InvalidOperationException("A data-table load is already in progress.");
+            if (LubanTables != null) throw new InvalidOperationException("Unload the current table set before loading another one.");
+            try
+            {
+                PublishTables(m_LubanCatalog, factory);
+            }
+            catch (Exception exception)
+            {
+                Fail(m_LubanCatalog.name, exception.Message, userData);
+                return;
+            }
+            m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(m_LubanCatalog.name, 0f, userData));
         }
 
-        /// <summary>
-        /// 释放缓存的二进制流。
-        /// </summary>
-        public void FreeCachedBytes()
+        private void PublishTables<T>(LubanDataTableCatalog catalog, Func<Func<string, ByteBuf>, T> factory) where T : LubanTableSet
         {
-            m_DataTableManager.FreeCachedBytes();
+            Dictionary<string, TextAsset> assets = catalog.GetAssets();
+            var buffers = new List<ByteBuf>();
+            T tables = factory(file =>
+            {
+                if (!assets.TryGetValue(file, out TextAsset bytes))
+                    throw new InvalidOperationException("Missing Luban data file: " + file);
+                var buffer = new ByteBuf(bytes.bytes);
+                buffers.Add(buffer);
+                return buffer;
+            });
+            if (tables == null || tables.SchemaHash != catalog.SchemaHash)
+                throw new InvalidOperationException("Luban schema and generated C# do not match. Regenerate the configuration.");
+            foreach (ByteBuf buffer in buffers)
+                if (buffer.NotEmpty) throw new InvalidOperationException("Trailing bytes in Luban data. Check the generated C# version.");
+            m_DataTableManager.RegisterDataTables(tables.DataTables);
+            LubanTables = tables;
+        }
+
+        /// <summary>Load one catalog, resolve all Luban references, then publish the complete set.</summary>
+        /// <returns>A request serial ID. Cancellation ignores late callbacks and still releases their assets.</returns>
+        public int LoadDataTables<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
+            object userData = null, int priority = 0) where T : LubanTableSet
+        {
+            if (string.IsNullOrWhiteSpace(catalogAssetName)) throw new ArgumentException("Catalog asset name is required.", nameof(catalogAssetName));
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+            if (m_ResourceComponent == null || m_EventComponent == null) throw new InvalidOperationException("DataTableComponent has not started.");
+            if (IsLoading) throw new InvalidOperationException("A data-table load is already in progress.");
+            if (LubanTables != null) throw new InvalidOperationException("Unload the current table set before loading another one.");
+            int serial = ++m_LoadSerial;
+            IsLoading = true;
+            ResourceComponent resource = m_ResourceComponent;
+            try
+            {
+                resource.LoadAsset(catalogAssetName, typeof(LubanDataTableCatalog), priority, new LoadAssetCallbacks(
+                (assetName, asset, duration, context) =>
+                {
+                    try
+                    {
+                        if (this == null || serial != m_LoadSerial) return;
+                        var catalog = asset as LubanDataTableCatalog;
+                        if (catalog == null) throw new InvalidOperationException("The asset is not a Luban data-table catalog.");
+                        PublishTables(catalog, factory);
+                        IsLoading = false;
+                        m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(assetName, duration, userData));
+                    }
+                    catch (Exception exception)
+                    {
+                        if (this != null && serial == m_LoadSerial) Fail(assetName, exception.Message, userData);
+                    }
+                    finally { resource.UnloadAsset(asset); }
+                },
+                (assetName, status, error, context) =>
+                {
+                    if (this != null && serial == m_LoadSerial) Fail(assetName, error, userData);
+                }), userData);
+            }
+            catch
+            {
+                IsLoading = false;
+                throw;
+            }
+            return serial;
+        }
+
+        public void CancelLoadDataTables()
+        {
+            ++m_LoadSerial;
+            IsLoading = false;
+        }
+
+        /// <summary>Access advanced Luban indexes through the same component.</summary>
+        public T GetLubanTables<T>() where T : LubanTableSet => LubanTables as T;
+
+        /// <summary>Release the complete set, including native cross-table references.</summary>
+        public void UnloadDataTables()
+        {
+            CancelLoadDataTables();
+            if (LubanTables == null) return;
+            foreach (DataTableBase table in LubanTables.DataTables)
+            {
+                if (ReferenceEquals(m_DataTableManager.GetDataTable(table.Type, table.Name), table))
+                    m_DataTableManager.DestroyDataTable(table);
+            }
+            LubanTables = null;
+        }
+
+        private void OnDestroy() { UnloadDataTables(); }
+
+        private void Fail(string assetName, string error, object userData)
+        {
+            IsLoading = false;
+            Log.Warning("Load Luban data tables failed: {0}: {1}", assetName, error);
+            m_EventComponent.Fire(this, LoadDataTableFailureEventArgs.Create(assetName, error, userData));
         }
 
         /// <summary>
@@ -232,7 +260,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <returns>要创建的数据表。</returns>
-        public IDataTable<T> CreateDataTable<T>() where T : class, IDataRow, new()
+        public IDataTable<T> CreateDataTable<T>() where T : class, IDataRow
         {
             return CreateDataTable<T>(null);
         }
@@ -253,49 +281,14 @@ namespace UnityQGameFramework.Runtime
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>要创建的数据表。</returns>
-        public IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow, new()
+        public IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow
         {
-            IDataTable<T> dataTable = m_DataTableManager.CreateDataTable<T>(name);
-            DataTableBase dataTableBase = (DataTableBase)dataTable;
-            dataTableBase.ReadDataSuccess += OnReadDataSuccess;
-            dataTableBase.ReadDataFailure += OnReadDataFailure;
-
-            if (m_EnableLoadDataTableUpdateEvent)
-            {
-                dataTableBase.ReadDataUpdate += OnReadDataUpdate;
-            }
-
-            if (m_EnableLoadDataTableDependencyAssetEvent)
-            {
-                dataTableBase.ReadDataDependencyAsset += OnReadDataDependencyAsset;
-            }
-
-            return dataTable;
+            return m_DataTableManager.CreateDataTable<T>(name);
         }
 
-        /// <summary>
-        /// 创建数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <param name="name">数据表名称。</param>
-        /// <returns>要创建的数据表。</returns>
         public DataTableBase CreateDataTable(Type dataRowType, string name)
         {
-            DataTableBase dataTable = m_DataTableManager.CreateDataTable(dataRowType, name);
-            dataTable.ReadDataSuccess += OnReadDataSuccess;
-            dataTable.ReadDataFailure += OnReadDataFailure;
-
-            if (m_EnableLoadDataTableUpdateEvent)
-            {
-                dataTable.ReadDataUpdate += OnReadDataUpdate;
-            }
-
-            if (m_EnableLoadDataTableDependencyAssetEvent)
-            {
-                dataTable.ReadDataDependencyAsset += OnReadDataDependencyAsset;
-            }
-
-            return dataTable;
+            return m_DataTableManager.CreateDataTable(dataRowType, name);
         }
 
         /// <summary>
@@ -303,7 +296,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable<T>() where T : IDataRow, new()
+        public bool DestroyDataTable<T>() where T : IDataRow
         {
             return m_DataTableManager.DestroyDataTable<T>();
         }
@@ -361,25 +354,5 @@ namespace UnityQGameFramework.Runtime
             return m_DataTableManager.DestroyDataTable(dataTable);
         }
 
-        private void OnReadDataSuccess(object sender, ReadDataSuccessEventArgs e)
-        {
-            m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(e));
-        }
-
-        private void OnReadDataFailure(object sender, ReadDataFailureEventArgs e)
-        {
-            Log.Warning("Load data table failure, asset name '{0}', error message '{1}'.", e.DataAssetName, e.ErrorMessage);
-            m_EventComponent.Fire(this, LoadDataTableFailureEventArgs.Create(e));
-        }
-
-        private void OnReadDataUpdate(object sender, ReadDataUpdateEventArgs e)
-        {
-            m_EventComponent.Fire(this, LoadDataTableUpdateEventArgs.Create(e));
-        }
-
-        private void OnReadDataDependencyAsset(object sender, ReadDataDependencyAssetEventArgs e)
-        {
-            m_EventComponent.Fire(this, LoadDataTableDependencyAssetEventArgs.Create(e));
-        }
     }
 }

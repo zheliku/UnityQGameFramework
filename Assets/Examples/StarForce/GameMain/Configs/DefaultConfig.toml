@@ -1,0 +1,7 @@
+# Game-wide settings. Row-based numeric data belongs in Luban.
+[Game]
+Id = "Star Force"
+
+[Scene]
+Menu = 1
+Main = 2

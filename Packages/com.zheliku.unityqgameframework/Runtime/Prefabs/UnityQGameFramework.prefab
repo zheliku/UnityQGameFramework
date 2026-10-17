@@ -780,11 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066418ab853614483ea44b531049f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EnableLoadDataTableUpdateEvent: 0
-  m_EnableLoadDataTableDependencyAssetEvent: 0
-  m_DataTableHelperTypeName: UnityQGameFramework.Runtime.DefaultDataTableHelper
-  m_CustomDataTableHelper: {fileID: 0}
-  m_CachedBytesSize: 0
+  m_LubanCatalog: {fileID: 0}
 --- !u!114 &11454530
 MonoBehaviour:
   m_ObjectHideFlags: 1

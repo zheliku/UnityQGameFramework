@@ -23,6 +23,22 @@ UnityQGameFramework 的框架源码沿用 MIT 许可；下列组件保留各自�
 
 The binary is retained to preserve the upstream compression baseline. Dependency replacement is a later modernization task.
 
+## Luban
+
+- Official generator: [Luban v5.1.0](https://github.com/focus-creative-games/luban/tree/v5.1.0), commit `df34215d2e22035073d1af83d44e3ac0744dc3b3`.
+- Templates copied from `Templates/cs-bin/bean.sbn`, `table.sbn`, `tables.sbn`; changes adapt the private runtime namespace, implement `IDataRow` and publish QGF views. License retained at `Editor/Luban/Templates~/LICENSE.txt`.
+- Minimal binary runtime: [luban_unity](https://github.com/focus-creative-games/luban_unity/tree/061314200e2f03307c4d90b448e1de7b85431905), commit `061314200e2f03307c4d90b448e1de7b85431905`, package version 1.2.0. Only `ByteBuf.cs`, `BeanBase.cs`, `StringUtil.cs` are bundled. Copyright 2025 Code Philosophy, MIT.
+- Runtime changes: namespace `Luban` → `UnityQGameFramework.Luban`, separate assembly with unsafe code enabled. Full runtime license: `Runtime/Luban/LICENSE.txt`.
+- The compiler is downloaded on demand into Library, with release SHA-256 `bac9a1b8d69cfeaa7ef1d8c67b34a007324d1cd158e0b14294521b3879ba5213`. No compiler binaries are bundled in the UPM package.
+- Upstream source hashes and version lock: `Editor/Luban/luban-lock.json`.
+
+## Tomlyn 0.19.0
+
+- Official package: [Tomlyn 0.19.0](https://www.nuget.org/packages/Tomlyn/0.19.0), `lib/netstandard2.0/Tomlyn.dll`, bundled unchanged in `Runtime/Plugins`.
+- Source: [xoofx/Tomlyn, tag 0.19.0](https://github.com/xoofx/Tomlyn/tree/0.19.0). Copyright (c) 2019-2022, Alexandre Mutel. BSD-2-Clause; [full license](Documentation~/Licenses/Tomlyn-BSD-2-Clause.txt).
+- DLL SHA-256: `a7d2ea40533a5a912bc6a64ab8f1347e60fe92ea0ab456d423b64db2214c904b`.
+- The package archive SHA-512 was checked against the official NuGet catalog. QGF uses the untyped TOML model; its adapter flattens scalar settings into the Config module's key/value API. QGF does not implement TOML grammar.
+
 ## Design references only
 
-QFramework, GodotGameFramework and the local GameZMXY project are reference material for later work. This import does not include their source code, gameplay content or generated data. Record their actual licenses and commits when code is incorporated.
+QFramework, GodotGameFramework and the local GameZMXY project are design references. This import does not include their source code, gameplay content or generated data. Record their actual licenses and commits when code is incorporated.

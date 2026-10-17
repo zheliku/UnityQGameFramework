@@ -1,9 +1,8 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 
@@ -12,12 +11,9 @@ namespace UnityQGameFramework.Core.DataTable
     /// <summary>
     /// 数据表管理器。
     /// </summary>
-    internal sealed partial class DataTableManager : FrameworkModule, IDataTableManager
+    internal sealed class DataTableManager : FrameworkModule, IDataTableManager
     {
         private readonly Dictionary<TypeNamePair, DataTableBase> m_DataTables;
-        private IResourceManager m_ResourceManager;
-        private IDataProviderHelper<DataTableBase> m_DataProviderHelper;
-        private IDataTableHelper m_DataTableHelper;
 
         /// <summary>
         /// 初始化数据表管理器的新实例。
@@ -25,20 +21,12 @@ namespace UnityQGameFramework.Core.DataTable
         public DataTableManager()
         {
             m_DataTables = new Dictionary<TypeNamePair, DataTableBase>();
-            m_ResourceManager = null;
-            m_DataProviderHelper = null;
-            m_DataTableHelper = null;
         }
 
         /// <summary>
         /// 获取数据表数量。
         /// </summary>
         public int Count => m_DataTables.Count;
-
-        /// <summary>
-        /// 获取缓冲二进制流的大小。
-        /// </summary>
-        public int CachedBytesSize => DataProvider<DataTableBase>.CachedBytesSize;
 
         /// <summary>
         /// 数据表管理器轮询。
@@ -62,63 +50,20 @@ namespace UnityQGameFramework.Core.DataTable
             m_DataTables.Clear();
         }
 
-        /// <summary>
-        /// 设置资源管理器。
-        /// </summary>
-        /// <param name="resourceManager">资源管理器。</param>
-        public void SetResourceManager(IResourceManager resourceManager)
+        /// <summary>Validate the entire batch before exposing any table to callers.</summary>
+        public void RegisterDataTables(IEnumerable<DataTableBase> tables)
         {
-            if (resourceManager == null)
+            if (tables == null) throw new ArgumentNullException(nameof(tables));
+            var pending = new Dictionary<TypeNamePair, DataTableBase>();
+            foreach (DataTableBase table in tables)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                if (table == null) throw new FrameworkException("Data table is invalid.");
+                var key = new TypeNamePair(table.Type, table.Name);
+                if (m_DataTables.ContainsKey(key) || pending.ContainsKey(key))
+                    throw new FrameworkException("Data table already exists: " + key);
+                pending.Add(key, table);
             }
-
-            m_ResourceManager = resourceManager;
-        }
-
-        /// <summary>
-        /// 设置数据表数据提供者辅助器。
-        /// </summary>
-        /// <param name="dataProviderHelper">数据表数据提供者辅助器。</param>
-        public void SetDataProviderHelper(IDataProviderHelper<DataTableBase> dataProviderHelper)
-        {
-            if (dataProviderHelper == null)
-            {
-                throw new FrameworkException("Data provider helper is invalid.");
-            }
-
-            m_DataProviderHelper = dataProviderHelper;
-        }
-
-        /// <summary>
-        /// 设置数据表辅助器。
-        /// </summary>
-        /// <param name="dataTableHelper">数据表辅助器。</param>
-        public void SetDataTableHelper(IDataTableHelper dataTableHelper)
-        {
-            if (dataTableHelper == null)
-            {
-                throw new FrameworkException("Data table helper is invalid.");
-            }
-
-            m_DataTableHelper = dataTableHelper;
-        }
-
-        /// <summary>
-        /// 确保二进制流缓存分配足够大小的内存并缓存。
-        /// </summary>
-        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
-        public void EnsureCachedBytesSize(int ensureSize)
-        {
-            DataProvider<DataTableBase>.EnsureCachedBytesSize(ensureSize);
-        }
-
-        /// <summary>
-        /// 释放缓存的二进制流。
-        /// </summary>
-        public void FreeCachedBytes()
-        {
-            DataProvider<DataTableBase>.FreeCachedBytes();
+            foreach (var table in pending) m_DataTables.Add(table.Key, table.Value);
         }
 
         /// <summary>
@@ -284,7 +229,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <returns>要创建的数据表。</returns>
-        public IDataTable<T> CreateDataTable<T>() where T : class, IDataRow, new()
+        public IDataTable<T> CreateDataTable<T>() where T : class, IDataRow
         {
             return CreateDataTable<T>(string.Empty);
         }
@@ -305,18 +250,8 @@ namespace UnityQGameFramework.Core.DataTable
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>要创建的数据表。</returns>
-        public IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow, new()
+        public IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow
         {
-            if (m_ResourceManager == null)
-            {
-                throw new FrameworkException("You must set resource manager first.");
-            }
-
-            if (m_DataProviderHelper == null)
-            {
-                throw new FrameworkException("You must set data provider helper first.");
-            }
-
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasDataTable<T>(name))
             {
@@ -324,8 +259,6 @@ namespace UnityQGameFramework.Core.DataTable
             }
 
             DataTable<T> dataTable = new DataTable<T>(name);
-            dataTable.SetResourceManager(m_ResourceManager);
-            dataTable.SetDataProviderHelper(m_DataProviderHelper);
             m_DataTables.Add(typeNamePair, dataTable);
             return dataTable;
         }
@@ -338,16 +271,6 @@ namespace UnityQGameFramework.Core.DataTable
         /// <returns>要创建的数据表。</returns>
         public DataTableBase CreateDataTable(Type dataRowType, string name)
         {
-            if (m_ResourceManager == null)
-            {
-                throw new FrameworkException("You must set resource manager first.");
-            }
-
-            if (m_DataProviderHelper == null)
-            {
-                throw new FrameworkException("You must set data provider helper first.");
-            }
-
             if (dataRowType == null)
             {
                 throw new FrameworkException("Data row type is invalid.");
@@ -365,9 +288,7 @@ namespace UnityQGameFramework.Core.DataTable
             }
 
             Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
-            DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
-            dataTable.SetResourceManager(m_ResourceManager);
-            dataTable.SetDataProviderHelper(m_DataProviderHelper);
+            DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, new object[] { name, null });
             m_DataTables.Add(typeNamePair, dataTable);
             return dataTable;
         }

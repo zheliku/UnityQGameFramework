@@ -1,0 +1,48 @@
+using UnityQGameFramework.Luban;
+using Luban = UnityQGameFramework.Luban;
+using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Runtime;
+
+{{namespace_with_grace_begin __namespace}}
+public partial class {{__name}} : LubanTableSet
+{
+    {{~for table in __tables ~}}
+{{~if table.comment != '' ~}}
+    /// <summary>
+    /// {{escape_comment table.comment}}
+    /// </summary>
+{{~end~}}
+    public {{table.full_name}} {{format_property_name __code_style table.name}} {get; }
+    {{~end~}}
+
+    public override string SchemaHash => "__QGF_SCHEMA_HASH__";
+    public override System.Collections.Generic.IReadOnlyList<DataTableBase> DataTables { get; }
+
+    public {{__name}}(System.Func<string, ByteBuf> loader)
+    {
+        {{~for table in __tables ~}}
+        {{format_property_name __code_style table.name}} = new {{table.full_name}}(loader("{{table.output_data_file}}"));
+        {{~end~}}
+        ResolveRef();
+        DataTables = System.Array.AsReadOnly(new DataTableBase[]
+        {
+        {{~qgf_row_types = []~}}
+        {{~for table in __tables~}}
+        {{~if table.is_map_table && !table.value_ttype.def_bean.is_value_type && table.key_ttype.type_name == 'int' && (format_property_name __code_style table.index_field.name) == 'Id'~}}
+            {{~qgf_row_type = declaring_type_name table.value_ttype~}}
+            new DataTable<{{qgf_row_type}}>({{if array.contains qgf_row_types qgf_row_type}}"{{table.full_name}}"{{else}}string.Empty{{end}}, {{format_property_name __code_style table.name}}.DataMap),
+            {{~qgf_row_types = array.add qgf_row_types qgf_row_type~}}
+        {{~end~}}
+        {{~end~}}
+        });
+    }
+    
+    private void ResolveRef()
+    {
+        {{~for table in __tables ~}}
+        {{format_property_name __code_style table.name}}.ResolveRef(this);
+        {{~end~}}
+    }
+}
+
+{{namespace_with_grace_end __namespace}}

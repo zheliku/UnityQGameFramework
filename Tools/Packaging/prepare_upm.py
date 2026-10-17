@@ -9,6 +9,8 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tarfile
 
 
@@ -41,6 +43,8 @@ def main():
         type=Path,
         help="New output directory under Artifacts~/; existing directories are refused",
     )
+    parser.add_argument('--require-committed', action='store_true',
+                        help='Reject unpublished package changes before staging a release')
     args = parser.parse_args()
     package_source = root / "Packages/com.zheliku.unityqgameframework"
     example_source = root / "Assets/Examples/StarForce"
@@ -59,6 +63,11 @@ def main():
         parser.error("The StarForce development example is missing")
     if any(path.name == ".git" for path in example_source.rglob("*")):
         parser.error("The example must not contain an upstream Git checkout")
+
+    check = [sys.executable, str(Path(__file__).with_name('check_package.py'))]
+    if args.require_committed:
+        check.append('--require-committed')
+    subprocess.run(check, check=True)
 
     # One editable source in Assets. Only this ignored staging tree gets Samples~.
     staged_package = output / "Packages" / manifest["name"]

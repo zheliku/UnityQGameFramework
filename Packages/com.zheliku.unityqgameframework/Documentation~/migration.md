@@ -30,3 +30,11 @@
 StarForce 的介绍、网站和帮助入口已指向本项目。旧演示服务器的版本检查与应用下载 URL 已清空；编辑器资源模式不依赖这些服务。若使用可更新资源模式，在 `GameMain/Configs/BuildInfo.txt` 配置自己的版本服务和下载地址，并为业务反射类型保留 linker 配置。
 
 MIT 版权和第三方许可继续保留；来源项目的名称只出现在必要的来源、许可及本迁移映射中。
+
+## Luban 数据表迁移
+
+DataTable 节点与组件 GUID 保留，查询继续使用 `GetDataTable<T>().GetDataRow(id)`。底层替换为 Luban 生成的 Tables；把生成的 Catalog 绑定到组件，预加载中调用 `LoadDataTables(loader => new Tables(loader), userData)`，一次发布完整表组。
+
+旧 TXT／行二进制读取、DataRowBase、ParseDataRow、数据表辅助器和行增删接口已移除，不再兼容这些生成与解析调用。旧行类型改为 Luban bean；手写逻辑迁入 partial Extensions。默认 schema 改为 `Datas/__tables__.xlsx`、`__beans__.xlsx`、`__enums__.xlsx`；普通表从数据工作表标题读取字段结构。查询范围、目录移动、异步资源加载及生命周期见 [Luban 使用说明](luban.md)。
+
+游戏 Config 的默认辅助器现在通过 Tomlyn 读取 UTF-8 TOML；旧 TXT／二进制配置需转换并更新业务加载路径。ConfigComponent 的键值查询接口及加载事件保留。StarForce 使用 DefaultConfig.toml，保留原 TXT 的 GUID，并同步资源集合引用。Localization 与编辑器工具 XML 不变。见 [配置文件说明](configuration.md)。

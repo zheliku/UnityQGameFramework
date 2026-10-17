@@ -36,14 +36,9 @@ namespace StarForce
                 return s_GameMainPath;
             }
         }
-        public static string GetConfigAsset(string assetName, bool fromBytes)
+        public static string GetConfigAsset(string assetName)
         {
-            return Utility.Text.Format(GameMainPath + "/Configs/{0}.{1}", assetName, fromBytes ? "bytes" : "txt");
-        }
-
-        public static string GetDataTableAsset(string assetName, bool fromBytes)
-        {
-            return Utility.Text.Format(GameMainPath + "/DataTables/{0}.{1}", assetName, fromBytes ? "bytes" : "txt");
+            return Utility.Text.Format(GameMainPath + "/Configs/{0}.toml", assetName);
         }
 
         public static string GetDictionaryAsset(string assetName, bool fromBytes)

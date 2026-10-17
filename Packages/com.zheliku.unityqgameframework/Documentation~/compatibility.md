@@ -14,6 +14,38 @@
 
 属性整理后，上述三个版本均重新通过独立工程的 9 项验证及 Player 启动，新增覆盖 null 元素查询和默认值类型键的哈希计算。开发宿主中 9795 条公共成员与 Unity 序列化字段记录与整理前一致；StarForce 鼠标移动、射击及 URP 检查已重新通过。
 
+## Luban 接入验证（2026-10-17）
+
+- Unity 2022.3.62f3、6000.3.24f1：独立 UPM `.tgz` 消费者编译和 Windows Mono Player 通过。11 张 StarForce 生成表经 DataTableComponent 查询与整组卸载；仅登记 Catalog 的 AssetBundle 构建、加载、解析及释放后读取也通过。Player 无运行错误；源 Excel、schema、Profile 未复制到消费者工程。
+- Unity 6000.3.24f1：StarForce 155 项原始数据核对、原生／QGF 记录一致性、筛选排序、具名表、取消异步请求、失败时整批不发布、资源模式加载通过。菜单进入战斗、原版鼠标移动／射击与 21 个 URP 材质检查通过。
+- 编辑器生成：默认工作区、缓存编译器安装入口、只读 UPM 包缓存中的模板、校验失败不覆盖输出、目录移动跟随、GUID 保留、用户文件保留和废弃生成文件清理均通过；重新指定输出目录时拒绝覆盖不属于该 Profile 的文件和 Catalog。
+- 模板：真实 Luban 生成并编译的跨表引用、同 bean 多表、容器、字符串键、值类型行、单例及列表表通过；常规 `int Id` class map 表继续使用 QGF 查询，其他类型使用原生 Tables。
+
+验证脚本在 `Tools/Validation`：`StarForceLubanValidation.cs`、`LubanEditorValidation.cs`、`luban_templates.py`、`prepare_luban_player.py`、`LubanPlayerValidation.cs` 与 `LubanRuntimeProbe.cs`。先用 `Tools/Packaging/prepare_upm.py --output <新的 Artifacts~ 子目录>` 暂存发行包，再创建消费者：
+
+```text
+python Tools/Validation/prepare_luban_player.py --package <暂存的 .tgz> --output <新的 Artifacts~ 子目录> --unity-version 6000.3.24f1
+Unity.exe -batchmode -nographics -projectPath <消费者目录> -executeMethod Luban.Validation.LubanPlayerValidation.Run -logFile <日志>
+```
+
+包缓存生成入口为 `Luban.Validation.LubanPlayerValidation.ValidateCachedGenerator`，另传 `-qgf-luban-generator <本机 Luban.dll>`。结果为 `Results/editor-result.json`、`player-result.json` 或 `generator-cache-result.json`。本轮未重跑 Unity 6.0 的 Luban 路径，也未验证完整 StarForce Player 发行和远程更新。
+
+## Excel schema 与 TOML 验证（2026-10-17）
+
+- 默认工作区与 StarForce 通过真实 Luban 重新生成：1 + 11 张表的 `.bytes` 与迁移前一致，既有输出与源表的 61 份保留 `.meta` 不变；旧 XML 定义及其 `.meta` 按迁移移除。
+- XLSX Diff 1.6.4 实际读取器可识别全部 12 份规范化工作簿；本机读取补丁同时支持历史中的前缀格式。StarForce 11 个工作表的全部单元格与格式元数据经读取器比较相同。
+- Unity 6000.3.24f1：StarForce TOML 预加载、菜单场景、11 张表及 155 项原数据比较通过；TOML 验证覆盖中文／BOM、不同区域设置、7 类失败的原子性、TextAsset 导入和原配置 GUID。
+- Unity 2022.3.62f3、6000.3.24f1：新 `.tgz` 独立消费者成功构建和运行 Windows Mono Player，AssetBundle 内的 TOML TextAsset 经 byte[] 解析后保留原三个值，11 张表读取／整组卸载通过，运行错误为 0。未验证 IL2CPP 和完整 StarForce Player 发行。
+- 只读 UPM 包缓存中的新 Excel schema 初始模板在 Unity 6000.3.24f1 成功创建工作区、生成一张 Item 表及 Catalog；不依赖仓库源码路径。
+
+脚本新增 `ExcelSchemaMigrationValidation.cs`、`TomlConfigValidation.cs` 和 `normalize_xlsx_namespaces.py`。工作簿规范化会逐 XML 比较命名空间展开后的元素／属性／文本，并检查 ZIP CRC；不以文件字节完全一致替代单元格语义比较。
+
+## 生产前复查（2026-10-18）
+
+本轮补充了真实 UPM Git URL 消费者：远端现有 main 通过基础框架编译和 Player；待发布本地版本通过隔离 Git 快照安装，在 Unity 2022.3.62f3、6000.3.24f1 首次自动建工作区、下载编译器、菜单生成／strict 校验、Luban/TOML AssetBundle 和 Windows Mono Player 均通过。Unity 6000.3.24f1 额外通过默认 Item 工作区从首次生成到 Player 查询的验证。
+
+新增文件写入失败回滚、Catalog 预检查和外部进程超时测试；查询 Inspector 不再按次分配整表数组及反射获取方法。GitHub 发布状态、脚本入口和未验证平台见 [生产前检查记录](production-readiness.md)。这不等同于 IL2CPP 或完整游戏发行的认证。
+
 ## 版本策略
 
 - 不保留 Unity 2021 及更早版本的条件分支；平台、编辑器和输入系统的必要分支继续保留。

@@ -1,9 +1,8 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 
@@ -19,39 +18,8 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         int Count { get; }
 
-        /// <summary>
-        /// 获取缓冲二进制流的大小。
-        /// </summary>
-        int CachedBytesSize { get; }
-
-        /// <summary>
-        /// 设置资源管理器。
-        /// </summary>
-        /// <param name="resourceManager">资源管理器。</param>
-        void SetResourceManager(IResourceManager resourceManager);
-
-        /// <summary>
-        /// 设置数据表数据提供者辅助器。
-        /// </summary>
-        /// <param name="dataProviderHelper">数据表数据提供者辅助器。</param>
-        void SetDataProviderHelper(IDataProviderHelper<DataTableBase> dataProviderHelper);
-
-        /// <summary>
-        /// 设置数据表辅助器。
-        /// </summary>
-        /// <param name="dataTableHelper">数据表辅助器。</param>
-        void SetDataTableHelper(IDataTableHelper dataTableHelper);
-
-        /// <summary>
-        /// 确保二进制流缓存分配足够大小的内存并缓存。
-        /// </summary>
-        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
-        void EnsureCachedBytesSize(int ensureSize);
-
-        /// <summary>
-        /// 释放缓存的二进制流。
-        /// </summary>
-        void FreeCachedBytes();
+        /// <summary>Publish a complete configuration set after validation, without partial registration.</summary>
+        void RegisterDataTables(IEnumerable<DataTableBase> tables);
 
         /// <summary>
         /// 是否存在数据表。
@@ -130,7 +98,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <returns>要创建的数据表。</returns>
-        IDataTable<T> CreateDataTable<T>() where T : class, IDataRow, new();
+        IDataTable<T> CreateDataTable<T>() where T : class, IDataRow;
 
         /// <summary>
         /// 创建数据表。
@@ -145,7 +113,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>要创建的数据表。</returns>
-        IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow, new();
+        IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow;
 
         /// <summary>
         /// 创建数据表。

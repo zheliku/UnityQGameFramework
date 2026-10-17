@@ -12,7 +12,7 @@ UnityQGameFramework.Runtime
 UnityQGameFramework.Editor
 ```
 
-Editor 同时引用 Core；Core 开启 `noEngineReferences`，仅 Core 因二进制转换工具开启 unsafe。Unity 版本相关 API 位于 Runtime/Unity 和 Editor。运行时程序集不引用示例、渲染管线或开发工具。
+Editor 同时引用 Core；Core 开启 `noEngineReferences`，Core 的二进制工具与 Luban 运行时开启 unsafe。Unity 版本相关 API 位于 Runtime/Unity 和 Editor。运行时程序集不引用示例、渲染管线或开发工具。
 
 包声明所需 Unity 内置模块。宿主的 URP、Input System、Alchemy、Rainbow Folders 和 Unity CLI Pipeline 留在宿主清单。消费者可独立选择自己的渲染管线和工具。
 
@@ -36,6 +36,8 @@ python Tools/Packaging/prepare_upm.py
 
 正式发布前应在干净消费者工程验证 Git URL、归档安装和示例导入。
 
+`python Tools/Packaging/check_package.py` 检查包、Unity meta／GUID、XLSX 与 DLL 内容；加 `--require-committed` 可拒绝未提交的 Package 变更。prepare_upm 自动执行完整性检查，也接受该选项。当前远端内容与本地新版的实际验证范围见 [生产前检查记录](production-readiness.md)。
+
 ## 后续阶段
 
-Architecture、Model、System、Utility、BindableProperty 与 Luban 将各自建立明确的契约和生命周期，再接入现有资源、实体、UI、流程、事件与对象池。游戏源表、生成代码和业务数据属于消费者工程，不写入只读的 UPM 缓存。本基础维护版继续提供现有 Config/DataTable。
+Architecture、Model、System、Utility、BindableProperty 尚未接入。Luban 已经接入 DataTable，游戏源表、生成代码和业务数据属于消费者工程，不写入只读的 UPM 缓存。首次安装后自动初始化默认工作区 Assets/UnityQGameFramework/Config，已有工作区则沿用。全局 Profile 与新工作区目录通过 QGF 项目设置管理，设置保存在 ProjectSettings/UnityQGameFrameworkSettings.asset；示例工作区随示例导入。见 [Luban](luban.md)。Config 模块保持独立，默认使用 TOML；[配置文件说明](configuration.md) 区分游戏参数、表生成配置与资源工具 XML。

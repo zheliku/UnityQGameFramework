@@ -2,10 +2,12 @@
 <UnityQGameFramework>
   <BuildSettings>
     <DefaultScenes>
-      <DefaultScene Name="Assets/StarForce Launcher.unity" />
+      <DefaultScene Name="../../StarForce Launcher.unity" />
+      <DefaultScene Name="../Scenes/Menu.unity" />
+      <DefaultScene Name="../Scenes/Main.unity" />
     </DefaultScenes>
     <SearchScenePaths>
-      <SearchScenePath Path="Assets" />
+      <SearchScenePath Path="../Scenes" />
     </SearchScenePaths>
   </BuildSettings>
 </UnityQGameFramework>

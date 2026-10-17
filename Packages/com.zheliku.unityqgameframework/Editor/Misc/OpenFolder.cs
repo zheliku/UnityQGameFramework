@@ -1,87 +1,61 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core;
-using System.Diagnostics;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace UnityQGameFramework.Editor
 {
-    /// <summary>
-    /// 打开文件夹相关的实用函数。
-    /// </summary>
+    /// <summary>Open Unity application directories and the active QGF table workspace.</summary>
     public static class OpenFolder
     {
-        /// <summary>
-        /// 打开 Data Path 文件夹。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Open Folder/Data Path", false, 10)]
-        public static void OpenFolderDataPath()
-        {
-            Execute(Application.dataPath);
-        }
+        [MenuItem("Unity Q Game Framework/Open Folder/Assets (Application.dataPath)", false, 10)]
+        public static void OpenFolderDataPath() => Execute(Application.dataPath);
 
-        /// <summary>
-        /// 打开 Persistent Data Path 文件夹。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Open Folder/Persistent Data Path", false, 11)]
-        public static void OpenFolderPersistentDataPath()
-        {
-            Execute(Application.persistentDataPath);
-        }
+        [MenuItem("Unity Q Game Framework/Open Folder/Persistent Data (Saves)", false, 11)]
+        public static void OpenFolderPersistentDataPath() => Execute(Application.persistentDataPath);
 
-        /// <summary>
-        /// 打开 Streaming Assets Path 文件夹。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Open Folder/Streaming Assets Path", false, 12)]
-        public static void OpenFolderStreamingAssetsPath()
-        {
-            Execute(Application.streamingAssetsPath);
-        }
+        [MenuItem("Unity Q Game Framework/Open Folder/Streaming Assets", false, 12)]
+        public static void OpenFolderStreamingAssetsPath() => Execute(Application.streamingAssetsPath);
 
-        /// <summary>
-        /// 打开 Temporary Cache Path 文件夹。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Open Folder/Temporary Cache Path", false, 13)]
-        public static void OpenFolderTemporaryCachePath()
-        {
-            Execute(Application.temporaryCachePath);
-        }
+        [MenuItem("Unity Q Game Framework/Open Folder/Temporary Cache", false, 13)]
+        public static void OpenFolderTemporaryCachePath() => Execute(Application.temporaryCachePath);
 
+        [MenuItem("Unity Q Game Framework/Open Folder/Editor Logs", false, 14)]
+        public static void OpenFolderConsoleLogPath() => Execute(Path.GetDirectoryName(Application.consoleLogPath));
 
-        /// <summary>
-        /// 打开 Console Log Path 文件夹。
-        /// </summary>
-        [MenuItem("Unity Q Game Framework/Open Folder/Console Log Path", false, 14)]
-        public static void OpenFolderConsoleLogPath()
-        {
-            Execute(System.IO.Path.GetDirectoryName(Application.consoleLogPath));
-        }
+        [MenuItem("Unity Q Game Framework/Open Folder/Luban Sources (Active Profile)", false, 30)]
+        private static void OpenLubanSources() => Execute(LubanGenerator.FolderPath(LubanSettings.instance.Profile.SourceFolder));
 
+        [MenuItem("Unity Q Game Framework/Open Folder/Luban Generated Code (Active Profile)", false, 31)]
+        private static void OpenLubanCode() => Execute(LubanGenerator.FolderPath(LubanSettings.instance.Profile.CodeFolder));
 
-        /// <summary>
-        /// 打开指定路径的文件夹。
-        /// </summary>
-        /// <param name="folder">要打开的文件夹的路径。</param>
+        [MenuItem("Unity Q Game Framework/Open Folder/Luban Data (Active Profile)", false, 32)]
+        private static void OpenLubanData() => Execute(LubanGenerator.FolderPath(LubanSettings.instance.Profile.DataFolder));
+
+        [MenuItem("Unity Q Game Framework/Open Folder/Luban Sources (Active Profile)", true)]
+        private static bool HasSourceFolder() => HasFolder(LubanSettings.instance.Profile?.SourceFolder);
+
+        [MenuItem("Unity Q Game Framework/Open Folder/Luban Generated Code (Active Profile)", true)]
+        private static bool HasCodeFolder() => HasFolder(LubanSettings.instance.Profile?.CodeFolder);
+
+        [MenuItem("Unity Q Game Framework/Open Folder/Luban Data (Active Profile)", true)]
+        private static bool HasDataFolder() => HasFolder(LubanSettings.instance.Profile?.DataFolder);
+
+        private static bool HasFolder(DefaultAsset folder) => folder != null && AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(folder));
+
         public static void Execute(string folder)
         {
-            folder = Utility.Text.Format("\"{0}\"", folder);
-            switch (Application.platform)
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
             {
-                case RuntimePlatform.WindowsEditor:
-                    Process.Start("Explorer.exe", folder.Replace('/', '\\'));
-                    break;
-
-                case RuntimePlatform.OSXEditor:
-                    Process.Start("open", folder);
-                    break;
-
-                default:
-                    throw new FrameworkException(Utility.Text.Format("Not support open folder on '{0}' platform.", Application.platform));
+                Debug.LogWarning("目录不存在：" + folder);
+                return;
             }
+            // A trailing separator asks the OS to display this directory's contents.
+            EditorUtility.RevealInFinder(Path.GetFullPath(folder).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar);
         }
     }
 }

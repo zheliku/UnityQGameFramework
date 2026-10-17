@@ -1,0 +1,6 @@
+{
+    "name": "UnityQGameFramework.Luban",
+    "rootNamespace": "UnityQGameFramework.Luban",
+    "allowUnsafeCode": true,
+    "noEngineReferences": true
+}

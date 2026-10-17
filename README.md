@@ -2,7 +2,7 @@
 
 Unity Q Game Framework 是面向 **Unity 2022.3 LTS 及 Unity 6** 的模块化游戏框架。当前基础维护版为 `0.1.0-exp.2`：提供纯 C# 核心、Unity 运行时组件、编辑器资源工具和 StarForce 示例。
 
-本阶段统一框架名称、公共命名空间和程序集，更新 Unity API，清理低于最低支持版本的代码分支，并修复程序集发现与生命周期问题。资源、实体、UI、流程、事件、对象池、网络、配置表等现有功能继续保留。QFramework 架构融合和 Luban 工作流属于后续阶段。
+本阶段统一框架名称、公共命名空间和程序集，更新 Unity API，清理低于最低支持版本的代码分支，并修复程序集发现与生命周期问题。资源、实体、UI、流程、事件、对象池和网络继续保留。DataTable 已接入 Luban，采用 Excel schema，保留 QGF 查询接口并提供一键生成菜单；游戏 Config 使用 Tomlyn 读取 TOML。QFramework 架构融合尚未开始。详见 [Luban 使用说明](Packages/com.zheliku.unityqgameframework/Documentation~/luban.md) 与 [配置文件说明](Packages/com.zheliku.unityqgameframework/Documentation~/configuration.md)。
 
 ## 安装
 
@@ -21,7 +21,7 @@ Assets/Examples/StarForce/                    可直接运行、调试的示例
 Packages/com.zheliku.unityqgameframework/
   Runtime/Core/                             引擎无关的模块、接口与通用工具
   Runtime/Unity/                            Unity 组件、默认辅助器、Debugger
-  Runtime/Plugins/                          压缩依赖
+  Runtime/Plugins/                          压缩与 TOML 依赖
   Runtime/Prefabs/UnityQGameFramework.prefab  框架入口预制体
   Editor/                                   Inspector、资源管理和打包工具
   Documentation~/                           架构、API、兼容与迁移说明
@@ -43,6 +43,8 @@ StarForce 入口为 `Assets/Examples/StarForce/StarForce Launcher.unity`。示�
 最低安装版本为 Unity 2022.3。仓库开发宿主使用 Unity 6000.3.24f1；其 URP、Input System 和工具包版本属于宿主，不会通过框架包强制安装到消费者工程。
 
 Unity 2022.3、6.0 和 6.3 的实际验证范围及验证命令见 [兼容性说明](Packages/com.zheliku.unityqgameframework/Documentation~/compatibility.md)。
+
+Luban 的首次 Git 安装、编辑器配置、生成、运行及发布状态见 [生产前检查记录](Packages/com.zheliku.unityqgameframework/Documentation~/production-readiness.md)。发布暂存前会自动检查包完整性，可加 `--require-committed` 拒绝尚未提交的 Package 变更。
 
 更名涉及公共 API 和程序集名称，已有代码迁移请阅读 [迁移说明](Packages/com.zheliku.unityqgameframework/Documentation~/migration.md)。
 

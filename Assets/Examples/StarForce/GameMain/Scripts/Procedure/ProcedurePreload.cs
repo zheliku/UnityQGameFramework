@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,21 +15,6 @@ namespace StarForce
 {
     public class ProcedurePreload : ProcedureBase
     {
-        public static readonly string[] DataTableNames = new string[]
-        {
-            "Aircraft",
-            "Armor",
-            "Asteroid",
-            "Entity",
-            "Music",
-            "Scene",
-            "Sound",
-            "Thruster",
-            "UIForm",
-            "UISound",
-            "Weapon",
-        };
-
         private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();
 
         public override bool UseNativeDialog => true;
@@ -83,11 +68,9 @@ namespace StarForce
             // Preload configs
             LoadConfig("DefaultConfig");
 
-            // Preload data tables
-            foreach (string dataTableName in DataTableNames)
-            {
-                LoadDataTable(dataTableName);
-            }
+            // Load the Luban catalog assigned to the DataTable component.
+            m_LoadedFlag.Add("StarForce.Tables", false);
+            GameEntry.DataTable.LoadDataTables(loader => new Tables(loader), this);
 
             // Preload dictionaries
             LoadDictionary("Default");
@@ -98,16 +81,9 @@ namespace StarForce
 
         private void LoadConfig(string configName)
         {
-            string configAssetName = AssetUtility.GetConfigAsset(configName, false);
+            string configAssetName = AssetUtility.GetConfigAsset(configName);
             m_LoadedFlag.Add(configAssetName, false);
             GameEntry.Config.ReadData(configAssetName, this);
-        }
-
-        private void LoadDataTable(string dataTableName)
-        {
-            string dataTableAssetName = AssetUtility.GetDataTableAsset(dataTableName, false);
-            m_LoadedFlag.Add(dataTableAssetName, false);
-            GameEntry.DataTable.LoadDataTable(dataTableName, dataTableAssetName, this);
         }
 
         private void LoadDictionary(string dictionaryName)
@@ -165,7 +141,7 @@ namespace StarForce
                 return;
             }
 
-            m_LoadedFlag[ne.DataTableAssetName] = true;
+            m_LoadedFlag["StarForce.Tables"] = true;
             Log.Info("Load data table '{0}' OK.", ne.DataTableAssetName);
         }
 
