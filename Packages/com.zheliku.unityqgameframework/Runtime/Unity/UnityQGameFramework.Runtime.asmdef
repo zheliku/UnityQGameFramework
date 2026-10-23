@@ -3,7 +3,8 @@
     "rootNamespace": "UnityQGameFramework.Runtime",
     "references": [
         "UnityQGameFramework.Core",
-        "UnityQGameFramework.Luban"
+        "UnityQGameFramework.Luban",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": []

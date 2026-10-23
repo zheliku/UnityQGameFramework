@@ -1,0 +1,5 @@
+# Sample imports must contain real payloads even without Git LFS.
+*.png -filter -diff -merge -text
+*.wav -filter -diff -merge -text
+*.bytes -filter -diff -merge -text
+*.xlsx -filter -diff -merge -text

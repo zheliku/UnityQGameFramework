@@ -1,0 +1,11 @@
+{
+  "name": "UnityQGameFramework.Examples.Resource",
+  "rootNamespace": "UnityQGameFramework.Examples",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Runtime",
+    "UnityEngine.UI",
+    "UniTask"
+  ],
+  "autoReferenced": true
+}

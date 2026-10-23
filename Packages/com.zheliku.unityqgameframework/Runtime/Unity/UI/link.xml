@@ -1,0 +1,5 @@
+<linker>
+  <assembly fullname="Unity.InputSystem" ignoreIfMissing="1">
+    <type fullname="UnityEngine.InputSystem.UI.InputSystemUIInputModule" preserve="all" />
+  </assembly>
+</linker>

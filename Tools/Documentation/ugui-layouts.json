@@ -1,0 +1,6218 @@
+{
+  "GameSpeedExample": {
+    "script": "Assets/Examples/01_Base/01_GameSpeed/GameSpeedExample.cs",
+    "controls": [
+      {
+        "text": "01  时间倍率",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "speedValueText",
+        "objectName": "Text_SpeedValue"
+      },
+      {
+        "low-value": "0.1",
+        "high-value": "3",
+        "type": "Slider",
+        "field": "speedSlider",
+        "objectName": "Slider_Speed"
+      },
+      {
+        "text": "半速",
+        "type": "Button",
+        "field": "slowButton",
+        "objectName": "Button_Slow"
+      },
+      {
+        "text": "正常",
+        "type": "Button",
+        "field": "normalButton",
+        "objectName": "Button_Normal"
+      },
+      {
+        "text": "两倍速",
+        "type": "Button",
+        "field": "fastButton",
+        "objectName": "Button_Fast"
+      },
+      {
+        "type": "Text",
+        "field": "gameTimeText",
+        "objectName": "Text_GameTime"
+      },
+      {
+        "type": "Image",
+        "field": "gameMarkerRect",
+        "marker": true,
+        "objectName": "Image_GameMarker"
+      },
+      {
+        "type": "Text",
+        "field": "realTimeText",
+        "objectName": "Text_RealTime"
+      },
+      {
+        "type": "Image",
+        "field": "realMarkerRect",
+        "marker": true,
+        "objectName": "Image_RealMarker"
+      }
+    ]
+  },
+  "PauseGameExample": {
+    "script": "Assets/Examples/01_Base/02_Pause/PauseGameExample.cs",
+    "controls": [
+      {
+        "text": "02  暂停与恢复",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "gameTimeText",
+        "objectName": "Text_GameTime"
+      },
+      {
+        "type": "Text",
+        "field": "realTimeText",
+        "objectName": "Text_RealTime"
+      },
+      {
+        "type": "Text",
+        "field": "speedValueText",
+        "objectName": "Text_SpeedValue"
+      },
+      {
+        "text": "暂停",
+        "type": "Button",
+        "field": "pauseButton",
+        "objectName": "Button_Pause"
+      },
+      {
+        "text": "切换半速 / 正常",
+        "type": "Button",
+        "field": "speedButton",
+        "objectName": "Button_Speed"
+      },
+      {
+        "type": "Image",
+        "field": "markerRect",
+        "marker": true,
+        "objectName": "Image_Marker"
+      }
+    ]
+  },
+  "JsonUtilityExample": {
+    "script": "Assets/Examples/01_Base/03_Json/JsonUtilityExample.cs",
+    "controls": [
+      {
+        "text": "03  JSON 对象",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "修改名字或等级后生成 JSON，也可以编辑 JSON 再写回角色。",
+        "objectName": "Text_Description"
+      },
+      {
+        "label": "名字",
+        "type": "InputField",
+        "field": "nameInput",
+        "objectName": "InputField_Name"
+      },
+      {
+        "type": "Text",
+        "field": "levelText",
+        "objectName": "Text_Level"
+      },
+      {
+        "text": "升一级",
+        "type": "Button",
+        "field": "levelUpButton",
+        "objectName": "Button_LevelUp"
+      },
+      {
+        "text": "对象 → JSON",
+        "type": "Button",
+        "field": "serializeButton",
+        "objectName": "Button_Serialize"
+      },
+      {
+        "multiline": "true",
+        "style": "height: 100px;",
+        "type": "InputField",
+        "field": "jsonInput",
+        "objectName": "InputField_Json"
+      },
+      {
+        "type": "Dropdown",
+        "field": "readMode",
+        "objectName": "Dropdown_ReadMode"
+      },
+      {
+        "text": "JSON → 对象",
+        "type": "Button",
+        "field": "deserializeButton",
+        "objectName": "Button_Deserialize"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      }
+    ]
+  },
+  "ApplicationSettingsExample": {
+    "script": "Assets/Examples/01_Base/04_AppSettings/ApplicationSettingsExample.cs",
+    "controls": [
+      {
+        "text": "04  应用参数",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "fpsText",
+        "objectName": "Text_Fps"
+      },
+      {
+        "text": "30 FPS",
+        "type": "Button",
+        "field": "fps30Button",
+        "objectName": "Button_Fps30"
+      },
+      {
+        "text": "60 FPS",
+        "type": "Button",
+        "field": "fps60Button",
+        "objectName": "Button_Fps60"
+      },
+      {
+        "text": "不限",
+        "type": "Button",
+        "field": "unlimitedButton",
+        "objectName": "Button_Unlimited"
+      },
+      {
+        "label": "允许后台运行",
+        "type": "Toggle",
+        "field": "backgroundToggle",
+        "objectName": "Toggle_Background"
+      },
+      {
+        "label": "禁止屏幕休眠",
+        "type": "Toggle",
+        "field": "neverSleepToggle",
+        "objectName": "Toggle_NeverSleep"
+      },
+      {
+        "text": "当前帧率受垂直同步影响；休眠选项请在设备上体验。",
+        "type": "Text",
+        "objectName": "Text_Description"
+      }
+    ]
+  },
+  "LoggingExample": {
+    "script": "Assets/Examples/01_Base/05_Logging/LoggingExample.cs",
+    "controls": [
+      {
+        "text": "05  日志级别",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "statusText",
+        "objectName": "Text_Status"
+      },
+      {
+        "value": "玩家进入关卡",
+        "type": "InputField",
+        "field": "messageInput",
+        "objectName": "InputField_Message"
+      },
+      {
+        "text": "Debug",
+        "type": "Button",
+        "field": "debugButton",
+        "objectName": "Button_Debug"
+      },
+      {
+        "text": "Info",
+        "type": "Button",
+        "field": "infoButton",
+        "objectName": "Button_Info"
+      },
+      {
+        "text": "Warning",
+        "type": "Button",
+        "field": "warningButton",
+        "objectName": "Button_Warning"
+      },
+      {
+        "text": "Error（会产生一条错误日志）",
+        "type": "Button",
+        "field": "errorButton",
+        "objectName": "Button_Error"
+      },
+      {
+        "text": "灰色级别未编译。到 QGF > Logging 选择级别，编译后重新运行。",
+        "type": "Text",
+        "objectName": "Text_Description"
+      }
+    ]
+  },
+  "ReadConfigValues": {
+    "script": "Assets/Examples/02_Config/01_ReadValues/ReadConfigValues.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  解析与查询配置",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "InputField",
+        "field": "tomlInput",
+        "multiline": "true",
+        "height": 140,
+        "objectName": "InputField_Toml"
+      },
+      {
+        "type": "Dropdown",
+        "field": "modeDropdown",
+        "objectName": "Dropdown_Mode"
+      },
+      {
+        "type": "Button",
+        "field": "parseButton",
+        "text": "解析当前 TOML",
+        "objectName": "Button_Parse"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      },
+      {
+        "type": "Text",
+        "field": "countText",
+        "objectName": "Text_Count"
+      },
+      {
+        "type": "Text",
+        "field": "valuesText",
+        "objectName": "Text_Values"
+      },
+      {
+        "type": "Text",
+        "field": "defaultsText",
+        "objectName": "Text_Defaults"
+      }
+    ]
+  },
+  "LoadConfigAsset": {
+    "script": "Assets/Examples/02_Config/02_LoadAsset/LoadConfigAsset.cs",
+    "controls": [
+      {
+        "text": "02  异步读取配置资源",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "label": "读取方式",
+        "type": "Dropdown",
+        "field": "modeDropdown",
+        "objectName": "Dropdown_Mode"
+      },
+      {
+        "text": "读取 Level.toml",
+        "type": "Button",
+        "field": "loadButton",
+        "objectName": "Button_Load"
+      },
+      {
+        "text": "尚未读取",
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "contextText",
+        "objectName": "Text_Context"
+      },
+      {
+        "type": "Button",
+        "field": "reserveButton",
+        "text": "为文件读取预留 4096 字节缓冲",
+        "objectName": "Button_Reserve"
+      },
+      {
+        "type": "Button",
+        "field": "freeButton",
+        "text": "释放读取缓冲",
+        "objectName": "Button_Free"
+      },
+      {
+        "type": "Text",
+        "field": "cacheText",
+        "objectName": "Text_Cache"
+      }
+    ]
+  },
+  "RuntimeConfigValues": {
+    "script": "Assets/Examples/02_Config/03_RuntimeValues/RuntimeConfigValues.cs",
+    "controls": [
+      {
+        "text": "03  运行时增删配置",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Dropdown",
+        "field": "addMode",
+        "objectName": "Dropdown_AddMode"
+      },
+      {
+        "type": "InputField",
+        "field": "valueInput",
+        "objectName": "InputField_Value",
+        "value": "42"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StringConversion",
+        "text": "字符串入口按当前区域转换数字；其他类型转换失败时得到 false 或 0。"
+      },
+      {
+        "text": "添加临时配置项",
+        "type": "Button",
+        "field": "addButton",
+        "objectName": "Button_Add"
+      },
+      {
+        "text": "移除 Runtime.Mode",
+        "type": "Button",
+        "field": "removeButton",
+        "objectName": "Button_Remove"
+      },
+      {
+        "text": "清空本示例配置",
+        "type": "Button",
+        "field": "clearButton",
+        "objectName": "Button_Clear"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      },
+      {
+        "type": "Text",
+        "field": "valuesText",
+        "objectName": "Text_Values"
+      },
+      {
+        "type": "Text",
+        "field": "countText",
+        "objectName": "Text_Count"
+      }
+    ]
+  },
+  "NodePaths": {
+    "script": "Assets/Examples/03_DataNode/01_Path/NodePaths.cs",
+    "controls": [
+      {
+        "text": "01  路径与相对节点",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "treeText",
+        "objectName": "Text_Tree"
+      },
+      {
+        "text": "相对 Battle 写入 250",
+        "type": "Button",
+        "field": "relativeButton",
+        "objectName": "Button_Relative"
+      },
+      {
+        "text": "完整路径写入 100",
+        "type": "Button",
+        "field": "absoluteButton",
+        "objectName": "Button_Absolute"
+      },
+      {
+        "text": "相对 Battle 按类型写入 500",
+        "type": "Button",
+        "field": "relativeTypedButton",
+        "objectName": "Button_RelativeTyped"
+      },
+      {
+        "type": "Text",
+        "field": "pathText",
+        "objectName": "Text_Path"
+      },
+      {
+        "type": "Text",
+        "field": "compareText",
+        "objectName": "Text_Compare"
+      }
+    ]
+  },
+  "ReplaceNodeValue": {
+    "script": "Assets/Examples/03_DataNode/02_Replace/ReplaceNodeValue.cs",
+    "controls": [
+      {
+        "text": "02  替换值与类型",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "valueText",
+        "objectName": "Text_Value"
+      },
+      {
+        "text": "分数加 10",
+        "type": "Button",
+        "field": "addButton",
+        "objectName": "Button_Add"
+      },
+      {
+        "text": "改成字符串：已结算",
+        "type": "Button",
+        "field": "textButton",
+        "objectName": "Button_Text"
+      },
+      {
+        "text": "重设为整数 0",
+        "type": "Button",
+        "field": "resetButton",
+        "objectName": "Button_Reset"
+      }
+    ]
+  },
+  "RemoveNodeBranch": {
+    "script": "Assets/Examples/03_DataNode/03_RemoveBranch/RemoveNodeBranch.cs",
+    "controls": [
+      {
+        "text": "03  移除分支",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "treeText",
+        "objectName": "Text_Tree"
+      },
+      {
+        "text": "按完整路径移除 Battle",
+        "type": "Button",
+        "field": "removeButton",
+        "objectName": "Button_Remove"
+      },
+      {
+        "text": "相对 Example 移除 Battle",
+        "type": "Button",
+        "field": "relativeButton",
+        "objectName": "Button_Relative"
+      },
+      {
+        "text": "重新创建 Battle",
+        "type": "Button",
+        "field": "restoreButton",
+        "objectName": "Button_Restore"
+      }
+    ]
+  },
+  "ManageNodeChildren": {
+    "script": "Assets/Examples/03_DataNode/04_Children/ManageNodeChildren.cs",
+    "controls": [
+      {
+        "text": "04  管理子节点",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "text": "添加物品节点",
+        "type": "Button",
+        "field": "addButton",
+        "objectName": "Button_Add"
+      },
+      {
+        "text": "按名称移除第一个物品",
+        "type": "Button",
+        "field": "removeNameButton",
+        "objectName": "Button_RemoveName"
+      },
+      {
+        "text": "按索引移除第一个物品",
+        "type": "Button",
+        "field": "removeIndexButton",
+        "objectName": "Button_RemoveIndex"
+      },
+      {
+        "text": "清空 Inventory 的内容",
+        "type": "Button",
+        "field": "clearNodeButton",
+        "objectName": "Button_ClearNode"
+      },
+      {
+        "text": "清空本示例整个节点树",
+        "type": "Button",
+        "field": "clearAllButton",
+        "objectName": "Button_ClearAll"
+      },
+      {
+        "type": "Text",
+        "field": "countText",
+        "objectName": "Text_Count"
+      },
+      {
+        "type": "Text",
+        "field": "childrenText",
+        "objectName": "Text_Children"
+      }
+    ]
+  },
+  "SubscribeEvent": {
+    "script": "Assets/Examples/04_Event/01_Subscribe/SubscribeEvent.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  订阅、发送与取消",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "coinsText",
+        "objectName": "Text_Coins"
+      },
+      {
+        "type": "Text",
+        "field": "listenersText",
+        "objectName": "Text_Listeners"
+      },
+      {
+        "type": "InputField",
+        "field": "amountInput",
+        "value": "10",
+        "contentType": "IntegerNumber",
+        "objectName": "InputField_Amount"
+      },
+      {
+        "type": "Toggle",
+        "field": "listenToggle",
+        "label": "监听金币消息",
+        "value": "true",
+        "objectName": "Toggle_Listen"
+      },
+      {
+        "type": "Button",
+        "field": "sendButton",
+        "text": "发送金币消息",
+        "objectName": "Button_Send"
+      }
+    ]
+  },
+  "EventDispatchOrder": {
+    "script": "Assets/Examples/04_Event/02_DispatchOrder/EventDispatchOrder.cs",
+    "controls": [
+      {
+        "text": "02  立即派发与排队",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "text": "比较一次派发顺序",
+        "type": "Button",
+        "field": "compareButton",
+        "objectName": "Button_Compare"
+      },
+      {
+        "type": "Text",
+        "field": "orderText",
+        "objectName": "Text_Order"
+      },
+      {
+        "type": "Text",
+        "field": "queueText",
+        "objectName": "Text_Queue"
+      }
+    ]
+  },
+  "DefaultEventHandler": {
+    "script": "Assets/Examples/04_Event/03_DefaultHandler/DefaultEventHandler.cs",
+    "controls": [
+      {
+        "text": "03  无订阅者时的默认处理器",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "label": "启用默认处理器",
+        "value": "true",
+        "type": "Toggle",
+        "field": "enabledToggle",
+        "objectName": "Toggle_Enabled"
+      },
+      {
+        "text": "发送没有普通订阅者的消息",
+        "type": "Button",
+        "field": "sendButton",
+        "objectName": "Button_Send"
+      },
+      {
+        "type": "Text",
+        "field": "countsText",
+        "objectName": "Text_Counts"
+      }
+    ]
+  },
+  "MultipleEventHandlers": {
+    "script": "Assets/Examples/04_Event/04_MultipleHandlers/MultipleEventHandlers.cs",
+    "controls": [
+      {
+        "text": "04  多个接收者",
+        "type": "Text",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "text": "发送一次",
+        "type": "Button",
+        "field": "sendButton",
+        "objectName": "Button_Send"
+      },
+      {
+        "label": "B 正在监听",
+        "value": "true",
+        "type": "Toggle",
+        "field": "listenBToggle",
+        "objectName": "Toggle_ListenB"
+      },
+      {
+        "label": "B 收到一次后取消自己",
+        "type": "Toggle",
+        "field": "onceToggle",
+        "objectName": "Toggle_Once"
+      },
+      {
+        "type": "Text",
+        "field": "countsText",
+        "objectName": "Text_Counts"
+      }
+    ]
+  },
+  "TwoStates": {
+    "script": "Assets/Examples/05_Fsm/01_TwoStates/TwoStates.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  等待与工作",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "timeText",
+        "objectName": "Text_Time"
+      },
+      {
+        "type": "Slider",
+        "field": "progress",
+        "interactable": false,
+        "objectName": "Slider_Progress"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "completedText",
+        "objectName": "Text_Completed"
+      },
+      {
+        "type": "Button",
+        "field": "workButton",
+        "text": "开始工作",
+        "objectName": "Button_Work"
+      },
+      {
+        "type": "Toggle",
+        "field": "automatic",
+        "label": "连续工作",
+        "objectName": "Toggle_Automatic"
+      }
+    ]
+  },
+  "FsmStateData": {
+    "script": "Assets/Examples/05_Fsm/02_StateData/FsmStateData.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  状态间传递任务",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "InputField",
+        "field": "jobsInput",
+        "label": "任务数 1–10",
+        "value": "3",
+        "contentType": "IntegerNumber",
+        "objectName": "InputField_Jobs"
+      },
+      {
+        "type": "Dropdown",
+        "field": "writeMode",
+        "objectName": "Dropdown_WriteMode"
+      },
+      {
+        "type": "Button",
+        "field": "loadButton",
+        "text": "写入任务",
+        "objectName": "Button_Load"
+      },
+      {
+        "type": "Button",
+        "field": "runButton",
+        "text": "交给下一状态",
+        "objectName": "Button_Run"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "text": "移除任务",
+        "objectName": "Button_Clear"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "jobsText",
+        "objectName": "Text_Jobs"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "batchText",
+        "objectName": "Text_Batch"
+      }
+    ]
+  },
+  "NamedMachines": {
+    "script": "Assets/Examples/05_Fsm/03_NamedMachines/NamedMachines.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  两台命名状态机",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "leftText",
+        "objectName": "Text_Left"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "rightText",
+        "objectName": "Text_Right"
+      },
+      {
+        "type": "Dropdown",
+        "field": "destroyMode",
+        "objectName": "Dropdown_DestroyMode"
+      },
+      {
+        "type": "Button",
+        "field": "destroyButton",
+        "text": "销毁 Left",
+        "objectName": "Button_Destroy"
+      },
+      {
+        "type": "Button",
+        "field": "recreateButton",
+        "text": "重新创建 Left",
+        "objectName": "Button_Recreate"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "machinesText",
+        "objectName": "Text_Machines"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      }
+    ]
+  },
+  "ProcedureEntryExample": {
+    "script": "Assets/Examples/06_Procedure/01_Entry/ProcedureEntryExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  从入口流程开始",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "currentText",
+        "objectName": "Text_Current"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "elapsedText",
+        "objectName": "Text_Elapsed"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "enteredText",
+        "objectName": "Text_Entered"
+      },
+      {
+        "type": "Text",
+        "text": "在 QGF / Procedure 查看已注册流程和入口。",
+        "objectName": "Text_Description"
+      }
+    ]
+  },
+  "ChangeProcedureExample": {
+    "script": "Assets/Examples/06_Procedure/02_ChangeState/ChangeProcedureExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  菜单与游玩",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "currentText",
+        "objectName": "Text_Current"
+      },
+      {
+        "type": "Button",
+        "field": "enterButton",
+        "text": "进入游玩",
+        "objectName": "Button_Enter"
+      },
+      {
+        "type": "Button",
+        "field": "backButton",
+        "text": "返回菜单",
+        "objectName": "Button_Back"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "enteredText",
+        "objectName": "Text_Entered"
+      }
+    ]
+  },
+  "ProcedureDataExample": {
+    "script": "Assets/Examples/06_Procedure/03_Data/ProcedureDataExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  把关卡选择交给加载流程",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Dropdown",
+        "field": "levelChoice",
+        "objectName": "Dropdown_LevelChoice"
+      },
+      {
+        "type": "Button",
+        "field": "confirmButton",
+        "text": "确认关卡并交接",
+        "objectName": "Button_Confirm"
+      },
+      {
+        "type": "Button",
+        "field": "finishButton",
+        "text": "结束加载，清理数据",
+        "objectName": "Button_Finish"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "dataText",
+        "objectName": "Text_Data"
+      }
+    ]
+  },
+  "ReuseReference": {
+    "script": "Assets/Examples/07_ReferencePool/01_Reuse/ReuseReference.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  借出、归还、再借出",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Button",
+        "field": "acquireButton",
+        "text": "借一个货箱",
+        "objectName": "Button_Acquire"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "text": "归还手中的货箱",
+        "objectName": "Button_Release"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "heldText",
+        "objectName": "Text_Held"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "previousText",
+        "objectName": "Text_Previous"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "poolText",
+        "objectName": "Text_Pool"
+      }
+    ]
+  },
+  "ResetReference": {
+    "script": "Assets/Examples/07_ReferencePool/02_Clear/ResetReference.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  清理上一次的奖励数据",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Dropdown",
+        "field": "acquireMode",
+        "objectName": "Dropdown_AcquireMode"
+      },
+      {
+        "type": "Button",
+        "field": "acquireButton",
+        "text": "取出奖励",
+        "objectName": "Button_Acquire"
+      },
+      {
+        "type": "InputField",
+        "field": "coinsInput",
+        "label": "金币",
+        "value": "50",
+        "contentType": "IntegerNumber",
+        "objectName": "InputField_Coins"
+      },
+      {
+        "type": "Button",
+        "field": "setButton",
+        "text": "修改本次奖励",
+        "objectName": "Button_Set"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "text": "归还并执行 Clear",
+        "objectName": "Button_Release"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "rewardText",
+        "objectName": "Text_Reward"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "previousText",
+        "objectName": "Text_Previous"
+      }
+    ]
+  },
+  "ReferenceOwnership": {
+    "script": "Assets/Examples/07_ReferencePool/03_Ownership/ReferenceOwnership.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  谁负责归还变量",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "localText",
+        "objectName": "Text_Local"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "nodeText",
+        "objectName": "Text_Node"
+      },
+      {
+        "type": "Button",
+        "field": "acquireButton",
+        "text": "在本地取得变量 7",
+        "objectName": "Button_Acquire"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "text": "本地归还",
+        "objectName": "Button_Release"
+      },
+      {
+        "type": "Button",
+        "field": "transferButton",
+        "text": "把变量交给节点",
+        "objectName": "Button_Transfer"
+      },
+      {
+        "type": "Button",
+        "field": "removeButton",
+        "text": "删除节点，由模块归还",
+        "objectName": "Button_Remove"
+      }
+    ]
+  },
+  "SaveCounter": {
+    "script": "Assets/Examples/09_Setting/01_SaveCounter/SaveCounter.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "01  玩家设置与运行计数",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "比较当前设置和输入框；保存或重新读取。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_CountText",
+        "field": "countText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ValuesText",
+        "field": "valuesText"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_NameInput",
+        "field": "nameInput"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_MuteToggle",
+        "field": "muteToggle",
+        "text": "静音"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description2",
+        "text": "音量"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_VolumeSlider",
+        "field": "volumeSlider",
+        "value": 0.5
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Result",
+        "field": "resultText"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_SaveButton",
+        "field": "saveButton",
+        "text": "保存设置"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Reload",
+        "field": "reloadButton",
+        "text": "重新读取已保存设置"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ResetVolumeButton",
+        "field": "resetVolumeButton",
+        "text": "移除音量，使用默认值"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ResetButton",
+        "field": "resetButton",
+        "text": "重置运行次数"
+      }
+    ]
+  },
+  "SaveSettingObject": {
+    "script": "Assets/Examples/09_Setting/02_Object/SaveSettingObject.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "02  保存与读取对象",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_NameInput",
+        "field": "nameInput",
+        "value": "小飞行员"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "等级"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_LevelSlider",
+        "field": "levelSlider",
+        "value": 3,
+        "low-value": 1,
+        "high-value": 20
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_WriteMode",
+        "field": "writeMode",
+        "choices": "SetObject<Pilot>|SetObject(object)"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_SaveButton",
+        "field": "saveButton",
+        "text": "保存对象"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_ReadMode",
+        "field": "readMode",
+        "choices": "GetObject<Pilot>|GetObject(Type)|GetObject<Pilot> + 默认值|GetObject(Type) + 默认值"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ReadButton",
+        "field": "readButton",
+        "text": "读取对象"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_RemoveButton",
+        "field": "removeButton",
+        "text": "移除对象"
+      }
+    ]
+  },
+  "ReadTranslation": {
+    "script": "Assets/Examples/10_Localization/01_ReadText/ReadTranslation.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  查询与格式化翻译",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "titleText",
+        "objectName": "Text_Title2"
+      },
+      {
+        "type": "InputField",
+        "field": "nameInput",
+        "value": "Pilot",
+        "objectName": "InputField_Name"
+      },
+      {
+        "type": "Button",
+        "field": "rewardButton",
+        "text": "增加 10 金币",
+        "objectName": "Button_Reward"
+      },
+      {
+        "type": "Text",
+        "field": "rewardText",
+        "objectName": "Text_Reward"
+      },
+      {
+        "type": "Text",
+        "field": "missingText",
+        "objectName": "Text_Missing"
+      },
+      {
+        "type": "Text",
+        "text": "格式化参数数量",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "argumentCount",
+        "objectName": "Dropdown_ArgumentCount",
+        "choices": "1 个参数|2 个参数|3 个参数|4 个参数|5 个参数|6 个参数|7 个参数|8 个参数|9 个参数|10 个参数|11 个参数|12 个参数|13 个参数|14 个参数|15 个参数|16 个参数",
+        "value": 1
+      },
+      {
+        "type": "Text",
+        "field": "formatText",
+        "objectName": "Text_FormatText"
+      }
+    ],
+    "dictionaryGuid": "becc11a677f8c0f44b8d654ce3e92df0"
+  },
+  "SwitchLanguage": {
+    "script": "Assets/Examples/10_Localization/02_SwitchLanguage/SwitchLanguage.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  切换语言并重载字典",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "取消重载，观察 Language 设置与已加载文本的区别。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Toggle",
+        "text": "同时重载字典",
+        "field": "reloadToggle",
+        "value": true,
+        "objectName": "Toggle_Reload"
+      },
+      {
+        "type": "Button",
+        "text": "English",
+        "field": "action1Button",
+        "objectName": "Button_English"
+      },
+      {
+        "type": "Button",
+        "text": "简体中文",
+        "field": "action2Button",
+        "objectName": "Button_ChineseSimplified"
+      },
+      {
+        "type": "Text",
+        "field": "outputText",
+        "objectName": "Text_Output"
+      }
+    ],
+    "dictionaryGuid": "becc11a677f8c0f44b8d654ce3e92df0"
+  },
+  "LoadCatalogExample": {
+    "script": "Assets/Examples/11_DataTable/01_LoadCatalog/LoadCatalogExample.cs",
+    "catalogGuid": "4a0246db86b11c54593eaaebc4accca7",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  加载、取消与卸载配置表",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "Inspector 同步构造；资源入口设有 2 秒编辑器延迟，便于观察取消。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "contextText",
+        "objectName": "Text_ContextText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "registryText",
+        "objectName": "Text_RegistryText",
+        "column": 2
+      },
+      {
+        "type": "Dropdown",
+        "field": "loadMode",
+        "objectName": "Dropdown_LoadMode",
+        "choices": "Inspector Catalog|资源加载 Catalog",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "contextToggle",
+        "objectName": "Toggle_ContextToggle",
+        "text": "传入本示例作为上下文",
+        "value": true,
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "failureToggle",
+        "objectName": "Toggle_FailureToggle",
+        "text": "读取结构版本不匹配的 Catalog",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "text": "加载优先级",
+        "objectName": "Text_Description",
+        "column": 1
+      },
+      {
+        "type": "Slider",
+        "field": "prioritySlider",
+        "objectName": "Slider_PrioritySlider",
+        "value": 0,
+        "low-value": 0,
+        "high-value": 10,
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "field": "loadButton",
+        "objectName": "Button_LoadButton",
+        "text": "加载整组表",
+        "column": 1,
+        "row": "LoadActions"
+      },
+      {
+        "type": "Button",
+        "field": "cancelButton",
+        "objectName": "Button_CancelButton",
+        "text": "取消加载",
+        "column": 1,
+        "row": "LoadActions"
+      },
+      {
+        "type": "Button",
+        "field": "unloadButton",
+        "objectName": "Button_UnloadButton",
+        "text": "卸载整组表",
+        "column": 1,
+        "row": "LoadActions"
+      },
+      {
+        "type": "Text",
+        "field": "rowsText",
+        "objectName": "Text_RowsText",
+        "column": 2
+      }
+    ],
+    "invalidCatalogGuid": "5022552e3a1144b19b224682e5483d1a",
+    "loadDelaySeconds": 2
+  },
+  "QueryRowsExample": {
+    "script": "Assets/Examples/11_DataTable/02_QueryRows/QueryRowsExample.cs",
+    "catalogGuid": "4a0246db86b11c54593eaaebc4accca7",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  主键、条件与排序查询",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "tableText",
+        "objectName": "Text_TableText",
+        "column": 2
+      },
+      {
+        "type": "InputField",
+        "field": "idInput",
+        "objectName": "InputField_IdInput",
+        "value": "1",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "indexerToggle",
+        "objectName": "Toggle_IndexerToggle",
+        "text": "使用 QGF 索引器查询 Id",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "field": "selectedText",
+        "objectName": "Text_SelectedText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "text": "价格上限",
+        "objectName": "Text_Description",
+        "column": 1
+      },
+      {
+        "type": "Slider",
+        "field": "priceSlider",
+        "objectName": "Slider_PriceSlider",
+        "value": 20,
+        "low-value": 0,
+        "high-value": 100,
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "field": "conditionText",
+        "objectName": "Text_ConditionText",
+        "column": 2
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode",
+        "choices": "全部记录（数组）|全部记录（List）|条件筛选（数组）|条件筛选（List）|价格排序（数组）|价格排序（List）|筛选后排序（数组）|筛选后排序（List）",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "descendingToggle",
+        "objectName": "Toggle_DescendingToggle",
+        "text": "价格降序",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "field": "rowsText",
+        "objectName": "Text_RowsText",
+        "column": 2
+      }
+    ]
+  },
+  "NativeTableExample": {
+    "script": "Assets/Examples/11_DataTable/03_NativeTable/NativeTableExample.cs",
+    "catalogGuid": "4a0246db86b11c54593eaaebc4accca7",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  Luban 原生索引与 QGF 视图",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "summaryText",
+        "objectName": "Text_SummaryText"
+      },
+      {
+        "type": "InputField",
+        "field": "idInput",
+        "objectName": "InputField_IdInput",
+        "value": "1"
+      },
+      {
+        "type": "Dropdown",
+        "field": "nativeMode",
+        "objectName": "Dropdown_NativeMode",
+        "choices": "GetOrDefault|Get|索引器"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_ResultText"
+      },
+      {
+        "type": "Text",
+        "field": "identityText",
+        "objectName": "Text_IdentityText"
+      }
+    ]
+  },
+  "LoadCubePrefab": {
+    "script": "Assets/Examples/12_Resource/01_LoadPrefab/LoadCubePrefab.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  资产与实例的生命周期",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "assetText",
+        "objectName": "Text_Asset"
+      },
+      {
+        "type": "Text",
+        "field": "instancesText",
+        "objectName": "Text_Instances"
+      },
+      {
+        "type": "Button",
+        "field": "removeButton",
+        "text": "销毁左边实例",
+        "objectName": "Button_Remove"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "text": "销毁剩余实例并归还资产",
+        "objectName": "Button_Release"
+      }
+    ],
+    "prefabGuid": "5df2137d69bda5f4a87c3857a900b510"
+  },
+  "ShowCubeEntity": {
+    "script": "Assets/Examples/13_Entity/01_ShowHide/ShowCubeEntity.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  显示、隐藏与取消加载",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "lifecycleText",
+        "objectName": "Text_Lifecycle"
+      },
+      {
+        "type": "Dropdown",
+        "field": "showMode",
+        "objectName": "Dropdown_ShowMode"
+      },
+      {
+        "type": "Button",
+        "field": "showButton",
+        "text": "显示实体 1",
+        "objectName": "Button_Show"
+      },
+      {
+        "type": "Dropdown",
+        "field": "hideMode",
+        "objectName": "Dropdown_HideMode"
+      },
+      {
+        "type": "Button",
+        "field": "hideButton",
+        "text": "隐藏实体 1",
+        "objectName": "Button_Hide"
+      },
+      {
+        "type": "Button",
+        "field": "cancelButton",
+        "text": "取消待加载实体",
+        "objectName": "Button_Cancel"
+      }
+    ],
+    "loadDelaySeconds": 2.0
+  },
+  "ReuseCubeEntity": {
+    "script": "Assets/Examples/13_Entity/02_Reuse/ReuseCubeEntity.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  实例复用与缓存保留",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "lifecycleText",
+        "objectName": "Text_Lifecycle"
+      },
+      {
+        "type": "Text",
+        "field": "policyText",
+        "objectName": "Text_Policy"
+      },
+      {
+        "type": "Slider",
+        "field": "idleSlider",
+        "low-value": "0",
+        "high-value": "2.5",
+        "objectName": "Slider_IdleSeconds"
+      },
+      {
+        "type": "Toggle",
+        "field": "lockedToggle",
+        "label": "锁定本次实例，保留空闲缓存",
+        "value": "false",
+        "objectName": "Toggle_Locked"
+      },
+      {
+        "type": "Button",
+        "field": "recycleButton",
+        "text": "隐藏，等待，再显示",
+        "objectName": "Button_Recycle"
+      }
+    ]
+  },
+  "TwoCubeEntities": {
+    "script": "Assets/Examples/13_Entity/03_TwoInstances/TwoCubeEntities.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  多实例、实体组与查询",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "countsText",
+        "objectName": "Text_Counts"
+      },
+      {
+        "type": "Toggle",
+        "field": "contextToggle",
+        "label": "隐藏时传入上下文",
+        "value": "false",
+        "objectName": "Toggle_HideContext"
+      },
+      {
+        "type": "Button",
+        "field": "hideFirstButton",
+        "text": "只隐藏 Left 的实体 1",
+        "objectName": "Button_HideFirst"
+      },
+      {
+        "type": "Button",
+        "field": "hideAllButton",
+        "text": "隐藏所有已显示实体",
+        "objectName": "Button_HideAll"
+      },
+      {
+        "type": "Button",
+        "field": "showButton",
+        "text": "恢复缺少的实体",
+        "objectName": "Button_Show"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Button",
+        "field": "queryButton",
+        "text": "查询一次",
+        "objectName": "Button_Query"
+      },
+      {
+        "type": "Text",
+        "field": "queryText",
+        "objectName": "Text_Query"
+      },
+      {
+        "type": "Text",
+        "text": "组内查询",
+        "objectName": "Text_GroupTitle"
+      },
+      {
+        "type": "Dropdown",
+        "field": "groupDropdown",
+        "objectName": "Dropdown_Group"
+      },
+      {
+        "type": "InputField",
+        "field": "entityIdInput",
+        "label": "实体编号",
+        "value": "1",
+        "contentType": "IntegerNumber",
+        "objectName": "InputField_EntityId"
+      },
+      {
+        "type": "Button",
+        "field": "queryGroupButton",
+        "text": "查询所选组",
+        "objectName": "Button_QueryGroup"
+      },
+      {
+        "type": "Text",
+        "field": "groupQueryText",
+        "objectName": "Text_GroupQuery"
+      }
+    ],
+    "loadDelaySeconds": 2.0
+  },
+  "OpenWindowExample": {
+    "script": "Assets/Examples/14_UI/01_OpenWindow/OpenWindowExample.cs",
+    "loadDelaySeconds": 2.0,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "01  打开、关闭与取消加载",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_State",
+        "field": "stateText"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_OpenMode",
+        "field": "openMode"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Open",
+        "field": "openButton",
+        "text": "打开窗口"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_CloseMode",
+        "field": "closeMode"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Close",
+        "field": "closeButton",
+        "text": "关闭窗口"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Cancel",
+        "field": "cancelButton",
+        "text": "取消待打开窗口"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Lifecycle",
+        "field": "lifecycleText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Result",
+        "field": "resultText"
+      }
+    ]
+  },
+  "ReopenWindowExample": {
+    "script": "Assets/Examples/14_UI/02_Reopen/ReopenWindowExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "02  窗口复用与缓存",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_State",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Lifecycle",
+        "field": "lifecycleText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Policy",
+        "field": "policyText"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_Idle",
+        "field": "idleSlider",
+        "low-value": "0",
+        "high-value": "2.5",
+        "value": "0"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_Locked",
+        "field": "lockedToggle",
+        "text": "锁定缓存实例"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Reopen",
+        "field": "reopenButton",
+        "text": "关闭后重新打开"
+      }
+    ]
+  },
+  "CoverWindowExample": {
+    "script": "Assets/Examples/14_UI/03_Cover/CoverWindowExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "03  覆盖、暂停与置顶",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_State",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Callbacks",
+        "field": "callbacksText"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_Pause",
+        "field": "pauseToggle",
+        "text": "打开上层时暂停下层",
+        "value": "true"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Open",
+        "field": "openButton",
+        "text": "打开上层窗口"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Close",
+        "field": "closeButton",
+        "text": "关闭上层窗口"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_Context",
+        "field": "contextToggle",
+        "text": "置顶时携带数据",
+        "value": "true"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Refocus",
+        "field": "refocusButton",
+        "text": "将背包移到顶层"
+      }
+    ]
+  },
+  "OneShotSoundExample": {
+    "script": "Assets/Examples/15_Sound/01_OneShot/OneShotSoundExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  提示音与加载取消",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "选择播放参数；加载时可取消，播放后显示进度。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "outputText",
+        "objectName": "Text_OutputText"
+      },
+      {
+        "type": "Slider",
+        "field": "progressSlider",
+        "objectName": "Slider_ProgressSlider",
+        "interactable": false
+      },
+      {
+        "type": "Dropdown",
+        "field": "playModeDropdown",
+        "objectName": "Dropdown_PlayModeDropdown"
+      },
+      {
+        "type": "Button",
+        "field": "playButton",
+        "objectName": "Button_PlayButton",
+        "text": "播放提示音",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "cancelButton",
+        "objectName": "Button_CancelButton",
+        "text": "取消本次加载",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "cancelAllButton",
+        "objectName": "Button_CancelAllButton",
+        "text": "取消全部加载",
+        "row": "Actions"
+      }
+    ],
+    "loadDelaySeconds": 2
+  },
+  "LoopSoundExample": {
+    "script": "Assets/Examples/15_Sound/02_Loop/LoopSoundExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  暂停、恢复与播放位置",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "暂停后可拖动进度；开启淡入淡出，观察音量变化。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "outputText",
+        "objectName": "Text_OutputText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "fadeDropdown",
+        "objectName": "Dropdown_FadeDropdown"
+      },
+      {
+        "type": "Dropdown",
+        "field": "controlDropdown",
+        "objectName": "Dropdown_Control"
+      },
+      {
+        "type": "Toggle",
+        "field": "loopToggle",
+        "objectName": "Toggle_LoopToggle",
+        "text": "循环播放",
+        "value": "true"
+      },
+      {
+        "type": "Text",
+        "text": "音调（0.5–2）",
+        "objectName": "Text_Pitch",
+        "row": "Pitch"
+      },
+      {
+        "type": "Slider",
+        "field": "pitchSlider",
+        "objectName": "Slider_PitchSlider",
+        "low-value": 0.5,
+        "high-value": 2,
+        "value": 1,
+        "row": "Pitch"
+      },
+      {
+        "type": "Text",
+        "text": "播放位置",
+        "objectName": "Text_Seek",
+        "row": "Seek"
+      },
+      {
+        "type": "Slider",
+        "field": "seekSlider",
+        "objectName": "Slider_SeekSlider",
+        "row": "Seek"
+      },
+      {
+        "type": "Button",
+        "field": "pauseButton",
+        "objectName": "Button_PauseButton",
+        "text": "暂停",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "resumeButton",
+        "objectName": "Button_ResumeButton",
+        "text": "恢复",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "stopButton",
+        "objectName": "Button_StopButton",
+        "text": "停止",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "playButton",
+        "objectName": "Button_PlayButton",
+        "text": "重新播放",
+        "row": "Actions"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_AgentActions",
+        "text": "当前代理：重播保留序号，重置释放音频。"
+      },
+      {
+        "type": "Button",
+        "field": "replayButton",
+        "objectName": "Button_Replay",
+        "text": "从头重播",
+        "row": "AgentActions"
+      },
+      {
+        "type": "Button",
+        "field": "resetButton",
+        "objectName": "Button_Reset",
+        "text": "重置代理",
+        "row": "AgentActions"
+      }
+    ]
+  },
+  "SoundGroupVolumeExample": {
+    "script": "Assets/Examples/15_Sound/03_GroupVolume/SoundGroupVolumeExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  组音量与静音",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "分别调节组音量和本声音量；停止 Music 时，Effects 继续播放。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "outputText",
+        "objectName": "Text_OutputText"
+      },
+      {
+        "type": "Text",
+        "text": "Music 组音量",
+        "objectName": "Text_GroupVolume",
+        "row": "GroupVolume"
+      },
+      {
+        "type": "Slider",
+        "field": "groupVolumeSlider",
+        "objectName": "Slider_GroupVolumeSlider",
+        "value": 0.4,
+        "row": "GroupVolume"
+      },
+      {
+        "type": "Text",
+        "text": "Music 本声音量",
+        "objectName": "Text_VoiceVolume",
+        "row": "VoiceVolume"
+      },
+      {
+        "type": "Slider",
+        "field": "voiceVolumeSlider",
+        "objectName": "Slider_VoiceVolumeSlider",
+        "value": 0.5,
+        "row": "VoiceVolume"
+      },
+      {
+        "type": "Toggle",
+        "field": "groupMuteToggle",
+        "objectName": "Toggle_GroupMuteToggle",
+        "text": "静音 Music 组",
+        "value": "false",
+        "row": "Mute"
+      },
+      {
+        "type": "Toggle",
+        "field": "voiceMuteToggle",
+        "objectName": "Toggle_VoiceMuteToggle",
+        "text": "只静音本声",
+        "value": "false",
+        "row": "Mute"
+      },
+      {
+        "type": "Dropdown",
+        "field": "stopModeDropdown",
+        "objectName": "Dropdown_StopModeDropdown"
+      },
+      {
+        "type": "Button",
+        "field": "stopButton",
+        "objectName": "Button_StopButton",
+        "text": "执行停止",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "playButton",
+        "objectName": "Button_PlayButton",
+        "text": "重新播放",
+        "row": "Actions"
+      }
+    ]
+  },
+  "LoadRoomExample": {
+    "script": "Assets/Examples/16_Scene/01_LoadRoom/LoadRoomExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  加载与卸载",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "加载蓝色房间，再卸载；观察方块和场景列表。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Slider",
+        "field": "progressSlider",
+        "objectName": "Slider_ProgressSlider",
+        "interactable": false
+      },
+      {
+        "type": "Text",
+        "text": "加载重载",
+        "objectName": "Text_LoadMode",
+        "row": "LoadMode"
+      },
+      {
+        "type": "Dropdown",
+        "field": "loadMode",
+        "objectName": "Dropdown_LoadMode",
+        "row": "LoadMode"
+      },
+      {
+        "type": "Text",
+        "text": "卸载重载",
+        "objectName": "Text_UnloadMode",
+        "row": "UnloadMode"
+      },
+      {
+        "type": "Dropdown",
+        "field": "unloadMode",
+        "objectName": "Dropdown_UnloadMode",
+        "row": "UnloadMode"
+      },
+      {
+        "type": "Text",
+        "text": "集合查询",
+        "objectName": "Text_QueryMode",
+        "row": "QueryMode"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode",
+        "row": "QueryMode"
+      },
+      {
+        "type": "Text",
+        "field": "roomsText",
+        "objectName": "Text_RoomsText"
+      },
+      {
+        "type": "Button",
+        "field": "loadButton",
+        "objectName": "Button_LoadButton",
+        "row": "Actions",
+        "text": "加载"
+      },
+      {
+        "type": "Button",
+        "field": "unloadButton",
+        "objectName": "Button_UnloadButton",
+        "row": "Actions",
+        "text": "卸载"
+      }
+    ]
+  },
+  "SwitchRoomsExample": {
+    "script": "Assets/Examples/16_Scene/02_SwitchRooms/SwitchRoomsExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  顺序切关",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "先卸载旧房间，完成后加载新房间。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Button",
+        "field": "switchButton",
+        "objectName": "Button_SwitchButton",
+        "text": "切到另一个房间"
+      }
+    ]
+  },
+  "WriteReadFileExample": {
+    "script": "Assets/Examples/17_FileSystem/01_WriteRead/WriteReadFileExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "01  写入与读取",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "输入内容，比较字节数组、缓冲区、Stream 和磁盘文件的读写入口。"
+      },
+      {
+        "type": "InputField",
+        "field": "contentInput",
+        "objectName": "InputField_ContentInput",
+        "label": "文件内容",
+        "value": "QGF Player"
+      },
+      {
+        "type": "Dropdown",
+        "field": "writeMode",
+        "objectName": "Dropdown_WriteMode"
+      },
+      {
+        "type": "Button",
+        "field": "writeButton",
+        "objectName": "Button_WriteButton",
+        "text": "写入或覆盖"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "readMode",
+        "objectName": "Dropdown_ReadMode"
+      },
+      {
+        "type": "Button",
+        "field": "readButton",
+        "objectName": "Button_ReadButton",
+        "text": "读取逻辑文件"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      }
+    ]
+  },
+  "ReopenFileExample": {
+    "script": "Assets/Examples/17_FileSystem/02_Reopen/ReopenFileExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "02  关闭、权限与重开",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "关闭句柄会移出管理器，数据仍保留。重开时选择只读、只写或读写。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Button",
+        "field": "closeButton",
+        "objectName": "Button_CloseButton",
+        "text": "关闭并保留文件",
+        "value": "",
+        "row": "Lifecycle"
+      },
+      {
+        "type": "Button",
+        "field": "reopenButton",
+        "objectName": "Button_ReopenButton",
+        "text": "按所选权限重开",
+        "row": "Lifecycle"
+      },
+      {
+        "type": "Dropdown",
+        "field": "accessMode",
+        "objectName": "Dropdown_AccessMode"
+      },
+      {
+        "type": "Button",
+        "field": "writeButton",
+        "objectName": "Button_WriteButton",
+        "text": "写入下一关",
+        "row": "File"
+      },
+      {
+        "type": "Button",
+        "field": "readButton",
+        "objectName": "Button_ReadButton",
+        "text": "读回当前关卡",
+        "row": "File"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Button",
+        "field": "queryButton",
+        "objectName": "Button_QueryButton",
+        "text": "查询已打开容器"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ManagerText",
+        "field": "managerText"
+      }
+    ]
+  },
+  "DeleteLogicalFileExample": {
+    "script": "Assets/Examples/17_FileSystem/03_Delete/DeleteLogicalFileExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "03  文件索引与容量",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "容器只允许两份逻辑文件。重命名不复制内容；删除条目后可写入第三份记录。"
+      },
+      {
+        "type": "Text",
+        "text": "当前逻辑键",
+        "objectName": "Text_CurrentName",
+        "row": "Names"
+      },
+      {
+        "type": "InputField",
+        "field": "nameInput",
+        "objectName": "InputField_NameInput",
+        "label": "要操作的逻辑名称",
+        "value": "temp.txt",
+        "row": "Names"
+      },
+      {
+        "type": "Text",
+        "text": "重命名为",
+        "objectName": "Text_NewName",
+        "row": "Names"
+      },
+      {
+        "type": "InputField",
+        "field": "newNameInput",
+        "objectName": "InputField_NewNameInput",
+        "label": "重命名后的键",
+        "value": "renamed.txt",
+        "row": "Names"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Button",
+        "field": "inspectButton",
+        "objectName": "Button_InspectButton",
+        "text": "查询索引",
+        "row": "Edit"
+      },
+      {
+        "type": "Button",
+        "field": "renameButton",
+        "objectName": "Button_RenameButton",
+        "text": "重命名",
+        "row": "Edit"
+      },
+      {
+        "type": "Button",
+        "field": "deleteButton",
+        "objectName": "Button_DeleteButton",
+        "text": "删除所选条目",
+        "row": "Edit"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_EntriesText",
+        "field": "entriesText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_InfoText",
+        "field": "infoText"
+      },
+      {
+        "type": "Button",
+        "field": "addButton",
+        "objectName": "Button_AddButton",
+        "text": "写入 third.txt",
+        "row": "Reset"
+      },
+      {
+        "type": "Button",
+        "field": "resetButton",
+        "objectName": "Button_ResetButton",
+        "text": "恢复初始记录",
+        "row": "Reset"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      }
+    ]
+  },
+  "GetWebRequestExample": {
+    "script": "Assets/Examples/18_WebRequest/01_Get/GetWebRequestExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  GET 与响应正文",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "本机服务返回 JSON。八种重载的请求内容相同，附加参数用于管理任务。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "requestMode",
+        "choices": "仅地址|标签|优先级|业务上下文|标签 + 优先级|标签 + 上下文|优先级 + 上下文|完整参数",
+        "objectName": "Dropdown_RequestMode"
+      },
+      {
+        "type": "Button",
+        "field": "requestButton",
+        "text": "发送 GET",
+        "row": "request",
+        "objectName": "Button_RequestButton"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "responseText",
+        "height": 150,
+        "objectName": "Text_ResponseText"
+      }
+    ]
+  },
+  "FailedWebRequestExample": {
+    "script": "Assets/Examples/18_WebRequest/02_Failure/FailedWebRequestExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  失败与超时",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "比较 404、超时和正常响应，查看原因与耗时。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "failureMode",
+        "choices": "HTTP 404|1 秒超时|正常响应",
+        "objectName": "Dropdown_FailureMode"
+      },
+      {
+        "type": "Button",
+        "field": "requestButton",
+        "text": "发送请求",
+        "row": "request",
+        "objectName": "Button_RequestButton"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "height": 100,
+        "objectName": "Text_ResultText"
+      }
+    ]
+  },
+  "CancelWebRequestExample": {
+    "script": "Assets/Examples/18_WebRequest/03_Cancel/CancelWebRequestExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  队列与取消",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "取消 hold 后，观察剩余任务按优先级执行。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Button",
+        "field": "enqueueButton",
+        "text": "建立队列",
+        "row": "create",
+        "objectName": "Button_EnqueueButton"
+      },
+      {
+        "type": "Dropdown",
+        "field": "cancelMode",
+        "choices": "按序号取消 hold|按 Example.Queue 标签取消|取消所有任务",
+        "objectName": "Dropdown_CancelMode",
+        "row": "cancel"
+      },
+      {
+        "type": "Button",
+        "field": "cancelButton",
+        "text": "取消所选请求",
+        "row": "cancel",
+        "objectName": "Button_CancelButton"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "height": 28,
+        "objectName": "Text_ResultText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "choices": "全部 · 数组|全部 · 复用 List|Example.Queue · 数组|Example.Queue · 复用 List",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Text",
+        "field": "queueText",
+        "height": 115,
+        "objectName": "Text_QueueText"
+      },
+      {
+        "type": "Text",
+        "field": "orderText",
+        "height": 60,
+        "objectName": "Text_OrderText"
+      }
+    ]
+  },
+  "DownloadFileExample": {
+    "script": "Assets/Examples/19_Download/01_File/DownloadFileExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  下载到文件",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "HTTP 响应先写入 .download，成功后才替换正式文件。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "requestMode",
+        "choices": "仅路径和地址|标签|优先级|业务上下文|标签 + 优先级|标签 + 上下文|优先级 + 上下文|完整参数",
+        "objectName": "Dropdown_RequestMode"
+      },
+      {
+        "type": "Button",
+        "field": "downloadButton",
+        "text": "下载文件",
+        "row": "action",
+        "objectName": "Button_DownloadButton"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "text": "清理文件",
+        "row": "action",
+        "objectName": "Button_ClearButton"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "contentText",
+        "height": 85,
+        "objectName": "Text_ContentText"
+      },
+      {
+        "type": "Text",
+        "field": "pathText",
+        "height": 100,
+        "objectName": "Text_PathText"
+      }
+    ],
+    "downloadAgentCount": 1
+  },
+  "DownloadProgressExample": {
+    "script": "Assets/Examples/19_Download/02_Progress/DownloadProgressExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  字节进度与写盘",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "观察已接收字节、百分比和汇总速度。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "flushMode",
+        "choices": "FlushSize 4 KiB|FlushSize 64 KiB|FlushSize 1 MiB",
+        "objectName": "Dropdown_FlushMode"
+      },
+      {
+        "type": "Button",
+        "field": "downloadButton",
+        "text": "开始下载",
+        "row": "action",
+        "objectName": "Button_DownloadButton"
+      },
+      {
+        "type": "Slider",
+        "field": "progressSlider",
+        "interactable": false,
+        "objectName": "Slider_ProgressSlider"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "height": 65,
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "fileText",
+        "height": 85,
+        "objectName": "Text_FileText"
+      }
+    ],
+    "downloadAgentCount": 1,
+    "payloadGuid": "25ce0c92f7b1dea4ab40b6dc59b4e816"
+  },
+  "CancelDownloadExample": {
+    "script": "Assets/Examples/19_Download/03_Cancel/CancelDownloadExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  取消与断点续传",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "下载一部分后取消，再次开始可从临时文件续传。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Button",
+        "field": "downloadButton",
+        "text": "开始 / 继续",
+        "row": "action",
+        "objectName": "Button_DownloadButton"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "text": "清理文件",
+        "row": "action",
+        "objectName": "Button_ClearButton"
+      },
+      {
+        "type": "Dropdown",
+        "field": "cancelMode",
+        "choices": "保留临时文件|清理临时文件",
+        "row": "cancel",
+        "objectName": "Dropdown_CancelMode"
+      },
+      {
+        "type": "Button",
+        "field": "cancelButton",
+        "text": "取消本次下载",
+        "row": "cancel",
+        "objectName": "Button_CancelButton"
+      },
+      {
+        "type": "Slider",
+        "field": "progressSlider",
+        "interactable": false,
+        "objectName": "Slider_ProgressSlider"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "height": 70,
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "fileText",
+        "height": 75,
+        "objectName": "Text_FileText"
+      }
+    ],
+    "downloadAgentCount": 1,
+    "payloadGuid": "25ce0c92f7b1dea4ab40b6dc59b4e816"
+  },
+  "ConnectNetworkExample": {
+    "script": "Assets/Examples/20_Network/01_Connect/ConnectNetworkExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "01  通道生命周期",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "创建只登记通道。Connect 建立连接，Close 保留通道，Destroy 将它移除。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "serviceMode",
+        "choices": "Tcp · 异步接收|TcpWithSyncReceive · 同步接收",
+        "row": "mode",
+        "objectName": "Dropdown_ServiceMode"
+      },
+      {
+        "type": "Dropdown",
+        "field": "connectMode",
+        "choices": "Connect(address, port)|Connect(address, port, this)",
+        "row": "mode",
+        "objectName": "Dropdown_ConnectMode"
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "text": "创建主通道",
+        "row": "main",
+        "objectName": "Button_CreateButton"
+      },
+      {
+        "type": "Button",
+        "field": "connectButton",
+        "text": "连接 / 重连",
+        "row": "main",
+        "objectName": "Button_ConnectButton"
+      },
+      {
+        "type": "Button",
+        "field": "closeButton",
+        "text": "关闭连接",
+        "row": "main",
+        "objectName": "Button_CloseButton"
+      },
+      {
+        "type": "Button",
+        "field": "destroyButton",
+        "text": "销毁主通道",
+        "row": "main",
+        "objectName": "Button_DestroyButton"
+      },
+      {
+        "type": "Button",
+        "field": "spareButton",
+        "text": "登记备用通道",
+        "row": "query",
+        "objectName": "Button_SpareButton"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "choices": "按名称查询主通道|全部通道 · 数组|全部通道 · 复用 List",
+        "row": "query",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "height": 125,
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "queryText",
+        "height": 45,
+        "objectName": "Text_QueryText"
+      }
+    ]
+  },
+  "EchoNetworkExample": {
+    "script": "Assets/Examples/20_Network/02_Echo/EchoNetworkExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  消息回显",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "同帧发送两条文本，比较完整响应与拆分响应。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "serviceMode",
+        "choices": "Tcp · 异步接收|TcpWithSyncReceive · 同步接收",
+        "row": "connect",
+        "objectName": "Dropdown_ServiceMode"
+      },
+      {
+        "type": "Button",
+        "field": "connectButton",
+        "text": "连接 / 重建",
+        "row": "connect",
+        "objectName": "Button_ConnectButton"
+      },
+      {
+        "type": "InputField",
+        "field": "firstInput",
+        "objectName": "InputField_FirstInput",
+        "row": "messages"
+      },
+      {
+        "type": "InputField",
+        "field": "secondInput",
+        "objectName": "InputField_SecondInput",
+        "row": "messages"
+      },
+      {
+        "type": "Toggle",
+        "field": "splitToggle",
+        "text": "服务器拆分响应",
+        "row": "send",
+        "objectName": "Toggle_SplitToggle"
+      },
+      {
+        "type": "Button",
+        "field": "sendButton",
+        "text": "发送两份文本",
+        "row": "send",
+        "objectName": "Button_SendButton"
+      },
+      {
+        "type": "Button",
+        "field": "noticeButton",
+        "text": "发送默认处理器通知",
+        "row": "send",
+        "objectName": "Button_NoticeButton"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "height": 95,
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "responseText",
+        "height": 85,
+        "objectName": "Text_ResponseText"
+      }
+    ]
+  },
+  "InspectDebuggerExample": {
+    "script": "Assets/Examples/21_Debugger/01_Inspect/InspectDebuggerExample.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "01  调试窗口与布局",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "切换页面、图标和缩放；拖动窗口标题栏可移动。"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_ActiveToggle",
+        "field": "activeToggle",
+        "text": "显示调试入口",
+        "value": "true"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_FullToggle",
+        "field": "fullToggle",
+        "text": "展开完整窗口",
+        "value": "true"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_PageDropdown",
+        "field": "pageDropdown",
+        "choices": "Time|Scene|Environment|不存在的页面"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "窗口缩放"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_ScaleSlider",
+        "field": "scaleSlider",
+        "value": 1,
+        "low-value": 0.6,
+        "high-value": 1.4
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ResetButton",
+        "field": "resetButton",
+        "text": "默认布局",
+        "row": "Layout"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_PositionButton",
+        "field": "positionButton",
+        "text": "排到右侧",
+        "row": "Layout"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_PauseButton",
+        "field": "pauseButton",
+        "text": "暂停游戏"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      }
+    ]
+  },
+  "InspectFsmStates": {
+    "script": "Assets/Examples/05_Fsm/04_Inspect/InspectFsmStates.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  查询状态",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Dropdown",
+        "field": "startMode",
+        "objectName": "Dropdown_StartMode"
+      },
+      {
+        "type": "Button",
+        "field": "startButton",
+        "text": "启动 Idle",
+        "objectName": "Button_Start"
+      },
+      {
+        "type": "Button",
+        "field": "walkButton",
+        "text": "切换到 Walk",
+        "objectName": "Button_Walk"
+      },
+      {
+        "type": "Dropdown",
+        "field": "listMode",
+        "objectName": "Dropdown_ListMode"
+      },
+      {
+        "type": "Button",
+        "field": "inspectButton",
+        "text": "查询注册的状态",
+        "objectName": "Button_Inspect"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "statesText",
+        "objectName": "Text_States"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "lookupText",
+        "objectName": "Text_Lookup"
+      }
+    ]
+  },
+  "FsmLifecycle": {
+    "script": "Assets/Examples/05_Fsm/05_Lifecycle/FsmLifecycle.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  创建与销毁的回调",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Dropdown",
+        "field": "createMode",
+        "objectName": "Dropdown_CreateMode"
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "text": "创建并启动",
+        "objectName": "Button_Create"
+      },
+      {
+        "type": "Dropdown",
+        "field": "destroyMode",
+        "objectName": "Dropdown_DestroyMode"
+      },
+      {
+        "type": "Button",
+        "field": "destroyButton",
+        "text": "销毁",
+        "objectName": "Button_Destroy"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "callbacksText",
+        "objectName": "Text_Callbacks"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      }
+    ]
+  },
+  "InspectProcedures": {
+    "script": "Assets/Examples/06_Procedure/04_Query/InspectProcedures.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  查询已注册的流程",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "currentText",
+        "objectName": "Text_Current"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Button",
+        "field": "queryButton",
+        "text": "查询",
+        "objectName": "Button_Query"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      }
+    ]
+  },
+  "ManageReferences": {
+    "script": "Assets/Examples/07_ReferencePool/04_Capacity/ManageReferences.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  预热与裁剪引用池",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Dropdown",
+        "field": "apiMode",
+        "objectName": "Dropdown_ApiMode"
+      },
+      {
+        "type": "Button",
+        "field": "addButton",
+        "text": "预热三个引用",
+        "objectName": "Button_Add"
+      },
+      {
+        "type": "Button",
+        "field": "borrowButton",
+        "text": "借出一个",
+        "objectName": "Button_Borrow"
+      },
+      {
+        "type": "Button",
+        "field": "removeButton",
+        "text": "裁剪两个空闲引用",
+        "objectName": "Button_Remove"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "text": "清空本类型的空闲引用",
+        "objectName": "Button_Clear"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "countsText",
+        "objectName": "Text_Counts"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "heldText",
+        "objectName": "Text_Held"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "totalsText",
+        "objectName": "Text_Totals"
+      }
+    ]
+  },
+  "ReferencePoolChecks": {
+    "script": "Assets/Examples/07_ReferencePool/05_StrictCheck/ReferencePoolChecks.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  严格检查与清理全部池",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Toggle",
+        "field": "strictToggle",
+        "label": "开启严格检查",
+        "objectName": "Toggle_Strict"
+      },
+      {
+        "type": "Button",
+        "field": "checkButton",
+        "text": "演示重复归还被拒绝",
+        "objectName": "Button_Check"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "text": "全部归还后清理所有类型集合",
+        "objectName": "Button_Clear"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      },
+      {
+        "type": "Text",
+        "text": "",
+        "field": "poolsText",
+        "objectName": "Text_Pools"
+      }
+    ]
+  },
+  "CoreProcedureStart": {
+    "script": "Assets/Examples/06_Procedure/05_CoreStart/CoreProcedureStart.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  直接启动 Core 流程",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Dropdown",
+        "field": "startMode",
+        "objectName": "Dropdown_StartMode"
+      },
+      {
+        "type": "Button",
+        "field": "initializeButton",
+        "text": "初始化并注册流程",
+        "objectName": "Button_Initialize"
+      },
+      {
+        "type": "Button",
+        "field": "startButton",
+        "text": "启动入口流程",
+        "objectName": "Button_Start"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "queryText",
+        "objectName": "Text_Query"
+      }
+    ]
+  },
+  "AttachEntities": {
+    "script": "Assets/Examples/13_Entity/04_Attachment/AttachEntities.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  挂接与解除父子实体",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "relationText",
+        "objectName": "Text_Relation"
+      },
+      {
+        "type": "Text",
+        "field": "callbackText",
+        "objectName": "Text_Callback"
+      },
+      {
+        "type": "Dropdown",
+        "field": "attachMode",
+        "objectName": "Dropdown_AttachMode"
+      },
+      {
+        "type": "Button",
+        "field": "attachButton",
+        "text": "挂接绿色子实体",
+        "objectName": "Button_Attach"
+      },
+      {
+        "type": "Dropdown",
+        "field": "detachMode",
+        "objectName": "Dropdown_DetachMode"
+      },
+      {
+        "type": "Button",
+        "field": "detachButton",
+        "text": "解除挂接",
+        "objectName": "Button_Detach"
+      },
+      {
+        "type": "Button",
+        "field": "hideParentButton",
+        "text": "隐藏蓝色父实体",
+        "objectName": "Button_HideParent"
+      },
+      {
+        "type": "Button",
+        "field": "showButton",
+        "text": "恢复缺少的实体",
+        "objectName": "Button_Show"
+      },
+      {
+        "type": "Button",
+        "field": "queryButton",
+        "text": "查询父子关系",
+        "objectName": "Button_Query"
+      },
+      {
+        "type": "Text",
+        "field": "queryText",
+        "objectName": "Text_Query"
+      }
+    ]
+  },
+  "InspectWindows": {
+    "script": "Assets/Examples/14_UI/04_Groups/InspectWindows.cs",
+    "loadDelaySeconds": 1.0,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "04  多窗口与分组查询",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_State",
+        "field": "stateText"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_Pause",
+        "field": "pauseToggle",
+        "text": "暂停 Popup 组"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_Depth",
+        "field": "depthToggle",
+        "text": "将 Popup 放到 Hud 后面"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_QueryMode",
+        "field": "queryMode"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Query",
+        "field": "queryButton",
+        "text": "查询"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Query",
+        "field": "queryText"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_Context",
+        "field": "contextToggle",
+        "text": "批量关闭时携带数据",
+        "value": "true"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Close",
+        "field": "closeButton",
+        "text": "关闭全部窗口"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Restore",
+        "field": "restoreButton",
+        "text": "恢复两个窗口"
+      }
+    ]
+  },
+  "ReplaceSoundAgents": {
+    "script": "Assets/Examples/15_Sound/04_Priority/ReplaceSoundAgents.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  代理容量与抢占",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "两个代理用满后，尝试同级替换和高优先级抢占。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "outputText",
+        "objectName": "Text_OutputText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "priorityDropdown",
+        "objectName": "Dropdown_PriorityDropdown"
+      },
+      {
+        "type": "Toggle",
+        "field": "protectToggle",
+        "objectName": "Toggle_ProtectToggle",
+        "text": "保护相同优先级",
+        "value": "false"
+      },
+      {
+        "type": "Button",
+        "field": "playButton",
+        "objectName": "Button_PlayButton",
+        "text": "播放一声循环音",
+        "row": "Actions"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "objectName": "Button_ClearButton",
+        "text": "清空两个代理",
+        "row": "Actions"
+      }
+    ]
+  },
+  "SpatialSoundExample": {
+    "script": "Assets/Examples/15_Sound/05_Spatial/SpatialSoundExample.cs",
+    "spatialSound": true,
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  空间声音",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "橙球是听者。移动蓝块后点击播放，比较固定坐标与 2D／3D 声音。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText",
+        "overlay": true
+      },
+      {
+        "type": "Dropdown",
+        "field": "playMode",
+        "objectName": "Dropdown_PlayMode"
+      },
+      {
+        "type": "Text",
+        "text": "标记偏移（米）",
+        "objectName": "Text_Position",
+        "row": "Position"
+      },
+      {
+        "type": "Slider",
+        "field": "positionSlider",
+        "objectName": "Slider_PositionSlider",
+        "low-value": -3,
+        "high-value": 3,
+        "value": 3,
+        "row": "Position"
+      },
+      {
+        "type": "Text",
+        "text": "最大距离（米）",
+        "objectName": "Text_Distance",
+        "row": "Distance"
+      },
+      {
+        "type": "Slider",
+        "field": "distanceSlider",
+        "objectName": "Slider_DistanceSlider",
+        "low-value": 2,
+        "high-value": 12,
+        "value": 8,
+        "row": "Distance"
+      },
+      {
+        "type": "Text",
+        "text": "2D → 3D 混合",
+        "objectName": "Text_Blend",
+        "row": "Blend"
+      },
+      {
+        "type": "Slider",
+        "field": "blendSlider",
+        "objectName": "Slider_BlendSlider",
+        "value": 1,
+        "row": "Blend"
+      },
+      {
+        "type": "Text",
+        "text": "2D 声相：左 → 右",
+        "objectName": "Text_Pan",
+        "row": "Pan"
+      },
+      {
+        "type": "Slider",
+        "field": "panSlider",
+        "objectName": "Slider_PanSlider",
+        "low-value": -1,
+        "high-value": 1,
+        "value": 0,
+        "row": "Pan"
+      },
+      {
+        "type": "Button",
+        "field": "playButton",
+        "objectName": "Button_PlayButton",
+        "row": "Actions",
+        "text": "应用坐标并播放"
+      },
+      {
+        "type": "Button",
+        "field": "stopButton",
+        "objectName": "Button_StopButton",
+        "row": "Actions",
+        "text": "停止"
+      }
+    ]
+  },
+  "FollowEntitySound": {
+    "script": "Assets/Examples/15_Sound/06_EntityFollow/FollowEntitySound.cs",
+    "spatialSound": true,
+    "entitySound": true,
+    "controls": [
+      {
+        "type": "Text",
+        "text": "06  声音跟随实体",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "给移动实体绑定声音，比较多普勒效果；隐藏实体后声音停止。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText",
+        "overlay": true
+      },
+      {
+        "type": "Dropdown",
+        "field": "playMode",
+        "objectName": "Dropdown_PlayMode"
+      },
+      {
+        "type": "Text",
+        "text": "多普勒强度",
+        "objectName": "Text_Doppler"
+      },
+      {
+        "type": "Slider",
+        "field": "dopplerSlider",
+        "objectName": "Slider_DopplerSlider",
+        "low-value": 0,
+        "high-value": 5,
+        "value": 1
+      },
+      {
+        "type": "Button",
+        "field": "playButton",
+        "objectName": "Button_PlayButton",
+        "row": "Actions",
+        "text": "绑定并播放"
+      },
+      {
+        "type": "Button",
+        "field": "hideButton",
+        "objectName": "Button_HideButton",
+        "row": "Actions",
+        "text": "隐藏实体"
+      },
+      {
+        "type": "Button",
+        "field": "showButton",
+        "objectName": "Button_ShowButton",
+        "row": "Actions",
+        "text": "重新显示"
+      }
+    ]
+  },
+  "SceneOrderExample": {
+    "script": "Assets/Examples/16_Scene/03_Order/SceneOrderExample.cs",
+    "compareRooms": true,
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  激活顺序与主相机",
+        "objectName": "Text_Title",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "text": "调整场景顺序，再创建物体，查看物体归属。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText",
+        "overlay": true
+      },
+      {
+        "type": "Button",
+        "field": "blueButton",
+        "objectName": "Button_BlueButton",
+        "row": "Active",
+        "text": "激活 Blue"
+      },
+      {
+        "type": "Button",
+        "field": "orangeButton",
+        "objectName": "Button_OrangeButton",
+        "row": "Active",
+        "text": "激活 Orange"
+      },
+      {
+        "type": "Button",
+        "field": "spawnButton",
+        "objectName": "Button_SpawnButton",
+        "text": "在激活场景创建球体"
+      },
+      {
+        "type": "Toggle",
+        "field": "cameraTagToggle",
+        "objectName": "Toggle_CameraTagToggle",
+        "value": "true",
+        "text": "保留相机的 MainCamera 标签"
+      }
+    ]
+  },
+  "ReadFileSegments": {
+    "script": "Assets/Examples/17_FileSystem/04_Segments/ReadFileSegments.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "04  读取文件片段",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "调整偏移和长度，查看读出的片段；点表示未写入的位置。"
+      },
+      {
+        "type": "Dropdown",
+        "field": "readMode",
+        "objectName": "Dropdown_ReadMode"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_RangeText",
+        "field": "rangeText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "源文件偏移（字节）",
+        "row": "Offset"
+      },
+      {
+        "type": "Slider",
+        "field": "offsetSlider",
+        "objectName": "Slider_OffsetSlider",
+        "value": 4,
+        "row": "Offset",
+        "low-value": 0,
+        "high-value": 20
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "请求长度（字节）",
+        "row": "Length"
+      },
+      {
+        "type": "Slider",
+        "field": "lengthSlider",
+        "objectName": "Slider_LengthSlider",
+        "value": 6,
+        "row": "Length",
+        "low-value": 0,
+        "high-value": 20
+      },
+      {
+        "type": "Toggle",
+        "field": "missingToggle",
+        "objectName": "Toggle_MissingToggle",
+        "text": "改读不存在的逻辑键",
+        "value": "false"
+      },
+      {
+        "type": "Button",
+        "field": "readButton",
+        "objectName": "Button_ReadButton",
+        "text": "读取所选范围"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      }
+    ]
+  },
+  "ExportLogicalFile": {
+    "script": "Assets/Examples/17_FileSystem/05_Export/ExportLogicalFile.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "05  导出与导入",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "导出文本，删除逻辑条目，再从导出文件恢复。"
+      },
+      {
+        "type": "InputField",
+        "field": "contentInput",
+        "objectName": "InputField_ContentInput",
+        "label": "导出内容",
+        "value": "飞行员 QGF"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_PathsText",
+        "field": "pathsText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Button",
+        "field": "exportButton",
+        "objectName": "Button_ExportButton",
+        "text": "写入并导出",
+        "row": "Transfer"
+      },
+      {
+        "type": "Button",
+        "field": "deleteButton",
+        "objectName": "Button_DeleteButton",
+        "text": "移除逻辑文件",
+        "row": "Transfer"
+      },
+      {
+        "type": "Button",
+        "field": "importButton",
+        "objectName": "Button_ImportButton",
+        "text": "从磁盘重新导入",
+        "row": "Transfer"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      }
+    ]
+  },
+  "SpawnObject": {
+    "script": "Assets/Examples/08_ObjectPool/01_Spawn/SpawnObject.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "01  Cube 的借还与释放",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "按顺序创建、借出、归还和释放。Target 引用 Cube，ObjectBase 保存池信息。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "objectName": "Button_CreateButton",
+        "text": "创建并登记"
+      },
+      {
+        "type": "Button",
+        "field": "spawnButton",
+        "objectName": "Button_SpawnButton",
+        "text": "借出 / 再借一次"
+      },
+      {
+        "type": "Button",
+        "field": "returnButton",
+        "objectName": "Button_ReturnButton",
+        "text": "归还到缓存区"
+      },
+      {
+        "type": "Text",
+        "text": "最终释放参数",
+        "objectName": "Text_ReleaseArgument"
+      },
+      {
+        "type": "Dropdown",
+        "field": "releaseArgument",
+        "objectName": "Dropdown_ReleaseArgument"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "objectName": "Button_ReleaseButton",
+        "text": "最终释放"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_VisualGuide",
+        "text": "左：缓存区\n右：使用区",
+        "overlay": true
+      }
+    ],
+    "cameraX": 1.5
+  },
+  "SpawnOrCreateCube": {
+    "script": "Assets/Examples/08_ObjectPool/02_Factory/SpawnOrCreateCube.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "02  池空时由工厂创建",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "Spawn 返回 null 时，由业务工厂创建 Cube，再 Register(item, true)。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "回收策略 Capacity"
+      },
+      {
+        "type": "Slider",
+        "field": "capacitySlider",
+        "objectName": "Slider_CapacitySlider",
+        "value": 2,
+        "low-value": 0,
+        "high-value": 6
+      },
+      {
+        "type": "Button",
+        "field": "spawnButton",
+        "objectName": "Button_SpawnButton",
+        "text": "借出一个（最多展示 6 个）"
+      },
+      {
+        "type": "Button",
+        "field": "returnButton",
+        "objectName": "Button_ReturnButton",
+        "text": "归还最后一个"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "objectName": "Button_ClearButton",
+        "text": "销毁空闲 Cube"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_VisualGuide",
+        "text": "上：使用区\n下：缓存区",
+        "overlay": true
+      }
+    ]
+  },
+  "MultiSpawn": {
+    "script": "Assets/Examples/08_ObjectPool/03_Shared/MultiSpawn.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "03  多个使用者共享同一 Cube",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "多位使用者借用同一个 Cube，每份借用分别归还。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "objectName": "Button_CreateButton",
+        "text": "创建共享 Cube"
+      },
+      {
+        "type": "Button",
+        "field": "borrowButton",
+        "objectName": "Button_BorrowButton",
+        "text": "增加一个使用者"
+      },
+      {
+        "type": "Button",
+        "field": "returnButton",
+        "objectName": "Button_ReturnButton",
+        "text": "归还一份借用"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "objectName": "Button_ReleaseButton",
+        "text": "尝试释放共享 Cube"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_VisualGuide",
+        "text": "使用中：旋转\n全部归还：复位",
+        "overlay": true
+      }
+    ]
+  },
+  "ObjectPoolPolicy": {
+    "script": "Assets/Examples/08_ObjectPool/04_Policy/ObjectPoolPolicy.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "04  哪些 Cube 可以回收",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "三个空闲 Cube，从左到右为 Temp A、Temp B、Keep。选择保护条件，再观察淘汰结果。"
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "objectName": "Button_CreateButton",
+        "text": "创建三个 Cube"
+      },
+      {
+        "type": "Dropdown",
+        "field": "selectedCube",
+        "objectName": "Dropdown_SelectedCube"
+      },
+      {
+        "type": "Text",
+        "text": "锁定与优先级的传参方式",
+        "objectName": "Text_ArgumentMode"
+      },
+      {
+        "type": "Dropdown",
+        "field": "argumentMode",
+        "objectName": "Dropdown_ArgumentMode"
+      },
+      {
+        "type": "Toggle",
+        "field": "lockedToggle",
+        "objectName": "Toggle_LockedToggle",
+        "text": "锁定所选条目",
+        "value": "false"
+      },
+      {
+        "type": "Toggle",
+        "field": "releaseAllowedToggle",
+        "objectName": "Toggle_ReleaseAllowedToggle",
+        "text": "自定义条件允许释放",
+        "value": "true"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "所选条目优先级（越小越先淘汰）"
+      },
+      {
+        "type": "Slider",
+        "field": "prioritySlider",
+        "objectName": "Slider_PrioritySlider",
+        "value": 0,
+        "low-value": 0,
+        "high-value": 10
+      },
+      {
+        "type": "Dropdown",
+        "field": "policyMode",
+        "objectName": "Dropdown_PolicyMode"
+      },
+      {
+        "type": "Button",
+        "field": "applyButton",
+        "objectName": "Button_ApplyButton",
+        "text": "执行回收策略"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_VisualGuide",
+        "text": "左 Temp A：0\n中 Temp B：5\n右 Keep：10",
+        "overlay": true
+      }
+    ],
+    "cameraX": 1.5
+  },
+  "InspectObjectPools": {
+    "script": "Assets/Examples/08_ObjectPool/05_Manager/InspectObjectPools.cs",
+    "cameraX": 1.5,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "05  管理多个池",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "三个池各有一个 Cube；选择池并查询、清理或销毁。"
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "objectName": "Button_CreateButton",
+        "text": "创建缺少的三个池"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_PoolsText",
+        "field": "poolsText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Button",
+        "field": "queryButton",
+        "objectName": "Button_QueryButton",
+        "text": "查询池"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "poolReleaseMode",
+        "objectName": "Dropdown_PoolReleaseMode"
+      },
+      {
+        "type": "Button",
+        "field": "releasePoolButton",
+        "objectName": "Button_ReleasePoolButton",
+        "text": "只回收 Left 池内的 Cube"
+      },
+      {
+        "type": "Dropdown",
+        "field": "destroyMode",
+        "objectName": "Dropdown_DestroyMode"
+      },
+      {
+        "type": "Button",
+        "field": "destroyButton",
+        "objectName": "Button_DestroyButton",
+        "text": "销毁所选池"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "objectName": "Button_ReleaseButton",
+        "text": "所有池按策略释放"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "objectName": "Button_ClearButton",
+        "text": "所有池释放空闲目标"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_VisualGuide",
+        "text": "左上：无名称池\n中间：Left\n右下：Right",
+        "overlay": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_CreationTitle",
+        "text": "创建参数对照（空池）"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_CreationDescription",
+        "text": "选择入口与参数，查看实际结果。对照池只记录配置，不创建 Cube。"
+      },
+      {
+        "type": "Dropdown",
+        "field": "creationKind",
+        "objectName": "Dropdown_CreationKind"
+      },
+      {
+        "type": "Dropdown",
+        "field": "creationArguments",
+        "objectName": "Dropdown_CreationArguments"
+      },
+      {
+        "type": "Button",
+        "field": "compareButton",
+        "objectName": "Button_Compare",
+        "text": "创建或重建对照池"
+      },
+      {
+        "type": "Text",
+        "field": "comparisonText",
+        "objectName": "Text_Comparison"
+      },
+      {
+        "type": "Button",
+        "field": "removeComparisonButton",
+        "objectName": "Button_RemoveComparison",
+        "text": "销毁对照池"
+      }
+    ]
+  },
+  "PostWebRequest": {
+    "script": "Assets/Examples/18_WebRequest/04_Post/PostWebRequest.cs",
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "04  POST 字节、表单与参数组合",
+        "title": true
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_MessageInput",
+        "field": "messageInput",
+        "column": 1,
+        "multiline": "true",
+        "height": 110,
+        "label": "输入要发送的文字"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_RequestMode",
+        "field": "requestMode",
+        "column": 1,
+        "choices": "默认参数|标签|优先级 10|上下文|标签 + 优先级|标签 + 上下文|优先级 + 上下文|标签 + 优先级 + 上下文"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_SlowToggle",
+        "field": "slowToggle",
+        "column": 1,
+        "text": "延迟 3 秒响应，便于观察和取消"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_BytesButton",
+        "field": "bytesButton",
+        "column": 1,
+        "text": "原始字节 POST"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_FormButton",
+        "field": "formButton",
+        "column": 1,
+        "text": "WWWForm POST"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_CancelButton",
+        "field": "cancelButton",
+        "column": 1,
+        "text": "取消当前请求"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_RequestText",
+        "field": "requestText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ContextText",
+        "field": "contextText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResponseText",
+        "field": "responseText",
+        "column": 2,
+        "height": 235
+      }
+    ]
+  },
+  "DownloadQueue": {
+    "script": "Assets/Examples/19_Download/04_Queue/DownloadQueue.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  队列、暂停调度与取消",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "一个代理处理三个任务，每个任务保存到不同路径。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Button",
+        "field": "enqueueButton",
+        "text": "建立队列",
+        "row": "action",
+        "objectName": "Button_EnqueueButton"
+      },
+      {
+        "type": "Toggle",
+        "field": "pausedToggle",
+        "text": "暂停调度",
+        "objectName": "Toggle_PausedToggle",
+        "row": "action"
+      },
+      {
+        "type": "Dropdown",
+        "field": "cancelMode",
+        "choices": "按序号取消 low|按 Example.Batch 标签取消|取消所有任务",
+        "row": "cancel",
+        "objectName": "Dropdown_CancelMode"
+      },
+      {
+        "type": "Button",
+        "field": "cancelButton",
+        "text": "取消所选任务",
+        "row": "cancel",
+        "objectName": "Button_CancelButton"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "height": 28,
+        "objectName": "Text_ResultText"
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "choices": "全部 · 数组|全部 · 复用 List|Example.Batch · 数组|Example.Batch · 复用 List",
+        "objectName": "Dropdown_QueryMode"
+      },
+      {
+        "type": "Text",
+        "field": "queueText",
+        "height": 110,
+        "objectName": "Text_QueueText"
+      },
+      {
+        "type": "Text",
+        "field": "orderText",
+        "height": 60,
+        "objectName": "Text_OrderText"
+      }
+    ],
+    "downloadAgentCount": 1
+  },
+  "DownloadFailure": {
+    "script": "Assets/Examples/19_Download/05_Failure/DownloadFailure.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  失败与旧文件保护",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "比较 404、超时、服务器忽略 Range、416 和正常下载。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "failureMode",
+        "choices": "HTTP 404|1 秒无数据超时|服务器忽略 Range|临时文件起点越界 · 416|正常下载",
+        "objectName": "Dropdown_FailureMode"
+      },
+      {
+        "type": "Button",
+        "field": "downloadButton",
+        "text": "发送下载任务",
+        "row": "action",
+        "objectName": "Button_DownloadButton"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "height": 70,
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "fileText",
+        "height": 100,
+        "objectName": "Text_FileText"
+      }
+    ],
+    "downloadAgentCount": 1,
+    "payloadGuid": "25ce0c92f7b1dea4ab40b6dc59b4e816"
+  },
+  "NetworkHeartbeat": {
+    "script": "Assets/Examples/20_Network/03_Heartbeat/NetworkHeartbeat.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  心跳与响应",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "关闭服务器心跳响应，观察丢失计数；业务可以选择何时断开。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Button",
+        "field": "connectButton",
+        "text": "建立心跳连接",
+        "row": "connect",
+        "objectName": "Button_ConnectButton"
+      },
+      {
+        "type": "Toggle",
+        "field": "replyToggle",
+        "text": "服务器回复心跳",
+        "value": "true",
+        "row": "reply",
+        "objectName": "Toggle_ReplyToggle"
+      },
+      {
+        "type": "Toggle",
+        "field": "resetToggle",
+        "text": "收包后重新计时",
+        "value": "true",
+        "row": "reply",
+        "objectName": "Toggle_ResetToggle"
+      },
+      {
+        "type": "Toggle",
+        "field": "closeToggle",
+        "text": "连续丢失 3 次后关闭",
+        "objectName": "Toggle_CloseToggle"
+      },
+      {
+        "type": "Text",
+        "text": "心跳间隔（0.4–2 秒）",
+        "row": "interval",
+        "objectName": "Text_IntervalLabel"
+      },
+      {
+        "type": "Slider",
+        "field": "intervalSlider",
+        "low-value": 0.4,
+        "high-value": 2,
+        "value": 0.8,
+        "objectName": "Slider_IntervalSlider",
+        "row": "interval"
+      },
+      {
+        "type": "Text",
+        "text": "本次心跳等待进度",
+        "row": "timer",
+        "objectName": "Text_TimerLabel"
+      },
+      {
+        "type": "Slider",
+        "field": "timerSlider",
+        "interactable": false,
+        "objectName": "Slider_TimerSlider",
+        "row": "timer"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "counterText",
+        "height": 125,
+        "objectName": "Text_CounterText"
+      }
+    ]
+  },
+  "NetworkFailure": {
+    "script": "Assets/Examples/20_Network/04_Failure/NetworkFailure.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  失败与恢复",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "选择响应并连接，查看错误类型，再用正常响应重试。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "serviceMode",
+        "choices": "Tcp · 异步接收|TcpWithSyncReceive · 同步接收",
+        "objectName": "Dropdown_ServiceMode"
+      },
+      {
+        "type": "Dropdown",
+        "field": "failureMode",
+        "choices": "拒绝连接|非法包体长度|非法 UTF-8|协议业务错误|服务器主动关闭|正常回显",
+        "objectName": "Dropdown_FailureMode"
+      },
+      {
+        "type": "Button",
+        "field": "connectButton",
+        "text": "连接 / 重试",
+        "row": "connect",
+        "objectName": "Button_ConnectButton"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "height": 85,
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "detailText",
+        "height": 95,
+        "objectName": "Text_DetailText"
+      }
+    ]
+  },
+  "DebuggerWindowLifecycle": {
+    "script": "Assets/Examples/21_Debugger/02_CustomWindow/DebuggerWindowLifecycle.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "02  自定义调试窗口",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "注册窗口后，比较按钮选页与顶部页签切换。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "注册时的初始计数"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_InitialValueSlider",
+        "field": "initialValueSlider",
+        "value": 3,
+        "low-value": 0,
+        "high-value": 20
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_RegisterButton",
+        "field": "registerButton",
+        "text": "注册窗口",
+        "row": "Register"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_UnregisterButton",
+        "field": "unregisterButton",
+        "text": "注销窗口",
+        "row": "Register"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_SelectButton",
+        "field": "selectButton",
+        "text": "查看计数页",
+        "row": "Page"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_TimeButton",
+        "field": "timeButton",
+        "text": "查看时间页",
+        "row": "Page"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_IncrementButton",
+        "field": "incrementButton",
+        "text": "计数 +1"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText"
+      }
+    ]
+  },
+  "RecentDebuggerLogs": {
+    "script": "Assets/Examples/21_Debugger/03_RecentLogs/RecentDebuggerLogs.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "03  读取近期日志",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "在 QGF > Logging 开启 Info 或 All，再发送消息。"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_MessageInput",
+        "field": "messageInput",
+        "value": "Hello QGF"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_InfoButton",
+        "field": "infoButton",
+        "text": "Info",
+        "row": "Send"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_WarningButton",
+        "field": "warningButton",
+        "text": "Warning",
+        "row": "Send"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_QueryMode",
+        "field": "queryMode",
+        "choices": "最近若干条|全部日志"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "最近条数"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_CountSlider",
+        "field": "countSlider",
+        "value": 3,
+        "low-value": 1,
+        "high-value": 10
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_LogsText",
+        "field": "logsText"
+      }
+    ]
+  },
+  "ManageSettings": {
+    "script": "Assets/Examples/09_Setting/03_Keys/ManageSettings.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "03  查询与删除设置",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Description",
+        "text": "写入几个键，比较数组与 List 查询，再移除或清空。"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_KeysText",
+        "field": "keysText"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_KeyInput",
+        "field": "keyInput",
+        "value": "Language"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_ValueInput",
+        "field": "valueInput",
+        "value": "ChineseSimplified"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_WriteButton",
+        "field": "writeButton",
+        "text": "写入 / 覆盖",
+        "row": "EditActions"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_RemoveButton",
+        "field": "removeButton",
+        "text": "移除所选键",
+        "row": "EditActions"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ClearButton",
+        "field": "clearButton",
+        "text": "清空全部设置",
+        "row": "FileActions"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_SaveButton",
+        "field": "saveButton",
+        "text": "保存到文件",
+        "row": "FileActions"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_QueryMode",
+        "field": "queryMode",
+        "choices": "List 查询|数组查询"
+      }
+    ]
+  },
+  "ParseDictionary": {
+    "script": "Assets/Examples/10_Localization/03_Parse/ParseDictionary.cs",
+    "dictionaryGuid": "becc11a677f8c0f44b8d654ce3e92df0",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  解析与查询字典",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "比较字符串、UTF-8 字节和字节片段入口。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "inputMode",
+        "objectName": "Dropdown_InputMode",
+        "choices": "字符串|字符串 + 上下文|UTF-8 字节|字节 + 上下文|字节片段|片段 + 上下文"
+      },
+      {
+        "type": "Button",
+        "field": "parseButton",
+        "objectName": "Button_ParseButton",
+        "text": "重新解析"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "InputField",
+        "field": "keyInput",
+        "objectName": "InputField_KeyInput",
+        "value": "Reward.Coins"
+      },
+      {
+        "type": "Text",
+        "field": "rawText",
+        "objectName": "Text_RawText"
+      },
+      {
+        "type": "Button",
+        "field": "removeButton",
+        "objectName": "Button_RemoveButton",
+        "text": "移除这个键"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "objectName": "Button_ClearButton",
+        "text": "清空字典"
+      },
+      {
+        "type": "Button",
+        "field": "reserveButton",
+        "objectName": "Button_ReserveButton",
+        "text": "预留 4096 字节缓冲"
+      },
+      {
+        "type": "Button",
+        "field": "freeButton",
+        "objectName": "Button_FreeButton",
+        "text": "释放缓冲"
+      },
+      {
+        "type": "Text",
+        "field": "cacheText",
+        "objectName": "Text_CacheText"
+      }
+    ]
+  },
+  "EditDictionary": {
+    "script": "Assets/Examples/10_Localization/04_RuntimeKeys/EditDictionary.cs",
+    "dictionaryGuid": "becc11a677f8c0f44b8d654ce3e92df0",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  运行时添加与移除文本",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "添加带占位符的文本，再比较原始值与格式化结果。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "InputField",
+        "field": "keyInput",
+        "objectName": "InputField_KeyInput",
+        "value": "Runtime.Welcome"
+      },
+      {
+        "type": "InputField",
+        "field": "valueInput",
+        "objectName": "InputField_ValueInput",
+        "value": "你好，{0}！"
+      },
+      {
+        "type": "InputField",
+        "field": "argumentInput",
+        "objectName": "InputField_ArgumentInput",
+        "value": "飞行员"
+      },
+      {
+        "type": "Button",
+        "field": "addButton",
+        "objectName": "Button_AddButton",
+        "text": "添加键"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "rawText",
+        "objectName": "Text_RawText"
+      },
+      {
+        "type": "Text",
+        "field": "formattedText",
+        "objectName": "Text_FormattedText"
+      },
+      {
+        "type": "Button",
+        "field": "removeButton",
+        "objectName": "Button_RemoveButton",
+        "text": "移除所选键"
+      },
+      {
+        "type": "Button",
+        "field": "clearButton",
+        "objectName": "Button_ClearButton",
+        "text": "清空字典"
+      }
+    ]
+  },
+  "LoadDictionary": {
+    "script": "Assets/Examples/10_Localization/05_Load/LoadDictionary.cs",
+    "dictionaryGuid": "becc11a677f8c0f44b8d654ce3e92df0",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  从资产读取字典",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "通过资源模块读取 TOML，成功后再显示文本。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Dropdown",
+        "field": "loadMode",
+        "objectName": "Dropdown_LoadMode",
+        "choices": "默认优先级|指定优先级|携带上下文|优先级和上下文"
+      },
+      {
+        "type": "Dropdown",
+        "field": "languageMode",
+        "objectName": "Dropdown_LanguageMode",
+        "choices": "简体中文|English"
+      },
+      {
+        "type": "Toggle",
+        "field": "failureToggle",
+        "objectName": "Toggle_FailureToggle",
+        "text": "读取含错误值的字典"
+      },
+      {
+        "type": "Button",
+        "field": "loadButton",
+        "objectName": "Button_LoadButton",
+        "text": "读取字典"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "contextText",
+        "objectName": "Text_ContextText"
+      },
+      {
+        "type": "Text",
+        "field": "languageText",
+        "objectName": "Text_LanguageText"
+      }
+    ],
+    "invalidDictionaryGuid": "0131fd15a073403e9f020e36f5e776ef",
+    "loadDelaySeconds": 0.8
+  },
+  "TableRegistry": {
+    "script": "Assets/Examples/11_DataTable/04_TableRegistry/TableRegistry.cs",
+    "catalogGuid": "4a0246db86b11c54593eaaebc4accca7",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "04  注册、查询与销毁表",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "selectedText",
+        "objectName": "Text_SelectedText",
+        "column": 2
+      },
+      {
+        "type": "Dropdown",
+        "field": "apiMode",
+        "objectName": "Dropdown_ApiMode",
+        "choices": "泛型入口|Type 入口",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "namedToggle",
+        "objectName": "Toggle_NamedToggle",
+        "text": "指定表名称",
+        "value": true,
+        "column": 1
+      },
+      {
+        "type": "InputField",
+        "field": "nameInput",
+        "objectName": "InputField_NameInput",
+        "value": "Preview",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "field": "createButton",
+        "objectName": "Button_CreateButton",
+        "text": "创建空表",
+        "column": 1,
+        "row": "AddActions"
+      },
+      {
+        "type": "Button",
+        "field": "registerButton",
+        "objectName": "Button_RegisterButton",
+        "text": "登记三条内存记录",
+        "column": 1,
+        "row": "AddActions"
+      },
+      {
+        "type": "Dropdown",
+        "field": "destroyMode",
+        "objectName": "Dropdown_DestroyMode",
+        "choices": "按类型及名称销毁|按泛型表实例销毁|按基类表实例销毁",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "field": "destroyButton",
+        "objectName": "Button_DestroyButton",
+        "text": "销毁所选表",
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "field": "queryMode",
+        "objectName": "Dropdown_QueryMode",
+        "choices": "List 查询全部表|数组查询全部表",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "tablesText",
+        "objectName": "Text_TablesText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "rowsText",
+        "objectName": "Text_RowsText",
+        "column": 2
+      }
+    ]
+  },
+  "LoadResourcePackage": {
+    "script": "Assets/Examples/12_Resource/02_Package/LoadResourcePackage.cs",
+    "resourceMode": "Package",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  读取真实资源包",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Button",
+        "field": "initializeButton",
+        "objectName": "Button_InitializeButton",
+        "text": "初始化 Package",
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "field": "loadMode",
+        "objectName": "Dropdown_LoadMode",
+        "choices": "默认参数|指定资产类型|指定优先级|携带上下文|类型和优先级|类型和上下文|优先级和上下文|类型、优先级和上下文",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "field": "loadButton",
+        "objectName": "Button_LoadButton",
+        "text": "加载 Cube",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "objectName": "Button_ReleaseButton",
+        "text": "销毁实例并归还资产",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "listToggle",
+        "objectName": "Toggle_ListToggle",
+        "text": "使用 List 查询任务与资源组",
+        "value": true,
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "field": "groupMode",
+        "objectName": "Dropdown_GroupMode",
+        "choices": "全部资源|Base|Data|Base + Data|Base + Shared（去重）|Missing（缺失）|Shared",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "field": "gcToggle",
+        "objectName": "Toggle_GcToggle",
+        "text": "清理时执行 GC",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "field": "cleanupButton",
+        "objectName": "Button_CleanupButton",
+        "text": "清理未使用资产",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "assetText",
+        "objectName": "Text_AssetText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "groupsText",
+        "objectName": "Text_GroupsText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "field": "tasksText",
+        "objectName": "Text_TasksText",
+        "column": 2
+      }
+    ],
+    "fullWidthPanel": true
+  },
+  "ReadBinaryResource": {
+    "script": "Assets/Examples/12_Resource/03_Binary/ReadBinaryResource.cs",
+    "resourceMode": "Package",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "03  二进制文件与文件系统",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Button",
+        "field": "initializeButton",
+        "objectName": "Button_InitializeButton",
+        "text": "初始化 Package"
+      },
+      {
+        "type": "Dropdown",
+        "field": "readMode",
+        "objectName": "Dropdown_ReadMode",
+        "choices": "LoadBinary|LoadBinary + 上下文|整文件：返回数组|整文件：填充缓冲|整文件：指定目标位置|整文件：指定长度|片段：从头返回数组|片段：偏移后返回数组|片段：填充缓冲|片段：指定长度|片段：目标位置和长度|片段：源偏移|片段：源偏移和长度|片段：源偏移、目标位置和长度"
+      },
+      {
+        "type": "Button",
+        "field": "readButton",
+        "objectName": "Button_ReadButton",
+        "text": "读取数据"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_StateText"
+      },
+      {
+        "type": "Text",
+        "field": "pathText",
+        "objectName": "Text_PathText"
+      },
+      {
+        "type": "Text",
+        "field": "bytesText",
+        "objectName": "Text_BytesText"
+      }
+    ],
+    "fullWidthPanel": true
+  },
+  "UpdateRemoteResources": {
+    "script": "Assets/Examples/12_Resource/04_Update/UpdateRemoteResources.cs",
+    "resourceMode": "Updatable",
+    "downloadAgentCount": 1,
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "04  HTTP 资源更新",
+        "title": true
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_VersionButton",
+        "field": "versionButton",
+        "text": "1. 下载版本清单",
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_VerifyMode",
+        "field": "verifyMode",
+        "choices": "跳过本地校验|先校验本地缓存（默认）|先校验本地缓存（16 KB / 帧）",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_IgnoreVariantToggle",
+        "field": "ignoreVariantToggle",
+        "text": "检查时忽略其他变体",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_CheckButton",
+        "field": "checkButton",
+        "text": "2. 检查本地资源",
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_GroupMode",
+        "field": "groupMode",
+        "choices": "全部资源|Base：Cube|Data：二进制文件",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_FailureToggle",
+        "field": "failureToggle",
+        "text": "模拟下载失败（404）",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_UpdateButton",
+        "field": "updateButton",
+        "text": "3. 更新所选组 / 重试",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_StopButton",
+        "field": "stopButton",
+        "text": "停止安排后续资源",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_LoadButton",
+        "field": "loadButton",
+        "text": "4. 加载 Cube",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_GroupsText",
+        "field": "groupsText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_TransferText",
+        "field": "transferText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ServerText",
+        "field": "serverText",
+        "column": 2
+      }
+    ]
+  },
+  "ApplyResourcePack": {
+    "script": "Assets/Examples/12_Resource/05_ResourcePack/ApplyResourcePack.cs",
+    "resourceMode": "Updatable",
+    "downloadAgentCount": 1,
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "05  应用本地资源包",
+        "title": true
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_PrepareButton",
+        "field": "prepareButton",
+        "text": "1. 下载清单并检查缺失资源",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_CorruptToggle",
+        "field": "corruptToggle",
+        "text": "使用损坏副本（长度不变，改动一字节）",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_VerifyButton",
+        "field": "verifyButton",
+        "text": "2. 校验资源包",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ApplyButton",
+        "field": "applyButton",
+        "text": "3. 应用资源包",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_LoadButton",
+        "field": "loadButton",
+        "text": "4. 加载 Cube",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_PackText",
+        "field": "packText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ProgressText",
+        "field": "progressText",
+        "column": 2
+      }
+    ]
+  },
+  "VerifyCachedResources": {
+    "script": "Assets/Examples/12_Resource/06_VerifyCache/VerifyCachedResources.cs",
+    "resourceMode": "Updatable",
+    "downloadAgentCount": 1,
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "06  校验与修复本地缓存",
+        "title": true
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_VersionButton",
+        "field": "versionButton",
+        "text": "1. 下载版本清单",
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_DamageMode",
+        "field": "damageMode",
+        "choices": "完整缓存|散文件：长度不变，改动一字节|散文件：截断末尾一字节|容器文件：长度不变，改动一字节",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_BudgetToggle",
+        "field": "budgetToggle",
+        "text": "每帧校验 16 KB（关闭使用默认值）",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_VerifyButton",
+        "field": "verifyButton",
+        "text": "2. 校验缓存",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_CheckButton",
+        "field": "checkButton",
+        "text": "3. 检查需要补回的资源",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_RepairButton",
+        "field": "repairButton",
+        "text": "4. 下载缺失资源",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ReadButton",
+        "field": "readButton",
+        "text": "5. 读取二进制内容",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_VerifyText",
+        "field": "verifyText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_ResultText",
+        "field": "resultText",
+        "column": 2
+      }
+    ],
+    "seedCache": true
+  },
+  "SelectResourceVariant": {
+    "script": "Assets/Examples/12_Resource/07_Variant/SelectResourceVariant.cs",
+    "resourceMode": "Package",
+    "variantPackage": true,
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "07  资源变体与还原回调",
+        "title": true
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_VariantMode",
+        "field": "variantMode",
+        "choices": "normal：标准模式|hard：挑战模式",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_CustomDecryptToggle",
+        "field": "customDecryptToggle",
+        "text": "注册自定义还原回调",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_InitializeButton",
+        "field": "initializeButton",
+        "text": "1. 按所选变体初始化",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_LoadButton",
+        "field": "loadButton",
+        "text": "2. 加载当前变体与共同的 Cube",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_AssetsText",
+        "field": "assetsText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_PayloadText",
+        "field": "payloadText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_DecryptText",
+        "field": "decryptText",
+        "column": 2
+      }
+    ],
+    "deferResourceStart": true
+  },
+  "InspectResourceCache": {
+    "script": "Assets/Examples/12_Resource/08_Cache/InspectResourceCache.cs",
+    "resourceMode": "Package",
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "08  资产缓存与清理时机",
+        "title": true
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_InitializeButton",
+        "field": "initializeButton",
+        "text": "初始化 Package",
+        "column": 1
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_PolicyMode",
+        "field": "policyMode",
+        "choices": "保留缓存：容量 4，30 秒过期|归还即回收：容量 0|短时缓存：2 秒过期，0.25 秒检查",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_LoadButton",
+        "field": "loadButton",
+        "text": "加载 Cube",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ReturnButton",
+        "field": "returnButton",
+        "text": "销毁实例并归还资产引用",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_MinimumValueText",
+        "field": "minimumValueText",
+        "column": 1,
+        "row": "MinimumInterval"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_MinimumSlider",
+        "field": "minimumSlider",
+        "value": 5,
+        "low-value": 2,
+        "high-value": 10,
+        "column": 1,
+        "row": "MinimumInterval"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_MaximumValueText",
+        "field": "maximumValueText",
+        "column": 1,
+        "row": "MaximumInterval"
+      },
+      {
+        "type": "Slider",
+        "objectName": "Slider_MaximumSlider",
+        "field": "maximumSlider",
+        "value": 15,
+        "low-value": 12,
+        "high-value": 20,
+        "column": 1,
+        "row": "MaximumInterval"
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_GcToggle",
+        "field": "gcToggle",
+        "text": "Unity 清理完成后执行 GC",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ReserveButton",
+        "field": "reserveButton",
+        "text": "预订 Unity 清理（等待最小间隔）",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ForceButton",
+        "field": "forceButton",
+        "text": "强制 Unity 清理（跳过最小间隔）",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_PoolText",
+        "field": "poolText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_PolicyText",
+        "field": "policyText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_CleanupText",
+        "field": "cleanupText",
+        "column": 2
+      }
+    ]
+  },
+  "LoadResourcesOnDemand": {
+    "script": "Assets/Examples/12_Resource/09_OnDemand/LoadResourcesOnDemand.cs",
+    "resourceMode": "UpdatableWhilePlaying",
+    "downloadAgentCount": 1,
+    "fullWidthPanel": true,
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "09  使用时下载",
+        "title": true
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_PrepareButton",
+        "field": "prepareButton",
+        "text": "1. 下载清单并检查",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_LoadButton",
+        "field": "loadButton",
+        "text": "2. 直接加载 Cube",
+        "column": 1
+      },
+      {
+        "type": "Toggle",
+        "objectName": "Toggle_FailureToggle",
+        "field": "failureToggle",
+        "text": "模拟资源下载失败（HTTP 404）",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_RecoverButton",
+        "field": "recoverButton",
+        "text": "补下载 Base，恢复原任务",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_ReadButton",
+        "field": "readButton",
+        "text": "读取二进制",
+        "column": 1
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_UpdateDataButton",
+        "field": "updateDataButton",
+        "text": "更新 Data 组",
+        "column": 1
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_StateText",
+        "field": "stateText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_GroupsText",
+        "field": "groupsText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_TasksText",
+        "field": "tasksText",
+        "column": 2
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_BinaryText",
+        "field": "binaryText",
+        "column": 2
+      }
+    ]
+  },
+  "TextAndPaths": {
+    "script": "Assets/Examples/01_Base/06_TextAndPaths/TextAndPaths.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "06  文本与路径",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "InputField",
+        "field": "nameInput",
+        "label": "玩家",
+        "value": "飞行员",
+        "objectName": "InputField_Name"
+      },
+      {
+        "type": "InputField",
+        "field": "countInput",
+        "label": "数量",
+        "value": "3",
+        "objectName": "InputField_Count"
+      },
+      {
+        "type": "InputField",
+        "field": "pathInput",
+        "label": "路径",
+        "value": "C:\\Game\\Configs\\Game.toml",
+        "objectName": "InputField_Path"
+      },
+      {
+        "type": "Button",
+        "field": "formatButton",
+        "text": "格式化文本与路径",
+        "objectName": "Button_Format"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      },
+      {
+        "type": "Button",
+        "field": "directoryButton",
+        "text": "检查空目录与含文件目录",
+        "objectName": "Button_Directory"
+      },
+      {
+        "type": "Button",
+        "field": "cleanupButton",
+        "text": "删除示例文件，再清理空目录",
+        "objectName": "Button_Cleanup"
+      },
+      {
+        "type": "Text",
+        "field": "directoryText",
+        "objectName": "Text_Directory"
+      }
+    ]
+  },
+  "ConvertBytes": {
+    "script": "Assets/Examples/01_Base/07_ByteConversion/ConvertBytes.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "07  类型与字节",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "选择类型和写入方式，对照缓冲区与还原值。",
+        "objectName": "Text_Description1"
+      },
+      {
+        "type": "Dropdown",
+        "field": "valueType",
+        "objectName": "Dropdown_ValueType"
+      },
+      {
+        "type": "InputField",
+        "field": "valueInput",
+        "label": "值",
+        "value": "42",
+        "objectName": "InputField_Value"
+      },
+      {
+        "type": "Dropdown",
+        "field": "writeMode",
+        "objectName": "Dropdown_WriteMode"
+      },
+      {
+        "type": "Button",
+        "field": "convertButton",
+        "text": "写入并还原",
+        "objectName": "Button_Convert"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      }
+    ]
+  },
+  "CheckAndXor": {
+    "script": "Assets/Examples/01_Base/08_ChecksAndXor/CheckAndXor.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "08  CRC 与字节异或",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "InputField",
+        "field": "contentInput",
+        "label": "UTF-8 文本",
+        "value": "123456789",
+        "multiline": "true",
+        "style": "height: 90px;",
+        "objectName": "InputField_Content"
+      },
+      {
+        "type": "Dropdown",
+        "field": "crcMode",
+        "objectName": "Dropdown_CrcMode"
+      },
+      {
+        "type": "Button",
+        "field": "crcButton",
+        "text": "计算 CRC32",
+        "objectName": "Button_Crc"
+      },
+      {
+        "type": "Text",
+        "field": "crcText",
+        "objectName": "Text_Crc"
+      },
+      {
+        "type": "InputField",
+        "field": "keyInput",
+        "label": "异或键",
+        "value": "QGF",
+        "objectName": "InputField_Key"
+      },
+      {
+        "type": "Dropdown",
+        "field": "xorMode",
+        "objectName": "Dropdown_XorMode"
+      },
+      {
+        "type": "Button",
+        "field": "longTextButton",
+        "text": "填入 300 字节，观察 Quick 范围",
+        "objectName": "Button_Long"
+      },
+      {
+        "type": "Button",
+        "field": "xorButton",
+        "text": "异或并还原",
+        "objectName": "Button_Xor"
+      },
+      {
+        "type": "Text",
+        "field": "xorText",
+        "objectName": "Text_Xor"
+      }
+    ]
+  },
+  "CompressData": {
+    "script": "Assets/Examples/01_Base/09_Compression/CompressData.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "09  GZip 压缩",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "InputField",
+        "field": "contentInput",
+        "label": "正文",
+        "value": "",
+        "multiline": "true",
+        "style": "height: 90px;",
+        "objectName": "InputField_Content"
+      },
+      {
+        "type": "Dropdown",
+        "field": "mode",
+        "objectName": "Dropdown_Mode"
+      },
+      {
+        "type": "Button",
+        "field": "compressButton",
+        "text": "压缩并还原",
+        "objectName": "Button_Compress"
+      },
+      {
+        "type": "Button",
+        "field": "invalidButton",
+        "text": "尝试解压普通文本",
+        "objectName": "Button_Invalid"
+      },
+      {
+        "type": "Text",
+        "field": "resultText",
+        "objectName": "Text_Result"
+      }
+    ]
+  },
+  "DrawRandom": {
+    "script": "Assets/Examples/01_Base/10_Random/DrawRandom.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "10  随机数",
+        "title": true
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_Mode",
+        "field": "mode"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Range",
+        "text": "整数范围：min / max（含 min，不含 max）"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Min",
+        "field": "minInput",
+        "value": "1",
+        "contentType": "IntegerNumber"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Max",
+        "field": "maxInput",
+        "value": "7",
+        "contentType": "IntegerNumber"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Draw",
+        "field": "drawButton",
+        "text": "抽取一次"
+      },
+      {
+        "type": "Image",
+        "objectName": "Image_Track",
+        "field": "markerRect",
+        "marker": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Result",
+        "field": "resultText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_SeedLabel",
+        "text": "全局种子"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Seed",
+        "field": "seedInput",
+        "value": "123",
+        "contentType": "IntegerNumber"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Seed",
+        "field": "seedButton",
+        "text": "应用全局种子，并抽取一次"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Seed",
+        "field": "seedText"
+      }
+    ]
+  },
+  "FindLoadedTypes": {
+    "script": "Assets/Examples/01_Base/11_TypeLookup/FindLoadedTypes.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "11  查找已加载类型",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_TypeLabel",
+        "text": "完整类型名"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Type",
+        "field": "typeInput",
+        "value": "UnityQGameFramework.Runtime.BaseComponent"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Find",
+        "field": "findButton",
+        "text": "查找类型"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Type",
+        "field": "typeText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_FilterLabel",
+        "text": "按类型名筛选（忽略大小写）"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Filter",
+        "field": "filterInput",
+        "value": "UnityQGameFramework.Examples"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_List",
+        "field": "listButton",
+        "text": "列出类型：数组 / List"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_List",
+        "field": "listText"
+      }
+    ]
+  },
+  "ConvertStructure": {
+    "script": "Assets/Examples/01_Base/12_StructureBytes/ConvertStructure.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "objectName": "Text_Title",
+        "text": "12  结构体与字节",
+        "title": true
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_FieldsLabel",
+        "text": "固定布局：编号 int + 速度 float"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Id",
+        "field": "idInput",
+        "value": "42",
+        "contentType": "IntegerNumber"
+      },
+      {
+        "type": "InputField",
+        "objectName": "InputField_Speed",
+        "field": "speedInput",
+        "value": "3.5"
+      },
+      {
+        "type": "Dropdown",
+        "objectName": "Dropdown_Mode",
+        "field": "mode"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Convert",
+        "field": "convertButton",
+        "text": "转换并还原"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Result",
+        "field": "resultText"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Cache",
+        "field": "cacheText"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Reserve",
+        "field": "reserveButton",
+        "text": "预留 8192 字节共用缓存"
+      },
+      {
+        "type": "Button",
+        "objectName": "Button_Free",
+        "field": "freeButton",
+        "text": "释放共用缓存"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_Ownership",
+        "text": "缓存由框架共用，释放后下一次转换会重新申请。"
+      }
+    ]
+  }
+}

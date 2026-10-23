@@ -35,7 +35,8 @@ namespace UnityQGameFramework.Core.FileSystem
                     break;
 
                 case FileSystemAccess.Write:
-                    m_FileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.Write, FileShare.Read);
+                    // 业务只写，但加载容器仍需读取头与索引；IFileSystem 会阻止业务读取内容。
+                    m_FileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
                     break;
 
                 case FileSystemAccess.ReadWrite:

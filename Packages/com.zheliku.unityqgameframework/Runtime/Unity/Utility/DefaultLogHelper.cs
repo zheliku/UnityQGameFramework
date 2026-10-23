@@ -3,6 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using System;
 using UnityQGameFramework.Core;
 using UnityEngine;
 
@@ -35,7 +36,14 @@ namespace UnityQGameFramework.Runtime
                     break;
 
                 case FrameworkLogLevel.Error:
-                    Debug.LogError(message.ToString());
+                    if (message is Exception exception)
+                    {
+                        Debug.LogException(exception);
+                    }
+                    else
+                    {
+                        Debug.LogError(message.ToString());
+                    }
                     break;
 
                 default:

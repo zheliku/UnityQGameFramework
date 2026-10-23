@@ -1,25 +1,55 @@
 # UnityQGameFramework
 
-面向 Unity 2022.3 与 Unity 6 的游戏框架，提供纯 C# 模块、Unity 组件、编辑器资源工具和 StarForce 示例。配置表使用 Luban，游戏全局参数使用 TOML。
+QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制作数据表、Tomlyn 读取 TOML，内置 UniTask。兼容目标为 Unity 2022.3、6.0、6.3；示例的 3D 资源使用 URP。
+
+[入门](Packages/com.zheliku.unityqgameframework/Documentation~/01-getting-started.md) · [模块](Packages/com.zheliku.unityqgameframework/Documentation~/Modules/README.md) · [Luban](Packages/com.zheliku.unityqgameframework/Documentation~/02-data-tables.md) · [变更记录](Packages/com.zheliku.unityqgameframework/CHANGELOG.md)
+
+| StarForce 菜单 | 战斗 |
+| --- | --- |
+| ![菜单](Packages/com.zheliku.unityqgameframework/Documentation~/Images/starforce-menu.png) | ![战斗](Packages/com.zheliku.unityqgameframework/Documentation~/Images/starforce-battle.png) |
 
 ## 安装
 
-在 Unity Package Manager 中选择 **Install package from git URL**：
+在 Package Manager 选择 **Install package from git URL**：
 
 ```text
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。在已启用 URP 的工程中，可从 Package Manager 的 Samples 面板导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
+编译完成后，Samples 中可分别导入点点点、21 个模块示例和 StarForce。每个编号目录对应一个 Sample；模块按需导入。
 
-`QGF > Extensions` 提供 Alchemy 与 Rainbow Folders 2 的可选安装入口，按需加入当前项目。框架本身不依赖这两个工具。
+游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
 
-## 教程
+## 开发
 
-- [安装与第一个流程](Packages/com.zheliku.unityqgameframework/Documentation~/01-getting-started.md)
-- [用 Luban 制作与读取配置表](Packages/com.zheliku.unityqgameframework/Documentation~/02-data-tables.md)
-- [版本记录](Packages/com.zheliku.unityqgameframework/CHANGELOG.md)
+```text
+Assets/Examples/                         示例开发目录
+Packages/com.zheliku.unityqgameframework/ UPM 包
+Tools/Packaging/                        同步与打包
+Artifacts~/                             本机产物与验证记录
+```
 
-完整仓库的示例源码位于 `Assets/Examples/StarForce`，包内 `Samples~/StarForce` 是它的发布副本。修改示例后运行 `python Tools/Packaging/sync_samples.py`；`--check` 检查副本是否一致。`python Tools/Packaging/prepare_upm.py` 将同一份包内容打成 `.tgz`，输出到 `Artifacts~`。
+修改示例后，同步发布副本并检查包：
 
-当前基于 UGF 维护并接入 Luban，QFramework 的 Architecture、Model、System 尚未迁入。框架采用 MIT 许可，原始版权与依赖许可见 [第三方声明](Packages/com.zheliku.unityqgameframework/Third%20Party%20Notices.md)。
+```sh
+python Tools/Packaging/sync_samples.py
+python Tools/Packaging/check_package.py
+python Tools/Documentation/check_docs.py
+```
+
+`python Tools/Packaging/prepare_upm.py` 生成 tgz。发布时同步 package.json、框架版本和 Changelog。
+
+## 文档与扩展
+
+- [运行机制](Packages/com.zheliku.unityqgameframework/Documentation~/00-runtime.md)：初始化、统一更新与关闭。
+- [项目约定](Packages/com.zheliku.unityqgameframework/Documentation~/03-conventions.md)：生命周期、事件与资源归还。
+- [StarForce 导读](Packages/com.zheliku.unityqgameframework/Documentation~/05-starforce.md)：飞机、武器、UI 和数据表的协作。
+- [UGF 到 QGF](Packages/com.zheliku.unityqgameframework/Documentation~/04-changes-from-ugf.md)：当前改动与架构迁移进度。
+
+`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的可选安装入口。
+
+## 来源与许可
+
+基于 [UnityGameFramework](https://github.com/EllanJiang/UnityGameFramework) 和 [GameFramework](https://github.com/EllanJiang/GameFramework)。配置流程参考 GodotGameFramework，架构设计与示例参考 [QFramework](https://github.com/liangxiegame/QFramework)。
+
+源码采用 [MIT](Packages/com.zheliku.unityqgameframework/LICENSE.md)，第三方内容见 [许可声明](Packages/com.zheliku.unityqgameframework/Third%20Party%20Notices.md)。

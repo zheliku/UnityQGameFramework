@@ -5,34 +5,13 @@ path so a future release branch/tag can use the same Git URL with a revision.
 """
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tarfile
-
-
-def verify_copy(source, destination):
-    source_files = {
-        path.relative_to(source): path
-        for path in source.rglob("*")
-        if path.is_file()
-    }
-    destination_files = {
-        path.relative_to(destination): path
-        for path in destination.rglob("*")
-        if path.is_file()
-    }
-    if source_files.keys() != destination_files.keys():
-        raise RuntimeError("Sample staging changed the set of files")
-    for relative, path in source_files.items():
-        if hashlib.sha256(path.read_bytes()).digest() != hashlib.sha256(
-            destination_files[relative].read_bytes()
-        ).digest():
-            raise RuntimeError(f"Sample staging changed file bytes: {relative}")
-    return len(source_files)
+from sync_samples import sample_differences, sample_sources
 
 
 def main():
@@ -47,7 +26,7 @@ def main():
                         help='Reject unpublished package changes before staging a release')
     args = parser.parse_args()
     package_source = root / "Packages/com.zheliku.unityqgameframework"
-    example_source = root / "Assets/Examples/StarForce"
+    example_source = root / "Assets/Examples/22_StarForce"
     manifest = json.loads((package_source / "package.json").read_text(encoding="utf-8-sig"))
     artifacts_root = (root / "Artifacts~").resolve()
     output = (
@@ -72,8 +51,12 @@ def main():
     # Samples~ is already present in the Git package; reject a stale mirror.
     staged_package = output / "Packages" / manifest["name"]
     shutil.copytree(package_source, staged_package)
-    staged_sample = staged_package / "Samples~/StarForce"
-    sample_files = verify_copy(example_source, staged_sample)
+    sample_files = {}
+    for sample in manifest['samples']:
+        name = sample['path'].removeprefix('Samples~/')
+        if sample_differences(root, name, staged_package / 'Samples~' / name):
+            raise RuntimeError('Staged sample differs: ' + name)
+        sample_files[name] = len(sample_sources(root, name))
     (staged_package / "package.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -83,9 +66,16 @@ def main():
     # Reopen the real deliverable to verify the sample registration and entry scene.
     with tarfile.open(archive, "r:gz") as stream:
         exported_manifest = json.load(stream.extractfile("package/package.json"))
-        assert exported_manifest["samples"][0]["path"] == "Samples~/StarForce"
-        stream.getmember("package/Samples~/StarForce/StarForce Launcher.unity")
-        stream.getmember("package/Samples~/StarForce/GameMain.meta")
+        registered = {sample['path'] for sample in exported_manifest['samples']}
+        expected = {'Samples~/00_PointPointPoint', 'Samples~/22_StarForce'}
+        expected.update('Samples~/' + entry['folder'] for entry in json.loads(
+            (root / 'Tools/Documentation/examples-layout.json').read_text(encoding='utf-8-sig')))
+        assert registered == expected
+        stream.getmember("package/Samples~/22_StarForce/StarForce Launcher.unity")
+        stream.getmember("package/Samples~/22_StarForce/GameMain.meta")
+        stream.getmember("package/Samples~/01_Base/Common/Prefabs/QGF.prefab")
+        stream.getmember("package/Samples~/02_Config/01_ReadValues/ReadConfigValues.unity")
+        stream.getmember("package/Samples~/00_PointPointPoint/GameMain/Scenes/PointPointPoint.unity")
     print(
         json.dumps(
             {

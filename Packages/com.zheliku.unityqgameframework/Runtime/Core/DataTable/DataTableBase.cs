@@ -2,7 +2,7 @@ using System;
 
 namespace UnityQGameFramework.Core.DataTable
 {
-    /// <summary>A named, read-only view of configuration records.</summary>
+    /// <summary>按行类型与名称登记的只读表视图。</summary>
     public abstract class DataTableBase
     {
         protected DataTableBase(string name) { Name = name ?? string.Empty; }

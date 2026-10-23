@@ -1,0 +1,12 @@
+{
+  "name": "UnityQGameFramework.Examples.Download",
+  "rootNamespace": "UnityQGameFramework.Examples",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Runtime",
+    "UnityQGameFramework.Luban",
+    "UnityEngine.UI",
+    "UniTask"
+  ],
+  "autoReferenced": true
+}

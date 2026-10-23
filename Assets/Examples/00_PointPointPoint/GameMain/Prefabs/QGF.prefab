@@ -1,0 +1,496 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2771815963802052131
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3927794837221593806}
+  - component: {fileID: 747913927293250576}
+  m_Layer: 0
+  m_Name: Procedure
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3927794837221593806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2771815963802052131}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &747913927293250576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2771815963802052131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959bca2b68d03954897f38b1dbb00303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AvailableProcedureTypeNames:
+  - UnityQGameFramework.Examples.PointPointPoint.PointGameLaunch
+  - UnityQGameFramework.Examples.PointPointPoint.PointGameMenu
+  - UnityQGameFramework.Examples.PointPointPoint.PointGamePlay
+  - UnityQGameFramework.Examples.PointPointPoint.PointGameResult
+  m_EntranceProcedureTypeName: UnityQGameFramework.Examples.PointPointPoint.PointGameLaunch
+--- !u!1 &3666806134782565104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 138910478431104857}
+  - component: {fileID: 3483593458629512874}
+  m_Layer: 0
+  m_Name: Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &138910478431104857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3666806134782565104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3483593458629512874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3666806134782565104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6e05d8d843cd94bb9aa026ed5dc517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SettingHelperTypeName: UnityQGameFramework.Examples.PointPointPoint.PointGameSettingHelper
+  m_CustomSettingHelper: {fileID: 0}
+--- !u!1 &4537435927056599825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9213777767840925249}
+  - component: {fileID: 6099239017892578644}
+  m_Layer: 0
+  m_Name: Event
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9213777767840925249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537435927056599825}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6099239017892578644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537435927056599825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7daf8320a3d04046b4bbd7c47307914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4749013965514431305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 118420487383238004}
+  - component: {fileID: 3646227252691993687}
+  m_Layer: 0
+  m_Name: UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &118420487383238004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4749013965514431305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3646227252691993687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4749013965514431305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a1ef15380caaed42b55022cadc93649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnableOpenUIFormSuccessEvent: 1
+  m_EnableOpenUIFormFailureEvent: 1
+  m_EnableOpenUIFormUpdateEvent: 0
+  m_EnableOpenUIFormDependencyAssetEvent: 0
+  m_EnableCloseUIFormCompleteEvent: 1
+  m_InstanceAutoReleaseInterval: 60
+  m_InstanceCapacity: 16
+  m_InstanceExpireTime: 60
+  m_InstancePriority: 0
+  m_InstanceRoot: {fileID: 0}
+  m_UIFormHelperTypeName: UnityQGameFramework.Runtime.DefaultUIFormHelper
+  m_CustomUIFormHelper: {fileID: 0}
+  m_UIGroupHelperTypeName: UnityQGameFramework.Runtime.DefaultUIGroupHelper
+  m_CustomUIGroupHelper: {fileID: 0}
+  m_UIGroups: []
+--- !u!1 &4984755364762095794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8846248837125210203}
+  - component: {fileID: 416675438281858961}
+  m_Layer: 0
+  m_Name: FSM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8846248837125210203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4984755364762095794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &416675438281858961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4984755364762095794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac872c3ce4121bb46a74927b35780534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5144397342648420156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 98319833118912241}
+  - component: {fileID: 7240602576346533434}
+  - component: {fileID: 2428932804638504293}
+  - component: {fileID: 913236787570001}
+  m_Layer: 0
+  m_Name: QGF
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &98319833118912241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144397342648420156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9081439742788758956}
+  - {fileID: 9213777767840925249}
+  - {fileID: 8846248837125210203}
+  - {fileID: 3862337428650031725}
+  - {fileID: 3927794837221593806}
+  - {fileID: 4988767532323155030}
+  - {fileID: 138910478431104857}
+  - {fileID: 118420487383238004}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7240602576346533434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144397342648420156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f98acd7d3bd2bf54dadf9644f60e5cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EditorResourceMode: 1
+  m_EditorLanguage: 0
+  m_TextHelperTypeName: UnityQGameFramework.Runtime.DefaultTextHelper
+  m_VersionHelperTypeName: UnityQGameFramework.Runtime.DefaultVersionHelper
+  m_LogHelperTypeName: UnityQGameFramework.Runtime.DefaultLogHelper
+  m_CompressionHelperTypeName: UnityQGameFramework.Runtime.DefaultCompressionHelper
+  m_JsonHelperTypeName: UnityQGameFramework.Runtime.DefaultJsonHelper
+  m_FrameRate: 30
+  m_GameSpeed: 1
+  m_RunInBackground: 1
+  m_NeverSleep: 1
+--- !u!114 &2428932804638504293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144397342648420156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26ec20b78ec32048bfb6c0ff875d8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnableCachedAssets: 1
+  m_LoadAssetCountPerFrame: 1
+  m_MinLoadAssetRandomDelaySeconds: 0
+  m_MaxLoadAssetRandomDelaySeconds: 0
+--- !u!1 &6258786517882828634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3862337428650031725}
+  - component: {fileID: 1033608177397983647}
+  m_Layer: 0
+  m_Name: Object Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3862337428650031725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258786517882828634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1033608177397983647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258786517882828634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e28a727443c86c40aeb42ff20e0a343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &7651662498721701690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4988767532323155030}
+  - component: {fileID: 8975938073375061368}
+  m_Layer: 0
+  m_Name: Resource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4988767532323155030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7651662498721701690}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8975938073375061368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7651662498721701690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eff66e40586ec14d8a301d416f17f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ResourceMode: 1
+  m_ReadWritePathType: 0
+  m_MinUnloadUnusedAssetsInterval: 60
+  m_MaxUnloadUnusedAssetsInterval: 300
+  m_AssetAutoReleaseInterval: 60
+  m_AssetCapacity: 64
+  m_AssetExpireTime: 60
+  m_AssetPriority: 10000
+  m_ResourceAutoReleaseInterval: 60
+  m_ResourceCapacity: 16
+  m_ResourceExpireTime: 60
+  m_ResourcePriority: 20000
+  m_UpdatePrefixUri: 
+  m_GenerateReadWriteVersionListLength: 1048576
+  m_UpdateRetryCount: 3
+  m_InstanceRoot: {fileID: 0}
+  m_ResourceHelperTypeName: UnityQGameFramework.Runtime.DefaultResourceHelper
+  m_CustomResourceHelper: {fileID: 0}
+  m_LoadResourceAgentHelperTypeName: UnityQGameFramework.Runtime.DefaultLoadResourceAgentHelper
+  m_CustomLoadResourceAgentHelper: {fileID: 0}
+  m_LoadResourceAgentHelperCount: 3
+--- !u!1 &8199351822848457495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9081439742788758956}
+  - component: {fileID: 2334567494908728860}
+  m_Layer: 0
+  m_Name: Config
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9081439742788758956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8199351822848457495}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 98319833118912241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2334567494908728860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8199351822848457495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e847b2b3e22e9b4792ca7ea6e1714c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnableLoadConfigUpdateEvent: 0
+  m_EnableLoadConfigDependencyAssetEvent: 0
+  m_ConfigHelperTypeName: UnityQGameFramework.Runtime.DefaultConfigHelper
+  m_CustomConfigHelper: {fileID: 0}
+  m_CachedBytesSize: 0
+--- !u!114 &913236787570001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144397342648420156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a68030f3074d7684b9746e6550d704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

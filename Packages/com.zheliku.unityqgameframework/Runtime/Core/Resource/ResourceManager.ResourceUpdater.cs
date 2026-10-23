@@ -948,6 +948,17 @@ namespace UnityQGameFramework.Core.Resource
                     updateInfo.RetryCount = 0;
                     m_UpdateWaitingInfo.Remove(updateInfo);
                     m_UpdateWaitingInfoWhilePlaying.Remove(updateInfo);
+
+                    // 最后一个任务也可能以失败结束，仍需结束本次组更新，允许调用者重试。
+                    if (m_UpdatingResourceGroup != null && m_UpdateWaitingInfo.Count <= 0)
+                    {
+                        ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
+                        m_UpdatingResourceGroup = null;
+                        if (ResourceUpdateComplete != null)
+                        {
+                            ResourceUpdateComplete(updatingResourceGroup, false);
+                        }
+                    }
                 }
             }
         }

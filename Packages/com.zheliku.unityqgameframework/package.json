@@ -1,6 +1,6 @@
 {
   "name": "com.zheliku.unityqgameframework",
-  "version": "0.1.0-exp.4",
+  "version": "0.1.0-exp.5",
   "displayName": "UnityQGameFramework",
   "description": "Modular QGF core and Unity components for Unity 2022.3 LTS and Unity 6, with Luban-backed data tables, Excel workflows and Unity editor generation tools.",
   "unity": "2022.3",
@@ -27,6 +27,7 @@
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
     "com.unity.modules.jsonserialize": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.particlesystem": "1.0.0",
@@ -35,9 +36,119 @@
   },
   "samples": [
     {
-      "displayName": "StarForce",
-      "description": "在已启用 URP 的工程中，打开 StarForce Launcher 场景，点击运行。",
-      "path": "Samples~/StarForce"
+      "displayName": "00 · 点点点",
+      "description": "最小 QGF 游戏流程：启动、菜单、点击目标、结算与最高分保存。",
+      "path": "Samples~/00_PointPointPoint"
+    },
+    {
+      "displayName": "01 · Base",
+      "description": "游戏速度、暂停、日志、JSON、路径和数据转换。",
+      "path": "Samples~/01_Base"
+    },
+    {
+      "displayName": "02 · Config",
+      "description": "读取 TOML、查询类型化配置并在运行时更新。",
+      "path": "Samples~/02_Config"
+    },
+    {
+      "displayName": "03 · DataNode",
+      "description": "按路径读写节点、管理子节点和移除分支。",
+      "path": "Samples~/03_DataNode"
+    },
+    {
+      "displayName": "04 · Event",
+      "description": "订阅、派发顺序、默认处理器和多个接收者。",
+      "path": "Samples~/04_Event"
+    },
+    {
+      "displayName": "05 · Fsm",
+      "description": "状态切换、状态数据、命名实例和生命周期。",
+      "path": "Samples~/05_Fsm"
+    },
+    {
+      "displayName": "06 · Procedure",
+      "description": "流程入口、状态切换、传值和状态查询。",
+      "path": "Samples~/06_Procedure"
+    },
+    {
+      "displayName": "07 · ReferencePool",
+      "description": "引用对象复用、归还、容量和池清理。",
+      "path": "Samples~/07_ReferencePool"
+    },
+    {
+      "displayName": "08 · ObjectPool",
+      "description": "可视化对象借还、工厂创建和回收策略。",
+      "path": "Samples~/08_ObjectPool"
+    },
+    {
+      "displayName": "09 · Setting",
+      "description": "保存和读取游戏设置。",
+      "path": "Samples~/09_Setting"
+    },
+    {
+      "displayName": "10 · Localization",
+      "description": "读取文本、切换语言和格式化内容。",
+      "path": "Samples~/10_Localization"
+    },
+    {
+      "displayName": "11 · DataTable",
+      "description": "加载 Luban 表并查询行、列和原生数据。",
+      "path": "Samples~/11_DataTable"
+    },
+    {
+      "displayName": "12 · Resource",
+      "description": "加载、实例化、更新和释放资源。",
+      "path": "Samples~/12_Resource"
+    },
+    {
+      "displayName": "13 · Entity",
+      "description": "显示实体、复用实例、分组和挂接子实体。",
+      "path": "Samples~/13_Entity"
+    },
+    {
+      "displayName": "14 · UI",
+      "description": "打开、覆盖、缓存和分组管理界面。",
+      "path": "Samples~/14_UI"
+    },
+    {
+      "displayName": "15 · Sound",
+      "description": "播放一次音效、循环、分组和空间声音。",
+      "path": "Samples~/15_Sound"
+    },
+    {
+      "displayName": "16 · Scene",
+      "description": "加载场景、切换房间和控制场景顺序。",
+      "path": "Samples~/16_Scene"
+    },
+    {
+      "displayName": "17 · FileSystem",
+      "description": "写入、读取、导出和删除框架文件。",
+      "path": "Samples~/17_FileSystem"
+    },
+    {
+      "displayName": "18 · WebRequest",
+      "description": "发送 GET、POST 请求并处理取消与失败。",
+      "path": "Samples~/18_WebRequest"
+    },
+    {
+      "displayName": "19 · Download",
+      "description": "下载文件、查看进度、续传和取消。",
+      "path": "Samples~/19_Download"
+    },
+    {
+      "displayName": "20 · Network",
+      "description": "连接、消息回显、心跳和失败恢复。",
+      "path": "Samples~/20_Network"
+    },
+    {
+      "displayName": "21 · Debugger",
+      "description": "注册、查看和关闭调试窗口。",
+      "path": "Samples~/21_Debugger"
+    },
+    {
+      "displayName": "22 · StarForce",
+      "description": "完整项目参考。在已启用 URP 的工程中打开 StarForce Launcher.unity 运行。",
+      "path": "Samples~/22_StarForce"
     }
   ]
 }

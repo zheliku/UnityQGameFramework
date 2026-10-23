@@ -1,6 +1,6 @@
 # 安装与第一个流程
 
-这一篇先把框架运行起来，再创建一个自己的启动流程。完成后，你会知道代码、Excel 和生成资源分别放在哪里，也能区分“修改框架”和“用框架做游戏”。
+安装包后，先运行点点点，再创建自己的启动流程。框架代码在 Packages，游戏代码、Excel 和生成资源在 Assets。
 
 以下操作以 Unity 6000.3.24f1 为例。包声明的最低版本为 Unity 2022.3。日常使用框架不需要下载 Luban 编译器；第一次生成表格时才需要 .NET 8 运行时或兼容版本。
 
@@ -58,7 +58,7 @@ git lfs install
 git lfs pull
 ```
 
-在 Unity Hub 中添加仓库根目录。这个工程已经把框架作为 embedded package 放在 `Packages/com.zheliku.unityqgameframework`，示例源码放在 `Assets/Examples/StarForce`。不要再通过 Package Manager 导入相同的 StarForce，会与现有示例产生重复脚本和 GUID。
+在 Unity Hub 中添加仓库根目录。框架以 embedded package 放在 `Packages/com.zheliku.unityqgameframework`，全部示例源码在 `Assets/Examples`。开发工程直接运行这些场景；再导入同一 Sample 会产生重复脚本和 GUID。
 
 本地修改只有提交并推送后，其他项目才能通过 Git URL 更新到。Git URL 安装不会读取你另一个目录里尚未提交的改动。
 
@@ -69,40 +69,26 @@ git lfs pull
 | Packages/UnityQGameFramework           | 框架                 | Core、Unity 组件、编辑器工具、Luban 模板与运行时 |
 | Assets/UnityQGameFramework/Config      | 游戏项目             | Excel、Profile、生成代码、二进制、手写扩展       |
 | Assets/自己的游戏目录                  | 游戏项目             | 场景、流程、实体、UI、音效、业务脚本             |
-| Assets/Samples/UnityQGameFramework/... | 导入示例后归游戏项目 | 可编辑的 StarForce 副本                          |
+| Assets/Samples/UnityQGameFramework/... | 导入示例后归游戏项目 | 可编辑的 Sample 副本                              |
 | Library/UnityQGameFramework            | 本机缓存             | 下载的 Luban 编译器和生成临时文件                |
 
 使用 Git URL 安装后，修改包缓存不是可靠的开发方式，重新解析包或清理 Library 会丢失这些修改。自己的 Excel 和 C# 写在 Assets。需要维护框架时，使用完整仓库或自己的 fork。
 
 `Samples~` 是包中的示例源目录。Unity 忽略其中的脚本和资源；点击 Import 后，Package Manager 将它复制到 Assets，副本才会参与编译和运行。
 
-## 3. 先运行 StarForce
+## 3. 先运行点点点
 
-在 Package Manager 中选中 **UnityQGameFramework**，展开 **Samples**，点击 StarForce 的 **Import**。
+在 Package Manager 的 Samples 中导入 **00 · 点点点**，打开 `PointPointPoint.unity` 并运行。点击目标得分，点击空白会扣分；完成目标或倒计时结束后进入结算。
 
-导入后，在 Project 窗口打开：
+源码目录是 `Assets/Examples/00_PointPointPoint`。启动、菜单、游玩和结算分别在 Procedure 中；界面通过 Event 通知本局流程。
 
-```text
-Assets/Samples/UnityQGameFramework/<包版本>/StarForce/StarForce Launcher.unity
-```
+## 4. 再运行 StarForce
 
-如果是完整仓库，打开：
+导入 **22 · StarForce**，打开 `StarForce Launcher.unity` 并运行。点击开始进入战斗，按住鼠标左键移动飞机并开火。
 
-```text
-Assets/Examples/StarForce/StarForce Launcher.unity
-```
+源码目录是 `Assets/Examples/22_StarForce`。Launcher 负责初始化和预加载；Menu、Main 场景由资源模块加载。
 
-点击 Play，等待菜单出现，再点击开始。在 Game 视图中按住鼠标左键，飞机会向鼠标位置移动并持续开火。示例保留原版鼠标玩法。
-
-从 Launcher 启动，而非直接打开 `GameMain/Scenes/Main.unity` 运行。Launcher 包含框架组件和预加载流程，后者负责读取配置、打开菜单和切换战斗场景。
-
-示例自带已生成的表数据，因此运行示例不需要 .NET 或 Luban 编译器。框架会通过包依赖安装 Unity UI；示例的输入桥接同时支持旧 Input Manager 和 Input System。
-
-StarForce 使用 URP 内置的 Lit、Unlit、Particles/Unlit Shader。请在已启用 URP 的工程中导入，例如 Unity Hub 的 Universal 3D 模板。已有工程需要安装与 Unity 版本匹配的 Universal RP，并在 Graphics 或当前 Quality 中指定 URP 管线资源。框架核心不依赖 URP，示例不会自动安装 URP、替换宿主的管线资源，也不改 Active Input Handling、自定义 Layer 或 Build Profiles。编辑器资源模式直接按路径加载 Menu、Main 场景，编辑器试玩不需要先把它们加入构建列表。
-
-这里验证的是编辑器运行。制作独立 Player 时，仍需自己选择启动场景、配置构建场景或 AssetBundle 资源，并完成发行资源构建；导入 Sample 不会代替项目做这些决定。
-
-## 4. 创建自己的启动流程
+## 5. 创建自己的启动流程
 
 下面回到自己的游戏工程，用默认 Item 表做一个最小例子。
 
@@ -137,22 +123,22 @@ namespace MyGame
         {
             base.OnEnter(owner);
 
-            var dataTable = GameEntry.GetComponent<DataTableComponent>();
+            var dataTable = QGF.DataTable;
             dataTable.LoadDataTables(loader => new Tables(loader));
 
             // Inspector 引用模式同步解析；加载失败时不会注册部分表。
             if (!dataTable.HasDataTable<DRItem>()) return;
 
             var item = dataTable.GetDataTable<DRItem>().GetDataRow(1);
-            Debug.Log(item == null ? "找不到道具 1" : item.Name);
+            Log.Info(item == null ? "找不到道具 1" : item.Name);
         }
     }
 }
 ```
 
-`ProcedureBase` 表示一个游戏流程，类似启动、预加载、登录、战斗这些阶段。这个例子把加载与读取写在同一个启动流程里，方便看到完整调用链。
+`ProcedureBase` 表示一个游戏阶段。这个例子在启动流程中读取 Item 表，再查询一条记录。
 
-`GameEntry.GetComponent<DataTableComponent>()` 获取场景中的数据表组件。它与 `FrameworkEntry.GetModule<T>()` 的层次不同：后者获取纯 C# 模块，通常由 Unity 组件内部使用。写游戏时优先从组件入口调用。
+`QGF.DataTable` 获取场景中的数据表组件。它与 `FrameworkEntry.GetModule<T>()` 的层次不同：后者获取纯 C# 模块，通常由 Unity 组件内部使用。写游戏时优先从组件入口调用。
 
 ### 放入框架预制体
 
@@ -170,7 +156,7 @@ Runtime/Prefabs/UnityQGameFramework.prefab
 
 Console 应输出“示例道具”。默认 Item 表只有一条 Id 为 1 的记录。
 
-Procedure 在框架其他组件的 Start 之后进入启动流程，所以这里可以调用 DataTable。不要把相同代码移到另一个组件的 Awake 中；那时 Event、Resource 等组件可能还没有完成初始化。
+Procedure 在框架组件完成 Start 后进入启动流程，所以这里可以调用 DataTable。普通组件的 Awake 早于其他组件 Start；跨模块初始化放在入口流程中。
 
 默认 `Assembly-CSharp` 会自动引用框架程序集。如果自己的代码使用 asmdef，添加引用：
 
@@ -180,9 +166,9 @@ UnityQGameFramework.Runtime
 UnityQGameFramework.Luban
 ```
 
-不要让业务程序集引用框架 Editor 程序集。Profile 与生成菜单属于编辑器，Player 只使用生成代码和 Catalog 数据。
+Profile 与生成菜单属于 Editor 程序集。Player 业务程序集只需引用运行时和生成代码。
 
-## 5. 几个常用入口
+## 6. 常用入口
 
 | 菜单                               | 用途                                 |
 | ---------------------------------- | ------------------------------------ |
@@ -192,33 +178,33 @@ UnityQGameFramework.Luban
 | QGF > Open Folder > Generated Code | 打开生成代码目录                     |
 | QGF > Open Folder > Table Data     | 打开 bytes 与 Catalog 目录           |
 | QGF > Open Folder > Save Data      | 打开当前应用的存档目录               |
-| QGF > Documentation                | 打开包内教程索引                     |
+| QGF > Documentation                | 打开包内示例索引                     |
 
-DataTable Inspector 也可以选择 Profile，再点击 **设为全局**。这和项目设置是同一个选择；只选中 Project 中的某个 Profile 不会改变全局生成目标。
+DataTable Inspector 也可以选择 Profile，再点击 **设为全局**。选择 Profile 后，Project 窗口中的选中状态不会改变全局生成目标。
 
 Profile 控制生成到哪里，Luban Catalog 控制组件运行时读哪一份数据，两者独立。选择另一个 Profile 不会自动改掉已有场景的数据引用。需要切换时，先生成，再在组件中点击 **使用全局 Catalog**。
 
-## 6. 更新和卸载
+## 7. 更新和卸载
 
 ### 更新
 
 Git 包解析后的提交会记录在 `Packages/packages-lock.json`。团队应提交 manifest 和 lock 文件，使用相同的框架版本。要锁定发布标签或提交，在 URL 末尾附加 `#标签或提交`。
 
-Git 安装不会根据 `package.json` 的版本号自动追踪 GitHub 最新提交。需要更新时，在 Package Manager 的 **Install package from git URL** 中重新提交同一个 Git URL；这会重新解析分支当前提交。若原 URL 的 `#` 后固定了标签或提交，需要改为目标标签、提交或 `#main`。不需要删除整个 `packages-lock.json` 或清空 Library。详见 [Unity 的 Git 依赖说明](https://docs.unity3d.com/6000.3/Documentation/Manual/upm-git.html#git-locks)。
+Git 安装使用 `packages-lock.json` 记录的提交，不按 `package.json` 版本自动更新。更新分支依赖时，在 Package Manager 的 **Install package from git URL** 中重新提交 URL。固定版本的 URL 需要改成目标标签、提交或 `#main`。详见 [Unity 的 Git 依赖说明](https://docs.unity3d.com/6000.3/Documentation/Manual/upm-git.html#git-locks)。
 
 每次对外发布时，同步更新包根目录 `package.json` 的 `version`、`Core.Version.FrameworkVersion` 和 `CHANGELOG.md`，并提交、推送这些文件。Package Manager 通过包根目录的 Changelog 提供版本记录；发布检查会验证三者一致。
 
 更新后检查 Console，必要时重新生成表格。生成模板变化时，代码和数据必须成套更新。
 
-已经导入 Assets 的 Sample 是副本，不会随包更新自动覆盖。如果要更新示例，先使用 `QGF > Uninstall > StarForce` 备份并移除旧示例，再更新包并导入新版本。不同包版本默认导入到不同版本目录，同时保留两份 StarForce 会导致脚本重复定义。自己的游戏最好放在独立目录，避免修改与示例更新混在一起。
+已导入的 Sample 是 Assets 中的副本，不会随包更新自动覆盖。重新导入前，使用 `QGF > Uninstall > Selected Example` 备份并移除旧版本。同一项目不要保留两个版本的同一 Sample，否则会重复编译其中的脚本。
 
 ### 只移除示例
 
-可以删除导入的 StarForce 文件夹，也可以执行 `QGF > Uninstall > StarForce`。菜单会先将目录和 `.meta` 备份到项目根目录的 `QgfBackup~`，再移除示例。它不需要恢复渲染管线、Layer 或输入设置，因为示例没有修改这些设置。
+选中示例目录中的任一资源，执行 `QGF > Uninstall > Selected Example`。菜单会把目录和 `.meta` 备份到项目根目录的 `QgfBackup~`，再移除示例。
 
 ### 移除框架
 
-`QGF > Uninstall > Framework` 会备份并移除登记的配置工作区和导入的 StarForce，然后请求 Package Manager 移除框架。通过 Package Manager 直接 Remove 也会触发这份目录清理。
+`QGF > Uninstall > Framework` 会备份并移除登记的配置工作区和示例，再请求 Package Manager 移除框架。通过 Package Manager 直接 Remove 也会触发清理。
 
 备份不参与 Unity 编译，确认自己的 Excel 和扩展代码已保存后可自行删除。`QgfBackup~` 已在本仓库的 `.gitignore` 中忽略；使用自己项目时，也可加入相同规则。
 
@@ -226,7 +212,7 @@ Git 安装不会根据 `package.json` 的版本号自动追踪 GitHub 最新提�
 
 资源工具首次保存到默认 `Assets/UnityQGameFramework/Configs` 时，也会登记这个配置目录；卸载框架时同样备份并移除。它与 Luban 的 `Config` 工作区用途不同，后者保存 Excel 与生成物。
 
-## 7. 可选编辑器扩展
+## 8. 可选编辑器扩展
 
 打开 `QGF > Extensions`，按需安装：
 
@@ -239,9 +225,13 @@ Git 安装不会根据 `package.json` 的版本号自动追踪 GitHub 最新提�
 
 框架包的 `package.json` 不声明这些依赖，QGF 的运行时代码、Inspector 和示例也不引用它们的类型。完整开发仓库的 `Packages/manifest.json` 已包含这两个工具，属于开发环境选择，其他项目通过 Git URL 安装 QGF 时不会继承。
 
+Unity Package Manager 不支持在 `package.json` 中声明 Git URL 依赖，所以扩展通过 `Client.Add` 写入宿主工程的 `Packages/manifest.json`。提交 `manifest.json` 和 `packages-lock.json` 后，团队会使用相同工具版本。固定上游版本时，在 URL 末尾指定 `#完整提交哈希`。
+
 Alchemy 的序列化扩展还需要 Unity.Serialization；只使用 Inspector 增强不由 QGF 自动安装额外的序列化库。自己的业务程序集如果开始引用 Alchemy 类型，仍需保留对应引用。后续若为 QGF Inspector 增加 Alchemy 专用适配，应放入独立的可选 Editor 适配程序集。
 
-## 7. 遇到问题时先检查这里
+[Alchemy 使用 MIT 许可](https://github.com/annulusgames/Alchemy/blob/main/LICENSE)。[Rainbow Folders 2 的上游说明](https://github.com/Borod4r/Rainbow-Folders-2#license)区分了代码和美术资源：代码为 Apache-2.0，图标、图片等为 CC BY-NC 4.0。QGF 不内嵌或重新授权这些插件；商业项目使用 Rainbow Folders 的美术资源前，应核对相应授权。该插件还依赖 Unity 内部 Editor API，升级 Unity 时需要检查兼容性。
+
+## 9. 常见问题
 
 **Git 包已安装，但没有初始 Excel。** 等待 Unity 完成编译，检查 Console 是否有阻止初始化的错误。确认 `QGF > Settings` 中没有沿用另一个已有 Profile。未改动的 Item 初始工作区缺少三份 schema 时，初始化会补齐缺少文件，保留已有 Excel 和 `.meta`。自定义表定义无法从模板还原，请恢复版本控制中的原件，或在新目录创建完整工作区。
 
@@ -253,4 +243,4 @@ Alchemy 的序列化扩展还需要 Unity.Serialization；只使用 Inspector �
 
 **示例找不到 Menu 场景或资源。** 确认完整导入 Sample，并从 Launcher 启动。保留文件夹 `.meta`；资源路径通过目录 GUID 定位，不依赖固定的 Assets/Samples 路径。
 
-接下来阅读 [用 Luban 制作与读取配置表](02-data-tables.md)，从 Item 表开始增加字段和查询。
+继续阅读 [用 Luban 制作与读取配置表](02-data-tables.md)，从 Item 表开始增加字段和查询。

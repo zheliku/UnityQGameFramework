@@ -55,7 +55,7 @@ namespace UnityQGameFramework.Editor
 
             if (isEditorResourceMode)
             {
-                EditorGUILayout.HelpBox("Editor resource mode is enabled. Some options are disabled.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Editor Resource Mode uses project assets. Bundle options are disabled.", MessageType.Warning);
             }
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);

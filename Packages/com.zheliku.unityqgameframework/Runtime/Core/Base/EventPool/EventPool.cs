@@ -38,7 +38,19 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取事件处理函数的数量。
         /// </summary>
-        public int EventHandlerCount => m_EventHandlers.Count;
+        public int EventHandlerCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var handlers in m_EventHandlers)
+                {
+                    count += handlers.Value.Count;
+                }
+
+                return count;
+            }
+        }
 
         /// <summary>
         /// 获取事件数量。
@@ -197,7 +209,7 @@ namespace UnityQGameFramework.Core
         }
 
         /// <summary>
-        /// 抛出事件，这个操作是线程安全的，即使不在主线程中抛出，也可保证在主线程中回调事件处理函数，但事件会在抛出后的下一帧分发。
+        /// 将事件加入线程安全队列，在驱动事件池的线程轮询队列时分发。
         /// </summary>
         /// <param name="sender">事件源。</param>
         /// <param name="e">事件参数。</param>

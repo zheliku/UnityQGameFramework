@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 检查是否存在网络频道。
+        /// 检查名称是否已登记，与 Socket 是否已连接无关。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <returns>是否存在网络频道。</returns>
@@ -95,7 +95,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 创建网络频道。
+        /// 创建并登记网络通道与协议 Helper，不会自动建立连接。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <param name="serviceType">网络服务类型。</param>
@@ -107,7 +107,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 销毁网络频道。
+        /// 关闭并移除命名通道，调用协议 Helper.Shutdown。旧通道引用不应继续使用。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <returns>是否销毁网络频道成功。</returns>

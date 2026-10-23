@@ -50,7 +50,7 @@ namespace UnityQGameFramework.Core.DataTable
             m_DataTables.Clear();
         }
 
-        /// <summary>Validate the entire batch before exposing any table to callers.</summary>
+        /// <summary>整批验证通过后统一登记，避免失败时留下部分表。</summary>
         public void RegisterDataTables(IEnumerable<DataTableBase> tables)
         {
             if (tables == null) throw new ArgumentNullException(nameof(tables));

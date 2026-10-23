@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -45,7 +45,7 @@ namespace UnityQGameFramework.Core.Network
         int SendPacketCount { get; }
 
         /// <summary>
-        /// 获取累计发送的消息包数量。
+        /// 获取累计完成 Socket 发送的消息数，不是服务端业务确认数。一次发送可包含多条消息。
         /// </summary>
         int SentPacketCount { get; }
 
@@ -70,7 +70,7 @@ namespace UnityQGameFramework.Core.Network
         int MissHeartBeatCount { get; }
 
         /// <summary>
-        /// 获取或设置心跳间隔时长，以秒为单位。
+        /// 获取或设置心跳间隔，以秒为单位；小于等于零时关闭计时。协议仍须实现发送和回复。
         /// </summary>
         float HeartBeatInterval { get; set; }
 
@@ -80,13 +80,13 @@ namespace UnityQGameFramework.Core.Network
         float HeartBeatElapseSeconds { get; }
 
         /// <summary>
-        /// 注册网络消息包处理函数。
+        /// 按 Handler.Id 注册接收消息处理函数。处理在主线程更新中执行，不保留接收 Packet 引用。
         /// </summary>
         /// <param name="handler">要注册的网络消息包处理函数。</param>
         void RegisterHandler(IPacketHandler handler);
 
         /// <summary>
-        /// 设置默认事件处理函数。
+        /// 设置未注册专用 Id 时使用的默认处理函数。接收 Packet 在分发后由框架归还。
         /// </summary>
         /// <param name="handler">要设置的默认事件处理函数。</param>
         void SetDefaultHandler(EventHandler<Packet> handler);
@@ -107,12 +107,12 @@ namespace UnityQGameFramework.Core.Network
         void Connect(IPAddress ipAddress, int port, object userData);
 
         /// <summary>
-        /// 关闭网络频道。
+        /// 关闭连接、清空队列与计数。命名通道仍然注册，移除它应调用 DestroyNetworkChannel。
         /// </summary>
         void Close();
 
         /// <summary>
-        /// 向远程主机发送消息包。
+        /// 将消息包加入发送队列。发送端对象不由框架自动归还，入队后不要立即 Clear 或 Release。
         /// </summary>
         /// <typeparam name="T">消息包类型。</typeparam>
         /// <param name="packet">要发送的消息包。</param>

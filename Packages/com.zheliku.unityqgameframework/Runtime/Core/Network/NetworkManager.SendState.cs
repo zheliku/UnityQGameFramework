@@ -22,11 +22,13 @@ namespace UnityQGameFramework.Core.Network
             }
 
             public MemoryStream Stream { get; private set; }
+            public int PacketCount { get; set; }
 
             public void Reset()
             {
                 Stream.Position = 0L;
                 Stream.SetLength(0L);
+                PacketCount = 0;
             }
 
             public void Dispose()

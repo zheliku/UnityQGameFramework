@@ -38,10 +38,16 @@ namespace UnityQGameFramework.Editor.ResourceTools
         private IFileSystemManager m_FileSystemManager;
 
         public ResourceBuilderController(string configurationPath = null)
+            : this(configurationPath, null)
+        {
+        }
+
+        /// <summary>使用指定的构建与资源集合配置，便于独立构建示例或多个内容包。</summary>
+        public ResourceBuilderController(string configurationPath, string collectionConfigurationPath)
         {
             m_ConfigurationPath = configurationPath ?? Type.GetConfigurationPath<ResourceBuilderConfigPathAttribute>() ?? Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/ResourceBuilder.toml"));
 
-            m_ResourceCollection = new ResourceCollection();
+            m_ResourceCollection = new ResourceCollection(collectionConfigurationPath);
             m_ResourceCollection.OnLoadingResource += delegate (int index, int count)
             {
                 if (OnLoadingResource != null)

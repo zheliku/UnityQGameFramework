@@ -53,9 +53,9 @@ namespace UnityQGameFramework.Editor
             {
                 m_EditorResourceMode.boolValue = EditorGUILayout.BeginToggleGroup("Editor Resource Mode", m_EditorResourceMode.boolValue);
                 {
-                    EditorGUILayout.HelpBox("Editor resource mode option is only for editor mode. Unity Q Game Framework will use editor resource files, which you should validate first.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Loads assets directly from the project in Editor Play Mode.", MessageType.Warning);
                     EditorGUILayout.PropertyField(m_EditorLanguage);
-                    EditorGUILayout.HelpBox("Editor language option is only use for localization test in editor mode.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Language used during Editor Play Mode.", MessageType.Info);
                 }
                 EditorGUILayout.EndToggleGroup();
 

@@ -41,7 +41,7 @@ namespace UnityQGameFramework.Core.Debugger
             {
                 get
                 {
-                    if (SelectedIndex >= m_DebuggerWindows.Count)
+                    if (SelectedIndex < 0 || SelectedIndex >= m_DebuggerWindows.Count)
                     {
                         return null;
                     }
@@ -76,7 +76,7 @@ namespace UnityQGameFramework.Core.Debugger
             /// </summary>
             public void OnEnter()
             {
-                SelectedWindow.OnEnter();
+                SelectedWindow?.OnEnter();
             }
 
             /// <summary>
@@ -84,7 +84,7 @@ namespace UnityQGameFramework.Core.Debugger
             /// </summary>
             public void OnLeave()
             {
-                SelectedWindow.OnLeave();
+                SelectedWindow?.OnLeave();
             }
 
             /// <summary>
@@ -94,7 +94,7 @@ namespace UnityQGameFramework.Core.Debugger
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void OnUpdate(float elapseSeconds, float realElapseSeconds)
             {
-                SelectedWindow.OnUpdate(elapseSeconds, realElapseSeconds);
+                SelectedWindow?.OnUpdate(elapseSeconds, realElapseSeconds);
             }
 
             /// <summary>
@@ -240,10 +240,14 @@ namespace UnityQGameFramework.Core.Debugger
                 if (pos < 0 || pos >= path.Length - 1)
                 {
                     IDebuggerWindow debuggerWindow = InternalGetDebuggerWindow(path);
-                    bool result = m_DebuggerWindows.Remove(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
+                    if (debuggerWindow == null) return false;
+                    int index = m_DebuggerWindows.IndexOf(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
+                    m_DebuggerWindows.RemoveAt(index);
+                    if (SelectedIndex > index) SelectedIndex--;
+                    if (SelectedIndex >= m_DebuggerWindows.Count) SelectedIndex = System.Math.Max(0, m_DebuggerWindows.Count - 1);
                     debuggerWindow.Shutdown();
                     RefreshDebuggerWindowNames();
-                    return result;
+                    return true;
                 }
 
                 string debuggerWindowGroupName = path.Substring(0, pos);

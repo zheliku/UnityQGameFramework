@@ -1,3 +1,6 @@
 # Ship the small upstream DLL as ordinary Git bytes for UPM Git URL installs.
 # Override the host repository's broad *.dll LFS rule for this dependency.
 Runtime/Plugins/*.dll -filter -diff -merge -text
+
+# Keep documentation screenshots available to Git URL installs without Git LFS.
+Documentation~/Images/*.png -filter -diff -merge -text

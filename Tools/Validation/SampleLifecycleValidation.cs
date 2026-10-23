@@ -113,7 +113,7 @@ public static class SampleLifecycleValidation
                     File.WriteAllText("Assets/KeepMe.txt", "Host-owned sentinel");
                     s_State.settings = Directory.GetFiles("ProjectSettings").Where(f => Path.GetFileName(f) != "UnityQGameFrameworkSettings.asset").OrderBy(f => f).ToArray();
                     s_State.hashes = s_State.settings.Select(Hash).ToArray();
-                    var sample = Sample.FindByPackage(Package, PackageVersion).Single();
+                    var sample = Sample.FindByPackage(Package, PackageVersion).Single(s => s.displayName == "22 · StarForce");
                     s_State.sample = Path.GetRelativePath(Directory.GetCurrentDirectory(), sample.importPath).Replace('\\', '/');
                     Stage("imported");
                     Require(sample.Import(Sample.ImportOptions.OverridePreviousImports), "Package sample import failed");
@@ -224,7 +224,7 @@ public static class SampleLifecycleValidation
                     CheckSettings();
                     s_State.sampleRemoved = true;
                     Stage("reimported");
-                    Require(Sample.FindByPackage(Package, PackageVersion).Single().Import(Sample.ImportOptions.OverridePreviousImports), "Sample reimport failed");
+                    Require(Sample.FindByPackage(Package, PackageVersion).Single(s => s.displayName == "22 · StarForce").Import(Sample.ImportOptions.OverridePreviousImports), "Sample reimport failed");
                     break;
                 case "reimported":
                     if (Type("StarForce.MenuForm") == null || !Directory.Exists(s_State.sample)) return;

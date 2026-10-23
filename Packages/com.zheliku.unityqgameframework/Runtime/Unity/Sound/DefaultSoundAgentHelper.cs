@@ -21,13 +21,15 @@ namespace UnityQGameFramework.Runtime
         private AudioSource m_AudioSource = null;
         private EntityLogic m_BindingEntityLogic = null;
         private float m_VolumeWhenPause = 0f;
+        private bool m_IsPaused = false;
         private bool m_ApplicationPauseFlag = false;
         private EventHandler<ResetSoundAgentEventArgs> m_ResetSoundAgentEventHandler = null;
 
         /// <summary>
         /// 获取当前是否正在播放。
         /// </summary>
-        public override bool IsPlaying => m_AudioSource.isPlaying;
+        // 暂停仍占用代理，不能被当成播放结束回收或空闲代理抢占。
+        public override bool IsPlaying => m_AudioSource.isPlaying || m_IsPaused;
 
         /// <summary>
         /// 获取声音长度。
@@ -165,6 +167,7 @@ namespace UnityQGameFramework.Runtime
         public override void Play(float fadeInSeconds)
         {
             StopAllCoroutines();
+            m_IsPaused = false;
 
             m_AudioSource.Play();
             if (fadeInSeconds > 0f)
@@ -183,7 +186,9 @@ namespace UnityQGameFramework.Runtime
         {
             StopAllCoroutines();
 
-            if (fadeOutSeconds > 0f && gameObject.activeInHierarchy)
+            bool wasPaused = m_IsPaused;
+            m_IsPaused = false;
+            if (!wasPaused && fadeOutSeconds > 0f && gameObject.activeInHierarchy)
             {
                 StartCoroutine(StopCo(fadeOutSeconds));
             }
@@ -199,8 +204,14 @@ namespace UnityQGameFramework.Runtime
         /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         public override void Pause(float fadeOutSeconds)
         {
+            if (m_IsPaused || !m_AudioSource.isPlaying)
+            {
+                return;
+            }
+
             StopAllCoroutines();
 
+            m_IsPaused = true;
             m_VolumeWhenPause = m_AudioSource.volume;
             if (fadeOutSeconds > 0f && gameObject.activeInHierarchy)
             {
@@ -218,8 +229,14 @@ namespace UnityQGameFramework.Runtime
         /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         public override void Resume(float fadeInSeconds)
         {
+            if (!m_IsPaused)
+            {
+                return;
+            }
+
             StopAllCoroutines();
 
+            m_IsPaused = false;
             m_AudioSource.UnPause();
             if (fadeInSeconds > 0f)
             {
@@ -236,6 +253,8 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override void Reset()
         {
+            StopAllCoroutines();
+            m_IsPaused = false;
             m_CachedTransform.localPosition = Vector3.zero;
             m_AudioSource.clip = null;
             m_BindingEntityLogic = null;
@@ -354,7 +373,7 @@ namespace UnityQGameFramework.Runtime
             {
                 time += UnityEngine.Time.deltaTime;
                 audioSource.volume = Mathf.Lerp(originalVolume, volume, time / duration);
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
 
             audioSource.volume = volume;

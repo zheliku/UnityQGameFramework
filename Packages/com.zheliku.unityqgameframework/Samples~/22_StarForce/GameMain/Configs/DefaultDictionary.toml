@@ -1,0 +1,115 @@
+[English.Language]
+English = "English"
+ChineseSimplified = "Chinese Simplified"
+ChineseTraditional = "Chinese Traditional"
+Korean = "Korean"
+
+[English.CheckVersion]
+Tips = "Checking if the game needs update. Please wait..."
+
+[English.UpdateResource]
+Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+
+[ChineseSimplified.Language]
+English = "英语"
+ChineseSimplified = "简体中文"
+ChineseTraditional = "繁体中文"
+Korean = "韩语"
+
+[ChineseSimplified.CheckVersion]
+Tips = "正在检查游戏是否需要更新，请稍候……"
+
+[ChineseSimplified.UpdateResource]
+Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+
+[ChineseTraditional.Language]
+English = "英語"
+ChineseSimplified = "簡體中文"
+ChineseTraditional = "繁體中文"
+Korean = "韓語"
+
+[ChineseTraditional.CheckVersion]
+Tips = "正在檢查遊戲是否需要更新，請稍候……"
+
+[ChineseTraditional.UpdateResource]
+Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+
+[Korean.Language]
+English = "영어"
+ChineseSimplified = "중국어 간체"
+ChineseTraditional = "중국어 번체"
+Korean = "한국어"
+
+[Korean.CheckVersion]
+Tips = "게임 최신 버전 검색중..."
+
+[Korean.UpdateResource]
+Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+
+[English.Dialog]
+ConfirmButton = "OK"
+CancelButton = "CANCEL"
+OtherButton = ""
+
+[English.ForceUpdate]
+Title = "OUT OF DATE"
+Message = "The current game version is out-of-date. Would you like to go for update now?"
+UpdateButton = "UPDATE"
+QuitButton = "QUIT"
+
+[English.UpdateResourceViaCarrierDataNetwork]
+Title = "MOBILE DATA"
+Message = "Download game resources using mobile data?"
+UpdateButton = "DOWNLOAD"
+QuitButton = "QUIT"
+
+[ChineseSimplified.Dialog]
+ConfirmButton = "确定"
+CancelButton = "取消"
+OtherButton = ""
+
+[ChineseSimplified.ForceUpdate]
+Title = "强制更新"
+Message = "当前游戏版本过旧，是否前往更新？"
+UpdateButton = "更新"
+QuitButton = "退出"
+
+[ChineseSimplified.UpdateResourceViaCarrierDataNetwork]
+Title = "移动网络下载"
+Message = "当前使用移动网络，是否下载游戏资源？"
+UpdateButton = "下载"
+QuitButton = "退出"
+
+[ChineseTraditional.Dialog]
+ConfirmButton = "確定"
+CancelButton = "取消"
+OtherButton = ""
+
+[ChineseTraditional.ForceUpdate]
+Title = "強制更新"
+Message = "當前遊戲版本過舊，是否前往更新？"
+UpdateButton = "更新"
+QuitButton = "退出"
+
+[ChineseTraditional.UpdateResourceViaCarrierDataNetwork]
+Title = "行動網路下載"
+Message = "目前使用行動網路，是否下載遊戲資源？"
+UpdateButton = "下載"
+QuitButton = "退出"
+
+[Korean.Dialog]
+ConfirmButton = "확인"
+CancelButton = "취소"
+OtherButton = ""
+
+[Korean.ForceUpdate]
+Title = "필수 업데이트"
+Message = "새로운 게임 버전이 있는데 업데이트를 원하십니까?"
+UpdateButton = "업데이트"
+QuitButton = "아웃"
+
+[Korean.UpdateResourceViaCarrierDataNetwork]
+Title = "모바일 데이터"
+Message = "모바일 데이터로 게임 리소스를 다운로드하시겠습니까?"
+UpdateButton = "다운로드"
+QuitButton = "종료"

@@ -1,0 +1,10 @@
+{
+  "name": "UnityQGameFramework.PointPointPoint",
+  "rootNamespace": "UnityQGameFramework.Examples.PointPointPoint",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Runtime",
+    "UnityEngine.UI"
+  ],
+  "autoReferenced": true
+}

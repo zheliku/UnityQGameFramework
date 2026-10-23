@@ -547,6 +547,8 @@ namespace UnityQGameFramework.Core.Sound
             {
                 m_SoundsToReleaseOnLoad.Add(serialId);
             }
+
+            m_SoundsBeingLoaded.Clear();
         }
 
         /// <summary>
@@ -689,6 +691,7 @@ namespace UnityQGameFramework.Core.Sound
                     ReferencePool.Release(playSoundInfo.PlaySoundParams);
                 }
 
+                ReferencePool.Release(playSoundInfo);
                 return;
             }
 
@@ -705,9 +708,16 @@ namespace UnityQGameFramework.Core.Sound
                     ReferencePool.Release(playSoundInfo.PlaySoundParams);
                 }
 
+                ReferencePool.Release(playSoundInfo);
                 return;
             }
 
+            if (playSoundInfo.PlaySoundParams.Referenced)
+            {
+                ReferencePool.Release(playSoundInfo.PlaySoundParams);
+            }
+
+            ReferencePool.Release(playSoundInfo);
             throw new FrameworkException(appendErrorMessage);
         }
 

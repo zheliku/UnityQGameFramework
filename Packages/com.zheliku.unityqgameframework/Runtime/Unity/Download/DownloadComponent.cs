@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -42,7 +42,7 @@ namespace UnityQGameFramework.Runtime
         private int m_FlushSize = OneMegaBytes;
 
         /// <summary>
-        /// 获取或设置下载是否被暂停。
+        /// 获取或设置任务池是否暂停调度。已经发出的 HTTP 请求仍可能继续接收数据。
         /// </summary>
         public bool Paused
         {
@@ -71,7 +71,7 @@ namespace UnityQGameFramework.Runtime
         public int WaitingTaskCount => m_DownloadManager.WaitingTaskCount;
 
         /// <summary>
-        /// 获取或设置下载超时时长，以秒为单位。
+        /// 获取或设置连续没有收到数据的超时时长，以秒为单位。收到数据后重新计时。
         /// </summary>
         public float Timeout
         {
@@ -80,7 +80,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取或设置将缓冲区写入磁盘的临界大小，仅当开启断点续传时有效。
+        /// 获取或设置刷新文件流的字节阈值。入队时保存到任务，不决定网络分包大小。
         /// </summary>
         public int FlushSize
         {
@@ -89,7 +89,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取当前下载速度。
+        /// 获取所有下载任务的汇总速度，以字节每秒为单位。
         /// </summary>
         public float CurrentSpeed => m_DownloadManager.CurrentSpeed;
 
@@ -286,7 +286,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 根据下载任务的序列编号移除下载任务。
+        /// 根据序号移除等待或执行中的任务。不发送结果事件，保留临时文件供续传。
         /// </summary>
         /// <param name="serialId">要移除下载任务的序列编号。</param>
         /// <returns>是否移除下载任务成功。</returns>

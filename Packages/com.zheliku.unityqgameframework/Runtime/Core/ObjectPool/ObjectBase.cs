@@ -8,7 +8,7 @@ using System;
 namespace UnityQGameFramework.Core.ObjectPool
 {
     /// <summary>
-    /// 对象基类。
+    /// 对象池登记条目。保存 Target 及借还、释放策略，本身不是被管理的业务对象。
     /// </summary>
     public abstract class ObjectBase : IReference
     {
@@ -30,7 +30,8 @@ namespace UnityQGameFramework.Core.ObjectPool
         public string Name { get; private set; }
 
         /// <summary>
-        /// 获取对象。
+        /// 获取登记的业务对象，例如 GameObject、AudioClip 或普通 C# 实例。
+        /// 业务负责创建 Target，条目回调负责借用、归还和释放时的行为。
         /// </summary>
         public object Target { get; private set; }
 
@@ -117,7 +118,7 @@ namespace UnityQGameFramework.Core.ObjectPool
         }
 
         /// <summary>
-        /// 清理对象基类。
+        /// 包装条目归还引用池时清空字段。不会自动释放 Target，也不会在每次 Unspawn 时调用。
         /// </summary>
         public virtual void Clear()
         {
@@ -129,21 +130,21 @@ namespace UnityQGameFramework.Core.ObjectPool
         }
 
         /// <summary>
-        /// 获取对象时的事件。
+        /// 每次借出时调用，可恢复 Target 的状态；Register(spawned: true) 也会调用。
         /// </summary>
         protected internal virtual void OnSpawn()
         {
         }
 
         /// <summary>
-        /// 回收对象时的事件。
+        /// 每次归还时调用，可重置或隐藏 Target；共享借用时不代表所有使用者都已归还。
         /// </summary>
         protected internal virtual void OnUnspawn()
         {
         }
 
         /// <summary>
-        /// 释放对象。
+        /// 最终淘汰或关闭池时释放 Target，随后框架会将本包装条目归还引用池。
         /// </summary>
         /// <param name="isShutdown">是否是关闭对象池时触发。</param>
         protected internal abstract void Release(bool isShutdown);

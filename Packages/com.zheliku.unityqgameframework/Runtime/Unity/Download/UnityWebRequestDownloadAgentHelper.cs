@@ -21,6 +21,8 @@ namespace UnityQGameFramework.Runtime
 
         private UnityWebRequest m_UnityWebRequest = null;
         private bool m_Disposed = false;
+        private long m_RangeStart = -1;
+        private string m_ResponseError;
 
         private EventHandler<DownloadAgentHelperUpdateBytesEventArgs> m_DownloadAgentHelperUpdateBytesEventHandler = null;
         private EventHandler<DownloadAgentHelperUpdateLengthEventArgs> m_DownloadAgentHelperUpdateLengthEventHandler = null;
@@ -100,6 +102,8 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
+            m_RangeStart = -1;
+            m_ResponseError = null;
             m_UnityWebRequest = new UnityWebRequest(downloadUri);
             m_UnityWebRequest.downloadHandler = new DownloadHandler(this);
             m_UnityWebRequest.SendWebRequest();
@@ -119,6 +123,8 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
+            m_RangeStart = fromPosition;
+            m_ResponseError = null;
             m_UnityWebRequest = new UnityWebRequest(downloadUri);
             m_UnityWebRequest.SetRequestHeader("Range", Utility.Text.Format("bytes={0}-", fromPosition));
             m_UnityWebRequest.downloadHandler = new DownloadHandler(this);
@@ -140,6 +146,8 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
+            m_RangeStart = fromPosition;
+            m_ResponseError = null;
             m_UnityWebRequest = new UnityWebRequest(downloadUri);
             m_UnityWebRequest.SetRequestHeader("Range", Utility.Text.Format("bytes={0}-{1}", fromPosition, toPosition));
             m_UnityWebRequest.downloadHandler = new DownloadHandler(this);
@@ -159,6 +167,8 @@ namespace UnityQGameFramework.Runtime
             }
 
             Array.Clear(m_CachedBytes, 0, CachedBytesLength);
+            m_RangeStart = -1;
+            m_ResponseError = null;
         }
 
         /// <summary>
@@ -193,6 +203,21 @@ namespace UnityQGameFramework.Runtime
             m_Disposed = true;
         }
 
+        // 在把响应正文交给文件流之前检查，避免把完整文件或 HTTP 错误页追加到临时文件。
+        private bool ValidateResponse()
+        {
+            long code = m_UnityWebRequest.responseCode;
+            if (code >= 400) m_ResponseError = "HTTP " + code;
+            else if (m_RangeStart >= 0)
+            {
+                string range = m_UnityWebRequest.GetResponseHeader("Content-Range");
+                string prefix = "bytes " + m_RangeStart + "-";
+                if (code != 206 || range == null || !range.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                    m_ResponseError = "Server did not return the requested byte range.";
+            }
+            return m_ResponseError == null;
+        }
+
         private void Update()
         {
             if (m_UnityWebRequest == null)
@@ -205,11 +230,10 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            bool isError = false;
-            isError = m_UnityWebRequest.result != UnityWebRequest.Result.Success;
+            bool isError = !ValidateResponse() || m_UnityWebRequest.result != UnityWebRequest.Result.Success;
             if (isError)
             {
-                DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(m_UnityWebRequest.responseCode == RangeNotSatisfiableErrorCode, m_UnityWebRequest.error);
+                DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(m_UnityWebRequest.responseCode == RangeNotSatisfiableErrorCode, m_ResponseError ?? m_UnityWebRequest.error);
                 m_DownloadAgentHelperErrorEventHandler(this, downloadAgentHelperErrorEventArgs);
                 ReferencePool.Release(downloadAgentHelperErrorEventArgs);
             }

@@ -21,6 +21,7 @@ namespace UnityQGameFramework.Runtime
 
         private IWebRequestManager m_WebRequestManager = null;
         private EventComponent m_EventComponent = null;
+        private readonly Dictionary<int, WWWFormInfo> m_TaskData = new Dictionary<int, WWWFormInfo>();
 
         [SerializeField]
         private Transform m_InstanceRoot = null;
@@ -106,6 +107,15 @@ namespace UnityQGameFramework.Runtime
             {
                 AddWebRequestAgentHelper(i);
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (m_WebRequestManager == null) return;
+            RemoveAllWebRequests();
+            m_WebRequestManager.WebRequestStart -= OnWebRequestStart;
+            m_WebRequestManager.WebRequestSuccess -= OnWebRequestSuccess;
+            m_WebRequestManager.WebRequestFailure -= OnWebRequestFailure;
         }
 
         /// <summary>
@@ -455,7 +465,9 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否移除 Web 请求任务成功。</returns>
         public bool RemoveWebRequest(int serialId)
         {
-            return m_WebRequestManager.RemoveWebRequest(serialId);
+            if (!m_WebRequestManager.RemoveWebRequest(serialId)) return false;
+            ReleaseTaskData(serialId);
+            return true;
         }
 
         /// <summary>
@@ -465,7 +477,10 @@ namespace UnityQGameFramework.Runtime
         /// <returns>移除 Web 请求任务的数量。</returns>
         public int RemoveWebRequests(string tag)
         {
-            return m_WebRequestManager.RemoveWebRequests(tag);
+            TaskInfo[] tasks = m_WebRequestManager.GetWebRequestInfos(tag);
+            int count = m_WebRequestManager.RemoveWebRequests(tag);
+            foreach (TaskInfo task in tasks) ReleaseTaskData(task.SerialId);
+            return count;
         }
 
         /// <summary>
@@ -474,7 +489,10 @@ namespace UnityQGameFramework.Runtime
         /// <returns>移除 Web 请求任务的数量。</returns>
         public int RemoveAllWebRequests()
         {
-            return m_WebRequestManager.RemoveAllWebRequests();
+            int count = m_WebRequestManager.RemoveAllWebRequests();
+            foreach (WWWFormInfo data in m_TaskData.Values) ReferencePool.Release(data);
+            m_TaskData.Clear();
+            return count;
         }
 
         /// <summary>
@@ -510,7 +528,26 @@ namespace UnityQGameFramework.Runtime
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         private int AddWebRequest(string webRequestUri, byte[] postData, WWWForm wwwForm, string tag, int priority, object userData)
         {
-            return m_WebRequestManager.AddWebRequest(webRequestUri, postData, tag, priority, WWWFormInfo.Create(wwwForm, userData));
+            WWWFormInfo data = WWWFormInfo.Create(wwwForm, userData);
+            try
+            {
+                int serialId = m_WebRequestManager.AddWebRequest(webRequestUri, postData, tag, priority, data);
+                m_TaskData.Add(serialId, data);
+                return serialId;
+            }
+            catch
+            {
+                ReferencePool.Release(data);
+                throw;
+            }
+        }
+
+        // 正常完成由结果事件归还；取消没有结果事件，需要在移除任务时归还。
+        private void ReleaseTaskData(int serialId)
+        {
+            if (!m_TaskData.TryGetValue(serialId, out WWWFormInfo data)) return;
+            m_TaskData.Remove(serialId);
+            ReferencePool.Release(data);
         }
 
         private void OnWebRequestStart(object sender, UnityQGameFramework.Core.WebRequest.WebRequestStartEventArgs e)
@@ -520,11 +557,13 @@ namespace UnityQGameFramework.Runtime
 
         private void OnWebRequestSuccess(object sender, UnityQGameFramework.Core.WebRequest.WebRequestSuccessEventArgs e)
         {
+            m_TaskData.Remove(e.SerialId);
             m_EventComponent.Fire(this, WebRequestSuccessEventArgs.Create(e));
         }
 
         private void OnWebRequestFailure(object sender, UnityQGameFramework.Core.WebRequest.WebRequestFailureEventArgs e)
         {
+            m_TaskData.Remove(e.SerialId);
             Log.Warning("Web request failure, web request serial id '{0}', web request uri '{1}', error message '{2}'.", e.SerialId, e.WebRequestUri, e.ErrorMessage);
             m_EventComponent.Fire(this, WebRequestFailureEventArgs.Create(e));
         }

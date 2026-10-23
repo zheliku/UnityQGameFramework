@@ -1,0 +1,7 @@
+[Game]
+Title = "配置入门"
+FeatureEnabled = true
+
+[Player]
+MaxHp = 100
+Speed = 4.5

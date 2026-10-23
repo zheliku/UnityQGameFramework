@@ -24,7 +24,8 @@ namespace UnityQGameFramework.Core
             /// <returns>异或后的二进制流。</returns>
             public static byte[] GetQuickXorBytes(byte[] bytes, byte[] code)
             {
-                return GetXorBytes(bytes, 0, QuickEncryptLength, code);
+                if (bytes == null) return null;
+                return GetXorBytes(bytes, 0, Math.Min(QuickEncryptLength, bytes.Length), code);
             }
 
             /// <summary>
@@ -34,7 +35,8 @@ namespace UnityQGameFramework.Core
             /// <param name="code">异或二进制流。</param>
             public static void GetQuickSelfXorBytes(byte[] bytes, byte[] code)
             {
-                GetSelfXorBytes(bytes, 0, QuickEncryptLength, code);
+                if (bytes == null) return;
+                GetSelfXorBytes(bytes, 0, Math.Min(QuickEncryptLength, bytes.Length), code);
             }
 
             /// <summary>
@@ -84,6 +86,7 @@ namespace UnityQGameFramework.Core
                 }
 
                 int bytesLength = bytes.Length;
+                if (length < 0) length = bytesLength - startIndex;
                 byte[] results = new byte[bytesLength];
                 Array.Copy(bytes, 0, results, 0, bytesLength);
                 GetSelfXorBytes(results, startIndex, length, code);
@@ -115,13 +118,13 @@ namespace UnityQGameFramework.Core
                     throw new FrameworkException("Code length is invalid.");
                 }
 
-                if (startIndex < 0 || length < 0 || startIndex + length > bytes.Length)
+                if (startIndex < 0 || startIndex > bytes.Length || length < 0 || length > bytes.Length - startIndex)
                 {
                     throw new FrameworkException("Start index or length is invalid.");
                 }
 
                 int codeIndex = startIndex % codeLength;
-                for (int i = startIndex; i < length; i++)
+                for (int i = startIndex, end = startIndex + length; i < end; i++)
                 {
                     bytes[i] ^= code[codeIndex++];
                     codeIndex %= codeLength;

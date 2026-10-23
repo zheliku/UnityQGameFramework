@@ -7,7 +7,6 @@ using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.WebRequest;
 using System;
 using UnityEngine.Networking;
-using Utility = UnityQGameFramework.Core.Utility;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -92,7 +91,13 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            m_UnityWebRequest = UnityWebRequest.PostWwwForm(webRequestUri, Utility.Converter.GetString(postData));
+            // byte[] 是原始请求体，不能先转字符串再按表单转义，否则二进制内容会改变。
+            m_UnityWebRequest = new UnityWebRequest(webRequestUri, UnityWebRequest.kHttpVerbPOST)
+            {
+                uploadHandler = new UploadHandlerRaw(postData),
+                downloadHandler = new DownloadHandlerBuffer()
+            };
+            m_UnityWebRequest.SetRequestHeader("Content-Type", "application/octet-stream");
             m_UnityWebRequest.SendWebRequest();
         }
 

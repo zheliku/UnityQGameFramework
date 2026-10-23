@@ -295,6 +295,7 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取记录的所有日志。
         /// </summary>
+        /// <remarks>清空并填充结果列表，按记录顺序返回。日志结点由调试器持有，需要长期保存时复制字段。</remarks>
         /// <param name="results">要获取的日志。</param>
         public void GetRecentLogs(List<LogNode> results)
         {
@@ -304,6 +305,7 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取记录的最近日志。
         /// </summary>
+        /// <remarks>清空并填充结果列表，返回末尾的 count 条，保留记录顺序。</remarks>
         /// <param name="results">要获取的日志。</param>
         /// <param name="count">要获取最近日志的数量。</param>
         public void GetRecentLogs(List<LogNode> results, int count)

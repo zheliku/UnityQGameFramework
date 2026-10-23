@@ -67,7 +67,7 @@ namespace UnityQGameFramework.Core.Localization
         }
 
         /// <summary>
-        /// 获取字典数量。
+        /// 获取当前字典的文本条目数量。
         /// </summary>
         public int DictionaryCount => m_Dictionary.Count;
 

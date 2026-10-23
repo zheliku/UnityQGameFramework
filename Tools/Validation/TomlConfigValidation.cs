@@ -36,7 +36,7 @@ public static class TomlConfigValidation
                 catch (Exception) { rejected = true; }
                 Require(rejected && manager.Count == count && !manager.HasConfig("New"), "An invalid document changed existing settings.");
             }
-            const string path = "Assets/Examples/StarForce/GameMain/Configs/DefaultConfig.toml";
+            const string path = "Assets/Examples/22_StarForce/GameMain/Configs/DefaultConfig.toml";
             var asset = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
             Require(asset != null && AssetImporter.GetAtPath(path).GetType().Name == "TomlImporter", "TOML did not import as a TextAsset.");
             Require(AssetDatabase.AssetPathToGUID(path) == "44c8db52241385c45bbb14a1718f17bf", "Config GUID changed during migration.");

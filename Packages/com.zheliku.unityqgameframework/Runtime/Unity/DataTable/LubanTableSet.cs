@@ -3,7 +3,7 @@ using UnityQGameFramework.Core.DataTable;
 
 namespace UnityQGameFramework.Runtime
 {
-    /// <summary>Implemented by the generated Luban Tables class; no game types enter the package.</summary>
+    /// <summary>由 Luban 生成的 Tables 实现，提供结构版本与可登记的只读视图。</summary>
     public abstract class LubanTableSet
     {
         public abstract string SchemaHash { get; }

@@ -19,9 +19,10 @@ namespace UnityQGameFramework.Editor
             public string Website { get; }
             public string Description { get; }
             public string MinimumUnity { get; }
+            public string LicenseInfo { get; }
 
             public Extension(string name, string packageName, string assemblyName, string gitUrl,
-                string website, string description, string minimumUnity)
+                string website, string description, string minimumUnity, string licenseInfo)
             {
                 Name = name;
                 PackageName = packageName;
@@ -30,6 +31,7 @@ namespace UnityQGameFramework.Editor
                 Website = website;
                 Description = description;
                 MinimumUnity = minimumUnity;
+                LicenseInfo = licenseInfo;
             }
         }
 
@@ -38,11 +40,12 @@ namespace UnityQGameFramework.Editor
             new Extension("Alchemy", "com.annulusgames.alchemy", "Alchemy",
                 "https://github.com/annulusgames/Alchemy.git?path=/Alchemy/Assets/Alchemy",
                 "https://github.com/annulusgames/Alchemy",
-                "Inspector、Hierarchy 和 EditorWindow 增强。序列化扩展另需 Unity.Serialization。", "2021.2"),
+                "Inspector、Hierarchy 和 EditorWindow 增强。序列化扩展另需 Unity.Serialization。", "2021.2", "许可：MIT。"),
             new Extension("Rainbow Folders 2", "com.borodar.rainbow-folders", "Borodar.RainbowFolders",
                 "https://github.com/Borod4r/Rainbow-Folders-2.git?path=Assets/Plugins/Borodar/RainbowFolders",
                 "https://github.com/Borod4r/Rainbow-Folders-2",
-                "为 Project 窗口中的文件夹设置颜色、图标与规则。", "6000.3")
+                "为 Project 窗口中的文件夹设置颜色、图标与规则。", "6000.3",
+                "许可：代码为 Apache-2.0；图标、图片等美术资源为 CC BY-NC 4.0（非商业用途）。商业使用请先核对上游授权。")
         };
 
         private static AddRequest s_Request;
@@ -84,12 +87,12 @@ namespace UnityQGameFramework.Editor
                 m_Scroll = scroll.scrollPosition;
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("可选编辑器扩展", EditorStyles.boldLabel);
-                EditorGUILayout.HelpBox("点击安装后，工具会添加到当前项目。QGF 本身可独立编译和运行。", MessageType.Info);
+                EditorGUILayout.HelpBox("选择要安装到当前项目的工具。", MessageType.Info);
                 foreach (var extension in Extensions) DrawExtension(extension);
                 if (s_Request != null) EditorGUILayout.HelpBox("正在安装 " + s_Installing + "…", MessageType.Info);
                 if (!string.IsNullOrEmpty(s_Error)) EditorGUILayout.HelpBox(s_Error, MessageType.Error);
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("工具的更新和移除请在 Package Manager 中操作。卸载 QGF 时保留这些工具。", EditorStyles.wordWrappedLabel);
+                EditorGUILayout.LabelField("在 Package Manager 中更新或移除工具。", EditorStyles.wordWrappedLabel);
             }
         }
 
@@ -102,6 +105,7 @@ namespace UnityQGameFramework.Editor
             {
                 EditorGUILayout.LabelField(extension.Name, EditorStyles.boldLabel);
                 EditorGUILayout.LabelField(extension.Description, EditorStyles.wordWrappedLabel);
+                EditorGUILayout.LabelField(extension.LicenseInfo, EditorStyles.wordWrappedLabel);
                 string status = installed != null ? "已安装 " + installed.version : legacy ? "已检测到本地工具" : "未安装";
                 EditorGUILayout.LabelField(status + "  ·  Unity " + extension.MinimumUnity + "+", EditorStyles.miniLabel);
                 if (!compatible && installed == null && !legacy)

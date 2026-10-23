@@ -76,6 +76,12 @@ namespace UnityQGameFramework.Core.Network
             protected override void ProcessReceive()
             {
                 base.ProcessReceive();
+                // FIN 到达后 Available 仍为 0，需要检查可读状态才能识别远端关闭。
+                if (m_Socket.Poll(0, SelectMode.SelectRead) && m_Socket.Available == 0)
+                {
+                    Close();
+                    return;
+                }
                 while (m_Socket.Available > 0)
                 {
                     if (!ReceiveSync())
@@ -204,7 +210,7 @@ namespace UnityQGameFramework.Core.Network
                     return;
                 }
 
-                m_SentPacketCount++;
+                m_SentPacketCount += m_SendState.PacketCount;
                 m_SendState.Reset();
             }
 

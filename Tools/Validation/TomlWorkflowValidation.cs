@@ -37,7 +37,7 @@ public static class TomlWorkflowValidation
             {
                 File.WriteAllText(State, "verify");
                 string packageVersion = UnityEditor.PackageManager.PackageInfo.GetAllRegisteredPackages().Single(p => p.name == "com.zheliku.unityqgameframework").version;
-                Require(Sample.FindByPackage("com.zheliku.unityqgameframework", packageVersion).Single().Import(Sample.ImportOptions.OverridePreviousImports), "Could not import sample");
+                Require(Sample.FindByPackage("com.zheliku.unityqgameframework", packageVersion).Single(s => s.displayName == "22 · StarForce").Import(Sample.ImportOptions.OverridePreviousImports), "Could not import sample");
                 return;
             }
             if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.GetType("StarForce.MenuForm") == null)) return;
@@ -49,7 +49,7 @@ public static class TomlWorkflowValidation
         catch (Exception exception)
         {
             File.WriteAllText(State, "done");
-            File.WriteAllText("Results/toml-result.json", JsonUtility.ToJson(new Failure { failure = exception.ToString() }, true));
+            File.WriteAllText("Results/toml-result.json", JsonUtility.ToJson(new Failure { passed = false, failure = exception.ToString() }, true));
             Debug.LogException(exception);
             EditorApplication.Exit(1);
         }

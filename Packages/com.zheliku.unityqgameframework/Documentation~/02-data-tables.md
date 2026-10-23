@@ -1,6 +1,6 @@
 # 用 Luban 制作与读取配置表
 
-这一篇从默认的 Item 表开始：加一列价格，生成 C#，在游戏里按 Id、条件和排序读取，最后再添加一张 Weapon 表。
+从默认 Item 表增加价格列，生成 C# 和 bytes，再按 Id、条件和排序查询。文末说明如何添加 Weapon 表。
 
 如果还没有完成安装，请先阅读 [安装与第一个流程](01-getting-started.md)。下面使用默认工作区 `Assets/UnityQGameFramework/Config`，示例项目自己的工作区在 StarForce 目录内，操作方式相同。
 
@@ -55,7 +55,7 @@ Excel 是编辑数据的地方；C# 定义运行时类型；bytes 保存具体�
 | TbItem | 一整张道具表，以及 Luban 生成的索引            |
 | Tables | 当前 target 下的全部表，负责读取和解析跨表引用 |
 
-TbItem 来自 `__tables__` 的登记。它不是工具额外凭空添加的数据表。
+TbItem 是 `__tables__` 中登记的表类。
 
 ## 3. 给 Item 加上价格
 
@@ -79,6 +79,10 @@ TbItem 来自 `__tables__` 的登记。它不是工具额外凭空添加的数�
 
 保存并关闭文件，再执行 `QGF > Generate Tables`。关闭 Excel 可以避免某些表格工具对工作簿施加文件锁。
 
+![示例中增加 Price 后的 Item 表格预览](Images/luban-item.png)
+
+上图是同一份示例工作簿的渲染预览，字段和值已用官方 Luban 编译验证；不是 Unity Inspector 截图。
+
 成功后检查：
 
 ```text
@@ -96,11 +100,11 @@ Data/Catalog.asset       记录本次生成的表资源
 先把 `Data/Catalog.asset` 拖入场景 DataTable 节点的 **Luban Catalog**，在启动或预加载流程中调用：
 
 ```csharp
-var dataTable = GameEntry.GetComponent<DataTableComponent>();
+var dataTable = QGF.DataTable;
 dataTable.LoadDataTables(loader => new Tables(loader));
 ```
 
-这里的 `GameEntry` 来自 `UnityQGameFramework.Runtime`，`Tables` 来自默认命名空间 `UnityQGameFramework.Config`。第一次教程中的 GameStartup 就是一个完整可运行的加载例子。
+这里的 `GameEntry` 来自 `UnityQGameFramework.Runtime`，`Tables` 来自默认命名空间 `UnityQGameFramework.Config`。第一次示例中的 GameStartup 就是一个完整可运行的加载例子。
 
 这种 Inspector 引用方式会同步解析 Catalog 已引用的二进制，并发布整组表。调用结束后先检查加载是否成功：
 
@@ -109,7 +113,7 @@ if (!dataTable.HasDataTable<DRItem>()) return;
 
 var items = dataTable.GetDataTable<DRItem>();
 var potion = items.GetDataRow(1);
-if (potion != null) Debug.Log($"{potion.Name}：{potion.Price}");
+if (potion != null) Log.Info($"{potion.Name}：{potion.Price}");
 ```
 
 Id 是业务主键，不是 Excel 物理行号。Id 为 1 的记录放到第十行，查询仍然是 `GetDataRow(1)`。不存在的 Id 返回 null。
@@ -148,7 +152,7 @@ var names = items.Where(row => row.Price <= 20)
                  .ToArray();
 ```
 
-这些条件查询会遍历记录。频繁的大表查询应在 Luban schema 中设计索引，而不是每帧对全表做 LINQ。
+条件查询会遍历记录。频繁查询大表时，在 Luban schema 中定义索引。
 
 其他常用属性有 `Count`、`MinIdDataRow`、`MaxIdDataRow`；`GetAllDataRows()` 取得全部记录。空表的最小、最大记录为 null。
 
@@ -222,7 +226,7 @@ Profile 放在 `Editor/LubanProfile.asset`，字段为：
 
 全局选择位于 `QGF > Settings > Profile`，也可在 DataTable Inspector 选择 Profile 后点 **设为全局**。设置保存在 `ProjectSettings/UnityQGameFrameworkSettings.asset`，团队应一起提交。
 
-Catalog 下列出的各张表，是生成后真正的 TextAsset 引用。加载时组件按生成文件名查找 bytes，把数据交给 `new Tables(loader)`；全部构造、跨表引用解析和版本校验成功后，才注册 QGF 视图。Catalog 不是编辑器生成成功后的提示面板，也不是运行时反射扫描 Excel 的清单。
+Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，交给 `new Tables(loader)`；构造、跨表引用解析和版本校验成功后注册 QGF 表视图。
 
 全局 Profile 改成默认配置后，StarForce 仍能运行，是因为 Launcher 的 Catalog 仍然引用示例数据。这是明确的两个选择。需要改变运行时数据时，先生成目标 Profile，再在组件点击 **使用全局 Catalog**，或手动拖入目标 Catalog。
 
@@ -293,8 +297,8 @@ namespace MyGame
         protected override void OnEnter(IFsm<IProcedureManager> owner)
         {
             base.OnEnter(owner);
-            m_DataTable = GameEntry.GetComponent<DataTableComponent>();
-            m_Event = GameEntry.GetComponent<EventComponent>();
+            m_DataTable = QGF.DataTable;
+            m_Event = QGF.Event;
             m_Event.Subscribe(LoadDataTableSuccessEventArgs.EventId, OnSuccess);
             m_Event.Subscribe(LoadDataTableFailureEventArgs.EventId, OnFailure);
             m_DataTable.LoadDataTables(
@@ -306,7 +310,7 @@ namespace MyGame
         {
             var loaded = (LoadDataTableSuccessEventArgs)args;
             if (!ReferenceEquals(loaded.UserData, this)) return;
-            Debug.Log($"已加载 {m_DataTable.Count} 张表");
+            Log.Info($"已加载 {m_DataTable.Count} 张表");
             // 此处记录完成状态，在 OnUpdate 中切换到下一个业务流程。
         }
 
@@ -314,7 +318,7 @@ namespace MyGame
         {
             var failed = (LoadDataTableFailureEventArgs)args;
             if (!ReferenceEquals(failed.UserData, this)) return;
-            Debug.LogError(failed.ErrorMessage);
+            Log.Error(failed.ErrorMessage);
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> owner, bool isShutdown)
@@ -366,7 +370,7 @@ Main = 2
 ConfigComponent 通过 `ReadData(assetPath, userData)` 加载 TOML，语法由 Tomlyn 库解析。章节名与键合并成 `Game.Id`、`Scene.Menu`，读取方式仍然是：
 
 ```csharp
-var config = GameEntry.GetComponent<ConfigComponent>();
+var config = QGF.Config;
 string gameId = config.GetString("Game.Id");
 int menuScene = config.GetInt("Scene.Menu");
 ```

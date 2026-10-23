@@ -1,0 +1,8 @@
+[Game]
+Duration = 20.0
+Lives = 3
+TargetCount = 10
+
+[Score]
+Hit = 10
+Miss = 5

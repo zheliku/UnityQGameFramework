@@ -116,7 +116,7 @@ namespace UnityQGameFramework.Editor.ResourceTools
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUILayout.LabelField("Unity Q Game Framework Version", GUILayout.Width(160f));
+                        EditorGUILayout.LabelField("QGF Version", GUILayout.Width(160f));
                         EditorGUILayout.LabelField(m_Controller.FrameworkVersion);
                     }
                     EditorGUILayout.EndHorizontal();

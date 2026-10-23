@@ -8,7 +8,7 @@ using UnityQGameFramework.Luban;
 
 namespace UnityQGameFramework.Runtime
 {
-    /// <summary>QGF data-table facade, backed by generated Luban data.</summary>
+    /// <summary>加载 Luban 生成数据，并提供原生表集合与 QGF 只读表视图。</summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("Unity Q Game Framework/Data Table")]
     public sealed class DataTableComponent : FrameworkComponent
@@ -19,10 +19,14 @@ namespace UnityQGameFramework.Runtime
         private int m_LoadSerial;
 
         [SerializeField] private LubanDataTableCatalog m_LubanCatalog;
+        /// <summary>Inspector 指定的 Catalog，引用随资产目录移动。</summary>
         public LubanDataTableCatalog Catalog => m_LubanCatalog;
 
+        /// <summary>已登记的表数量，包含单独登记的具名表。</summary>
         public int Count => m_DataTableManager?.Count ?? 0;
+        /// <summary>是否正在通过资源模块加载 Catalog。</summary>
         public bool IsLoading { get; private set; }
+        /// <summary>已发布的整组 Luban 表，卸载后为 null。</summary>
         public LubanTableSet LubanTables { get; private set; }
 
         protected override void Awake()
@@ -37,7 +41,7 @@ namespace UnityQGameFramework.Runtime
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
         }
 
-        /// <summary>Load the catalog assigned in the Inspector. Its asset references survive folder moves.</summary>
+        /// <summary>从 Inspector 引用同步构造并发布表，结果通知通过 Event 队列分发。</summary>
         public void LoadDataTables<T>(Func<Func<string, ByteBuf>, T> factory, object userData = null) where T : LubanTableSet
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));
@@ -77,8 +81,8 @@ namespace UnityQGameFramework.Runtime
             LubanTables = tables;
         }
 
-        /// <summary>Load one catalog, resolve all Luban references, then publish the complete set.</summary>
-        /// <returns>A request serial ID. Cancellation ignores late callbacks and still releases their assets.</returns>
+        /// <summary>异步加载 Catalog，解析 Luban 引用后发布整组表。</summary>
+        /// <returns>本次请求序号，用于区分被取消的旧请求。</returns>
         public int LoadDataTables<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
             object userData = null, int priority = 0) where T : LubanTableSet
         {
@@ -123,16 +127,17 @@ namespace UnityQGameFramework.Runtime
             return serial;
         }
 
+        /// <summary>使待完成请求失效；迟到回调释放资产，不再发布表或结果事件。</summary>
         public void CancelLoadDataTables()
         {
             ++m_LoadSerial;
             IsLoading = false;
         }
 
-        /// <summary>Access advanced Luban indexes through the same component.</summary>
+        /// <summary>取得生成的 Tables，使用其原生索引与跨表引用。</summary>
         public T GetLubanTables<T>() where T : LubanTableSet => LubanTables as T;
 
-        /// <summary>Release the complete set, including native cross-table references.</summary>
+        /// <summary>取消待完成请求，卸载当前整组原生表及其 QGF 视图。</summary>
         public void UnloadDataTables()
         {
             CancelLoadDataTables();

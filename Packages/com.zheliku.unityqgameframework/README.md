@@ -1,25 +1,29 @@
 # UnityQGameFramework
 
-面向 Unity 2022.3 与 Unity 6 的游戏框架，提供纯 C# 模块、Unity 组件、编辑器资源工具和 StarForce 示例。配置表使用 Luban，游戏全局参数使用 TOML。
+QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制作数据表、Tomlyn 读取 TOML，内置 UniTask。兼容目标为 Unity 2022.3、6.0、6.3；示例的 3D 资源使用 URP。
+
+[入门](Documentation~/01-getting-started.md) · [模块](Documentation~/Modules/README.md) · [Luban](Documentation~/02-data-tables.md) · [变更记录](CHANGELOG.md)
 
 ## 安装
 
-在 Unity Package Manager 中选择 **Install package from git URL**：
+在 Package Manager 选择 **Install package from git URL**：
 
 ```text
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-安装完成后，自己的配置工作区在 `Assets/UnityQGameFramework/Config`。在已启用 URP 的工程中，可从 Package Manager 的 Samples 面板导入 StarForce，打开其中的 `StarForce Launcher.unity` 即可在编辑器试玩。
+编译完成后，可从 Samples 导入点点点、单个模块示例或 StarForce。每个模块 Sample 自带场景和公共资源；完整清单见[示例目录](Documentation~/06-module-examples.md)。
 
-`QGF > Extensions` 提供 Alchemy 与 Rainbow Folders 2 的可选安装入口，按需加入当前项目。框架本身不依赖这两个工具。
+游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
 
-## 教程
+## 文档
 
-- [安装与第一个流程](Documentation~/01-getting-started.md)
-- [用 Luban 制作与读取配置表](Documentation~/02-data-tables.md)
-- [版本记录](CHANGELOG.md)
+- [框架运行](Documentation~/00-runtime.md)：初始化、更新、关闭和异步调用。
+- [模块示例](Documentation~/06-module-examples.md)：运行场景、编辑代码和资源。
+- [项目约定](Documentation~/03-conventions.md)：生命周期与资源归还。
+- [StarForce](Documentation~/05-starforce.md)：从启动流程读到飞机、武器和血条。
+- [UGF 到 QGF](Documentation~/04-changes-from-ugf.md)：当前改动与架构迁移进度。
 
-框架开发仓库的示例源码位于 `Assets/Examples/StarForce`，包内 `Samples~/StarForce` 是它的发布副本。修改示例后运行 `python Tools/Packaging/sync_samples.py`；`--check` 检查副本是否一致。`python Tools/Packaging/prepare_upm.py` 将同一份包内容打成 `.tgz`，输出到 `Artifacts~`。
+`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的可选安装入口。
 
-当前基于 UGF 维护并接入 Luban，QFramework 的 Architecture、Model、System 尚未迁入。框架采用 MIT 许可，原始版权与依赖许可见 [第三方声明](Third%20Party%20Notices.md)。
+源码采用 [MIT](LICENSE.md)，第三方内容见 [许可声明](<Third%20Party%20Notices.md>)。

@@ -195,7 +195,8 @@ namespace UnityQGameFramework.Core.Network
                     return;
                 }
 
-                m_SentPacketCount++;
+                // 一次发送可合并多条消息，计数按消息条数累加。
+                m_SentPacketCount += m_SendState.PacketCount;
                 m_SendState.Reset();
             }
 

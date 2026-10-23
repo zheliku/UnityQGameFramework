@@ -387,19 +387,21 @@ namespace UnityQGameFramework.Runtime
             m_ResourceManager.ResourceUpdateFailure += OnResourceUpdateFailure;
             m_ResourceManager.ResourceUpdateAllComplete += OnResourceUpdateAllComplete;
 
-            m_ResourceManager.SetReadOnlyPath(Application.streamingAssetsPath);
-            if (m_ReadWritePathType == ReadWritePathType.TemporaryCache)
+            // 业务可在 Awake 中通过 Core 接口预设目录；加载代理创建后路径不能再修改。
+            if (string.IsNullOrEmpty(m_ResourceManager.ReadOnlyPath))
+                m_ResourceManager.SetReadOnlyPath(Application.streamingAssetsPath);
+            if (string.IsNullOrEmpty(m_ResourceManager.ReadWritePath))
             {
-                m_ResourceManager.SetReadWritePath(Application.temporaryCachePath);
-            }
-            else
-            {
-                if (m_ReadWritePathType == ReadWritePathType.Unspecified)
+                if (m_ReadWritePathType == ReadWritePathType.TemporaryCache)
                 {
-                    m_ReadWritePathType = ReadWritePathType.PersistentData;
+                    m_ResourceManager.SetReadWritePath(Application.temporaryCachePath);
                 }
-
-                m_ResourceManager.SetReadWritePath(Application.persistentDataPath);
+                else
+                {
+                    if (m_ReadWritePathType == ReadWritePathType.Unspecified)
+                        m_ReadWritePathType = ReadWritePathType.PersistentData;
+                    m_ResourceManager.SetReadWritePath(Application.persistentDataPath);
+                }
             }
 
             if (m_EditorResourceMode)
@@ -532,10 +534,12 @@ namespace UnityQGameFramework.Runtime
         /// 设置解密资源回调函数。
         /// </summary>
         /// <param name="decryptResourceCallback">要设置的解密资源回调函数。</param>
-        /// <remarks>如果不设置，将使用默认的解密资源回调函数。</remarks>
+        /// <remarks>在 Awake 或启用组件前设置；Start 创建加载代理后不能再修改。不设置时使用默认处理。</remarks>
         public void SetDecryptResourceCallback(DecryptResourceCallback decryptResourceCallback)
         {
-            m_ResourceManager.SetDecryptResourceCallback(decryptResourceCallback);
+            // Start 之前组件尚未接入管理器，提前取得同一 Core 模块保存配置。
+            var resourceManager = m_ResourceManager ?? FrameworkEntry.GetModule<IResourceManager>();
+            resourceManager.SetDecryptResourceCallback(decryptResourceCallback);
         }
 
         /// <summary>

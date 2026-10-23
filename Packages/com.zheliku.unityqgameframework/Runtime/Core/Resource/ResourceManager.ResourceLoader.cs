@@ -661,8 +661,7 @@ namespace UnityQGameFramework.Core.Resource
 
                 if (resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
                 {
-                    DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
-                    decryptResourceCallback(bytes, 0, bytes.Length, resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, resourceInfo.ResourceName.Extension, resourceInfo.StorageInReadOnly, resourceInfo.FileSystemName, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
+                    DecryptBinarySegment(binaryAssetName, resourceInfo, offset, bytes, 0, bytes.Length);
                 }
 
                 return bytes;
@@ -704,8 +703,7 @@ namespace UnityQGameFramework.Core.Resource
                 int bytesRead = fileSystem.ReadFileSegment(resourceInfo.ResourceName.FullName, offset, buffer, startIndex, length);
                 if (resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
                 {
-                    DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
-                    decryptResourceCallback(buffer, startIndex, bytesRead, resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, resourceInfo.ResourceName.Extension, resourceInfo.StorageInReadOnly, resourceInfo.FileSystemName, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
+                    DecryptBinarySegment(binaryAssetName, resourceInfo, offset, buffer, startIndex, bytesRead);
                 }
 
                 return bytesRead;
@@ -810,23 +808,43 @@ namespace UnityQGameFramework.Core.Resource
 
             private void DefaultDecryptResourceCallback(byte[] bytes, int startIndex, int count, string name, string variant, string extension, bool storageInReadOnly, string fileSystem, byte loadType, int length, int hashCode)
             {
-                Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                 switch ((LoadType)loadType)
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
                     case LoadType.LoadFromBinaryAndQuickDecrypt:
-                        Utility.Encryption.GetQuickSelfXorBytes(bytes, m_CachedHashBytes);
+                        XorResourceBytes(bytes, startIndex, count, 0, true, hashCode);
                         break;
 
                     case LoadType.LoadFromMemoryAndDecrypt:
                     case LoadType.LoadFromBinaryAndDecrypt:
-                        Utility.Encryption.GetSelfXorBytes(bytes, m_CachedHashBytes);
+                        XorResourceBytes(bytes, startIndex, count, 0, false, hashCode);
                         break;
 
                     default:
                         throw new FrameworkException("Not supported load type when decrypt resource.");
                 }
 
+            }
+
+            private void DecryptBinarySegment(string assetName, ResourceInfo resourceInfo, int offset, byte[] buffer, int startIndex, int count)
+            {
+                if (count == 0) return;
+                if (m_ResourceManager.m_DecryptResourceCallback != null)
+                {
+                    // 自定义回调只描述完整资源，没有源偏移参数。先还原完整资源，再取得请求片段。
+                    byte[] bytes = LoadBinaryFromFileSystem(assetName);
+                    Array.Copy(bytes, offset, buffer, startIndex, count);
+                    return;
+                }
+                XorResourceBytes(buffer, startIndex, count, offset, resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt, resourceInfo.HashCode);
+            }
+
+            private void XorResourceBytes(byte[] bytes, int startIndex, int count, int offset, bool quick, int hashCode)
+            {
+                Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
+                // 密钥相位跟随资源内的偏移，与目标缓冲区的写入位置无关。
+                int length = quick ? Math.Min(count, Math.Max(0, Utility.Encryption.QuickEncryptLength - offset)) : count;
+                for (int i = 0; i < length; i++) bytes[startIndex + i] ^= m_CachedHashBytes[(offset + i) % CachedHashBytesLength];
                 Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
             }
 

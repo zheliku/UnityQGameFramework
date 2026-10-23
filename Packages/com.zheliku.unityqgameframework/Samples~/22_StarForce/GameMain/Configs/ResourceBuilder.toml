@@ -1,0 +1,12 @@
+[ResourceBuilder]
+InternalResourceVersion = 0
+Platforms = "Windows64"
+AssetBundleCompression = "LZ4"
+CompressionHelperTypeName = "UnityQGameFramework.Runtime.DefaultCompressionHelper"
+AdditionalCompressionSelected = true
+ForceRebuildAssetBundleSelected = false
+BuildEventHandlerTypeName = ""
+OutputDirectory = ""
+OutputPackageSelected = true
+OutputFullSelected = true
+OutputPackedSelected = true

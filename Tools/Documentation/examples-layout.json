@@ -1,0 +1,379 @@
+[
+  {
+    "folder": "01_Base",
+    "module": "Base",
+    "assemblyGuid": "451fb7eed1a048a39d433c5f2e2a84f9",
+    "assembly": "UnityQGameFramework.Examples.Base",
+    "anchorGuid": "451fb7eed1a048a39d433c5f2e2a84f9",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "02_Config",
+    "module": "Config",
+    "assemblyGuid": "74c628515104487ab46e8c195343f494",
+    "assembly": "UnityQGameFramework.Examples.Config",
+    "anchorGuid": "74c628515104487ab46e8c195343f494",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "03_DataNode",
+    "module": "DataNode",
+    "assemblyGuid": "0569d91e17474a50bcbc4cf9ce610a8d",
+    "assembly": "UnityQGameFramework.Examples.DataNode",
+    "anchorGuid": "0569d91e17474a50bcbc4cf9ce610a8d",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "04_Event",
+    "module": "Event",
+    "assemblyGuid": "6d6ccb3a40994ce797ceea27fc7b9b00",
+    "assembly": "UnityQGameFramework.Examples.Event",
+    "anchorGuid": "6d6ccb3a40994ce797ceea27fc7b9b00",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "05_Fsm",
+    "module": "Fsm",
+    "assemblyGuid": "b12fb1fa2df742f791a917fed60ac0b9",
+    "assembly": "UnityQGameFramework.Examples.Fsm",
+    "anchorGuid": "b12fb1fa2df742f791a917fed60ac0b9",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "06_Procedure",
+    "module": "Procedure",
+    "assemblyGuid": "316e0f0a61164a63aa9ffb0b1de5130e",
+    "assembly": "UnityQGameFramework.Examples.Procedure",
+    "anchorGuid": "316e0f0a61164a63aa9ffb0b1de5130e",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "07_ReferencePool",
+    "module": "ReferencePool",
+    "assemblyGuid": "6db43065adb6494ea8b51f0f3d7ac386",
+    "assembly": "UnityQGameFramework.Examples.ReferencePool",
+    "anchorGuid": "6db43065adb6494ea8b51f0f3d7ac386",
+    "frameworkModules": [
+      "Object Pool",
+      "FSM",
+      "Data Table",
+      "Web Request",
+      "Localization",
+      "Network",
+      "UI",
+      "Entity",
+      "Event",
+      "Sound",
+      "Config",
+      "Resource",
+      "File System",
+      "Download",
+      "Reference Pool",
+      "Data Node",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "08_ObjectPool",
+    "responsiveLayout": true,
+    "module": "ObjectPool",
+    "assemblyGuid": "875fad970bfa4f7db24353c475ddcda3",
+    "assembly": "UnityQGameFramework.Examples.ObjectPool",
+    "anchorGuid": "875fad970bfa4f7db24353c475ddcda3",
+    "frameworkModules": [
+      "Object Pool"
+    ],
+    "editorResource": false
+  },
+  {
+    "folder": "09_Setting",
+    "module": "Setting",
+    "assemblyGuid": "636842cd577841a587a4696ab4a69cb9",
+    "assembly": "UnityQGameFramework.Examples.Setting",
+    "anchorGuid": "636842cd577841a587a4696ab4a69cb9",
+    "frameworkModules": [],
+    "editorResource": false,
+    "settingHelperType": "UnityQGameFramework.Examples.SettingExampleHelper"
+  },
+  {
+    "folder": "10_Localization",
+    "module": "Localization",
+    "assemblyGuid": "546e1e2e8f2a49bdaeb03ad61edce340",
+    "assembly": "UnityQGameFramework.Examples.Localization",
+    "anchorGuid": "546e1e2e8f2a49bdaeb03ad61edce340",
+    "frameworkModules": [
+      "Object Pool",
+      "Event",
+      "Resource",
+      "Localization"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "11_DataTable",
+    "module": "DataTable",
+    "assemblyGuid": "9cb40d2fa7d54547ad62f12dee11fa0a",
+    "assembly": "UnityQGameFramework.Examples.DataTable",
+    "anchorGuid": "9cb40d2fa7d54547ad62f12dee11fa0a",
+    "frameworkModules": [
+      "Object Pool",
+      "Event",
+      "Resource",
+      "Data Table"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "12_Resource",
+    "responsiveLayout": true,
+    "module": "Resource",
+    "assemblyGuid": "c2ad608804cc4202bd615677e0af4fbb",
+    "assembly": "UnityQGameFramework.Examples.Resource",
+    "anchorGuid": "c2ad608804cc4202bd615677e0af4fbb",
+    "frameworkModules": [
+      "Object Pool",
+      "Resource",
+      "Event",
+      "File System",
+      "Download"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "13_Entity",
+    "responsiveLayout": true,
+    "module": "Entity",
+    "assemblyGuid": "ae5b69fc6e6c420eb8a94c2f3fabd1b8",
+    "assembly": "UnityQGameFramework.Examples.Entity",
+    "anchorGuid": "ae5b69fc6e6c420eb8a94c2f3fabd1b8",
+    "frameworkModules": [
+      "Object Pool",
+      "Entity",
+      "Event",
+      "Resource"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "14_UI",
+    "responsiveLayout": true,
+    "module": "UI",
+    "assemblyGuid": "cad20e62ad474103ab805e69424a0958",
+    "assembly": "UnityQGameFramework.Examples.UI",
+    "anchorGuid": "cad20e62ad474103ab805e69424a0958",
+    "frameworkModules": [
+      "Object Pool",
+      "UI",
+      "Event",
+      "Resource"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "15_Sound",
+    "responsiveLayout": true,
+    "module": "Sound",
+    "assemblyGuid": "bead710ed85a4e19b16e4e6815fc7e14",
+    "assembly": "UnityQGameFramework.Examples.Sound",
+    "anchorGuid": "bead710ed85a4e19b16e4e6815fc7e14",
+    "frameworkModules": [
+      "Object Pool",
+      "Event",
+      "Sound",
+      "Resource"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "16_Scene",
+    "responsiveLayout": true,
+    "module": "Scene",
+    "assemblyGuid": "bdd615d3777d46c487aeeb6777122b02",
+    "assembly": "UnityQGameFramework.Examples.Scene",
+    "anchorGuid": "bdd615d3777d46c487aeeb6777122b02",
+    "frameworkModules": [
+      "Object Pool",
+      "Event",
+      "Resource",
+      "Scene"
+    ],
+    "editorResource": true
+  },
+  {
+    "folder": "17_FileSystem",
+    "module": "FileSystem",
+    "assemblyGuid": "5cd2c46a3d5844cc9bdfa2598b06fce5",
+    "assembly": "UnityQGameFramework.Examples.FileSystem",
+    "anchorGuid": "5cd2c46a3d5844cc9bdfa2598b06fce5",
+    "frameworkModules": [
+      "File System"
+    ],
+    "editorResource": false
+  },
+  {
+    "folder": "18_WebRequest",
+    "module": "WebRequest",
+    "assemblyGuid": "ac8a73123ee145a584d0f448bb0c22ac",
+    "assembly": "UnityQGameFramework.Examples.WebRequest",
+    "anchorGuid": "ac8a73123ee145a584d0f448bb0c22ac",
+    "frameworkModules": [
+      "Event",
+      "Web Request"
+    ],
+    "editorResource": false
+  },
+  {
+    "folder": "19_Download",
+    "module": "Download",
+    "assemblyGuid": "e1db92c5a1f04414ab9307b6836aacd1",
+    "assembly": "UnityQGameFramework.Examples.Download",
+    "anchorGuid": "e1db92c5a1f04414ab9307b6836aacd1",
+    "frameworkModules": [
+      "Event",
+      "Download"
+    ],
+    "editorResource": false
+  },
+  {
+    "folder": "20_Network",
+    "module": "Network",
+    "assemblyGuid": "6a874a2080ef4446bbe06ca26f489ab9",
+    "assembly": "UnityQGameFramework.Examples.Network",
+    "anchorGuid": "6a874a2080ef4446bbe06ca26f489ab9",
+    "frameworkModules": [
+      "Event",
+      "Network"
+    ],
+    "editorResource": false
+  },
+  {
+    "folder": "21_Debugger",
+    "module": "Debugger",
+    "assemblyGuid": "c79b243b74ca44668be4b228ba13159f",
+    "assembly": "UnityQGameFramework.Examples.Debugger",
+    "anchorGuid": "c79b243b74ca44668be4b228ba13159f",
+    "frameworkModules": [
+      "Object Pool",
+      "Event",
+      "Resource",
+      "Network"
+    ],
+    "editorResource": true,
+    "settingHelperType": "UnityQGameFramework.Examples.DebuggerExampleSettingHelper"
+  }
+]

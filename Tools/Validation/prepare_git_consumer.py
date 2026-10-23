@@ -40,14 +40,14 @@ def main():
         references = ['UnityQGameFramework.Core', 'UnityQGameFramework.Runtime']
         entry = 'Foundation.Validation.FoundationValidation.Run'
     else:
-        workspace = root / 'Assets/Examples/StarForce/UnityQGameFramework/Config'
+        workspace = root / 'Assets/Examples/22_StarForce/UnityQGameFramework/Config'
         for folder in ('Generated', 'Data', 'Extensions'):
             shutil.copytree(workspace / folder, runtime / folder)
             shutil.copy2(workspace / (folder + '.meta'), runtime / (folder + '.meta'))
         # Keep the same paths expected by the standalone probe.
         runtime.rename(output / 'Assets/LubanValidation')
         runtime = output / 'Assets/LubanValidation'
-        config = root / 'Assets/Examples/StarForce/GameMain/Configs/DefaultConfig.toml'
+        config = root / 'Assets/Examples/22_StarForce/GameMain/Configs/DefaultConfig.toml'
         shutil.copy2(config, runtime / 'GameConfig.toml')
         shutil.copy2(config.with_suffix('.toml.meta'), runtime / 'GameConfig.toml.meta')
         for name in ('LubanPlayerValidation.cs', 'GitLubanInstallValidation.cs'):

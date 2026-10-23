@@ -26,9 +26,12 @@ namespace UnityQGameFramework.Runtime
             {
                 if (m_Owner != null && m_Owner.m_UnityWebRequest != null && dataLength > 0)
                 {
+                    if (!m_Owner.ValidateResponse()) return false;
                     DownloadAgentHelperUpdateBytesEventArgs downloadAgentHelperUpdateBytesEventArgs = DownloadAgentHelperUpdateBytesEventArgs.Create(data, 0, dataLength);
                     m_Owner.m_DownloadAgentHelperUpdateBytesEventHandler(this, downloadAgentHelperUpdateBytesEventArgs);
                     ReferencePool.Release(downloadAgentHelperUpdateBytesEventArgs);
+
+                    if (m_Owner.m_UnityWebRequest == null) return false;
 
                     DownloadAgentHelperUpdateLengthEventArgs downloadAgentHelperUpdateLengthEventArgs = DownloadAgentHelperUpdateLengthEventArgs.Create(dataLength);
                     m_Owner.m_DownloadAgentHelperUpdateLengthEventHandler(this, downloadAgentHelperUpdateLengthEventArgs);

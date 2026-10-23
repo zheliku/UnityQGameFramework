@@ -23,7 +23,7 @@ namespace UnityQGameFramework.Core.Localization
         Language SystemLanguage { get; }
 
         /// <summary>
-        /// 获取字典数量。
+        /// 获取当前字典的文本条目数量。
         /// </summary>
         int DictionaryCount { get; }
 
