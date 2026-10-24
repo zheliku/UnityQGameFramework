@@ -8,186 +8,101 @@ using System.Collections.Generic;
 
 namespace UnityQGameFramework.Core.DataTable
 {
-    /// <summary>
-    /// 数据表管理器。
-    /// </summary>
     internal sealed class DataTableManager : FrameworkModule, IDataTableManager
     {
-        private readonly Dictionary<TypeNamePair, DataTableBase> m_DataTables;
-
-        /// <summary>
-        /// 初始化数据表管理器的新实例。
-        /// </summary>
-        public DataTableManager()
-        {
-            m_DataTables = new Dictionary<TypeNamePair, DataTableBase>();
-        }
+        private readonly Dictionary<TypeNamePair, DataTableBase> m_DataTables = new Dictionary<TypeNamePair, DataTableBase>();
 
         /// <summary>
         /// 获取数据表数量。
         /// </summary>
-        public int Count => m_DataTables.Count;
-
-        /// <summary>
-        /// 数据表管理器轮询。
-        /// </summary>
-        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        public int Count
+        {
+            get
+            {
+                return m_DataTables.Count;
+            }
+        }
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
         }
-
-        /// <summary>
-        /// 关闭并清理数据表管理器。
-        /// </summary>
+        // 卸载解除管理器引用，不改写业务仍持有的记录及跨表引用。
         internal override void Shutdown()
         {
-            foreach (KeyValuePair<TypeNamePair, DataTableBase> dataTable in m_DataTables)
-            {
-                dataTable.Value.Shutdown();
-            }
-
             m_DataTables.Clear();
         }
 
-        /// <summary>整批验证通过后统一登记，避免失败时留下部分表。</summary>
+        /// <summary>
+        /// 整批登记数据表，存在冲突时不登记。
+        /// </summary>
+        /// <param name="tables">要登记的数据表。</param>
         public void RegisterDataTables(IEnumerable<DataTableBase> tables)
         {
-            if (tables == null) throw new ArgumentNullException(nameof(tables));
+            if (tables == null)
+            {
+                throw new ArgumentNullException(nameof(tables));
+            }
             var pending = new Dictionary<TypeNamePair, DataTableBase>();
             foreach (DataTableBase table in tables)
             {
-                if (table == null) throw new FrameworkException("Data table is invalid.");
+                if (table == null)
+                {
+                    throw new ArgumentException("A data table cannot be null.", nameof(tables));
+                }
                 var key = new TypeNamePair(table.Type, table.Name);
                 if (m_DataTables.ContainsKey(key) || pending.ContainsKey(key))
+                {
                     throw new FrameworkException("Data table already exists: " + key);
+                }
                 pending.Add(key, table);
             }
-            foreach (var table in pending) m_DataTables.Add(table.Key, table.Value);
-        }
-
-        /// <summary>
-        /// 是否存在数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable<T>() where T : IDataRow
-        {
-            return InternalHasDataTable(new TypeNamePair(typeof(T)));
-        }
-
-        /// <summary>
-        /// 是否存在数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable(Type dataRowType)
-        {
-            if (dataRowType == null)
+            foreach (var pair in pending)
             {
-                throw new FrameworkException("Data row type is invalid.");
+                m_DataTables.Add(pair.Key, pair.Value);
             }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
-            {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
-            }
-
-            return InternalHasDataTable(new TypeNamePair(dataRowType));
         }
 
         /// <summary>
-        /// 是否存在数据表。
+        /// 检查是否存在数据表。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable<T>(string name) where T : IDataRow
+        public bool HasDataTable<T>(string name = null) where T : DataTableBase
         {
-            return InternalHasDataTable(new TypeNamePair(typeof(T), name));
+            return HasDataTable(typeof(T), name);
         }
 
         /// <summary>
-        /// 是否存在数据表。
+        /// 检查是否存在数据表。
         /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable(Type dataRowType, string name)
+        public bool HasDataTable(Type tableType, string name = null)
         {
-            if (dataRowType == null)
-            {
-                throw new FrameworkException("Data row type is invalid.");
-            }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
-            {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
-            }
-
-            return InternalHasDataTable(new TypeNamePair(dataRowType, name));
+            return m_DataTables.ContainsKey(Key(tableType, name));
         }
 
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>要获取的数据表。</returns>
-        public IDataTable<T> GetDataTable<T>() where T : IDataRow
-        {
-            return (IDataTable<T>)InternalGetDataTable(new TypeNamePair(typeof(T)));
-        }
-
-        /// <summary>
-        /// 获取数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>要获取的数据表。</returns>
-        public DataTableBase GetDataTable(Type dataRowType)
-        {
-            if (dataRowType == null)
-            {
-                throw new FrameworkException("Data row type is invalid.");
-            }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
-            {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
-            }
-
-            return InternalGetDataTable(new TypeNamePair(dataRowType));
-        }
-
-        /// <summary>
-        /// 获取数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表。</returns>
-        public IDataTable<T> GetDataTable<T>(string name) where T : IDataRow
+        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        public T GetDataTable<T>(string name = null) where T : DataTableBase
         {
-            return (IDataTable<T>)InternalGetDataTable(new TypeNamePair(typeof(T), name));
+            return (T)GetDataTable(typeof(T), name);
         }
 
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表。</returns>
-        public DataTableBase GetDataTable(Type dataRowType, string name)
+        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        public DataTableBase GetDataTable(Type tableType, string name = null)
         {
-            if (dataRowType == null)
-            {
-                throw new FrameworkException("Data row type is invalid.");
-            }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
-            {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
-            }
-
-            return InternalGetDataTable(new TypeNamePair(dataRowType, name));
+            return m_DataTables.TryGetValue(Key(tableType, name), out var table) ? table : null;
         }
 
         /// <summary>
@@ -196,13 +111,8 @@ namespace UnityQGameFramework.Core.DataTable
         /// <returns>所有数据表。</returns>
         public DataTableBase[] GetAllDataTables()
         {
-            int index = 0;
-            DataTableBase[] results = new DataTableBase[m_DataTables.Count];
-            foreach (KeyValuePair<TypeNamePair, DataTableBase> dataTable in m_DataTables)
-            {
-                results[index++] = dataTable.Value;
-            }
-
+            var results = new DataTableBase[Count];
+            m_DataTables.Values.CopyTo(results, 0);
             return results;
         }
 
@@ -214,202 +124,60 @@ namespace UnityQGameFramework.Core.DataTable
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new ArgumentNullException(nameof(results));
             }
-
             results.Clear();
-            foreach (KeyValuePair<TypeNamePair, DataTableBase> dataTable in m_DataTables)
-            {
-                results.Add(dataTable.Value);
-            }
+            results.AddRange(m_DataTables.Values);
         }
 
         /// <summary>
-        /// 创建数据表。
+        /// 移除数据表登记。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>要创建的数据表。</returns>
-        public IDataTable<T> CreateDataTable<T>() where T : class, IDataRow
-        {
-            return CreateDataTable<T>(string.Empty);
-        }
-
-        /// <summary>
-        /// 创建数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>要创建的数据表。</returns>
-        public DataTableBase CreateDataTable(Type dataRowType)
-        {
-            return CreateDataTable(dataRowType, string.Empty);
-        }
-
-        /// <summary>
-        /// 创建数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要创建的数据表。</returns>
-        public IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow
+        /// <returns>是否成功移除数据表登记。</returns>
+        public bool DestroyDataTable<T>(string name = null) where T : DataTableBase
         {
-            TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
-            if (HasDataTable<T>(name))
-            {
-                throw new FrameworkException(Utility.Text.Format("Already exist data table '{0}'.", typeNamePair));
-            }
-
-            DataTable<T> dataTable = new DataTable<T>(name);
-            m_DataTables.Add(typeNamePair, dataTable);
-            return dataTable;
+            return DestroyDataTable(typeof(T), name);
         }
 
         /// <summary>
-        /// 创建数据表。
+        /// 移除数据表登记。
         /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要创建的数据表。</returns>
-        public DataTableBase CreateDataTable(Type dataRowType, string name)
+        /// <returns>是否成功移除数据表登记。</returns>
+        public bool DestroyDataTable(Type tableType, string name = null)
         {
-            if (dataRowType == null)
-            {
-                throw new FrameworkException("Data row type is invalid.");
-            }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
-            {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
-            }
-
-            TypeNamePair typeNamePair = new TypeNamePair(dataRowType, name);
-            if (HasDataTable(dataRowType, name))
-            {
-                throw new FrameworkException(Utility.Text.Format("Already exist data table '{0}'.", typeNamePair));
-            }
-
-            Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
-            DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, new object[] { name, null });
-            m_DataTables.Add(typeNamePair, dataTable);
-            return dataTable;
+            return m_DataTables.Remove(Key(tableType, name));
         }
 
         /// <summary>
-        /// 销毁数据表。
+        /// 移除数据表登记。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        public bool DestroyDataTable<T>() where T : IDataRow
+        /// <param name="table">要移除的数据表实例。</param>
+        /// <returns>是否成功移除数据表登记。</returns>
+        public bool DestroyDataTable(DataTableBase table)
         {
-            return InternalDestroyDataTable(new TypeNamePair(typeof(T)));
+            if (table == null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+            var key = new TypeNamePair(table.Type, table.Name);
+            return m_DataTables.TryGetValue(key, out var current) && ReferenceEquals(current, table) && m_DataTables.Remove(key);
         }
 
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(Type dataRowType)
+        private static TypeNamePair Key(Type tableType, string name)
         {
-            if (dataRowType == null)
+            if (tableType == null)
             {
-                throw new FrameworkException("Data row type is invalid.");
+                throw new ArgumentNullException(nameof(tableType));
             }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            if (!typeof(DataTableBase).IsAssignableFrom(tableType))
             {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+                throw new ArgumentException("Expected a data-table type, such as TbItem.", nameof(tableType));
             }
-
-            return InternalDestroyDataTable(new TypeNamePair(dataRowType));
-        }
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <param name="name">数据表名称。</param>
-        public bool DestroyDataTable<T>(string name) where T : IDataRow
-        {
-            return InternalDestroyDataTable(new TypeNamePair(typeof(T), name));
-        }
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <param name="name">数据表名称。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(Type dataRowType, string name)
-        {
-            if (dataRowType == null)
-            {
-                throw new FrameworkException("Data row type is invalid.");
-            }
-
-            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
-            {
-                throw new FrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
-            }
-
-            return InternalDestroyDataTable(new TypeNamePair(dataRowType, name));
-        }
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <param name="dataTable">要销毁的数据表。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable<T>(IDataTable<T> dataTable) where T : IDataRow
-        {
-            if (dataTable == null)
-            {
-                throw new FrameworkException("Data table is invalid.");
-            }
-
-            return InternalDestroyDataTable(new TypeNamePair(typeof(T), dataTable.Name));
-        }
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <param name="dataTable">要销毁的数据表。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(DataTableBase dataTable)
-        {
-            if (dataTable == null)
-            {
-                throw new FrameworkException("Data table is invalid.");
-            }
-
-            return InternalDestroyDataTable(new TypeNamePair(dataTable.Type, dataTable.Name));
-        }
-
-        private bool InternalHasDataTable(TypeNamePair typeNamePair)
-        {
-            return m_DataTables.ContainsKey(typeNamePair);
-        }
-
-        private DataTableBase InternalGetDataTable(TypeNamePair typeNamePair)
-        {
-            DataTableBase dataTable = null;
-            if (m_DataTables.TryGetValue(typeNamePair, out dataTable))
-            {
-                return dataTable;
-            }
-
-            return null;
-        }
-
-        private bool InternalDestroyDataTable(TypeNamePair typeNamePair)
-        {
-            DataTableBase dataTable = null;
-            if (m_DataTables.TryGetValue(typeNamePair, out dataTable))
-            {
-                dataTable.Shutdown();
-                return m_DataTables.Remove(typeNamePair);
-            }
-
-            return false;
+            return new TypeNamePair(tableType, name);
         }
     }
 }

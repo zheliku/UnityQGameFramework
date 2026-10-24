@@ -1,9 +1,19 @@
 # 模块示例
 
-Package Manager 中 `01_Base`–`21_Debugger` 各自是一个 Sample。按需导入模块，示例场景和它用到的 QGF prefab、UI 资源会一起复制。移动或卸载时操作整个 Sample 目录。
+Package Manager 提供三个导入项：
 
-每个模块目录里的编号子目录对应一个场景。运行一个场景即可；调用说明写在同名脚本中。WebRequest、Download 和 Network 使用随场景启动的本机测试服务。
+| Sample | 内容 |
+| --- | --- |
+| [00_PointPointPoint](../Samples~/00_PointPointPoint/README.md) | 从启动、菜单到游玩和结算 |
+| [01_Modules](../Samples~/01_Modules/README.md) | 各模块的常用操作，每个场景突出一个调用与结果 |
+| [02_StarForce](../Samples~/02_StarForce/README.md) | 多模块协作的射击游戏 |
 
-3D 和 UI 模块在宽屏左右排列，窄屏上下排列；操作区带滚动条。`Common/ExampleSceneLayout.cs` 负责画面布局和镜头范围。
+每个场景单独运行。先操作场景，再阅读同名 C# 文件；核心调用旁有必要的注释。WebRequest、Download 和 Network 自带本机测试服务。
 
-接口说明见 [模块文档](Modules/README.md)。游戏流程示例见 [00_PointPointPoint](../Samples~/00_PointPointPoint/README.md)，完整项目见 [StarForce](05-starforce.md)。
+模块示例包含一份 `Common/Prefabs/QGF.prefab` 和公共 UI 资源，内部继续按模块编号。移动或卸载时操作整个导入目录。
+
+模块资源示例使用编辑器资源模式，涉及 AssetDatabase 的脚本只供编辑器演示。需要 Player 资源构建流程时查看点点点与 StarForce。
+
+仓库的 `Assets/Examples` 是维护入口，同样只有上述三个目录。`Tools/Packaging/sync_samples.py` 将它们原样复制到 `Samples~`，不筛选场景、不改写代码或 GUID。模块内部按功能编号，每个场景只保留必要的调用和说明。
+
+接口说明见 [模块文档](Modules/README.md)。

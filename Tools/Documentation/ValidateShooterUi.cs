@@ -36,7 +36,7 @@ public static class ValidateShooterUi
         Application.logMessageReceived += capture;
         string scene = AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb");
         string root = Path.GetDirectoryName(scene).Replace('\\', '/');
-        bool moved = root.Contains("Learning_22_StarForce");
+        bool moved = root.Contains("02_StarForce");
         try
         {
             EditorSettings.enterPlayModeOptionsEnabled = true;

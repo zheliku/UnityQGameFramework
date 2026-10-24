@@ -1,15 +1,10 @@
-//------------------------------------------------------------
-// Unity Q Game Framework
-// Copyright © 2013-2021 Jiang Yin. All rights reserved.
-//------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 
 namespace UnityQGameFramework.Core.DataTable
 {
     /// <summary>
-    /// 数据表管理器接口。
+    /// 按实际表类型与可选名称管理数据表。
     /// </summary>
     public interface IDataTableManager
     {
@@ -18,68 +13,43 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         int Count { get; }
 
-        /// <summary>Publish a complete configuration set after validation, without partial registration.</summary>
+        /// <summary>
+        /// 先检查整批冲突，再一次性登记。
+        /// </summary>
+        /// <param name="tables">要登记的数据表。</param>
         void RegisterDataTables(IEnumerable<DataTableBase> tables);
 
         /// <summary>
-        /// 是否存在数据表。
+        /// 检查是否存在数据表。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>是否存在数据表。</returns>
-        bool HasDataTable<T>() where T : IDataRow;
-
-        /// <summary>
-        /// 是否存在数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>是否存在数据表。</returns>
-        bool HasDataTable(Type dataRowType);
-
-        /// <summary>
-        /// 是否存在数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        bool HasDataTable<T>(string name) where T : IDataRow;
+        bool HasDataTable<T>(string name = null) where T : DataTableBase;
 
         /// <summary>
-        /// 是否存在数据表。
+        /// 检查是否存在数据表。
         /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        bool HasDataTable(Type dataRowType, string name);
+        bool HasDataTable(Type tableType, string name = null);
+
+        /// <summary>
+        /// 取得表对象本身；尚未登记时返回 null。
+        /// </summary>
+        /// <typeparam name="T">数据表的类型。</typeparam>
+        /// <param name="name">数据表名称。</param>
+        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        T GetDataTable<T>(string name = null) where T : DataTableBase;
 
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>要获取的数据表。</returns>
-        IDataTable<T> GetDataTable<T>() where T : IDataRow;
-
-        /// <summary>
-        /// 获取数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>要获取的数据表。</returns>
-        DataTableBase GetDataTable(Type dataRowType);
-
-        /// <summary>
-        /// 获取数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表。</returns>
-        IDataTable<T> GetDataTable<T>(string name) where T : IDataRow;
-
-        /// <summary>
-        /// 获取数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表。</returns>
-        DataTableBase GetDataTable(Type dataRowType, string name);
+        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        DataTableBase GetDataTable(Type tableType, string name = null);
 
         /// <summary>
         /// 获取所有数据表。
@@ -94,78 +64,26 @@ namespace UnityQGameFramework.Core.DataTable
         void GetAllDataTables(List<DataTableBase> results);
 
         /// <summary>
-        /// 创建数据表。
+        /// 移除数据表登记。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>要创建的数据表。</returns>
-        IDataTable<T> CreateDataTable<T>() where T : class, IDataRow;
-
-        /// <summary>
-        /// 创建数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>要创建的数据表。</returns>
-        DataTableBase CreateDataTable(Type dataRowType);
-
-        /// <summary>
-        /// 创建数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要创建的数据表。</returns>
-        IDataTable<T> CreateDataTable<T>(string name) where T : class, IDataRow;
+        /// <returns>是否成功移除数据表登记。</returns>
+        bool DestroyDataTable<T>(string name = null) where T : DataTableBase;
 
         /// <summary>
-        /// 创建数据表。
+        /// 移除数据表登记。
         /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要创建的数据表。</returns>
-        DataTableBase CreateDataTable(Type dataRowType, string name);
+        /// <returns>是否成功移除数据表登记。</returns>
+        bool DestroyDataTable(Type tableType, string name = null);
 
         /// <summary>
-        /// 销毁数据表。
+        /// 只移除相同的已登记实例，不影响同名替代对象。
         /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable<T>() where T : IDataRow;
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable(Type dataRowType);
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <param name="name">数据表名称。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable<T>(string name) where T : IDataRow;
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <param name="dataRowType">数据表行的类型。</param>
-        /// <param name="name">数据表名称。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable(Type dataRowType, string name);
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <typeparam name="T">数据表行的类型。</typeparam>
-        /// <param name="dataTable">要销毁的数据表。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable<T>(IDataTable<T> dataTable) where T : IDataRow;
-
-        /// <summary>
-        /// 销毁数据表。
-        /// </summary>
-        /// <param name="dataTable">要销毁的数据表。</param>
-        /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable(DataTableBase dataTable);
+        /// <param name="table">要移除的数据表实例。</param>
+        /// <returns>是否成功移除数据表登记。</returns>
+        bool DestroyDataTable(DataTableBase table);
     }
 }

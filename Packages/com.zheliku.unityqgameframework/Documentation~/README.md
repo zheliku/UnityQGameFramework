@@ -9,7 +9,7 @@
 | [UGF 到 QGF 的改动](04-changes-from-ugf.md) | 保留的机制、替换内容和后续迁移边界 |
 | [StarForce 导读](05-starforce.md) | 截图、鼠标操作、启动、飞机、武器、血条和业务扩展 |
 | [模块 API](Modules/README.md) | Runtime 模块职责、接口和调用示例 |
-| [可运行模块示例](06-module-examples.md) | 21 个模块的可运行场景 |
+| [可运行模块示例](06-module-examples.md) | 模块 Sample 中按模块组织的可运行场景 |
 
 
 版本记录见 [Changelog](../CHANGELOG.md)。

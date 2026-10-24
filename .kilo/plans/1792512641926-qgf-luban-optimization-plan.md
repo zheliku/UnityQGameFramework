@@ -6,8 +6,8 @@
 
 - 主要改动目录：`Packages/com.zheliku.unityqgameframework`（简称 PKG）。
 - 示例只改以下范围：
-  - `Assets/Examples/11_DataTable`
-  - `Assets/Examples/99_StarForce` 中调用数据表的代码
+  - `Assets/Examples/01_Modules/11_DataTable`
+  - `Assets/Examples/02_StarForce` 中调用数据表的代码
 - 文档只改数据表相关章节。
 - QFramework Architecture 层、Resource 换 YooAsset、全站文档重组不在本计划内，见末尾"后续"。
 
@@ -258,8 +258,8 @@
 
 1. **用模板 v2 重新生成**以下三个工作区，确认 Catalog 与代码的 hash 一致，然后运行 `python Tools/Packaging/sync_samples.py`。用 `qgf_luban_generate --profile` 逐个生成，不切换全局 Profile：
    - `Assets/UnityQGameFramework/Config`
-   - `Assets/Examples/11_DataTable/Common/Config`
-   - `Assets/Examples/99_StarForce/UnityQGameFramework/Config`
+   - `Assets/Examples/01_Modules/11_DataTable/Common/Config`
+   - `Assets/Examples/02_StarForce/UnityQGameFramework/Config`
 2. **`11_DataTable`**
    - 01（`01_LoadCatalog/LoadCatalogLesson.cs:1,51`）：
      - 去掉 `#if UNITY_EDITOR` 和 AssetDatabase，改为序列化 Catalog 路径。

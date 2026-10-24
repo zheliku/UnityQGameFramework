@@ -51,12 +51,12 @@ public static class ValidateBaseExamples
             {
                 int start = assertions.Count;
                 string source = (string)layouts[name]["script"];
-                string root = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath("451fb7eed1a048a39d433c5f2e2a84f9")).Replace('\\', '/');
-                string scene = root + source.Substring("Assets/Examples/01_Base".Length);
+                string root = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath("e638c6e0da015f4d99bdc5c5491facc0")).Replace('\\', '/');
+                string scene = root + source.Substring("Assets/Examples/01_Modules".Length);
                 scene = scene.Substring(0, scene.Length - 3) + ".unity";
                 savedScenes[scene] = Hash(scene);
                 EditorSceneManager.OpenScene(scene);
-                Type type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + name)).First(candidate => candidate != null);
+                Type type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + name)).First(candidate => candidate != null);
                 if (mode == 2) ((MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type)).enabled = false;
                 // 不保存测试值：自定义初始速度可发现 Awake 早于框架初始化时的错误快照。
                 if (mode != 0)

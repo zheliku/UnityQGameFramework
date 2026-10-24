@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,6 +15,7 @@ namespace UnityQGameFramework.Runtime
     /// 对象池组件。
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Object Pool")]
     public sealed class ObjectPoolComponent : FrameworkComponent
     {

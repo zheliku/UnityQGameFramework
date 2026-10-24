@@ -2,9 +2,9 @@
 
 WebRequest 将 HTTP 请求排队，交给空闲代理执行，再通过 Event 返回结果。默认 Helper 使用 UnityWebRequest，适合公告、版本信息和小份响应；下载大文件到磁盘用 [Download](download.md)。
 
-[WebRequest 示例](../../Samples~/18_WebRequest/) 自带本机 HTTP 服务，可发送 GET 和 POST，模拟 404 与超时，比较队列优先级和取消方式。
+[WebRequest 示例](../../Samples~/01_Modules/18_WebRequest/) 自带本机 HTTP 服务，可直接运行 GET、POST 和取消请求，并观察失败回调。
 
-04_Post 在同一个界面比较 byte[] 和 WWWForm。下拉框选择八组 tag、priority、UserData 参数，回显区展示服务器收到的 Content-Type、请求体和解码内容；任务信息与回调上下文分别显示。可以输入中文、换行或 `+ & = %` 等字符，观察原始字节与表单编码的区别。
+04_Post 在同一个界面比较 byte[] 和 WWWForm。回显区展示服务器收到的 Content-Type、请求体和解码内容；任务信息与回调上下文分别显示。可以输入中文、换行或 `+ & = %` 等字符，观察原始字节与表单编码的区别。
 
 勾选延迟响应后，服务等待三秒再返回，便于取消。示例用任务序号取消当前请求，因此未设置 tag 时也能清理；销毁拥有者时同样只取消自己的任务。取消不会增加结果回调次数，之后可以重新发送。
 

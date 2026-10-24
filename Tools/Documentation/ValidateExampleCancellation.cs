@@ -8,10 +8,18 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
 
+/// <summary>
+/// 检查示例销毁后是否取消跨帧等待。
+/// </summary>
 public static class ValidateExampleCancellation
 {
+    /// <summary>
+    /// 在实体和窗口重新打开期间销毁示例。
+    /// </summary>
+    /// <returns>取消检查结果。</returns>
     public static async Task<object> Run()
     {
+        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
         if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first");
         for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
             if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty) throw new Exception("Unsaved scene");
@@ -31,12 +39,8 @@ public static class ValidateExampleCancellation
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
             var cases = new[]
             {
-                new[] { "Base/01_GameSpeed/GameSpeedExample", "Start", "ready" },
-                new[] { "Base/02_Pause/PauseGameExample", "Start", "ready" },
                 new[] { "Entity/02_Reuse/ReuseCubeEntity", "HideAndShow", "recycling" },
-                new[] { "UI/02_Reopen/ReopenWindowExample", "CloseAndReopen", "changing" },
-                new[] { "Scene/02_SwitchRooms/SwitchRoomsExample", "SwitchRoom", "changing" },
-                new[] { "WebRequest/03_Cancel/CancelWebRequestExample", "CancelRequest", "checking" }
+                new[] { "UI/02_Reopen/ReopenWindowExample", "CloseAndReopen", "changing" }
             };
             foreach (var entry in cases)
             {
@@ -47,15 +51,13 @@ public static class ValidateExampleCancellation
                 await Play(true);
                 await Task.Delay(1300);
                 string typeName = entry[0].Split('/').Last();
-                var type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + typeName))
+                var type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + typeName))
                     .First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 if (example == null) throw new Exception("Missing example " + typeName);
                 var token = example.destroyCancellationToken;
-                bool initializer = entry[1] == "Start";
-                if (initializer) type.GetField(entry[2], BindingFlags.Instance | BindingFlags.NonPublic).SetValue(example, false);
                 type.GetMethod(entry[1], BindingFlags.Instance | BindingFlags.NonPublic).Invoke(example, null);
-                if ((bool)type.GetField(entry[2], BindingFlags.Instance | BindingFlags.NonPublic).GetValue(example) == initializer)
+                if (!(bool)type.GetField(entry[2], BindingFlags.Instance | BindingFlags.NonPublic).GetValue(example))
                     throw new Exception("Expected an in-flight operation: " + typeName);
                 UnityEngine.Object.DestroyImmediate(example.gameObject);
                 if (!token.IsCancellationRequested) throw new Exception("Destroy did not cancel " + typeName);

@@ -17,7 +17,7 @@ using UnityEngine.UI;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Sound;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateSoundExamples
@@ -37,7 +37,7 @@ public static class ValidateSoundExamples
         assertions.Clear();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "15_Sound" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
@@ -68,10 +68,10 @@ public static class ValidateSoundExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("bead710ed85a4e19b16e4e6815fc7e14");
+                string anchor = AssetDatabase.GUIDToAssetPath("2f45ea37b22b5d17a52e6d6baac64b5e");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Sound sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/15_Sound".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 Application.runInBackground = true;
@@ -82,8 +82,8 @@ public static class ValidateSoundExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(OneShotSoundExample).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(OneShotSoundExample).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");
@@ -237,37 +237,24 @@ public static class ValidateSoundExamples
         }
         else if (name == "SoundGroupVolumeExample")
         {
-            await Until(() => agent() != null && Field<ISoundAgent>(example, "effectsAgent") != null, 4000, "Both groups started");
-            Require(text("outputText").text.Contains("当前代理所属组：Music")
-                && text("outputText").text.Contains("组辅助器：DefaultSoundGroupHelper")
-                && text("outputText").text.Contains("Effects 组：已注册")
-                && text("outputText").text.Contains("最终状态：有声（组：有声；本声：有声）")
-                && text("outputText").text.Contains("Mixer：未分配"), "Visible actual group/helper and default Mixer state");
+            await Until(() => agent() != null && agent().Length > 0, 4000, "Music group starts");
             Require(ReferenceEquals(agent().SoundGroup, QGF.Sound.GetSoundGroup("Music")), "Agent belongs to displayed group");
-            Require(dropdown("stopModeDropdown").options.Count == 4, "Four stop scopes");
+            Require(text("outputText").text.Contains("最终音量：0.20 = 组 0.40 × 单声道 0.50")
+                && text("outputText").text.Contains("最终状态：有声"), "Group and voice levels are shown separately");
             slider("groupVolumeSlider").value = .6f;
             slider("voiceVolumeSlider").value = .3f;
             Require(Mathf.Abs(agent().Volume - .18f) < .01f, "Group times local volume");
             await Click(toggle("groupMuteToggle"), mouse);
             Require(agent().Mute, "Group mute reaches agent");
-            await Task.Delay(80);
-            Require(text("outputText").text.Contains("最终状态：静音（组：静音；本声：有声）"), "Group mute state is readable");
             await Click(toggle("voiceMuteToggle"), mouse);
             await Click(toggle("groupMuteToggle"), mouse);
             Require(agent().Mute && !agent().SoundGroup.Mute, "Local mute survives group unmute");
             await Click(toggle("voiceMuteToggle"), mouse);
             Require(!agent().Mute, "Both unmuted");
-            Require(QGF.Sound.GetAllSoundGroups().Length == 2, "Exactly two example groups");
-            for (int index = 0; index < 4; index++)
-            {
-                dropdown("stopModeDropdown").value = index;
-                var effect = Field<ISoundAgent>(example, "effectsAgent");
-                await Click(button("stopButton"), mouse);
-                await Until(() => agent().Length == 0, 4000, "Stop scope " + index);
-                Require(index < 2 ? effect.IsPlaying : effect.Length == 0, "Group versus global scope " + index);
-                await Click(button("playButton"), mouse);
-                await Until(() => agent() != null && agent().Length > 0 && Field<ISoundAgent>(example, "effectsAgent").Length > 0, 4000, "Restore groups " + index);
-            }
+            await Click(button("stopButton"), mouse);
+            await Until(() => agent().Length == 0, 4000, "Stop Music group");
+            await Click(button("playButton"), mouse);
+            await Until(() => agent() != null && agent().Length > 0, 4000, "Replay Music group");
             await Screenshot("groups");
         }
         else if (name == "SpatialSoundExample")

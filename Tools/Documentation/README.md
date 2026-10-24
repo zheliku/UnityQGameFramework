@@ -11,11 +11,15 @@
 
 修改场景后运行 `ValidateUguiExamples.cs`、相应模块检查和 `ValidatePointGame.cs`。检查报告写入隔离工程的 `Artifacts~`。
 
+`ValidateSampleStructure.Run` 检查三个 Sample 的场景、预制体、脚本引用和资源归属；`ValidateModuleExamples.Run` 运行当前登记的模块场景。`ValidateExampleCancellation.Run` 专门检查实体和窗口跨帧等待的销毁取消。
+
+当前精简版先运行模块行为检查，再运行 Sample 导入和 StarForce 检查；未包含专门断言的场景只算启动检查。
+
 ## Sample 与包
 
-模块 Sample 各自包含一份 Common 资源，GUID 由 `sync_samples.py` 按模块生成。Sample 的锚点和目录映射在 `examples-layout.json`。
+`Assets/Examples` 与 `Samples~` 都只有 `00_PointPointPoint`、`01_Modules`、`02_StarForce` 三个目录。`sample-groups.json` 登记同名源目录；`ugui-layouts.json` 记录保留场景的界面，`examples-layout.json` 记录模块设置。
 
-使用自适应布局的模块还会复制公共显示脚本，并生成模块专属命名空间。业务脚本直接展示模块调用。
+模块示例共用一份 Common 资源和一个运行时程序集。`sync_samples.py` 直接复制三个目录，保留内容、GUID 和命名空间；`--check` 逐文件比较源与发布副本。修改场景和代码只在 Assets 中进行。
 
 ```text
 python Tools/Packaging/sync_samples.py

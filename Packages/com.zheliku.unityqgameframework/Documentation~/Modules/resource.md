@@ -4,13 +4,13 @@ Resource 负责资产定位、依赖加载、任务调度和缓存。它加载�
 
 ## 准备一个 Cube 预制体
 
-想先看完整场景，可以运行 [Resource 示例](../../Samples~/12_Resource/)。场景、脚本、预制体和材质都已保存，不需要手动准备 Cube：
+可运行的 Resource 示例包含预制体、资源包、二进制资源和更新场景，见 [Resource 示例](../../Samples~/01_Modules/12_Resource/)。
 
 | 示例 | 操作与观察 |
 | --- | --- |
 | 01_LoadPrefab | 编辑器直读一个资产，创建两个 Cube，再分别销毁和归还 |
-| 02_Package | 初始化真实资源包，比较八种 LoadAsset 参数组合、资源组、去重集合与任务查询 |
-| 03_Binary | 读取磁盘二进制文件，比较文件系统整文件和片段入口 |
+| 02_Package | 初始化资源包，加载 Cube 资产、创建实例，再销毁并归还资产 |
+| 03_Binary | 异步读取磁盘中的完整文件，再从文件系统资源读取指定片段 |
 | 04_Update | 通过本机 HTTP 下载清单和资源，按组更新、停止、重试并加载 Cube |
 | 05_ResourcePack | 校验完整包与损坏副本，应用本地资源包，再加载 Cube |
 | 06_VerifyCache | 校验已有缓存，检测散文件或容器内容损坏，只重新下载损坏资源 |
@@ -30,7 +30,7 @@ Resource 负责资产定位、依赖加载、任务调度和缓存。它加载�
 
 02 的集合查询可合并多个命名资源组。Shared 含 Cube、Archive，Base 含 Cube；合并后是两个唯一资源。默认组的空名称不用于集合查询。`HasResourceGroup` 用于先确认组名是否注册。集合用于统计资源准备情况，更新入口仍是 `UpdateResources` 的组名参数。
 
-02 同时显示资源组与集合的 `Ready`、原始大小和压缩大小。Package 清单没有远程压缩包长度，初始化时用本地资源长度登记，因此这里两种大小相同。04 则使用更新清单中的压缩长度，并保留一个 Base + Data 集合，观察尚未下载、只准备好 Base、全部就绪的变化。
+04 使用 `GetResourceGroup` 查询 Base 和 Data 的准备状态，并合并成一个 `IResourceGroupCollection`。更新清单提供的压缩长度可观察尚未下载、只准备好 Base、全部就绪三种状态。
 
 `ReadyLength`、`ReadyCompressedLength` 只累加完整就绪的资源；`Progress` 按原始资源长度计算。它们会在一个资源完成时跳变。单个文件已传输多少字节，看 `ResourceUpdateChangedEventArgs.CurrentLength`；不要把组进度当成该文件的连续下载进度。
 
@@ -135,7 +135,7 @@ Base 的 Editor Resource Mode 仅在编辑器有效，不能让 Player 使用 As
 
 发行资源模式下，`QGF.Resource` 将调用交给 Core 的 `IResourceManager`；编辑器直读分支由 EditorResourceComponent 处理。组件的加载、二进制和更新重载通常补齐类型、优先级、上下文或缓冲区范围，再调用管理器。Core 的较短重载也有部分直接进入同一个内部 ResourceLoader；它们不一定先调用 Core 的最长重载。
 
-场景加载是另一条路径：`QGF.Scene → ISceneManager → IResourceManager.LoadScene / UnloadScene`。场景事件、已加载列表和活动场景由 Scene 模块组织；[Scene 示例](../../Samples~/16_Scene/)演示这层用法。
+场景加载是另一条路径：`QGF.Scene → ISceneManager → IResourceManager.LoadScene / UnloadScene`。场景事件、已加载列表和活动场景由 Scene 模块组织；[Scene 示例](../../Samples~/01_Modules/16_Scene/)演示这层用法。
 
 `SetObjectPoolManager`、`SetFileSystemManager`、`SetDownloadManager`、`SetResourceHelper` 和代理 Helper 的添加由 ResourceComponent.Start 完成。只读/可写路径、模式、变体和还原回调需要在相应初始化阶段设置，示例的 Common、07_Variant 说明了这些时机。
 

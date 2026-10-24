@@ -23,8 +23,8 @@ namespace QgfDefaultValidation
             base.OnEnter(owner);
             var dataTable = GameEntry.GetComponent<DataTableComponent>();
             dataTable.LoadDataTables(loader => new Tables(loader));
-            if (!dataTable.HasDataTable<DRItem>()) return;
-            DRItem item = dataTable.GetDataTable<DRItem>().GetDataRow(1);
+            if (!dataTable.HasDataTable<TbItem>()) return;
+            DRItem item = dataTable.GetDataTable<TbItem>().GetDataRow(1);
             UnityEngine.Debug.Log("Loaded default Item: " + item?.Name);
         }
     }
@@ -47,10 +47,10 @@ namespace QgfDefaultValidation
             try
             {
                 var component = GameEntry.GetComponent<DataTableComponent>();
-                var row = component.GetDataTable<DRItem>()?.GetDataRow(1);
+                var row = component.GetDataTable<TbItem>()?.GetDataRow(1);
                 if (component.Count != 1 || row == null || string.IsNullOrEmpty(row.Name) || m_Errors != 0)
                     throw new Exception("Fresh generated default configuration failed to initialize.");
-                if (!ReferenceEquals(row, component.GetLubanTables<Tables>().TbItem.Get(1)))
+                if (!ReferenceEquals(row, component.GetDataTable<TbItem>().DataMap[1]))
                     throw new Exception("Default native/QGF records diverged.");
                 result.itemName = row.Name;
                 result.success = true;

@@ -12,7 +12,7 @@ public static class ExcelSchemaMigrationValidation
         EditorApplication.LockReloadAssemblies();
         try
         {
-            foreach (string root in new[] { "Assets/UnityQGameFramework/Config", "Assets/Examples/22_StarForce/UnityQGameFramework/Config" })
+            foreach (string root in new[] { "Assets/UnityQGameFramework/Config", "Assets/Examples/02_StarForce/UnityQGameFramework/Config" })
             {
                 var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/Editor/LubanProfile.asset");
                 await LubanGenerator.GenerateAsync(profile);

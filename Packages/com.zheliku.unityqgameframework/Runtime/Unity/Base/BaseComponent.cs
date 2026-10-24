@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,6 +15,7 @@ namespace UnityQGameFramework.Runtime
     /// 基础组件。
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-1000)]
     [AddComponentMenu("Unity Q Game Framework/Base")]
     public sealed class BaseComponent : FrameworkComponent
     {

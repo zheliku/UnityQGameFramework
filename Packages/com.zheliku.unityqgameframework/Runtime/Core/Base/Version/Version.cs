@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,14 +10,20 @@ namespace UnityQGameFramework.Core
     /// </summary>
     public static partial class Version
     {
-        private const string FrameworkVersionString = "0.1.0-exp.5";
+        private const string FrameworkVersionString = "0.1.0-exp.8";
 
         private static IVersionHelper s_VersionHelper = null;
 
         /// <summary>
         /// 获取游戏框架版本号。
         /// </summary>
-        public static string FrameworkVersion => FrameworkVersionString;
+        public static string FrameworkVersion
+        {
+            get
+            {
+                return FrameworkVersionString;
+            }
+        }
 
         /// <summary>
         /// 获取游戏版本号。

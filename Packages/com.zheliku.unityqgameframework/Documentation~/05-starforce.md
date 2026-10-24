@@ -1,6 +1,6 @@
 # StarForce
 
-在 Package Manager 导入 `22 · StarForce`，打开 `StarForce Launcher.unity`。Game 视图选 3:4，点击“开始”后按住鼠标左键移动并开火。
+在 Package Manager 导入 `03 · StarForce`，打开 `StarForce Launcher.unity`。Game 视图选 3:4，点击“开始”后按住鼠标左键移动并开火。
 
 | 菜单 | 战斗 |
 | --- | --- |
@@ -29,6 +29,6 @@ ProcedureMain
 
 配置工作区位于示例的 `UnityQGameFramework/Config`：`Editor/LubanProfile.asset` 决定生成参数，`Source/Datas` 保存 Excel，`Generated` 和 `Data` 保存产物。在 `QGF > Settings` 选择 StarForce Profile，修改 Excel 后执行 `QGF > Generate Tables`。
 
-Launcher 使用 Editor Resource Mode。构建 Windows Player 时运行 `QGF > Examples > 22 StarForce > Build Windows Player`；构建产物会包含所需 Package 资源。
+Launcher 使用 Editor Resource Mode。构建 Windows Player 时运行 `QGF > Examples > 02 StarForce > Build Windows Player`；构建产物会包含所需 Package 资源。
 
-源码位于仓库的 `Assets/Examples/22_StarForce`，UPM 样本位于 `Samples~/22_StarForce`。资源来源和许可见 [THIRD-PARTY.md](../Samples~/22_StarForce/THIRD-PARTY.md)。
+源码位于仓库的 `Assets/Examples/02_StarForce`，UPM 样本位于 `Samples~/02_StarForce`。资源来源和许可见 [THIRD-PARTY.md](../Samples~/02_StarForce/THIRD-PARTY.md)。

@@ -6,7 +6,7 @@
 
 点点点提供 `QGF > Examples > PointPointPoint > Build Windows Player`。它独立收集游戏 TOML 和界面预制体，构建 Package 资源与 Windows64 Player，再把资源复制到 Player 输出中的 `StreamingAssets/QgfExamples/PointPointPoint`。构建不改项目的 StreamingAssets 和场景列表。其 `PointGameLaunch` 等待包内清单初始化后，继续使用同一套资产名加载规则和界面。
 
-StarForce 提供 `QGF > Examples > 22 StarForce > Build Windows Player`。菜单使用示例的 ResourceCollection，在项目根目录 `QgfBuild~/StarForce` 中构建 Windows64 Package，只把 Launcher 编入 Player。资源部署到 Player 的 `StreamingAssets/QgfExamples/StarForce`，Menu 和 Main 场景由资源模块加载。构建结束会恢复 Unity 构建过程补写的项目设置。`QgfBuild~` 是可删除的构建产物，可加入版本控制忽略列表；场景 Bundle 不能输出到 Library。
+StarForce 提供 `QGF > Examples > 02 StarForce > Build Windows Player`。菜单使用示例的 ResourceCollection，在项目根目录 `QgfBuild~/StarForce` 中构建 Windows64 Package，只把 Launcher 编入 Player。资源部署到 Player 的 `StreamingAssets/QgfExamples/StarForce`，Menu 和 Main 场景由资源模块加载。构建结束会恢复 Unity 构建过程补写的项目设置。`QgfBuild~` 是可删除的构建产物，可加入版本控制忽略列表；场景 Bundle 不能输出到 Library。
 
 04_Update 展示 HTTP 更新和分组下载；05_ResourcePack 展示完整包校验与应用；06_VerifyCache 从已有缓存开始，检测损坏并重新下载。它们共用同一份构建结果，操作界面显示实际计数和读取内容。
 

@@ -53,6 +53,7 @@ namespace UnityQGameFramework.Editor
                     RootGuid(entry[1], entry[2]),
                     RootGuid(entry[2])
                 })
+                .Concat(ExampleSampleCatalog.GroupAssemblyGuids.Select(anchor => RootGuid(anchor)))
                 .Where(value => !string.IsNullOrEmpty(value)).Distinct().ToList();
             if (instance.m_Sample == guid && instance.m_ModuleExamplesSample == examplesGuid
                 && instance.m_PointSample == pointGuid && instance.m_ModuleSamples.SequenceEqual(modules)) return;
@@ -100,7 +101,7 @@ namespace UnityQGameFramework.Editor
             }
         }
 
-        [MenuItem("QGF/Uninstall/22 StarForce", false, 80)]
+        [MenuItem("QGF/Uninstall/03 StarForce", false, 80)]
         public static void RemoveSample()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -109,7 +110,7 @@ namespace UnityQGameFramework.Editor
             instance.Save(true);
         }
 
-        [MenuItem("QGF/Uninstall/22 StarForce", true)]
+        [MenuItem("QGF/Uninstall/03 StarForce", true)]
         private static bool HasSample() => !EditorApplication.isPlayingOrWillChangePlaymode && !string.IsNullOrEmpty(instance.m_Sample);
 
         [MenuItem("QGF/Uninstall/All Module Samples", false, 80)]

@@ -20,7 +20,11 @@ public static class NormalizeUguiNames
 
     public static object Run() => RunModules(null);
 
-    public static object RunModules(string[] folders)
+    public static object RunModules(string[] folders) => RunSelected(folders, null);
+
+    public static object RunExamples(string[] names) => RunSelected(null, names);
+
+    private static object RunSelected(string[] folders, string[] names)
     {
         if (!Path.GetFullPath(Application.dataPath).Contains(Path.DirectorySeparatorChar + "Artifacts~" + Path.DirectorySeparatorChar))
             throw new Exception("Use the isolated authoring project.");
@@ -31,11 +35,13 @@ public static class NormalizeUguiNames
         changes.Clear();
         layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var roots = folders == null ? new[] { "Assets/Examples" } : folders.Select(folder => "Assets/Examples/" + folder).ToArray();
+        var cases = names?.Select(name => Path.GetDirectoryName((string)layouts[name]["script"]).Replace('\\', '/')).ToArray();
         int prefabs = 0, scenes = 0, uiObjects = 0;
         try
         {
             foreach (string path in AssetDatabase.FindAssets("t:Prefab", roots).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p))
             {
+                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal))) continue;
                 var root = PrefabUtility.LoadPrefabContents(path);
                 try
                 {
@@ -50,6 +56,7 @@ public static class NormalizeUguiNames
             }
             foreach (string path in AssetDatabase.FindAssets("t:Scene", roots).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p))
             {
+                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal))) continue;
                 var scene = EditorSceneManager.OpenScene(path);
                 int start = changes.Count;
                 ReadControlNames(scene.GetRootGameObjects());

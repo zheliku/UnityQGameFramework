@@ -9,8 +9,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityQGameFramework.Examples.PointPointPoint;
-using UnityQGameFramework.Examples.PointPointPoint.Editor;
+using UnityQGameFramework.Examples.Modules.PointPointPoint;
+using UnityQGameFramework.Examples.Modules.PointPointPoint.Editor;
 
 // 验收真实 Player，构建后分别启动两个进程；不修改项目资源与设置。
 public static class ValidatePointPlayer

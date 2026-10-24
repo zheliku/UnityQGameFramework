@@ -186,7 +186,12 @@ namespace UnityQGameFramework.Editor
             var fingerprint = new StringBuilder();
             foreach (string file in files)
             {
-                string text = GeneratedHeader + File.ReadAllText(file).Replace("\r\n", "\n");
+                string[] lines = File.ReadAllText(file).Replace("\r\n", "\n").Split('\n');
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    lines[i] = lines[i].TrimEnd();
+                }
+                string text = GeneratedHeader + string.Join("\n", lines).TrimEnd() + "\n";
                 File.WriteAllText(file, text, new UTF8Encoding(false));
                 fingerprint.Append(file.Substring(directory.Length).Replace('\\', '/')).Append('\n').Append(text);
             }

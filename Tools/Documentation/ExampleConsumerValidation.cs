@@ -40,16 +40,16 @@ public static class ExampleConsumerValidation
         var available = Sample.FindByPackage(package.name, package.version).ToArray();
         var manifest = JObject.Parse(File.ReadAllText(package.resolvedPath + "/package.json"));
         var registrations = (JArray)manifest["samples"];
-        Require(available.Length == registrations.Count, "Every numbered example has a Sample registration");
+        Require(available.Length == 3 && available.Length == registrations.Count, "Three Sample registrations");
         if (available.Any(sample => sample.isImported)) throw new Exception("Another Sample is still imported");
         if (PackageInfo.GetAllRegisteredPackages().Any(item => item.name == "com.annulusgames.alchemy" || item.name == "com.borodar.rainbow-folders"))
             throw new Exception("Optional tools must be absent from the consumer");
         var registration = manifest["samples"].Single(item => (string)item["path"] == "Samples~/" + folder);
         var sampleToImport = available.Single(item => item.displayName == (string)registration["displayName"]);
-        var module = ModuleEntries().SingleOrDefault(entry => (string)entry["folder"] == folder);
         string anchor = folder == "00_PointPointPoint" ? "f99fe5fffa1724e4ab21a8936d44ab7e"
-            : folder == "22_StarForce" ? "9d2d51bf0fc3dfc42908e3a7a64f4feb"
-            : (string)module?["anchorGuid"] ?? throw new ArgumentException("Unknown Sample: " + folder, nameof(folder));
+            : folder == "02_StarForce" ? "9d2d51bf0fc3dfc42908e3a7a64f4feb"
+            : folder == "01_Modules" ? "26a4a9304f1b571a97885965a89aaed1"
+            : throw new ArgumentException("Unknown Sample: " + folder, nameof(folder));
         var state = new State { folder = folder, anchor = anchor, settings = Settings.ToDictionary(path => path, Hash) };
         EditorApplication.LockReloadAssemblies();
         try
@@ -78,7 +78,7 @@ public static class ExampleConsumerValidation
             && !path.StartsWith(root + "/", StringComparison.Ordinal)).ToArray();
         if (external.Length != 0) throw new Exception("External Assets dependency: " + string.Join(", ", external));
         state.independent = true;
-        state.movedPath = "Assets/Learning_" + state.folder;
+        state.movedPath = "Assets/Example_" + state.folder;
         if (Directory.Exists(state.movedPath)) throw new Exception("Move target exists");
         string error = AssetDatabase.MoveAsset(root, state.movedPath);
         if (!string.IsNullOrEmpty(error)) throw new Exception(error);
@@ -113,7 +113,7 @@ public static class ExampleConsumerValidation
         {
             EditorSettings.enterPlayModeOptionsEnabled = true;
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
-            string[] scenes = state.folder == "22_StarForce" ? new[] { root + "/StarForce Launcher.unity" }
+            string[] scenes = state.folder == "02_StarForce" ? new[] { root + "/StarForce Launcher.unity" }
                 : Directory.GetFiles(root, "*.unity", SearchOption.AllDirectories).Select(path => path.Replace('\\', '/'))
                     .Where(path => !path.Contains("/Art/")).OrderBy(path => path).ToArray();
             foreach (string scene in scenes)
@@ -122,21 +122,22 @@ public static class ExampleConsumerValidation
                 await Play(true);
                 Application.runInBackground = true;
                 EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
-                await Task.Delay(state.folder == "22_StarForce" ? 4500 : 1200);
+                await Task.Delay(state.folder == "02_StarForce" ? 4500 : 1200);
                 // 严格引用池实验故意不启动框架，才能在没有模块持有引用时演示 ClearAll。
                 bool coreOnly = Path.GetFileNameWithoutExtension(scene) == "ReferencePoolChecks";
                 Require((GameEntry.GetComponent<BaseComponent>() == null) == coreOnly, "Expected bootstrap: " + scene);
                 if (state.folder == "00_PointPointPoint")
                     Require(QGF.Procedure.CurrentProcedure.GetType().Name == "PointGameMenu", "Clicker menu");
-                else if (state.folder == "22_StarForce")
+                else if (state.folder == "02_StarForce")
                 {
                     var menuType = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("StarForce.MenuForm")).First(type => type != null);
                     Require(UnityEngine.Object.FindFirstObjectByType(menuType) != null, "StarForce menu after move");
                 }
                 else
                 {
+                    string exampleNamespace = "UnityQGameFramework.Examples.Modules.";
                     var type = AppDomain.CurrentDomain.GetAssemblies()
-                        .Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + Path.GetFileNameWithoutExtension(scene)))
+                        .Select(assembly => assembly.GetType(exampleNamespace + Path.GetFileNameWithoutExtension(scene)))
                         .First(candidate => candidate != null);
                     var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                     Require(example != null, "Example instance");
@@ -151,18 +152,21 @@ public static class ExampleConsumerValidation
                         foreach (var image in UnityEngine.Object.FindObjectsByType<UnityEngine.UI.Image>(FindObjectsInactive.Include, FindObjectsSortMode.None))
                             if (image.sprite != null && (image.sprite.name == "ButtonOutline" || image.sprite.name == "Checkmark"))
                                 Require(AssetDatabase.GetAssetPath(image.sprite).StartsWith(root + "/Common/UI/UISprites/", StringComparison.Ordinal), "Shared UI sprite");
-                        var definition = ModuleEntries().Single(item => (string)item["folder"] == state.folder);
                         var ui = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"))[type.Name];
+                        var definition = ModuleEntries().Single(item => ((string)ui["script"]).StartsWith(
+                            "Assets/Examples/" + (string)item["folder"] + "/", StringComparison.Ordinal));
+                        string sourceModule = (string)definition["folder"];
                         bool responsive = (bool?)definition["responsiveLayout"] == true && (bool?)ui["fullWidthPanel"] != true
-                            && (state.folder != "15_Sound" || (bool?)ui["spatialSound"] == true);
+                            && (!sourceModule.EndsWith("/15_Sound", StringComparison.Ordinal) || (bool?)ui["spatialSound"] == true);
                         if (responsive)
                         {
-                            string expectedNamespace = "UnityQGameFramework.Examples.Presentation." + (string)definition["module"];
+                            string expectedNamespace = exampleNamespace.TrimEnd('.') + ".Presentation";
                             var layout = UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
                                 .SingleOrDefault(item => item != null && item.gameObject.name == "Canvas_Example" && item.GetType().Name == "ExampleSceneLayout");
-                            Require(layout != null && layout.GetType().Namespace == expectedNamespace && layout.GetType().Assembly == type.Assembly,
-                                "Shared layout namespace and assembly follow the imported module");
-                            if (state.folder == "14_UI")
+                            Require(layout != null && layout.GetType().Namespace == expectedNamespace
+                                && layout.GetType().Assembly.GetName().Name == exampleNamespace.TrimEnd('.'),
+                                "Shared layout namespace and assembly follow the Sample group");
+                            if (sourceModule.EndsWith("/14_UI", StringComparison.Ordinal))
                             {
                                 string prefab = Path.GetDirectoryName(scene).Replace('\\', '/') + "/Art/Window.prefab";
                                 Require(AssetDatabase.LoadAssetAtPath<GameObject>(prefab).GetComponents<MonoBehaviour>()
@@ -193,7 +197,7 @@ public static class ExampleConsumerValidation
         state.scenes = completed;
         Save(state);
         return new { passed = true, state.folder, state.scenes, afterMove = true,
-            scope = state.folder == "22_StarForce" ? "Launcher startup to Menu" : "all scenes in Sample" };
+            scope = state.folder == "02_StarForce" ? "Launcher startup to Menu" : "all scenes in Sample" };
     }
 
     public static object RemoveOne() => Remove(true);
@@ -264,7 +268,7 @@ public static class ExampleConsumerValidation
 
     private static JArray ModuleEntries() => JArray.Parse(File.ReadAllText("Tools/Documentation/examples-layout.json"));
 
-    private static bool IsModuleSample(string folder) => ModuleEntries().Any(entry => (string)entry["folder"] == folder);
+    private static bool IsModuleSample(string folder) => folder == "01_Modules";
 
     private static bool IsSampleTracked(string folder, string guid)
     {

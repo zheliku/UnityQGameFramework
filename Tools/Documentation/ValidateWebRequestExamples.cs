@@ -18,7 +18,7 @@ using UnityEngine.UI;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateWebRequestExamples
@@ -38,7 +38,7 @@ public static class ValidateWebRequestExamples
         assertions.Clear();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "18_WebRequest" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
@@ -68,10 +68,10 @@ public static class ValidateWebRequestExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("ac8a73123ee145a584d0f448bb0c22ac");
+                string anchor = AssetDatabase.GUIDToAssetPath("4db2bf82437d5556b15f973d14498ab1");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported WebRequest sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/18_WebRequest".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
@@ -81,8 +81,8 @@ public static class ValidateWebRequestExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(GetWebRequestExample).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(GetWebRequestExample).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");
@@ -165,38 +165,14 @@ public static class ValidateWebRequestExamples
             Require(QGF.WebRequest.GetWebRequestInfo(hold).Status == UnityQGameFramework.Core.TaskStatus.Doing, "Hold already running before high priority is added");
             Require(text("queueText").text.Contains("执行中") && text("queueText").text.Contains("等待中"), "Queue shows running and waiting states");
             Require(QGF.WebRequest.GetWebRequestInfos("Example.Queue").Length == 3, "Tagged query contains running and queued tasks");
-            for (int i = 0; i < 4; i++)
-            {
-                dropdown("queryMode").value = i;
-                await Task.Delay(80);
-                Require(Field<List<TaskInfo>>(example, "tasks").Count == (i < 2 ? 4 : 3), "Array/List all/tag query " + i);
-            }
-            dropdown("queryMode").value = 0;
-            await Task.Delay(80);
+            await Until(() => Field<List<TaskInfo>>(example, "tasks").Count == 4, 1000, "All active requests are listed");
             await Screenshot("web-queue");
-            dropdown("cancelMode").value = 0;
             await Click(button("cancelButton"), mouse);
             Require(text("resultText").text == "hold 请求已取消。", "Serial cancellation result is readable");
             Require(!QGF.WebRequest.GetWebRequestInfo(hold).IsValid, "Cancelled serial invalid");
             await Until(() => QGF.WebRequest.GetAllWebRequestInfos().Length == 0, 6500, "Remaining tasks finish by priority");
             Require(string.Join(",", Field<List<string>>(example, "order")) == "hold,high,other,low", "High priority does not preempt hold; waiting tasks ordered high/other/low");
             Require(Field<int>(example, "callbacks") == 3 && UsedForms() == 0, "Cancelled hold has no result; three completions return all contexts");
-
-            await Click(button("enqueueButton"), mouse);
-            await Until(() => QGF.WebRequest.WaitingTaskCount == 3, 3000, "Second queue ready");
-            dropdown("cancelMode").value = 1;
-            await Click(button("cancelButton"), mouse);
-            Require(text("resultText").text == "Example.Queue 已取消 3 个请求。", "Tag removal count is readable");
-            await Until(() => QGF.WebRequest.GetAllWebRequestInfos().Length == 0, 4000, "Other tag completes");
-            Require(Field<int>(example, "callbacks") == 1 && UsedForms() == 0, "Tag cancellation leaves other tag intact without context leak");
-
-            await Click(button("enqueueButton"), mouse);
-            await Until(() => QGF.WebRequest.WaitingTaskCount == 3, 3000, "Third queue ready");
-            dropdown("cancelMode").value = 2;
-            await Click(button("cancelButton"), mouse);
-            await Task.Delay(250);
-            Require(text("resultText").text == "全部请求已取消 4 个。" && Field<int>(example, "callbacks") == 0, "RemoveAll count is readable and produces no result callbacks");
-            Require(QGF.WebRequest.FreeAgentCount == 1 && QGF.WebRequest.GetAllWebRequestInfos().Length == 0 && UsedForms() == 0, "RemoveAll returns contexts and frees agent");
         }
         else if (name == "PostWebRequest")
         {

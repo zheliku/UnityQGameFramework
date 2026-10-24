@@ -1,6 +1,26 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.0-exp.8] - 2026-10-24
+
+### Changed
+
+- 模块示例合并为一个 `01_Modules` Sample，保留 59 个核心场景，移除重复的 API 演示；点点点和 StarForce 仍为独立 Sample。
+- `Assets/Examples` 和 `Samples~` 统一为 `00_PointPointPoint`、`01_Modules`、`02_StarForce`。从 Assets 原样复制发布，不再筛选场景或转换 GUID、程序集和命名空间。
+- 模块示例共用一个运行时程序集和一份 QGF prefab；更新场景引用、Luban Profile、资源构建路径与维护工具。
+- 示例 JSON 输入框恢复可编辑，序列化与反序列化按钮分别写入和读取当前输入内容。
+- 公开 API 的 XML 文档按 UGF 风格补齐泛型参数、方法参数和返回值说明。
+
+## [0.1.0-exp.7] - 2026-10-24
+
+### Changed
+
+- DataTable 直接登记 Luban 生成表，统一使用 `GetDataTable<TbXxx>()`；原调用的泛型参数需从 DR 行类型迁移为 Tb 表类型。
+- 移除独立的 GetLubanTables 查询入口、额外表视图和 IDataRow 的 int Id 约束。字符串、长整数、枚举、复合键、list、one、结构体记录及跨表引用均通过同一入口访问。
+- 保留 QGF 的条件查询和排序，结果直接引用生成表中的记录；整组登记在完成构造、引用解析及结构校验后发布。
+- 更新 StarForce、模块示例、Inspector 和文档；公开接口及生成模板采用 UGF 的普通方法体与完整 XML 文档注释。
+- 明确 IDataProvider 继续服务 Config 与 Localization；Luban 使用独立的 Catalog、多 bytes、跨表解析和原子登记流程，不引入不匹配的 LubanTableProvider。
+
+## [0.1.0-exp.6] - 2026-10-24
 
 ### Fixed
 
@@ -11,6 +31,11 @@
 
 ### Changed
 
+- 模块示例继续按真实任务整理：移除 API 重载选择器和重复的启动等待；对象池保留具名工厂和回收策略，Luban 保留条件筛选与排序示例。
+- 资源包加载、Luban 异步加载、二进制片段、请求队列、下载优先级和声音组均收敛为清晰操作路径；模块程序集自动引用 UniTask。
+- 配置与语言字典的异步读取示例固定使用带 UserData 的入口，移除只用于切换重载的下拉框，保留语言切换与失败恢复。
+- 明确框架组件的启动顺序，使默认顺序的业务 Start 可以直接调用模块。同步 LoadDataTables 返回生成的表集合，组件新增 RegisterDataTables 入口。
+- 更新 Sample 分组、卸载根目录识别与打包检查，补充 Luban 生成流程及两种查询入口的适用范围。
 - 精简模块文档的重复说明，补充 DataNode 和 StarForce 主流程的调用注释，修正 StarForce 的菜单与战斗场景加载说明。
 
 ## [0.1.0-exp.5] - 2026-10-23
@@ -28,7 +53,7 @@
 
 ### Changed
 
-- `Assets/Examples` 与 UPM Sample 按编号平铺；每个模块 Sample 带一份独立 GUID 的 Common 资源。StarForce 编号为 22。
+- 源场景仍按模块放在 `Assets/Examples`；UPM 发布收拢为三个 Sample，StarForce 的源码目录仍编号为 22。
 - 示例改用 uGUI、StarForce 风格控件和默认天空盒，控件通过序列化引用绑定，物体采用类型前缀与 PascalCase 用途名；StarForce 保留星空背景。
 - 示例直接展示 QGF 调用，移除 Print、仅转发的辅助方法和无用生命周期钩子；跨帧等待使用 UniTask，Socket 与文件 I/O 保留 .NET Task。
 - 示例注释说明参数、生命周期、异步时序和所有权；关闭、取消和退出时只清理自身创建的对象与请求。直接依赖 Editor API 的示例保留条件编译。
@@ -89,7 +114,7 @@
 
 - StarForce 的 21 个材质统一使用 URP 内置 Lit、Unlit、Particles/Unlit Shader，移除示例自定义 Shader。
 - StarForce 以已启用 URP 的工程为运行前提，导入示例不修改宿主的渲染管线、输入设置、Layer 或构建场景列表。
-- 同步包内 `Samples~/99_StarForce` 发布副本，更新安装和运行说明。
+- 同步包内 StarForce Sample 发布副本，更新安装和运行说明。
 
 ### Added
 

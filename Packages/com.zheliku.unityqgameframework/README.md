@@ -12,7 +12,7 @@ QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-编译完成后，可从 Samples 导入点点点、单个模块示例或 StarForce。每个模块 Sample 自带场景和公共资源；完整清单见[示例目录](Documentation~/06-module-examples.md)。
+编译完成后，可从 Samples 导入点点点、模块示例或 StarForce。模块示例包含一份公共资源；完整清单见[示例目录](Documentation~/06-module-examples.md)。
 
 游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
 

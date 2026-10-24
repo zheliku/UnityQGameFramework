@@ -46,9 +46,11 @@ namespace UnityQGameFramework.Core
         /// </summary>
         /// <param name="info">存有有关所引发异常的序列化的对象数据。</param>
         /// <param name="context">包含有关源或目标的上下文信息。</param>
+#pragma warning disable SYSLIB0051
         protected FrameworkException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
+#pragma warning restore SYSLIB0051
     }
 }

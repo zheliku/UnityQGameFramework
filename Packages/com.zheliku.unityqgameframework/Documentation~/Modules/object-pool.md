@@ -2,7 +2,7 @@
 
 子弹、爆炸和血条经常反复出现。ObjectPool 缓存这些已创建的对象：`Spawn` 借出，`Unspawn` 归还，空闲时再按策略释放。
 
-[ObjectPool 示例](../../Samples~/08_ObjectPool/) 用 Cube 展示借还、池空时由工厂创建、共享借用、回收策略和多池管理。借还会移动同一个 Cube，最终释放才销毁它。
+[ObjectPool 示例](../../Samples~/01_Modules/08_ObjectPool/) 用 Cube 展示借还、池空时由业务工厂创建和回收策略。借还会移动同一个 Cube，最终释放才销毁它。
 
 ![同一个真实 Cube 从缓存区借出到使用区](../Images/example-object-pool.png)
 
@@ -148,11 +148,11 @@ SingleSpawn 与 MultiSpawn 都提供泛型和 `Type` 入口。泛型返回 `IObj
 
 共享示例按 `CanSpawn("Cube")` 判断能否借用，并显示 `SpawnCount` 与 `IsInUse`。MultiSpawn 的条目在使用中仍可再次借出；示例最多显示三个使用者，这是界面限制。
 
-回收策略示例把默认 `Release()`、指定数量和自定义筛选放在同一下拉框中。默认策略保留未超容量且未过期的对象；“全部 Temp”回调返回所有符合条件的 Temp，“一个 Temp”只返回一个。Core 逐个尝试释放回调返回的条目，`requested` 是提供给回调的目标数量，最终数量由返回列表决定。
+回收策略示例登记三个空闲 Cube。锁定 Keep 后，`ReleaseAllUnused()` 只释放两个 Temp；解锁后再次回收，Keep 也会被释放。全部释放后可以重新创建，比较锁定前后的行为。
 
 ## 池空时由工厂创建
 
-`Spawn` 返回 null 后，由业务创建 Target，再用 `Register(item, true)` 登记为已借出。可运行示例见 [02 池空时由工厂创建](../../Samples~/08_ObjectPool/02_Factory/)；场景显示创建、归还和复用的多个 Cube。
+`Spawn` 返回 null 后，由业务创建 Target，再用 `Register(item, true)` 登记为已借出。可运行示例见 [02 池空时由工厂创建](../../Samples~/01_Modules/08_ObjectPool/02_Factory/)；场景显示创建、归还和复用的多个 Cube。
 
 ![池空时才创建新 Cube，并显示累计创建与复用次数](../Images/example-pool-factory.png)
 
@@ -166,9 +166,9 @@ OnSpawn 恢复可用状态，OnUnspawn 停止动画、协程、粒子或隐藏�
 
 借还使用 `IObjectPool<T>`；信息查询方法位于 `ObjectPoolBase`，示例用 `((ObjectPoolBase)pool).GetAllObjectInfos()` 查看同一台池。返回值是条目信息的快照。
 
-多池管理示例的单池查询会显示标识、借用方式、可释放数量和回收参数。`ObjectType` 是 `RegistryItem` 这类登记条目类型；`FullName` 由该类型与池名组成，用来区分不同池，界面省略了示例命名空间。通过 `Type` 取得的 `ObjectPoolBase` 也能直接回收：`Release()` 遵守当前策略，`Release(1)` 尝试回收一个空闲目标，`ReleaseAllUnused()` 尝试回收全部空闲目标。这三种操作只影响 Left；管理器上的对应方法才会遍历所有池。释放内容后，池仍然可以登记新目标，`DestroyObjectPool` 才移除整个池。
+多池管理示例创建同一条目类型的 Left 和 Right 两个池，通过名称单独查询和销毁。销毁 Left 不影响 Right；`ObjectType` 是 `RegistryItem` 这类登记条目的类型，`FullName` 由类型与池名组成。
 
-回收策略示例显示实际的 `AutoReleaseInterval`，选中条目时读取 `ObjectBase.LastUseTime`。它使用 UTC，随初始化、借出和归还更新；界面的空闲秒数则来自 `ObjectInfo` 快照。条目释放后可能被 ReferencePool 复用，因此先用快照确认它仍属于池，再读取条目。
+`ObjectBase.LastUseTime` 使用 UTC，随初始化、借出和归还更新；`GetAllObjectInfos()` 返回当时的快照。条目被释放后可能回到 ReferencePool，不要继续持有它的旧引用。
 
 需要额外字段时重写 Clear，调用 base.Clear，再清空自己的引用。Clear 会在包装对象最终归还 ReferencePool 时执行，不能依赖它在每次 Unspawn 时重置业务状态。业务程序集重写 ObjectBase 中的 protected internal 成员时使用 `protected override`。
 

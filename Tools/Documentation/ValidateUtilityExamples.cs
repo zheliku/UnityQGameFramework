@@ -62,9 +62,9 @@ public static class ValidateUtilityExamples
             mouse = InputSystem.AddDevice<Mouse>();
             foreach (string name in Names)
             {
-                string anchor = AssetDatabase.GUIDToAssetPath("451fb7eed1a048a39d433c5f2e2a84f9");
+                string anchor = AssetDatabase.GUIDToAssetPath("e638c6e0da015f4d99bdc5c5491facc0");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Base sample not imported.");
-                string script = Path.GetDirectoryName(anchor).Replace('\\', '/') + ((string)layouts[name]["script"]).Substring("Assets/Examples/01_Base".Length);
+                string script = Path.GetDirectoryName(anchor).Replace('\\', '/') + ((string)layouts[name]["script"]).Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 Application.runInBackground = true;
@@ -75,7 +75,7 @@ public static class ValidateUtilityExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(400);
-                Type type = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("UnityQGameFramework.Examples." + name)).First(t => t != null);
+                Type type = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("UnityQGameFramework.Examples.Modules." + name)).First(t => t != null);
                 var owner = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(owner != null, name + " saved controller");
                 var data = new SerializedObject(owner);

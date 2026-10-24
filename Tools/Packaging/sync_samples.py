@@ -1,76 +1,35 @@
-"""Mirror editable examples into the Git-installable UPM samples."""
+"""Copy editable Assets examples into the Git-installable UPM Samples."""
 import argparse
 import json
 from pathlib import Path
 import re
 import shutil
-import uuid
-
-SAMPLE_GUID_NAMESPACE = uuid.uuid5(uuid.NAMESPACE_URL, 'https://github.com/zheliku/UnityQGameFramework/samples')
 
 
-def differences(source, target):
-    originals = {p.relative_to(source): p for p in source.rglob('*') if p.is_file()}
-    copies = {p.relative_to(target): p for p in target.rglob('*') if p.is_file()}
-    return sorted(str(p) for p in originals.keys() | copies.keys()
-                  if p not in originals or p not in copies or originals[p].read_bytes() != copies[p].read_bytes())
+def sample_groups(root):
+    return json.loads((root / 'Tools/Documentation/sample-groups.json').read_text(encoding='utf-8-sig'))
 
 
 def sample_sources(root, name):
     examples = root / 'Assets/Examples'
-    if name in {'00_PointPointPoint', '22_StarForce'}:
-        source = examples / name
-        if not source.is_dir() or not any(source.rglob('*.unity')):
-            raise ValueError(name + ' source scenes are missing.')
-        return {p.relative_to(source): p.read_bytes() for p in source.rglob('*') if p.is_file()}
-
-    layout = json.loads((root / 'Tools/Documentation/examples-layout.json').read_text(encoding='utf-8-sig'))
-    module = next((entry for entry in layout if entry['folder'] == name), None)
-    if module is None:
+    group = next((item for item in sample_groups(root) if item['folder'] == name), None)
+    if group is None:
         raise ValueError('Unknown sample: ' + name)
-    source = examples / name
-    if not source.is_dir() or not any(source.rglob('*.unity')):
-        raise ValueError('Module source scenes are missing: ' + name)
-
-    common = examples / 'Common'
-    files = {p.relative_to(source): p.read_bytes() for p in source.rglob('*') if p.is_file()}
-    files.update({Path('Common') / p.relative_to(common): p.read_bytes() for p in common.rglob('*') if p.is_file()})
-    files[Path('Common.meta')] = (examples / 'Common.meta').read_bytes()
-    if not module.get('responsiveLayout'):
-        for filename in ('ExampleSceneLayout.cs', 'ExampleSceneLayout.cs.meta'):
-            files.pop(Path('Common') / filename, None)
-
-    guid_map = {}
-    for relative in [Path('Common.meta')] + [p for p in files if p.parts[0] == 'Common' and p.suffix == '.meta']:
-        content = files[relative].decode('utf-8-sig')
-        match = re.search(r'^guid: ([0-9a-f]{32})\r?$', content, re.M)
-        if match:
-            old_guid = match[1]
-            guid_map[old_guid] = uuid.uuid5(SAMPLE_GUID_NAMESPACE, name + '/' + old_guid).hex
-
-    result = {}
-    for relative, content in files.items():
-        try:
-            text = content.decode('utf-8')
-        except UnicodeDecodeError:
-            result[relative] = content
-            continue
-        for old_guid, new_guid in guid_map.items():
-            text = text.replace(old_guid, new_guid)
-        # 公共显示脚本随各模块独立编译，避免同时导入多个 Sample 时出现同名类型。
-        common_namespace = 'UnityQGameFramework.Examples.Presentation'
-        sample_namespace = common_namespace + '.' + module['module']
-        text = text.replace(common_namespace, sample_namespace)
-        text = text.replace('Assembly-CSharp::' + sample_namespace, module['assembly'] + '::' + sample_namespace)
-        result[relative] = text.encode('utf-8')
-    return result
+    source_name = group.get('source')
+    if not source_name:
+        raise ValueError('Sample must declare a source directory: ' + name)
+    source = examples / source_name
+    if not source.is_dir():
+        raise FileNotFoundError('Missing editable Sample source: ' + str(source))
+    return {path.relative_to(source): path.read_bytes()
+            for path in source.rglob('*') if path.is_file()}
 
 
 def sample_differences(root, name, target):
     originals = sample_sources(root, name)
-    copies = {p.relative_to(target): p for p in target.rglob('*') if p.is_file()}
-    return sorted(str(p) for p in originals.keys() | copies.keys()
-                  if p not in originals or p not in copies or originals[p] != copies[p].read_bytes())
+    copies = {path.relative_to(target): path for path in target.rglob('*') if path.is_file()}
+    return sorted(str(path) for path in originals.keys() | copies.keys()
+                  if path not in originals or path not in copies or originals[path] != copies[path].read_bytes())
 
 
 def main():
@@ -106,7 +65,7 @@ def main():
     registered = {sample['path'].removeprefix('Samples~/') for sample in manifest['samples']}
     for stale in {path.name for path in samples_root.iterdir() if path.is_dir()} - registered:
         obsolete = samples_root / stale
-        if stale not in {'01_Modules', '99_StarForce'} or obsolete.resolve().parent != samples_root.resolve():
+        if obsolete.resolve().parent != samples_root.resolve() or not re.match(r'^\d{2}_', stale):
             parser.error('Unregistered Sample directory: ' + stale)
         if args.check:
             parser.error('Remove obsolete Sample directory: ' + stale)

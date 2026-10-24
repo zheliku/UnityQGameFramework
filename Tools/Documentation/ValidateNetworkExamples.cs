@@ -18,7 +18,7 @@ using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Core.Network;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateNetworkExamples
@@ -38,7 +38,7 @@ public static class ValidateNetworkExamples
         assertions.Clear();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "20_Network" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
@@ -68,10 +68,10 @@ public static class ValidateNetworkExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("6a874a2080ef4446bbe06ca26f489ab9");
+                string anchor = AssetDatabase.GUIDToAssetPath("8d5ecf40d41d5cbbb278514669ef85eb");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Network sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/20_Network".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
@@ -81,8 +81,8 @@ public static class ValidateNetworkExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(ConnectNetworkExample).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(ConnectNetworkExample).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");
@@ -207,20 +207,15 @@ public static class ValidateNetworkExamples
             var protocol = Field<NetworkTextProtocol>(example,"protocol");
             await Until(() => protocol.HeartBeatsReceived >= 2,4000,"Two genuine heartbeat responses");
             await Until(() => text("counterText").text.Contains("连接：已连接"), 1000, "Heartbeat connection state is readable");
-            Require(channel.Connected && Field<int>(example,"misses") == 0,"Healthy connection stays open without miss notifications");
-            await Click(toggle("resetToggle"),mouse);
-            Require(!channel.ResetHeartBeatElapseSecondsWhenReceivePacket,"Receive reset option changes actual channel property");
+            Require(channel.Connected && Field<int>(example,"misses") == 0
+                && channel.ResetHeartBeatElapseSecondsWhenReceivePacket,
+                "Healthy connection resets elapsed time when packets arrive");
             await Click(toggle("replyToggle"),mouse);
             Require(!server.ReplyHeartBeats,"Server stops replying, TCP remains established");
             await Until(() => Field<int>(example,"misses") >= 2,5000,"Real missed responses produce notifications");
-            Require(channel.Connected,"Framework not auto-closing on heartbeat miss");
             await Screenshot("network-heartbeat");
-            await Click(toggle("replyToggle"),mouse);
-            int responseCount = protocol.HeartBeatsReceived;
-            await Until(() => protocol.HeartBeatsReceived > responseCount && channel.MissHeartBeatCount == 0,3000,"Response recovery resets miss count");
-            await Click(toggle("closeToggle"),mouse);
-            await Click(toggle("replyToggle"),mouse);
-            await Until(() => !channel.Connected && Field<int>(example,"misses") >= 3,5000,"Business closes after three misses");
+            await Until(() => !channel.Connected && Field<int>(example,"misses") >= 3,5000,
+                "Business closes after three consecutive misses");
             await Click(toggle("replyToggle"),mouse);
             await Click(button("connectButton"),mouse);
             await Until(() => channel.Connected && protocol.HeartBeatsReceived >= 1,3000,"Same channel reconnects after heartbeat closure");

@@ -2,7 +2,7 @@
 
 Config 适合保存服务器地址、启动参数这类少量全局键值，文件使用 TOML。大批量结构化游戏数据由 Luban 和 DataTable 负责；两者用途不同。
 
-[Config 示例](../../Samples~/02_Config/) 展示 TOML 查询、异步读文件和运行时增删。
+[Config 示例](../../Samples~/01_Modules/02_Config/) 展示 TOML 查询、异步读文件和运行时增删。
 
 ## 准备 TOML
 

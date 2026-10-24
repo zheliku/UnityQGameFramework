@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core.Resource;
-using UnityQGameFramework.Examples.PointPointPoint;
+using UnityQGameFramework.Examples.Modules.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
 // 仅复制到隔离验收工程，不随 Sample 发布。通过命令行参数启用。

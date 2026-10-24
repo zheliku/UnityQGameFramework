@@ -2,7 +2,7 @@
 
 UI 管理窗口的加载、缓存、分组和显示次序。业务窗口继承 `UIFormLogic`，在生命周期回调里显示数据、注册按钮并清理订阅。
 
-[UI 示例](../../Samples~/14_UI/) 使用 uGUI 场景和预制体，可操作窗口打开与取消、关闭后复用、覆盖与置顶，以及多窗口和分组查询。
+[UI 示例](../../Samples~/01_Modules/14_UI/) 使用 uGUI 场景和预制体，可操作窗口打开、关闭后复用以及覆盖与置顶。
 
 UIComponent → UIManager → Resource / ObjectPool → UIFormHelper → UIFormLogic，是一次界面打开的主要链路。和 Entity 不同，UI 的逻辑脚本挂在预制体上，OpenUIForm 不传逻辑类型。
 

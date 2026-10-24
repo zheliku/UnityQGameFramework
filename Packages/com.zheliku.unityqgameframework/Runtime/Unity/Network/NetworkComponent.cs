@@ -14,6 +14,7 @@ namespace UnityQGameFramework.Runtime
     /// 网络组件。
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Network")]
     public sealed class NetworkComponent : FrameworkComponent
     {

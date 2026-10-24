@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Examples.Presentation;
+using UnityQGameFramework.Examples.Modules.Presentation;
 
 // 为已有场景补充布局组件，不重建场景中的业务引用。
 public static class ConfigureExampleLayouts
@@ -27,7 +27,7 @@ public static class ConfigureExampleLayouts
             foreach (var entry in layouts.Properties())
             {
                 string script = (string)entry.Value["script"];
-                string module = script.Split('/')[2];
+                string module = "01_Modules/" + script.Split('/')[3];
                 if ((bool?)definitions.Single(item => (string)item["folder"] == module)["responsiveLayout"] != true) continue;
                 string path = script.Substring(0, script.Length - 3) + ".unity";
                 var scene = EditorSceneManager.OpenScene(path);
@@ -39,11 +39,11 @@ public static class ConfigureExampleLayouts
                 var data = new SerializedObject(component);
                 data.FindProperty("controls").objectReferenceValue = panel;
                 data.FindProperty("legend").objectReferenceValue = canvas.transform.Find("Panel_Status");
-                data.FindProperty("sceneCamera").objectReferenceValue = module == "14_UI" ? null : Camera.main;
+                data.FindProperty("sceneCamera").objectReferenceValue = module.EndsWith("/14_UI", StringComparison.Ordinal) ? null : Camera.main;
                 data.ApplyModifiedPropertiesWithoutUndo();
                 EditorSceneManager.SaveScene(scene);
                 changed.Add(path);
-                if (module != "14_UI") continue;
+                if (!module.EndsWith("/14_UI", StringComparison.Ordinal)) continue;
                 string prefab = Path.GetDirectoryName(script).Replace('\\', '/') + "/Art/Window.prefab";
                 var root = PrefabUtility.LoadPrefabContents(prefab);
                 try

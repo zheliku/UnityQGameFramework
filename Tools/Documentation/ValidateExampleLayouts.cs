@@ -12,13 +12,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using UnityQGameFramework.Examples.Presentation;
+using UnityQGameFramework.Examples.Modules.Presentation;
 
+/// <summary>
+/// 检查模块示例在不同分辨率下的布局。
+/// </summary>
 public static class ValidateExampleLayouts
 {
     private const BindingFlags Fields = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     private static int assertions;
 
+    /// <summary>
+    /// 检查控件、窗口和演示物体的可见范围。
+    /// </summary>
+    /// <returns>布局检查结果。</returns>
     public static async Task<object> Run()
     {
         if (!Application.dataPath.Contains("Artifacts~") || EditorApplication.isPlayingOrWillChangePlaymode)
@@ -72,10 +79,10 @@ public static class ValidateExampleLayouts
             input.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
             mouse = InputSystem.AddDevice<Mouse>();
             foreach (string path in new[] {
-                "08_ObjectPool/05_Manager/InspectObjectPools", "08_ObjectPool/02_Factory/SpawnOrCreateCube",
-                "13_Entity/04_Attachment/AttachEntities", "15_Sound/05_Spatial/SpatialSoundExample", "14_UI/03_Cover/CoverWindowExample" })
+                "08_ObjectPool/02_Factory/SpawnOrCreateCube", "13_Entity/02_Reuse/ReuseCubeEntity",
+                "15_Sound/05_Spatial/SpatialSoundExample", "14_UI/03_Cover/CoverWindowExample" })
             {
-                EditorSceneManager.OpenScene("Assets/Examples/" + path + ".unity");
+                EditorSceneManager.OpenScene("Assets/Examples/01_Modules/" + path + ".unity");
                 await Play(true);
                 Application.runInBackground = true;
                 gameView.Focus();
@@ -91,9 +98,7 @@ public static class ValidateExampleLayouts
                     .Single(item => item.GetType().Name == Path.GetFileName(path));
                 var fields = new SerializedObject(example);
                 Func<string, Button> button = name => (Button)fields.FindProperty(name).objectReferenceValue;
-                if (example.name == "InspectObjectPools") await Click(button("createButton"), mouse);
                 if (example.name == "SpawnOrCreateCube") for (int i = 0; i < 6; i++) await Click(button("spawnButton"), mouse);
-                if (example.name == "AttachEntities") await Click(button("attachButton"), mouse);
                 if (example.name == "CoverWindowExample")
                 {
                     ((Toggle)fields.FindProperty("pauseToggle").objectReferenceValue).isOn = false;
@@ -114,12 +119,6 @@ public static class ValidateExampleLayouts
                     var scroll = panel.GetComponent<ScrollRect>();
                     Require(scroll.verticalScrollbar != null && scroll.verticalScrollbarVisibility == ScrollRect.ScrollbarVisibility.AutoHide,
                         "Scrollable controls have a native scrollbar");
-                    if (example.name == "InspectObjectPools")
-                    {
-                        ((Dropdown)fields.FindProperty("poolReleaseMode").objectReferenceValue).value = 2;
-                        var caption = ((Dropdown)fields.FindProperty("poolReleaseMode").objectReferenceValue).captionText;
-                        Require(caption.resizeTextForBestFit && caption.verticalOverflow == VerticalWrapMode.Truncate, "Long caption stays in its own control");
-                    }
                     if (example.name == "CoverWindowExample")
                     {
                         var windows = UnityEngine.Object.FindObjectsByType<ExampleSceneLayout>(FindObjectsSortMode.None)
@@ -139,7 +138,7 @@ public static class ValidateExampleLayouts
                             : new Rect(.53f, .06f, .44f, Get<RectTransform>(layout, "legend") == null ? .88f : .62f);
                         var camera = Get<Camera>(layout, "sceneCamera");
                         var renderers = UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None);
-                        Require(renderers.Length >= 2, "Visible demonstration objects");
+                        Require(renderers.Length >= 1, "Visible demonstration objects");
                         foreach (var renderer in renderers)
                         {
                             Bounds bounds = renderer.bounds;

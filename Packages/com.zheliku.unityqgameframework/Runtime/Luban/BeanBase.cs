@@ -21,8 +21,15 @@
 
 namespace UnityQGameFramework.Luban
 {
+    /// <summary>
+    /// Luban 生成数据对象的基类。
+    /// </summary>
     public abstract class BeanBase
     {
+        /// <summary>
+        /// 获取数据对象类型编号。
+        /// </summary>
+        /// <returns>数据对象类型编号。</returns>
         public abstract int GetTypeId();
     }
 }

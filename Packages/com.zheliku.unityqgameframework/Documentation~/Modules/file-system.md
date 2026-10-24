@@ -2,7 +2,7 @@
 
 FileSystem 在一个物理容器里保存多个逻辑文件，并通过索引和块分配管理空间。Resource 可用它组织资源，业务代码也能单独创建容器。
 
-[FileSystem 示例](../../Samples~/17_FileSystem/) 从完整读写、重开与权限、索引和容量、分段读取，到容器导入导出。每个场景都显示文件内容和操作结果。
+[FileSystem 示例](../../Samples~/01_Modules/17_FileSystem/) 展示完整读写和分段读取。每个场景都显示文件内容和操作结果。
 
 少量玩家设置优先交给 [Setting](setting.md)。普通 JSON 存档直接使用 System.IO 也可以。只有需要统一管理许多逻辑文件时，才值得使用 FileSystem；容器不会自动加密、备份或同步云存档。
 

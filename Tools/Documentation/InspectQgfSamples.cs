@@ -27,7 +27,7 @@ public static class InspectQgfSamples
         var result = new { project = Application.dataPath, package = package.resolvedPath,
             samples = registrations, registeredPaths = manifest["samples"].Select(s => (string)s["path"]).ToArray(),
             developmentExamples = Directory.Exists("Assets/Examples"),
-            baseAssembly = AssetDatabase.GUIDToAssetPath("451fb7eed1a048a39d433c5f2e2a84f9"),
+            baseAssembly = AssetDatabase.GUIDToAssetPath("e638c6e0da015f4d99bdc5c5491facc0"),
             currentScene = scene.path, currentSceneIsDirty = scene.isDirty, isCompiling = EditorApplication.isCompiling,
             isPaused = EditorApplication.isPaused, isPlaying = EditorApplication.isPlaying };
         Directory.CreateDirectory("Artifacts~/SampleLayout");

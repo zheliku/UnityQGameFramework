@@ -31,7 +31,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取加载数据表失败事件编号。
         /// </summary>
-        public override int Id => EventId;
+        public override int Id
+        {
+            get
+            {
+                return EventId;
+            }
+        }
 
         /// <summary>
         /// 获取数据表资源名称。
@@ -51,6 +57,9 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 创建加载数据表失败事件。
         /// </summary>
+        /// <param name="assetName">数据表资源名称。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的加载数据表失败事件。</returns>
         public static LoadDataTableFailureEventArgs Create(string assetName, string errorMessage, object userData)
         {

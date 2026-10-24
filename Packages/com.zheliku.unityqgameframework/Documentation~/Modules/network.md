@@ -2,7 +2,7 @@
 
 Network 管理 Socket 连接、发送队列、拆包、消息分发和心跳。`INetworkChannelHelper` 实现消息协议，`Packet` 表示业务消息。
 
-[Network 示例](../../Samples~/20_Network/) 自带本机 TCP 回显服务，可创建和销毁通道、发送消息、观察心跳和模拟连接失败，也能比较两种 TCP 接收方式。
+[Network 示例](../../Samples~/01_Modules/20_Network/) 自带本机 TCP 回显服务，可创建和销毁通道、发送消息、观察心跳和模拟连接失败，也能比较两种 TCP 接收方式。
 
 ![Network 示例的实际运行结果](../Images/example-network-echo.png)
 

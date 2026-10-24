@@ -27,13 +27,13 @@ def main():
     editor = output / 'Assets/Editor'
     runtime.mkdir(parents=True)
     editor.mkdir()
-    workspace = root / 'Assets/Examples/22_StarForce/UnityQGameFramework/Config'
+    workspace = root / 'Assets/Examples/02_StarForce/UnityQGameFramework/Config'
     for folder in ('Generated', 'Data', 'Extensions'):
         shutil.copytree(workspace / folder, runtime / folder)
         shutil.copy2(workspace / (folder + '.meta'), runtime / (folder + '.meta'))
     # Intentionally omit Excel/schema/Profile: a Player must require only generated output.
     shutil.copy2(Path(__file__).with_name('LubanRuntimeProbe.cs'), runtime / 'LubanRuntimeProbe.cs')
-    config = root / 'Assets/Examples/22_StarForce/GameMain/Configs/DefaultConfig.toml'
+    config = root / 'Assets/Examples/02_StarForce/GameMain/Configs/DefaultConfig.toml'
     shutil.copy2(config, runtime / 'GameConfig.toml')
     shutil.copy2(config.with_suffix('.toml.meta'), runtime / 'GameConfig.toml.meta')
     shutil.copy2(Path(__file__).with_name('LubanPlayerValidation.cs'), editor / 'LubanPlayerValidation.cs')

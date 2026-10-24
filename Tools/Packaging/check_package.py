@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 import zipfile
-from sync_samples import sample_differences
+from sync_samples import sample_differences, sample_groups
 
 
 def git(root, *args):
@@ -45,10 +45,11 @@ def main():
     if not releases or releases[0] != manifest['version']:
         errors.append('The latest CHANGELOG.md version does not match package.json.')
     layout = json.loads((root / 'Tools/Documentation/examples-layout.json').read_text(encoding='utf-8-sig'))
-    expected_samples = {'00_PointPointPoint', '22_StarForce'} | {entry['folder'] for entry in layout}
+    groups = sample_groups(root)
+    expected_samples = {entry['folder'] for entry in groups}
     registered_samples = {sample['path'].removeprefix('Samples~/') for sample in manifest['samples']}
     if registered_samples != expected_samples:
-        errors.append('Each numbered example must have its own Sample registration.')
+        errors.append('Register the Sample groups defined in sample-groups.json.')
     actual_samples = {path.name for path in (package / 'Samples~').iterdir() if path.is_dir()}
     if actual_samples != registered_samples:
         errors.append('Samples~ contains missing or unregistered directories: ' + str(actual_samples ^ registered_samples))
@@ -57,10 +58,14 @@ def main():
         if stale_sample:
             errors.append(sample_name + ' sample mirror is stale: ' + ', '.join(stale_sample[:10]))
     examples = root / 'Assets/Examples'
+    if {path.name for path in examples.iterdir() if path.is_dir()} != registered_samples:
+        errors.append('Assets/Examples and Samples~ must have the same three root directories.')
+    if any(entry.get('source') != entry['folder'] for entry in groups):
+        errors.append('Editable Sample source names must match their published directory names.')
     readme_roots = (examples, package / 'Samples~')
     expected_readmes = (
-        {'README.md', '00_PointPointPoint/README.md', '22_StarForce/README.md'},
-        {'00_PointPointPoint/README.md', '22_StarForce/README.md'},
+        {'README.md', '00_PointPointPoint/README.md', '01_Modules/README.md', '02_StarForce/README.md'},
+        {entry['folder'] + '/README.md' for entry in groups},
     )
     for scope, expected in zip(readme_roots, expected_readmes):
         actual = {path.relative_to(scope).as_posix() for path in scope.rglob('README.md')}
@@ -77,55 +82,21 @@ def main():
             decoded = re.sub(r'\\u([0-9a-fA-F]{4})', lambda match: chr(int(match[1], 16)), content)
             if re.search('课|教[程学]', decoded) or re.search(r'\b(?:tutorial|lessons?)\b', decoded, re.I):
                 errors.append('Use 示例 in example text, including serialized UI: ' + path.relative_to(root).as_posix())
-    module_roots = [examples / entry['folder'] for entry in layout]
-    common = examples / 'Common'
+    module_root = examples / '01_Modules'
+    common = module_root / 'Common'
     shared_prefab = common / 'Prefabs/QGF.prefab'
     if not shared_prefab.is_file() or len(list(common.rglob('*.prefab'))) != 1:
         errors.append('Module examples must share Common/Prefabs/QGF.prefab.')
-    for entry, module in zip(layout, module_roots):
-        assembly_meta = module / (entry['assembly'] + '.asmdef.meta')
-        sample_assembly = package / 'Samples~' / entry['folder'] / (entry['assembly'] + '.asmdef')
-        if not assembly_meta.is_file() or not sample_assembly.is_file():
-            errors.append('Module Sample anchor assembly is missing: ' + entry['folder'])
-            continue
-        match = re.search(r'^guid: ([0-9a-f]{32})$', assembly_meta.read_text(encoding='utf-8-sig'), re.M)
-        if match is None or match[1] != entry['anchorGuid']:
-            errors.append('Module Sample anchor does not match its assembly GUID: ' + entry['folder'])
-    sample_guid_owners = {}
-    source_common_guids = set()
-    for meta in common.rglob('*.meta'):
-        match = re.search(r'^guid: ([0-9a-f]{32})$', meta.read_text(encoding='utf-8-sig'), re.M)
-        if match:
-            source_common_guids.add(match[1])
-    for entry in layout:
-        sample_common = package / 'Samples~' / entry['folder'] / 'Common'
-        if not (sample_common / 'Prefabs/QGF.prefab').is_file():
-            errors.append('Module Sample is missing its QGF prefab: ' + entry['folder'])
-            continue
-        sample_guids = set()
-        for meta in sample_common.rglob('*.meta'):
-            match = re.search(r'^guid: ([0-9a-f]{32})$', meta.read_text(encoding='utf-8-sig'), re.M)
-            if match:
-                previous = sample_guid_owners.get(match[1])
-                if previous:
-                    errors.append('Module Samples share a Common GUID: ' + previous + ' and ' + entry['folder'])
-                sample_guid_owners[match[1]] = entry['folder']
-                sample_guids.add(match[1])
-        if sample_guids.intersection(source_common_guids):
-            errors.append('Module Sample retained development Common GUIDs: ' + entry['folder'])
-        for path in (package / 'Samples~' / entry['folder']).rglob('*'):
-            if not path.is_file() or path.suffix not in {'.asset', '.prefab', '.unity', '.mat', '.controller', '.meta'}:
-                continue
-            content = path.read_text(encoding='utf-8-sig', errors='ignore')
-            if any(guid in content for guid in source_common_guids):
-                errors.append('Module Sample has a stale Common reference: ' + path.relative_to(root).as_posix())
-                break
-    example_cases = sorted(path for module in module_roots for path in module.glob('[0-9][0-9]_*') if path.is_dir())
-    for entry, module in zip(layout, module_roots):
-        if not (module / (entry['assembly'] + '.asmdef')).is_file():
-            errors.append('A module needs its own assembly: ' + entry['folder'])
-        if (module / 'Framework.prefab').exists() or (module / 'UI/UISprites').exists():
-            errors.append('Module framework and common UI copies must be removed: ' + entry['folder'])
+    module_assembly = module_root / 'UnityQGameFramework.Examples.Modules.asmdef'
+    if not module_assembly.is_file():
+        errors.append('Module Sample needs one root assembly: 01_Modules')
+    if not (common / 'Prefabs/QGF.prefab').is_file() or len(list(common.rglob('*.prefab'))) != 1:
+        errors.append('Module Sample must contain one Common/Prefabs/QGF.prefab.')
+    example_cases = sorted(path for path in module_root.rglob('*')
+                           if path.is_dir() and 'Art' not in path.relative_to(module_root).parts
+                           and list(path.glob('*.unity')))
+    if (module_root / 'Framework.prefab').exists() or (module_root / 'UI/UISprites').exists():
+        errors.append('Module framework and common UI copies must be removed from 01_Modules.')
     if any((examples / name).exists() for name in ('ModuleTutorials', 'ModuleExamples', 'StarForce')):
         errors.append('Old unnumbered sample directories remain.')
     point_root = examples / '00_PointPointPoint/GameMain'
@@ -141,7 +112,7 @@ def main():
         script = case / (scenes[0].stem + '.cs')
         if not script.is_file() or not re.search(r'class\s+' + re.escape(script.stem) + r'\s*:\s*MonoBehaviour\b', script.read_text(encoding='utf-8-sig')):
             errors.append('An example must use an ordinary MonoBehaviour: ' + script.relative_to(root).as_posix())
-    for script in (script for module in module_roots for script in module.rglob('*.cs')):
+    for script in module_root.rglob('*.cs'):
         content = script.read_text(encoding='utf-8-sig')
         assembly = next((path for parent in script.parents if parent != examples
                          for path in parent.glob('*.asmdef')), None)
@@ -157,7 +128,12 @@ def main():
                 errors.append('An example using UniTask needs an explicit assembly reference: ' + str(script.relative_to(root)))
         if re.search(r'\bvoid\s+Print\s*\(', script.read_text(encoding='utf-8-sig')):
             errors.append('Example output must be direct, without a Print wrapper: ' + script.relative_to(root).as_posix())
-        if re.search(r'\b(?:TutorialLesson|TutorialAssets|TutorialFiles|IEnumerator)\b|\bStartCoroutine\s*\(', script.read_text(encoding='utf-8-sig')):
+        text = script.read_text(encoding='utf-8-sig')
+        # Luban-generated tables and hand-written DataTable adapters need IEnumerator
+        # for the common enumeration contract; other examples should use UniTask.
+        allows_table_enumerator = 'Generated' in script.parts or 'DataTable<' in text
+        if re.search(r'\b(?:TutorialLesson|TutorialAssets|TutorialFiles)\b|\bStartCoroutine\s*\(', text) or (
+                re.search(r'\bIEnumerator\b', text) and not allows_table_enumerator):
             errors.append('An obsolete shared example helper or coroutine remains: ' + script.relative_to(root).as_posix())
     guid_paths = defaultdict(list)
     asset_count = 0

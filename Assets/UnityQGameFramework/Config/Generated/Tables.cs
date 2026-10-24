@@ -15,23 +15,45 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Config
 {
+/// <summary>
+/// 数据表集合。
+/// </summary>
 public partial class Tables : LubanTableSet
 {
+    /// <summary>
+    /// 获取 TbItem 数据表。
+    /// </summary>
     public TbItem TbItem {get; }
 
-    public override string SchemaHash => "fadc3d6c48092effac1a5ef42cd245912e651e1bb0fa0027a4535621f7743d79";
+    /// <summary>
+    /// 获取生成代码的结构版本。
+    /// </summary>
+    public override string SchemaHash
+    {
+        get
+        {
+            return "fc109f728eaa451acc8c83f7f57cfde1cc4660648d653bd9fc78bcfa97301259";
+        }
+    }
+    /// <summary>
+    /// 获取所有数据表。
+    /// </summary>
     public override System.Collections.Generic.IReadOnlyList<DataTableBase> DataTables { get; }
 
+    /// <summary>
+    /// 初始化数据表集合，加载数据并解析表间引用。
+    /// </summary>
+    /// <param name="loader">读取指定数据文件的加载方法。</param>
     public Tables(System.Func<string, ByteBuf> loader)
     {
         TbItem = new TbItem(loader("tbitem"));
         ResolveRef();
         DataTables = System.Array.AsReadOnly(new DataTableBase[]
         {
-            new DataTable<DRItem>(string.Empty, TbItem.DataMap),
+            TbItem,
         });
     }
-    
+
     private void ResolveRef()
     {
         TbItem.ResolveRef(this);
@@ -39,4 +61,3 @@ public partial class Tables : LubanTableSet
 }
 
 }
-

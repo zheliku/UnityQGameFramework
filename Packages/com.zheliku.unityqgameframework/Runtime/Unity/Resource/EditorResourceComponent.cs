@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -20,6 +20,7 @@ namespace UnityQGameFramework.Runtime
     /// <summary>
     /// 编辑器资源组件。
     /// </summary>
+    [DefaultExecutionOrder(-950)]
     [DisallowMultipleComponent]
     public sealed class EditorResourceComponent : MonoBehaviour, IResourceManager
     {

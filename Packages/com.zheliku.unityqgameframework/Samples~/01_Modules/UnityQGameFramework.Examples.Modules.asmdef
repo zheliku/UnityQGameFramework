@@ -1,0 +1,12 @@
+{
+  "name": "UnityQGameFramework.Examples.Modules",
+  "rootNamespace": "UnityQGameFramework.Examples.Modules",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Runtime",
+    "UnityQGameFramework.Luban",
+    "UnityEngine.UI",
+    "UniTask"
+  ],
+  "autoReferenced": true
+}

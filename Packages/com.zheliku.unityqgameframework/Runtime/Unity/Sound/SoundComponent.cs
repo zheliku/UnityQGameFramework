@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -17,6 +17,7 @@ namespace UnityQGameFramework.Runtime
     /// 声音组件。
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Sound")]
     public sealed partial class SoundComponent : FrameworkComponent
     {

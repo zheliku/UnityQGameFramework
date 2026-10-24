@@ -35,7 +35,7 @@ namespace Luban.Validation
                 component.LoadDataTables(loader => new StarForce.Tables(loader));
                 Verify(component);
                 component.UnloadDataTables();
-                Require(component.Count == 0 && component.LubanTables == null, "Unload failed.");
+                Require(component.Count == 0 && !component.IsLoaded, "Unload failed.");
                 var bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "luban"));
                 Require(bundle != null, "Luban bundle did not load.");
                 var catalog = bundle.LoadAsset<LubanDataTableCatalog>("Catalog");
@@ -63,9 +63,9 @@ namespace Luban.Validation
         private static void Verify(DataTableComponent component)
         {
             Require(component.Count == 11, "Expected 11 registered tables.");
-            var row = component.GetDataTable<StarForce.DREntity>().GetDataRow(10000);
+            var row = component.GetDataTable<StarForce.TbEntity>().GetDataRow(10000);
             Require(row.AssetName == "PlayerShip", "QGF row value mismatch.");
-            Require(ReferenceEquals(row, component.GetLubanTables<StarForce.Tables>().TbEntity.Get(10000)), "Native row identity mismatch.");
+            Require(ReferenceEquals(row, component.GetDataTable<StarForce.TbEntity>().DataMap[10000]), "Native row identity mismatch.");
         }
 
         private static void Require(bool value, string message) { if (!value) throw new Exception(message); }

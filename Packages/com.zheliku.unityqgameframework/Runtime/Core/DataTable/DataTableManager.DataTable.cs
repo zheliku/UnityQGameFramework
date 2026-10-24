@@ -9,153 +9,80 @@ using System.Collections.Generic;
 
 namespace UnityQGameFramework.Core.DataTable
 {
-    public sealed class DataTable<T> : DataTableBase, IDataTable<T> where T : class, IDataRow
+    /// <summary>
+    /// Luban 表的公共查询实现，不再另外持有一份字典或记录。
+    /// </summary>
+    /// <typeparam name="T">数据表行的类型。</typeparam>
+    public abstract class DataTable<T> : DataTableBase, IDataTable<T>
     {
-        private IReadOnlyDictionary<int, T> m_DataSet;
-
         /// <summary>
         /// 初始化数据表的新实例。
         /// </summary>
         /// <param name="name">数据表名称。</param>
-        public DataTable(string name, IReadOnlyDictionary<int, T> rows = null) : base(name)
+        protected DataTable(string name = null) : base(name)
         {
-            m_DataSet = rows ?? new Dictionary<int, T>();
-            foreach (KeyValuePair<int, T> pair in m_DataSet)
-            {
-                if (pair.Value == null || pair.Value.Id != pair.Key)
-                    throw new FrameworkException("Data table key does not match the record ID.");
-                if (MinIdDataRow == null || pair.Key < MinIdDataRow.Id) MinIdDataRow = pair.Value;
-                if (MaxIdDataRow == null || pair.Key > MaxIdDataRow.Id) MaxIdDataRow = pair.Value;
-            }
         }
 
         /// <summary>
         /// 获取数据表行的类型。
         /// </summary>
-        public override Type Type => typeof(T);
-
-        /// <summary>
-        /// 获取数据表行数。
-        /// </summary>
-        public override int Count => m_DataSet.Count;
-
-        /// <summary>
-        /// 获取数据表行。
-        /// </summary>
-        /// <param name="id">数据表行的编号。</param>
-        /// <returns>数据表行。</returns>
-        public T this[int id]
+        public override Type RowType
         {
             get
             {
-                return GetDataRow(id);
+                return typeof(T);
             }
         }
 
         /// <summary>
-        /// 获取编号最小的数据表行。
+        /// 返回循环访问数据表的枚举数。
         /// </summary>
-        public T MinIdDataRow { get; private set; }
-
-        /// <summary>
-        /// 获取编号最大的数据表行。
-        /// </summary>
-        public T MaxIdDataRow { get; private set; }
-
-        /// <summary>
-        /// 检查是否存在数据表行。
-        /// </summary>
-        /// <param name="id">数据表行的编号。</param>
-        /// <returns>是否存在数据表行。</returns>
-        public override bool HasDataRow(int id)
+        /// <returns>循环访问数据表的枚举数。</returns>
+        public abstract IEnumerator<T> GetEnumerator();
+        protected override IEnumerator GetRowEnumerator()
         {
-            return m_DataSet.ContainsKey(id);
+            return GetEnumerator();
         }
 
         /// <summary>
-        /// 检查是否存在数据表行。
+        /// 检查是否存在符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <returns>是否存在数据表行。</returns>
+        /// <returns>是否存在符合条件的数据表行。</returns>
         public bool HasDataRow(Predicate<T> condition)
         {
             if (condition == null)
             {
-                throw new FrameworkException("Condition is invalid.");
+                throw new ArgumentNullException(nameof(condition));
             }
-
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                if (condition(dataRow.Value))
-                {
-                    return true;
-                }
-            }
-
+            foreach (T row in this) if (condition(row)) return true;
             return false;
         }
 
         /// <summary>
-        /// 获取数据表行。
-        /// </summary>
-        /// <param name="id">数据表行的编号。</param>
-        /// <returns>数据表行。</returns>
-        public T GetDataRow(int id)
-        {
-            T dataRow = null;
-            if (m_DataSet.TryGetValue(id, out dataRow))
-            {
-                return dataRow;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取符合条件的数据表行。
+        /// 获取首条符合条件的数据表行，不存在时返回默认值。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <returns>符合条件的数据表行。</returns>
-        /// <remarks>当存在多个符合条件的数据表行时，仅返回第一个符合条件的数据表行。</remarks>
+        /// <returns>首条符合条件的数据表行，不存在时返回默认值。</returns>
         public T GetDataRow(Predicate<T> condition)
         {
             if (condition == null)
             {
-                throw new FrameworkException("Condition is invalid.");
+                throw new ArgumentNullException(nameof(condition));
             }
-
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                if (condition(dataRow.Value))
-                {
-                    return dataRow.Value;
-                }
-            }
-
-            return null;
+            foreach (T row in this) if (condition(row)) return row;
+            return default;
         }
 
         /// <summary>
         /// 获取符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <returns>符合条件的数据表行。</returns>
+        /// <returns>符合查询条件的数据表行。</returns>
         public T[] GetDataRows(Predicate<T> condition)
         {
-            if (condition == null)
-            {
-                throw new FrameworkException("Condition is invalid.");
-            }
-
-            List<T> results = new List<T>();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                if (condition(dataRow.Value))
-                {
-                    results.Add(dataRow.Value);
-                }
-            }
-
+            var results = new List<T>();
+            GetDataRows(condition, results);
             return results.ToArray();
         }
 
@@ -163,48 +90,25 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <param name="results">符合条件的数据表行。</param>
+        /// <param name="results">接收数据表行的结果列表。</param>
         public void GetDataRows(Predicate<T> condition, List<T> results)
         {
             if (condition == null)
             {
-                throw new FrameworkException("Condition is invalid.");
+                throw new ArgumentNullException(nameof(condition));
             }
-
-            if (results == null)
-            {
-                throw new FrameworkException("Results is invalid.");
-            }
-
-            results.Clear();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                if (condition(dataRow.Value))
-                {
-                    results.Add(dataRow.Value);
-                }
-            }
+            Collect(condition, results);
         }
 
         /// <summary>
         /// 获取排序后的数据表行。
         /// </summary>
         /// <param name="comparison">要排序的条件。</param>
-        /// <returns>排序后的数据表行。</returns>
+        /// <returns>符合查询条件的数据表行。</returns>
         public T[] GetDataRows(Comparison<T> comparison)
         {
-            if (comparison == null)
-            {
-                throw new FrameworkException("Comparison is invalid.");
-            }
-
-            List<T> results = new List<T>();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                results.Add(dataRow.Value);
-            }
-
-            results.Sort(comparison);
+            var results = new List<T>(Count);
+            GetDataRows(comparison, results);
             return results.ToArray();
         }
 
@@ -212,25 +116,14 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取排序后的数据表行。
         /// </summary>
         /// <param name="comparison">要排序的条件。</param>
-        /// <param name="results">排序后的数据表行。</param>
+        /// <param name="results">接收数据表行的结果列表。</param>
         public void GetDataRows(Comparison<T> comparison, List<T> results)
         {
             if (comparison == null)
             {
-                throw new FrameworkException("Comparison is invalid.");
+                throw new ArgumentNullException(nameof(comparison));
             }
-
-            if (results == null)
-            {
-                throw new FrameworkException("Results is invalid.");
-            }
-
-            results.Clear();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                results.Add(dataRow.Value);
-            }
-
+            Collect(null, results);
             results.Sort(comparison);
         }
 
@@ -239,29 +132,11 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <param name="comparison">要排序的条件。</param>
-        /// <returns>排序后的符合条件的数据表行。</returns>
+        /// <returns>符合查询条件的数据表行。</returns>
         public T[] GetDataRows(Predicate<T> condition, Comparison<T> comparison)
         {
-            if (condition == null)
-            {
-                throw new FrameworkException("Condition is invalid.");
-            }
-
-            if (comparison == null)
-            {
-                throw new FrameworkException("Comparison is invalid.");
-            }
-
-            List<T> results = new List<T>();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                if (condition(dataRow.Value))
-                {
-                    results.Add(dataRow.Value);
-                }
-            }
-
-            results.Sort(comparison);
+            var results = new List<T>();
+            GetDataRows(condition, comparison, results);
             return results.ToArray();
         }
 
@@ -270,33 +145,18 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <param name="comparison">要排序的条件。</param>
-        /// <param name="results">排序后的符合条件的数据表行。</param>
+        /// <param name="results">接收数据表行的结果列表。</param>
         public void GetDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results)
         {
             if (condition == null)
             {
-                throw new FrameworkException("Condition is invalid.");
+                throw new ArgumentNullException(nameof(condition));
             }
-
             if (comparison == null)
             {
-                throw new FrameworkException("Comparison is invalid.");
+                throw new ArgumentNullException(nameof(comparison));
             }
-
-            if (results == null)
-            {
-                throw new FrameworkException("Results is invalid.");
-            }
-
-            results.Clear();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                if (condition(dataRow.Value))
-                {
-                    results.Add(dataRow.Value);
-                }
-            }
-
+            Collect(condition, results);
             results.Sort(comparison);
         }
 
@@ -306,60 +166,29 @@ namespace UnityQGameFramework.Core.DataTable
         /// <returns>所有数据表行。</returns>
         public T[] GetAllDataRows()
         {
-            int index = 0;
-            T[] results = new T[m_DataSet.Count];
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                results[index++] = dataRow.Value;
-            }
-
-            return results;
+            var results = new List<T>(Count);
+            Collect(null, results);
+            return results.ToArray();
         }
 
         /// <summary>
         /// 获取所有数据表行。
         /// </summary>
-        /// <param name="results">所有数据表行。</param>
+        /// <param name="results">接收数据表行的结果列表。</param>
         public void GetAllDataRows(List<T> results)
+        {
+            Collect(null, results);
+        }
+
+        private void Collect(Predicate<T> condition, List<T> results)
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new ArgumentNullException(nameof(results));
             }
-
             results.Clear();
-            foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-            {
-                results.Add(dataRow.Value);
-            }
-        }
-
-        /// <summary>
-        /// 返回循环访问集合的枚举数。
-        /// </summary>
-        /// <returns>循环访问集合的枚举数。</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return m_DataSet.Values.GetEnumerator();
-        }
-
-        /// <summary>
-        /// 返回循环访问集合的枚举数。
-        /// </summary>
-        /// <returns>循环访问集合的枚举数。</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return m_DataSet.Values.GetEnumerator();
-        }
-
-        /// <summary>
-        /// 关闭并清理数据表。
-        /// </summary>
-        internal override void Shutdown()
-        {
-            m_DataSet = new Dictionary<int, T>();
-            MinIdDataRow = null;
-            MaxIdDataRow = null;
+            // 按生成表的原始顺序枚举；排序只改变结果列表。
+            foreach (T row in this) if (condition == null || condition(row)) results.Add(row);
         }
     }
 }

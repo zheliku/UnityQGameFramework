@@ -2,9 +2,7 @@
 
 Sound 管理声音组、播放请求和播放代理。资源模块加载 AudioClip，Unity 层的 SoundAgentHelper 用 AudioSource 播放。
 
-[Sound 示例](../../Samples~/15_Sound/) 自带 WAV，可播放和取消音效、暂停并调整进度、修改分组音量、比较代理抢占，以及在固定坐标或实体上播放。
-
-![Sound 示例：组音量与静音](../Images/example-sound.png)
+[Sound 示例](../../Samples~/01_Modules/15_Sound/) 展示一次播放、分组音量和空间声音。
 
 ## 播放一段循环音乐
 
@@ -92,7 +90,7 @@ PlaySoundParams 可配置 Loop、Priority、VolumeInSoundGroup、FadeInSeconds�
 
 `QGF.Sound.AudioMixer` 返回 Inspector 中配置的 Mixer。创建声音组时，组件先查找 `Master/组名`，找到后绑定第一个匹配的 AudioMixerGroup；没有匹配项时使用 Master。`ISoundGroup.Helper` 连接组节点与 MixerGroup，`ISoundAgent.Helper` 连接具体声音与 AudioSource。
 
-组音量示例显示当前代理所属组、实际组辅助器类型和已配置的 Mixer 名称。默认不分配 Mixer，声音直接输出；需要混音分组时在 SoundComponent 上指定资产，再按组名配置对应路由。
+组音量示例只播放 Music 组中的一条循环音轨，直接观察组音量与单声道音量相乘，以及两级静音的效果。默认不分配 Mixer，声音直接输出；需要混音分组时在 SoundComponent 上指定资产，再按组名配置对应路由。
 
 业务按 serialId 调用 SoundComponent 的播放、暂停、恢复和停止方法。代理上的同名方法把操作交给已绑定的辅助器，资源加载和代理分配仍由管理器完成。`Reset()` 归还音频资源引用并重置播放参数，由换资源和辅助器重置事件驱动。缓存的代理可能已被下一路声音复用，使用前先核对 SerialId。
 

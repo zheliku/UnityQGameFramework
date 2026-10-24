@@ -14,17 +14,44 @@ using Luban = UnityQGameFramework.Luban;
 
 namespace UnityQGameFramework.Config
 {
-public partial class TbItem
+/// <summary>
+/// Luban 生成的数据表。
+/// </summary>
+public partial class TbItem : UnityQGameFramework.Core.DataTable.DataTable<DRItem>
 {
+    /// <summary>
+    /// 获取数据表行数。
+    /// </summary>
+    public override int Count
+    {
+        get
+        {
+            return _dataList.Count;
+        }
+    }
+    /// <summary>
+    /// 返回循环访问数据表的枚举数。
+    /// </summary>
+    /// <returns>循环访问数据表的枚举数。</returns>
+    public override System.Collections.Generic.IEnumerator<DRItem> GetEnumerator()
+    {
+        return _dataList.GetEnumerator();
+    }
+
     private readonly System.Collections.Generic.Dictionary<int, DRItem> _dataMap;
     private readonly System.Collections.Generic.List<DRItem> _dataList;
-    
-    public TbItem(ByteBuf _buf)
+
+    /// <summary>
+    /// 初始化数据表的新实例。
+    /// </summary>
+    /// <param name="_buf">数据表二进制缓冲区。</param>
+    /// <param name="name">数据表名称。</param>
+    public TbItem(ByteBuf _buf, string name = null) : base(name)
     {
         int n = _buf.ReadSize();
         _dataMap = new System.Collections.Generic.Dictionary<int, DRItem>(n);
         _dataList = new System.Collections.Generic.List<DRItem>(n);
-        for(int i = n ; i > 0 ; --i)
+        for (int i = n; i > 0; --i)
         {
             DRItem _v;
             _v = global::UnityQGameFramework.Config.DRItem.DeserializeDRItem(_buf);
@@ -33,16 +60,83 @@ public partial class TbItem
         }
     }
 
-    public System.Collections.Generic.IReadOnlyDictionary<int, DRItem> DataMap => _dataMap;
-    public System.Collections.Generic.IReadOnlyList<DRItem> DataList => _dataList;
+    /// <summary>
+    /// 获取按主键索引的记录。
+    /// </summary>
+    public System.Collections.Generic.IReadOnlyDictionary<int, DRItem> DataMap
+    {
+        get
+        {
+            return _dataMap;
+        }
+    }
+    /// <summary>
+    /// 获取按源表顺序排列的记录。
+    /// </summary>
+    public System.Collections.Generic.IReadOnlyList<DRItem> DataList
+    {
+        get
+        {
+            return _dataList;
+        }
+    }
 
-    public DRItem GetOrDefault(int key) => _dataMap.TryGetValue(key, out var v) ? v : default;
-    public DRItem Get(int key) => _dataMap[key];
-    public DRItem this[int key] => _dataMap[key];
+    /// <summary>
+    /// 获取数据表行，不存在时返回默认值。
+    /// </summary>
+    /// <param name="key">数据表主键。</param>
+    /// <returns>数据表行。</returns>
+    public DRItem GetOrDefault(int key)
+    {
+        return _dataMap.TryGetValue(key, out var v) ? v : default;
+    }
+    /// <summary>
+    /// 按主键查询；不存在时返回 default。
+    /// </summary>
+    /// <param name="key">数据表主键。</param>
+    /// <returns>数据表行，不存在时返回默认值。</returns>
+    public DRItem GetDataRow(int key)
+    {
+        return GetOrDefault(key);
+    }
+    /// <summary>
+    /// 检查是否存在指定键的数据表行。
+    /// </summary>
+    /// <param name="key">数据表主键。</param>
+    /// <returns>是否存在数据表行。</returns>
+    public bool HasDataRow(int key)
+    {
+        return _dataMap.ContainsKey(key);
+    }
+    /// <summary>
+    /// 获取数据表行。
+    /// </summary>
+    /// <param name="key">数据表主键。</param>
+    /// <returns>数据表行。</returns>
+    public DRItem Get(int key)
+    {
+        return _dataMap[key];
+    }
+    /// <summary>
+    /// 获取数据表行。
+    /// </summary>
+    /// <param name="key">数据表主键。</param>
+    /// <returns>数据表行。</returns>
+    public DRItem this[int key]
+    {
+        get
+        {
+            return _dataMap[key];
+        }
+    }
 
+    /// <summary>
+    /// 解析数据表之间的引用。
+    /// </summary>
+    /// <param name="tables">数据表集合。</param>
     public void ResolveRef(Tables tables)
     {
-        foreach(var _v in _dataList)
+        foreach (var _v in _dataList)
         {
             _v.ResolveRef(tables);
         }
@@ -51,4 +145,3 @@ public partial class TbItem
 }
 
 }
-

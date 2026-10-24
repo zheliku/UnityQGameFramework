@@ -2,7 +2,7 @@
 
 BaseComponent 把框架接入 Unity 生命周期：启动时初始化 Core，每帧驱动模块更新，销毁时关闭 Core。常驻场景通常只放一套 QGF 根节点。
 
-运行 [Base 示例](../../Samples~/01_Base/) 可对照游戏时间与真实时间，再查看 JSON、设置和常用数据工具。
+运行 [Base 示例](../../Samples~/01_Modules/01_Base/) 可对照游戏时间与真实时间，再查看 JSON、设置和常用数据工具。
 
 ## 时间、帧率和暂停
 

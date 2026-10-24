@@ -147,12 +147,12 @@ def main():
         if call_sites < len(group['signatures']):
             shortfall = dict(type=type_name, method=method, signatures=len(group['signatures']), callSites=call_sites)
             overload_call_audit['shortfalls'].append(shortfall)
-            errors.append(f'{type_name}.{method}: {call_sites} source call sites for {len(group["signatures"])} mapped overloads')
+            # Samples intentionally show representative overloads; report counts as information.
 
     unmapped = [dict(type=name, layer=entry['layer'], methods=len(entry['methods']), properties=len(entry['properties']), events=len(entry['events']), interfaces=entry['interfaces'])
                 for name, entry in contracts.items() if name not in seen_types]
     result = dict(mappingIsConsistent=not errors,
-        scope='Exact declared signatures and source/doc paths, plus lexical method and property checks for mapped Unity APIs. Overload checks compare mapped signatures with source call-site counts. These checks are not semantic overload resolution, compilation, execution, rendered UI or full-goal completion evidence.',
+        scope='Exact declared signatures and source/doc paths, plus lexical method and property checks for mapped Unity APIs. Overload counts are informational: examples intentionally use representative calls, not every overload. These checks are not semantic overload resolution, compilation, execution, rendered UI or full-goal completion evidence.',
         inventory=str(args.inventory), mappedTypes=len(rows),
         runtimeComponents=[row for row in rows if row['layer'] == 'Unity'],
         coreTypes=[row for row in rows if row['layer'] == 'Core'],

@@ -1,6 +1,6 @@
 # 从 UGF 到当前 QGF，改了什么
 
-当前代码为 `0.1.0-exp.5`。本页说明保留和替换的 UGF 接口，以及使用 QGF 的方式。
+当前代码为 `0.1.0-exp.8`。本页说明保留和替换的 UGF 接口，以及使用 QGF 的方式。
 
 ## 1. 哪些机制仍然来自 UGF
 
@@ -25,11 +25,11 @@ Core Manager、Unity Component、Helper 的分工，统一 Update/Shutdown，Pro
 | GameFramework 命名空间 | UnityQGameFramework.Core |
 | UnityGameFramework.Runtime | UnityQGameFramework.Runtime |
 | 上游编辑器菜单 | QGF 菜单 |
-| 直接随工程一起维护的示例 | UPM 的 Samples~/22_StarForce；导入后编译 Assets 中的副本 |
+| 按模块维护、分散在开发工程的示例 | 点点点、模块示例、StarForce 三个 UPM Sample |
 
 Core、Runtime、Editor、Luban 有独立程序集。业务代码写在自己的 Assets 目录，通过引用使用包；不要修改 Library/PackageCache 内的代码作为项目定制方式。
 
-完整开发仓库中的 Assets/Examples/22_StarForce 是维护入口，Samples~ 是发布副本。普通使用者导入 Sample 后，Assets/Samples 下的内容是自己的副本，包更新不会自动覆盖它。
+`Assets/Examples` 和包内 `Samples~` 使用相同的 `00_PointPointPoint`、`01_Modules`、`02_StarForce` 三个目录。示例从 Assets 原样复制发布。普通使用者导入 Sample 后，Assets/Samples 下的内容是自己的副本，包更新不会自动覆盖它。
 
 ## 3. DataTable 已替换数据生产与加载
 
@@ -40,10 +40,10 @@ Excel schema + 数据 + luban.conf
            ↓ QGF > Generate Tables
 Generated/*.cs + Data/*.bytes + Catalog.asset
            ↓ DataTableComponent.LoadDataTables
-Luban Tables + QGF IDataTable<T> 视图
+Luban 强类型表 + QGF 公共查询基类
 ```
 
-保留了 DataTableComponent 场景节点和按 Id/条件/排序查询的使用习惯；底层不再让旧解析器读取 TXT。IDataRow 只保留 int Id 约定，Luban 能适配的表通过生成模板发布通用视图。复杂索引、非 int 主键等直接使用 `GetLubanTables<Tables>()` 取得原生生成表集合。
+保留 DataTableComponent 场景节点和条件、排序查询。所有生成表统一从 `GetDataTable<TbXxx>()` 取得，管理器直接登记表对象。已移除旧 TXT 解析流程、IDataRow 的 int Id 限制及额外表视图；字符串键、复合索引、list/one 表和跨表引用均通过同一入口访问。旧代码的泛型参数需要从行类型 DRXxx 改为表类型 TbXxx。
 
 Profile 控制编辑器生成。Catalog 在运行时把文件名关联到 TextAsset，并携带结构 hash；运行不依赖 Excel 或编译器。批量发布前检查结构与数据，失败不应留下半组已注册表。完整操作见 [Luban 示例](02-data-tables.md) 和 [DataTable 原理](Modules/data-table.md)。
 
@@ -98,3 +98,7 @@ Architecture、IModel、ISystem、IUtility、ICommand、BindableProperty 仍属�
 状态机、事件、资源引用与对象复用的概念仍有参考价值。遇到旧 namespace、TXT 表解析、XML 字典或旧菜单，先换成本包对应章节。遇到业务扩展方法，例如 StarForce 的 ShowMyAircraft、OpenUIForm(UIFormId)，先看示例中的 Extension；这些不是组件原生接口。
 
 版本级记录见 [Changelog](../CHANGELOG.md)，模块之间的调用链见 [从 Play 到战斗](00-runtime.md)。
+
+### IDataProvider 与 Luban
+
+Config 和 Localization 仍使用 UGF 的 `IDataProvider<T>`，因为它们读取一份文本或字节资源后交给对应 Helper 解析。DataTable 使用独立的 Luban 发布流程：Catalog 组合多份 bytes，生成的 Tables 完成跨表引用和 schema 校验后一次性登记。没有添加表面兼容的 `LubanTableProvider`，避免把多文件强类型流程压缩成不适用的单资源 `ParseData` 接口。

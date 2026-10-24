@@ -22,10 +22,10 @@ public static class ValidateExampleDropdowns
         var samples = modules.Select(module => new
         {
             name = (string)module["folder"],
-            roots = new[] { "Assets/Examples/" + (string)module["folder"], "Assets/Examples/Common" }
+            roots = new[] { "Assets/Examples/" + (string)module["folder"], "Assets/Examples/01_Modules/Common" }
         }).ToList();
         samples.Insert(0, new { name = "00_PointPointPoint", roots = new[] { "Assets/Examples/00_PointPointPoint" } });
-        samples.Add(new { name = "22_StarForce", roots = new[] { "Assets/Examples/22_StarForce" } });
+        samples.Add(new { name = "02_StarForce", roots = new[] { "Assets/Examples/02_StarForce" } });
         var completed = new List<object>();
         foreach (var sample in samples)
         {

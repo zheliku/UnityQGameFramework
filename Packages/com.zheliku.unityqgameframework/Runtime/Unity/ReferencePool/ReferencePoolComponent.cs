@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -12,6 +12,7 @@ namespace UnityQGameFramework.Runtime
     /// 引用池组件。
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/ReferencePool")]
     public sealed class ReferencePoolComponent : FrameworkComponent
     {

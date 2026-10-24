@@ -12,21 +12,32 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Sound;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
-using PlaySoundSuccessEventArgs = UnityQGameFramework.Runtime.PlaySoundSuccessEventArgs;
+using UnityQGameFramework.Examples.Modules;
 
-// 仅用于隔离工程验收。直接调用按钮监听器，以便在异步请求尚未完成时销毁控制器。
+/// <summary>
+/// 检查示例销毁时的资源归属。
+/// </summary>
 public static class ValidateExampleOwnership
 {
     private static readonly List<string> assertions = new List<string>();
-    private static readonly string[] controllers = { "OpenWindowExample", "ReopenWindowExample", "CoverWindowExample", "InspectWindows",
-        "ReplaceSoundAgents", "FollowEntitySound", "LoadRoomExample", "SwitchRoomsExample", "SceneOrderExample" };
+    private static readonly string[] controllers = { "OpenWindowExample", "ReopenWindowExample", "CoverWindowExample",
+        "LoadRoomExample", "SwitchRoomsExample" };
 
-    public static Task<object> Run() => RunOnly(null);
+    /// <summary>
+    /// 检查所有保留示例的资源清理。
+    /// </summary>
+    /// <returns>资源归属检查结果。</returns>
+    public static Task<object> Run()
+    {
+        return RunOnly(null);
+    }
 
+    /// <summary>
+    /// 检查指定示例的资源清理。
+    /// </summary>
+    /// <param name="names">示例名称，为空时检查全部示例。</param>
+    /// <returns>资源归属检查结果。</returns>
     public static async Task<object> RunOnly(string[] names)
     {
         if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
@@ -55,22 +66,21 @@ public static class ValidateExampleOwnership
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
             foreach (string name in controllers.Where(name => names == null || names.Contains(name)))
             {
-                int modes = name == "ReopenWindowExample" || name == "FollowEntitySound" || name == "SwitchRoomsExample" ? 3 : 2;
+                int modes = name == "ReopenWindowExample" || name == "SwitchRoomsExample" ? 3 : 2;
                 for (int mode = 0; mode < modes; mode++)
                 {
                     int start = assertions.Count;
                     string scene = ScenePath(layouts, name);
                     sceneHashes[scene] = Hash(scene);
                     EditorSceneManager.OpenScene(scene);
-                    Type type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + name)).First(t => t != null);
+                    Type type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + name)).First(t => t != null);
                     // 不保存：让框架先启动，再建一个不属于示例控制器的对象。
                     ((MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type)).enabled = false;
                     await Play(true);
                     Application.runInBackground = true;
                     var owner = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                     await Task.Delay(250);
-                    if (name == "ReplaceSoundAgents" || name == "FollowEntitySound") await CheckSound(name, mode, owner);
-                    else if (name.EndsWith("RoomExample") || name == "SwitchRoomsExample" || name == "SceneOrderExample") await CheckScene(name, mode, owner, layouts);
+                    if (name == "LoadRoomExample" || name == "SwitchRoomsExample") await CheckScene(name, mode, owner, layouts);
                     else await CheckUI(name, mode, owner);
                     await Play(false);
                     Require(errors.Count == 0, name + " runtime errors: " + string.Join("\n", errors));
@@ -100,14 +110,14 @@ public static class ValidateExampleOwnership
     private static async Task CheckUI(string name, int mode, MonoBehaviour owner)
     {
         string asset = AssetDatabase.GUIDToAssetPath(Field<string>(owner, "windowGuid"));
-        string group = name == "InspectWindows" ? "Hud" : "Example";
+        const string group = "Example";
         QGF.UI.AddUIGroup(group);
         int outside = QGF.UI.OpenUIForm(asset, group, "外部窗口");
         await Until(() => QGF.UI.HasUIForm(outside), "Unrelated window loaded");
         SetLoadDelay(mode == 1 ? 2 : 0);
         owner.enabled = true;
         await Until(() => Field<bool>(owner, "ready"), "Controller initialized");
-        string[] keys = name == "CoverWindowExample" ? new[] { "bottom", "top" } : name == "InspectWindows" ? new[] { "hud", "popup" } : new[] { "serialId" };
+        string[] keys = name == "CoverWindowExample" ? new[] { "bottom", "top" } : new[] { "serialId" };
         if (name == "CoverWindowExample" && mode == 0)
         {
             await Until(() => QGF.UI.HasUIForm(Field<int>(owner, "bottom")), "Bottom window loaded");
@@ -129,79 +139,6 @@ public static class ValidateExampleOwnership
         Require(QGF.UI.GetAllLoadedUIForms().Length == 1 && QGF.UI.HasUIForm(outside), "Unrelated window preserved with no late reopen");
     }
 
-    private static async Task CheckSound(string name, int mode, MonoBehaviour owner)
-    {
-        string asset = AssetDatabase.GUIDToAssetPath(Field<string>(owner, "soundGuid"));
-        bool follow = name == "FollowEntitySound";
-        string group = follow ? "Outside" : "Effects";
-        QGF.Sound.AddSoundGroup(group, false, false, .2f, follow ? 1 : 2);
-        var parameters = PlaySoundParams.Create();
-        parameters.Loop = true;
-        parameters.Priority = 100;
-        var outsideData = new object();
-        ISoundAgent outsideAgent = null;
-        var heard = new Dictionary<int, ISoundAgent>();
-        EventHandler<GameEventArgs> played = (sender, args) =>
-        {
-            var e = (PlaySoundSuccessEventArgs)args;
-            heard[e.SerialId] = e.SoundAgent;
-            if (ReferenceEquals(e.UserData, outsideData)) outsideAgent = e.SoundAgent;
-        };
-        QGF.Event.Subscribe(PlaySoundSuccessEventArgs.EventId, played);
-        int outside = QGF.Sound.PlaySound(asset, group, 0, parameters, outsideData);
-        await Until(() => outsideAgent != null && outsideAgent.Length > 0, "Unrelated looping sound loaded");
-        if (follow)
-        {
-            QGF.Entity.AddEntityGroup("Emitters", 30, 4, 60, 0);
-            QGF.Entity.ShowEntity<SoundEmitterLogic>(99, AssetDatabase.GUIDToAssetPath(Field<string>(owner, "prefabGuid")), "Emitters");
-            await Until(() => QGF.Entity.HasEntity(99), "Unrelated emitter loaded");
-        }
-        SetLoadDelay(mode == 1 ? 2 : 0);
-        owner.enabled = true;
-        await Until(() => Field<bool>(owner, follow ? "ready" : "initialized"), "Controller initialized");
-        int[] ids;
-        if (follow && mode == 1)
-        {
-            Require(QGF.Entity.IsLoadingEntity(1), "Owned emitter still loading");
-            ids = new int[0];
-        }
-        else
-        {
-            if (follow) await Until(() => QGF.Entity.HasEntity(1), "Owned emitter loaded");
-            if (mode == 2) SetLoadDelay(2);
-            Field<Button>(owner, "playButton").onClick.Invoke();
-            if (follow)
-            {
-                int id = Field<int>(owner, "serialId");
-                ids = new[] { id };
-                if (mode == 2) Require(QGF.Sound.IsLoadingSound(id), "Owned bound sound still loading");
-                else await Until(() => Field<ISoundAgent>(owner, "agent")?.Length > 0, "Owned bound sound loaded");
-            }
-            else
-            {
-                var requests = Field<List<int>>(owner, "requests");
-                if (mode == 0)
-                {
-                    await Until(() => Field<List<ISoundAgent>>(owner, "agents").Count > 0, "Owned priority sound loaded");
-                    Field<Button>(owner, "playButton").onClick.Invoke();
-                    await Until(() => !QGF.Sound.IsLoadingSound(requests.Last()), "Replacement request finished");
-                }
-                else Require(QGF.Sound.IsLoadingSound(requests.Last()), "Owned priority sound still loading");
-                ids = requests.ToArray();
-            }
-        }
-        var ownedAgents = follow ? new[] { Field<ISoundAgent>(owner, "agent") } : Field<List<ISoundAgent>>(owner, "agents").ToArray();
-        UnityEngine.Object.Destroy(owner.gameObject);
-        await Task.Delay(mode == 0 ? 200 : 2300);
-        Require(ids.All(id => !QGF.Sound.IsLoadingSound(id)), "Owned sound requests completed or cancelled");
-        Require(ownedAgents.All(agent => agent == null || !ids.Contains(agent.SerialId) || agent.Length == 0), "Owned voices stopped");
-        Require(ids.All(id => !heard.ContainsKey(id) || heard[id].SerialId != id || heard[id].Length == 0), "No owned playback survives cancellation");
-        if ((!follow && mode == 1) || (follow && mode == 2)) Require(ids.All(id => !heard.ContainsKey(id)), "Cancelled request never reported playback success");
-        Require(outsideAgent.SerialId == outside && outsideAgent.Length > 0 && outsideAgent.IsPlaying, "Unrelated sound preserved");
-        if (follow) Require(!QGF.Entity.HasEntity(1) && !QGF.Entity.IsLoadingEntity(1) && QGF.Entity.HasEntity(99), "Only owned emitter hidden, including pending display");
-        QGF.Event.Unsubscribe(PlaySoundSuccessEventArgs.EventId, played);
-    }
-
     private static async Task CheckScene(string name, int mode, MonoBehaviour owner, JObject layouts)
     {
         string outsideController = name == "LoadRoomExample" ? "SwitchRoomsExample" : "LoadRoomExample";
@@ -214,8 +151,6 @@ public static class ValidateExampleOwnership
         await Until(() => QGF.Scene.SceneIsLoaded(outside), "Unrelated room loaded");
         string[] owned = name == "LoadRoomExample" ? new[] { AssetDatabase.GUIDToAssetPath(Field<string>(owner, "roomGuid")) }
             : new[] { AssetDatabase.GUIDToAssetPath(Field<string>(owner, "blueRoomGuid")), AssetDatabase.GUIDToAssetPath(Field<string>(owner, "orangeRoomGuid")) };
-        Camera camera = name == "SceneOrderExample" ? Field<Camera>(owner, "sceneCamera") : null;
-        string tag = camera != null ? camera.tag : null;
         bool caughtPending = false;
         EditorApplication.CallbackFunction destroyPending = () =>
         {
@@ -238,13 +173,7 @@ public static class ValidateExampleOwnership
             if (mode == 1) await Until(() => caughtPending, "Controller destroyed during actual scene loading");
             else
             {
-                await Until(() => name == "SceneOrderExample" ? owned.All(path => QGF.Scene.SceneIsLoaded(path))
-                    : QGF.Scene.SceneIsLoaded(owned[0]) && (name != "SwitchRoomsExample" || !Field<bool>(owner, "changing")), "Owned rooms loaded");
-                if (camera != null)
-                {
-                    Field<Toggle>(owner, "cameraTagToggle").isOn = tag != "MainCamera";
-                    Require(camera.tag != tag, "Camera tag changed by example");
-                }
+                await Until(() => QGF.Scene.SceneIsLoaded(owned[0]) && (name != "SwitchRoomsExample" || !Field<bool>(owner, "changing")), "Owned rooms loaded");
                 if (mode == 2)
                 {
                     Field<Button>(owner, "switchButton").onClick.Invoke();
@@ -255,7 +184,6 @@ public static class ValidateExampleOwnership
             await Until(() => owned.All(path => !QGF.Scene.SceneIsLoaded(path) && !QGF.Scene.SceneIsLoading(path) && !QGF.Scene.SceneIsUnloading(path)), "Owned loaded and pending rooms removed");
             await Task.Delay(250);
             Require(QGF.Scene.SceneIsLoaded(outside) && QGF.Scene.GetLoadedSceneAssetNames().Length == 1, "Unrelated room preserved");
-            if (camera != null) Require(camera.tag == tag && QGF.Scene.MainCamera == Camera.main, "Camera tag and cache restored");
         }
         finally { EditorApplication.update -= destroyPending; }
     }
@@ -263,10 +191,14 @@ public static class ValidateExampleOwnership
     private static string ScenePath(JObject layouts, string name)
     {
         string source = (string)layouts[name]["script"];
-        string module = source.Split('/')[2];
-        string guid = module == "14_UI" ? "cad20e62ad474103ab805e69424a0958" : module == "15_Sound" ? "bead710ed85a4e19b16e4e6815fc7e14" : "bdd615d3777d46c487aeeb6777122b02";
-        string root = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath(guid)).Replace('\\', '/');
-        string script = root + source.Substring(("Assets/Examples/" + module).Length);
+        const string prefix = "Assets/Examples/01_Modules";
+        string assembly = AssetDatabase.GUIDToAssetPath("26a4a9304f1b571a97885965a89aaed1");
+        if (string.IsNullOrEmpty(assembly) || !source.StartsWith(prefix + "/", StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException("Cannot locate module sample: " + source);
+        }
+        string root = Path.GetDirectoryName(assembly).Replace('\\', '/');
+        string script = root + source.Substring(prefix.Length);
         return script.Substring(0, script.Length - 3) + ".unity";
     }
 

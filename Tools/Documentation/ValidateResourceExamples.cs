@@ -20,7 +20,7 @@ using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Core.ObjectPool;
 
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateResourceExamples
@@ -38,10 +38,10 @@ public static class ValidateResourceExamples
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
             throw new Exception("Unsaved scene.");
         assertions.Clear();
-        UnityQGameFramework.Examples.Editor.BuildResourceExamples.Build();
+        UnityQGameFramework.Examples.Modules.Editor.BuildResourceExamples.Build();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "12_Resource" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .SelectMany(pair => Enumerable.Range(0, pair.Name == "VerifyCachedResources" || pair.Name == "SelectResourceVariant" ? 4 : pair.Name == "UpdateRemoteResources" ? 3 : pair.Name == "LoadResourcesOnDemand" ? 2 : 1)
                 .Select(mode => new { name = pair.Name, layout = pair.Value, mode })).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
@@ -78,10 +78,10 @@ public static class ValidateResourceExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("c2ad608804cc4202bd615677e0af4fbb");
+                string anchor = AssetDatabase.GUIDToAssetPath("1fde9459f6765bdeacb1340f310a5a10");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Resource sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/12_Resource".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 Application.runInBackground = true;
@@ -92,8 +92,8 @@ public static class ValidateResourceExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(LoadResourcePackage).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(LoadResourcePackage).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");
@@ -553,90 +553,37 @@ public static class ValidateResourceExamples
         var fixture = ResourceExamplePaths.Fixture;
         if (name == "LoadResourcePackage")
         {
-            for (int entry = 0; entry < 8; entry++)
-            {
-                dropdown("loadMode").value = entry;
-                await Click(button("loadButton"), mouse);
-                await Until(() => Field<GameObject>(example, "asset") != null, 6000, "LoadAsset entry " + entry);
-                var asset = Field<GameObject>(example, "asset");
-                var instance = Field<GameObject>(example, "instance");
-                Require(asset != instance && instance != null && asset.name == "Cube", "Loaded asset and created scene instance are distinct");
-                bool withContext = new[] { 3, 5, 6, 7 }.Contains(entry);
-                Require(text("stateText").text.Contains("上下文匹配 " + withContext), "LoadAsset context entry " + entry);
-                Require(instance.GetComponent<Renderer>().sharedMaterial.shader.isSupported, "Bundle material shader is supported");
-                if (entry == 7) await Screenshot("resource-package-loaded");
-                await Click(button("releaseButton"), mouse);
-                await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "releasing"), 4000, "Unload asset entry " + entry);
-                Require(Field<GameObject>(example, "instance") == null && button("loadButton").interactable, "Instance destroyed and another load allowed");
-            }
+            await Click(button("loadButton"), mouse);
+            await Until(() => Field<GameObject>(example, "asset") != null, 6000, "Cube asset loads from Package");
+            var asset = Field<GameObject>(example, "asset");
+            var instance = Field<GameObject>(example, "instance");
+            Require(asset != instance && instance != null && asset.name == "Cube",
+                "Loaded prefab asset and instantiated scene object are distinct");
+            Require(instance.GetComponent<Renderer>().sharedMaterial.shader.isSupported,
+                "Package Cube uses a supported shader");
+            await Screenshot("resource-package-loaded");
+            await Click(button("releaseButton"), mouse);
+            await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "releasing"),
+                4000, "Instance is destroyed before its asset reference is released");
+            Require(Field<GameObject>(example, "instance") == null && button("loadButton").interactable,
+                "Package asset can be loaded again after release");
             Require(resource.HasAsset(fixture.PrefabAssetName) == HasAssetResult.AssetOnDisk && resource.HasAsset("Assets/DoesNotExist.prefab") == HasAssetResult.NotExist,
                 "HasAsset distinguishes real and missing resources");
-            for (int collection = 0; collection < 2; collection++)
-            {
-                if (toggle("listToggle").isOn != (collection == 1)) await Click(toggle("listToggle"), mouse);
-                for (int groupIndex = 0; groupIndex < 3; groupIndex++)
-                {
-                    dropdown("groupMode").value = groupIndex;
-                    await Task.Delay(100);
-                    var groups = Field<List<IResourceGroup>>(example, "groups");
-                    Require(groups.Count == 4 && groups.Any(group => group.Name == "Base") && groups.Any(group => group.Name == "Data")
-                        && groups.Any(group => group.Name == "Shared"), "Array and List group query");
-                    var group = resource.GetResourceGroup(groupIndex == 0 ? "" : groupIndex == 1 ? "Base" : "Data");
-                    Require(group.Ready && group.ReadyCount == group.TotalCount && group.ReadyLength == group.TotalLength && group.Progress == 1,
-                        "Packaged resource group is ready: " + group.Name);
-                    Require(group.ReadyCompressedLength == group.TotalCompressedLength && group.TotalCompressedLength == group.TotalLength
-                        && text("groupsText").text.Contains($"压缩大小 {group.ReadyCompressedLength}/{group.TotalCompressedLength} 字节")
-                        && text("groupsText").text.Contains("资源组状态：已就绪"), "Package group compressed length uses local resource size");
-                }
-                for (int groupIndex = 3; groupIndex < 5; groupIndex++)
-                {
-                    dropdown("groupMode").value = groupIndex;
-                    await Task.Delay(100);
-                    var names = Field<List<string>>(example, "resourceNames");
-                    int expected = groupIndex == 3 ? 3 : 2;
-                    Require(names.Count == expected && names.Distinct().Count() == expected && text("groupsText").text.Contains("集合包含 2 组"),
-                        "Group collection array/List unions deduplicate overlapping resource names");
-                    var merged = resource.GetResourceGroupCollection(new[] { "Base", groupIndex == 3 ? "Data" : "Shared" });
-                    Require(merged.Ready && merged.ReadyCompressedLength == merged.TotalCompressedLength
-                        && merged.TotalCompressedLength == merged.TotalLength && text("groupsText").text.Contains("集合状态：已就绪")
-                        && text("groupsText").text.Contains($"压缩大小 {merged.ReadyCompressedLength}/{merged.TotalCompressedLength} 字节"),
-                        "Package collection compressed sizes count each resource once");
-                }
-                dropdown("groupMode").value = 6;
-                await Task.Delay(100);
-                Require(Field<List<string>>(example, "resourceNames").Count == 2 && text("groupsText").text.Contains("组 Shared"),
-                    "Shared named group lists the two resources used by overlap example");
-                dropdown("groupMode").value = 5;
-                await Task.Delay(100);
-                Require(!resource.HasResourceGroup("Missing") && text("groupsText").text.Contains("Missing 未注册"), "Missing group is displayed without null dereference");
-            }
-            Require(Field<List<TaskInfo>>(example, "tasks").Count == 0 && resource.LoadTotalAgentCount > 0, "Load task queue drained through both query overloads");
-            await Task.Delay(250);
-            await Click(button("cleanupButton"), mouse);
-            await Until(() => resource.LastUnloadUnusedAssetsOperationElapseSeconds < .25f, 5000, "Force unused asset cleanup");
-            await Screenshot("resource-package");
         }
         else if (name == "ReadBinaryResource")
         {
             byte[] original = File.ReadAllBytes(fixture.FileSystemAssetName), disk = File.ReadAllBytes(fixture.DiskAssetName);
-            int[] offsets = { 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17, 17, 17 };
-            int[] lengths = { disk.Length, disk.Length, original.Length, original.Length, original.Length, 12, 8, 8, 16, 8, 8, 16, 8, 8 };
-            for (int entry = 0; entry < 14; entry++)
-            {
-                dropdown("readMode").value = entry;
-                await Click(button("readButton"), mouse);
-                await Until(() => Field<byte[]>(example, "result") != null && !Field<bool>(example, "loading"), 6000, "Binary read entry " + entry);
-                byte[] result = Field<byte[]>(example, "result");
-                byte[] expected = (entry < 2 ? disk : original).Skip(offsets[entry]).Take(lengths[entry]).ToArray();
-                Require(result.SequenceEqual(expected), "Binary bytes match source slice entry " + entry);
-                Require(text("bytesText").text.Contains(result.Length.ToString()), "Actual byte count displayed");
-                if (entry < 2) Require(text("stateText").text.Contains("上下文匹配 " + (entry == 1)), "Binary callback context " + entry);
-                string assetName = entry < 2 ? fixture.DiskAssetName : fixture.FileSystemAssetName;
-                Require(resource.GetBinaryLength(assetName) == (entry < 2 ? disk.Length : original.Length), "Declared binary length");
-                Require(resource.GetBinaryPath(assetName, out bool readOnly, out bool fileSystem, out string relative, out string file)
-                    && readOnly && fileSystem == (entry >= 2), "Binary physical location metadata " + entry);
-                Require((resource.GetBinaryPath(assetName) != null) == (entry < 2), "Direct path only for loose binary files");
-            }
+            await Click(button("readButton"), mouse);
+            byte[] segment = Field<byte[]>(example, "result");
+            Require(segment.SequenceEqual(original.Skip(8).Take(16)), "File-system segment starts at the requested source offset");
+            Require(text("bytesText").text.Contains("16 字节"), "Segment length is displayed");
+            Require(resource.GetBinaryLength(fixture.FileSystemAssetName) == original.Length
+                && resource.GetBinaryPath(fixture.FileSystemAssetName, out bool readOnly, out bool fileSystem, out _, out _)
+                && readOnly && fileSystem && resource.GetBinaryPath(fixture.FileSystemAssetName) == null,
+                "File-system binary reports storage metadata without exposing a direct disk path");
+            Require(resource.GetBinaryLength(fixture.DiskAssetName) == disk.Length
+                && resource.GetBinaryPath(fixture.DiskAssetName) != null,
+                "Disk binary reports its length and direct path");
             Require(resource.HasAsset(fixture.FileSystemAssetName) == HasAssetResult.BinaryOnFileSystem
                 && resource.HasAsset(fixture.DiskAssetName) == HasAssetResult.BinaryOnDisk, "Binary storage kinds reported accurately");
             await Screenshot("resource-binary");

@@ -11,7 +11,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
-from sync_samples import sample_differences, sample_sources
+from sync_samples import sample_differences, sample_sources, sample_groups
 
 
 def main():
@@ -26,7 +26,7 @@ def main():
                         help='Reject unpublished package changes before staging a release')
     args = parser.parse_args()
     package_source = root / "Packages/com.zheliku.unityqgameframework"
-    example_source = root / "Assets/Examples/22_StarForce"
+    example_source = root / "Assets/Examples/02_StarForce"
     manifest = json.loads((package_source / "package.json").read_text(encoding="utf-8-sig"))
     artifacts_root = (root / "Artifacts~").resolve()
     output = (
@@ -67,14 +67,12 @@ def main():
     with tarfile.open(archive, "r:gz") as stream:
         exported_manifest = json.load(stream.extractfile("package/package.json"))
         registered = {sample['path'] for sample in exported_manifest['samples']}
-        expected = {'Samples~/00_PointPointPoint', 'Samples~/22_StarForce'}
-        expected.update('Samples~/' + entry['folder'] for entry in json.loads(
-            (root / 'Tools/Documentation/examples-layout.json').read_text(encoding='utf-8-sig')))
+        expected = {'Samples~/' + entry['folder'] for entry in sample_groups(root)}
         assert registered == expected
-        stream.getmember("package/Samples~/22_StarForce/StarForce Launcher.unity")
-        stream.getmember("package/Samples~/22_StarForce/GameMain.meta")
-        stream.getmember("package/Samples~/01_Base/Common/Prefabs/QGF.prefab")
-        stream.getmember("package/Samples~/02_Config/01_ReadValues/ReadConfigValues.unity")
+        stream.getmember("package/Samples~/02_StarForce/StarForce Launcher.unity")
+        stream.getmember("package/Samples~/02_StarForce/GameMain.meta")
+        stream.getmember("package/Samples~/01_Modules/Common/Prefabs/QGF.prefab")
+        stream.getmember("package/Samples~/01_Modules/02_Config/01_ReadValues/ReadConfigValues.unity")
         stream.getmember("package/Samples~/00_PointPointPoint/GameMain/Scenes/PointPointPoint.unity")
     print(
         json.dumps(

@@ -2,7 +2,7 @@
 
 Scene 通过资源模块加载和卸载游戏场景，并记录各场景的当前状态。业务使用完整场景资产名，例如 `Assets/GameMain/Scenes/Battle.unity`。
 
-[Scene 示例](../../Samples~/16_Scene/) 带有独立房间，可操作加载与卸载、切换房间和调整多场景顺序。下图是切换到橙色房间后的结果。
+[Scene 示例](../../Samples~/01_Modules/16_Scene/) 带有独立房间，可操作加载与卸载和切换房间。下图是切换到橙色房间后的结果。
 
 ![Scene 示例的实际运行结果](../Images/example-scene.png)
 

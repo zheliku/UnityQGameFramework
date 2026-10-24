@@ -16,7 +16,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateDebuggerExamples
@@ -36,7 +36,7 @@ public static class ValidateDebuggerExamples
         assertions.Clear();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "21_Debugger" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
@@ -67,10 +67,10 @@ public static class ValidateDebuggerExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("c79b243b74ca44668be4b228ba13159f");
+                string anchor = AssetDatabase.GUIDToAssetPath("16e9a88cf2495a198884a80a014df5ef");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Debugger sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/21_Debugger".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
@@ -80,8 +80,8 @@ public static class ValidateDebuggerExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(InspectDebuggerExample).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(InspectDebuggerExample).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");

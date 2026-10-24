@@ -2,7 +2,7 @@
 
 Setting 保存音量、语言等玩家偏好。默认 Helper 将键值写入 `Application.persistentDataPath/GameFrameworkSetting.dat`。
 
-[Setting 示例](../../Samples~/09_Setting/) 演示基本值、对象和键管理。三个场景共用一个 Helper，各自存到 `QgfExamples/Setting` 下；文件名在首次加载时确定。
+[Setting 示例](../../Samples~/01_Modules/09_Setting/) 演示基本值、对象和键管理。三个场景共用一个 Helper，各自存到 `QgfExamples/Setting` 下；文件名在首次加载时确定。
 
 | 示例 | 操作与观察 |
 | --- | --- |

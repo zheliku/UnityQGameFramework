@@ -2,7 +2,7 @@
 
 Download 把 URI 的内容写入磁盘文件。Resource 更新也用它下载资源；普通下载不会自动导入 AssetDatabase，也不会生成 AssetBundle。
 
-[Download 示例](../../Samples~/19_Download/) 自带本机 HTTP 服务，可操作文件保存、进度、取消续传、队列和失败处理。下图按已知文件长度计算百分比。
+[Download 示例](../../Samples~/01_Modules/19_Download/) 自带本机 HTTP 服务，可操作文件保存、进度和取消。下图按已知文件长度计算百分比。
 
 ![Download 示例的实际运行结果](../Images/example-download-progress.png)
 

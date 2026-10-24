@@ -2,7 +2,7 @@
 
 Debugger 用 IMGUI 查看环境、时间、日志和模块状态。StarForce 左上角的 DEBUGGER 按钮可打开窗口。
 
-[Debugger 示例](../../Samples~/21_Debugger/) 分别查看运行状态、接入自定义窗口和读取最近日志：
+[Debugger 示例](../../Samples~/01_Modules/21_Debugger/) 分别查看运行状态和接入自定义窗口：
 
 | 目录 | 操作 |
 | --- | --- |

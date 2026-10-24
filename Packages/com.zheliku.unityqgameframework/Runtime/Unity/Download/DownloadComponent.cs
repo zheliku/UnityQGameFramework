@@ -14,6 +14,7 @@ namespace UnityQGameFramework.Runtime
     /// 下载组件。
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Download")]
     public sealed class DownloadComponent : FrameworkComponent
     {

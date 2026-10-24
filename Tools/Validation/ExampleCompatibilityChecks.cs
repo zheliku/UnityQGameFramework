@@ -17,7 +17,7 @@ public static class ExampleCompatibilityChecks
         int references = 0;
         foreach (var pair in layouts)
         {
-            string typeName = "UnityQGameFramework.Examples." + pair.Key;
+            string typeName = "UnityQGameFramework.Examples.Modules." + pair.Key;
             var type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(typeName)).FirstOrDefault(candidate => candidate != null);
             if (type == null) throw new Exception("Missing example type: " + typeName);
             string script = (string)pair.Value["script"];
@@ -35,10 +35,10 @@ public static class ExampleCompatibilityChecks
             }
         }
         foreach (string name in new[] { "StarForce.BuiltinDialogForm", "StarForce.DialogForm", "StarForce.ProcedureMenu",
-            "UnityQGameFramework.Examples.PointPointPoint.PointGamePlay" })
+            "UnityQGameFramework.Examples.Modules.PointPointPoint.PointGamePlay" })
             if (!AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetType(name) != null))
                 throw new Exception("Missing game example type: " + name);
-        EditorSceneManager.OpenScene("Assets/Examples/22_StarForce/StarForce Launcher.unity");
+        EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");
         var builtinType = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("StarForce.BuiltinDataComponent")).First(type => type != null);
         var builtin = new SerializedObject(UnityEngine.Object.FindFirstObjectByType(builtinType));
         if (builtin.FindProperty("m_BuiltinDialogFormTemplate").objectReferenceValue == null)

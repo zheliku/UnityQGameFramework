@@ -17,7 +17,11 @@ public static class StyleExampleUi
 
     public static object Run() => RunModules(null);
 
-    public static object RunModules(string[] folders)
+    public static object RunModules(string[] folders) => RunSelected(folders, null);
+
+    public static object RunExamples(string[] names) => RunSelected(null, names);
+
+    private static object RunSelected(string[] folders, string[] names)
     {
         if (!Path.GetFullPath(Application.dataPath).Contains(Path.DirectorySeparatorChar + "Artifacts~" + Path.DirectorySeparatorChar))
             throw new Exception("Use the isolated authoring project.");
@@ -27,11 +31,14 @@ public static class StyleExampleUi
             throw new Exception("Unsaved scene.");
         sprites.Clear();
         var roots = folders == null ? new[] { "Assets/Examples" } : folders.Select(folder => "Assets/Examples/" + folder).ToArray();
+        var layouts = Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
+        var cases = names?.Select(name => Path.GetDirectoryName((string)layouts[name]["script"]).Replace('\\', '/')).ToArray();
         int scenes = 0, prefabs = 0;
         try
         {
             foreach (string path in AssetDatabase.FindAssets("t:Prefab", roots).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p))
             {
+                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal))) continue;
                 var root = PrefabUtility.LoadPrefabContents(path);
                 try
                 {
@@ -44,9 +51,10 @@ public static class StyleExampleUi
             }
             foreach (string path in AssetDatabase.FindAssets("t:Scene", roots).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p))
             {
+                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal))) continue;
                 var scene = EditorSceneManager.OpenScene(path);
                 foreach (var root in scene.GetRootGameObjects()) Apply(root, path);
-                if (!path.Contains("22_StarForce"))
+                if (!path.Contains("02_StarForce"))
                 {
                     RenderSettings.skybox = AssetDatabase.GetBuiltinExtraResource<Material>("Default-Skybox.mat");
                     foreach (var camera in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsSortMode.None)) camera.clearFlags = CameraClearFlags.Skybox;
@@ -68,7 +76,7 @@ public static class StyleExampleUi
 
     private static void Apply(GameObject root, string path)
     {
-        bool starForce = path.Contains("22_StarForce");
+        bool starForce = path.Contains("02_StarForce");
         if (starForce)
             foreach (var scaler in root.GetComponentsInChildren<CanvasScaler>(true)) scaler.matchWidthOrHeight = 1;
         var outline = SpriteFor(path, "button-outline.png", "ButtonOutline.png");
@@ -300,10 +308,10 @@ public static class StyleExampleUi
     private static Sprite SpriteFor(string path, string sourceName, string targetName)
     {
         string module = string.Join("/", path.Split('/').Take(3));
-        string source = "Assets/Examples/22_StarForce/GameMain/UI/UISprites/Common/" + sourceName;
-        string target = module.Contains("22_StarForce") ? source
+        string source = "Assets/Examples/02_StarForce/GameMain/UI/UISprites/Common/" + sourceName;
+        string target = module.Contains("02_StarForce") ? source
             : module.Contains("00_PointPointPoint") ? module + "/GameMain/UI/UISprites/" + targetName
-            : "Assets/Examples/Common/UI/UISprites/" + targetName;
+            : "Assets/Examples/01_Modules/Common/UI/UISprites/" + targetName;
         if (sprites.TryGetValue(target, out var sprite)) return sprite;
         if (!File.Exists(target))
         {

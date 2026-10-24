@@ -65,10 +65,12 @@ public static class ValidateUguiExamples
                 if (names != null && !names.Contains(pair.Key)) continue;
                 string script = (string)pair.Value["script"];
                 if (folders != null && !folders.Any(folder => script.StartsWith("Assets/Examples/" + folder + "/", StringComparison.Ordinal))) continue;
-                string folder = script.Split('/')[2];
-                string anchor = AssetDatabase.GUIDToAssetPath((string)modules.Single(module => (string)module["folder"] == folder)["anchorGuid"]);
+                var definition = modules.Single(module => script.StartsWith(
+                    "Assets/Examples/" + (string)module["folder"] + "/", StringComparison.Ordinal));
+                string folder = (string)definition["folder"];
+                string anchor = AssetDatabase.GUIDToAssetPath((string)definition["anchorGuid"]);
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string relocated = moduleRoot + script.Substring(("Assets/Examples/" + folder).Length);
+                string relocated = moduleRoot + script.Substring("Assets/Examples/01_Modules".Length);
                 string scene = relocated.Substring(0, relocated.Length - 3) + ".unity";
                 EditorSceneManager.OpenScene(scene);
                 await Play(true);
@@ -81,7 +83,7 @@ public static class ValidateUguiExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(500);
-                var type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + pair.Key)).First(candidate => candidate != null);
+                var type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + pair.Key)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, pair.Key + " component");
                 Require(EventSystem.current != null && EventSystem.current.currentInputModule != null, pair.Key + " native input module");
@@ -250,41 +252,26 @@ public static class ValidateUguiExamples
         }
         else if (name == "ReadConfigValues")
         {
-            var input = (InputField)data.FindProperty("tomlInput").objectReferenceValue;
-            Require(QGF.Config.GetFloat("Audio.Volume", 0.5f) == 0.5f && !QGF.Config.GetBool("Audio.Mute", false)
-                && QGF.Config.GetInt("Audio.Track", 1) == 1 && QGF.Config.GetString("Audio.Name", "默认音轨") == "默认音轨", "Four default getters");
-            Require(QGF.Config.HasConfig("Game.FeatureEnabled") && !text("valuesText").text.Contains("不完整"), "Initial TOML matches the queried feature key");
-            input.text = "[Game]\nTitle = \"你好，QGF\"\nFeatureEnabled = true\n[Player]\nMaxHp = 150\nSpeed = 3.5\n[Audio]\nVolume = 0.2\nMute = true\nTrack = 3\nName = \"测试音轨\"";
-            for (int i = 0; i < dropdown("modeDropdown").options.Count; i++)
-            {
-                dropdown("modeDropdown").value = i;
-                await Click(button("parseButton"), mouse);
-                Require(QGF.Config.Count == 8 && QGF.Config.GetString("Game.Title") == "你好，QGF"
-                    && QGF.Config.GetInt("Player.MaxHp") == 150 && QGF.Config.GetFloat("Player.Speed") == 3.5f
-                    && QGF.Config.GetBool("Game.FeatureEnabled"), "Typed queries and UTF-8 parse mode " + i);
-                Require(QGF.Config.GetFloat("Audio.Volume", 0.5f) == 0.2f && QGF.Config.GetBool("Audio.Mute", false)
-                    && QGF.Config.GetInt("Audio.Track", 1) == 3 && QGF.Config.GetString("Audio.Name", "默认音轨") == "测试音轨", "Configured values override defaults " + i);
-                Require(text("valuesText").text.Contains("150") && text("defaultsText").text.Contains("测试音轨"), "Live query labels " + i);
-            }
-            await Screenshot("ReadConfigValues");
-            input.text = "[Game]\nTitle = \"缺少必需配置\"";
+            var config = Field<TextAsset>(example, "config");
+            Require(config != null, "Inspector TOML asset is assigned");
             await Click(button("parseButton"), mouse);
-            Require(QGF.Config.Count == 1 && text("valuesText").text.Contains("不完整") && QGF.Config.GetFloat("Audio.Volume", 0.5f) == 0.5f, "Missing required keys and defaults after replacing TOML");
+            Require(QGF.Config.GetString("Game.Title") == "配置入门"
+                && QGF.Config.GetBool("Game.FeatureEnabled")
+                && QGF.Config.GetInt("Player.MaxHp") == 100
+                && Mathf.Approximately(QGF.Config.GetFloat("Player.Speed"), 4.5f),
+                "Nested TOML values are available through typed QGF getters");
+            Require(text("valuesText").text.Contains("配置入门") && text("valuesText").text.Contains("生命：100")
+                && text("valuesText").text.Contains("速度：4.5"), "The scene displays the parsed values");
+            await Screenshot("ReadConfigValues");
         }
         else if (name == "LoadConfigAsset")
         {
             await Click(button("reserveButton"), mouse);
             Require(QGF.Config.CachedBytesSize >= 4096, "Reserve read buffer");
-            var mode = (Dropdown)data.FindProperty("modeDropdown").objectReferenceValue;
-            for (int i = 0; i < mode.options.Count; i++)
-            {
-                mode.value = i;
-                await Click(button("loadButton"), mouse);
-                await Task.Delay(250);
-                Require(QGF.Config.HasConfig("Level.Name") && text("stateText").text.StartsWith("已读取"), "ReadData overload " + i);
-                Require(text("contextText").text.Contains(i >= 2 ? "UserData：当前对象" : "UserData：未设置"),
-                    "ReadData context " + i + " (actual: " + text("contextText").text + ")");
-            }
+            await Click(button("loadButton"), mouse);
+            await Until(() => QGF.Config.HasConfig("Level.Name") && text("stateText").text.StartsWith("已读取"),
+                4000, "TOML asset is read asynchronously");
+            Require(text("contextText").text.Contains("UserData：当前对象"), "ReadData returns the request owner");
             await Click(button("freeButton"), mouse);
             Require(QGF.Config.CachedBytesSize == 0, "Free read buffer");
         }

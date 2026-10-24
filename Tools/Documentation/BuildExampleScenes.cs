@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using Image = UnityEngine.UI.Image;
 using Newtonsoft.Json.Linq;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 public static class BuildExampleScenes
 {
@@ -55,11 +55,10 @@ public static class BuildExampleScenes
                     .Select(AssetDatabase.GUIDToAssetPath).Single(p => Path.GetFileNameWithoutExtension(p) == type.Name);
                 string folder = Path.GetDirectoryName(script).Replace('\\', '/');
                 string moduleRoot = moduleRoots.Single(root => script.StartsWith(root + "/", StringComparison.Ordinal));
-                string frameworkPath = Root + "/Common/Prefabs/QGF.prefab";
+                string frameworkPath = Root + "/01_Modules/Common/Prefabs/QGF.prefab";
                 var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 // ClearAll 的独立实验不启动其他模块，避免它们持有的池对象使清理始终不可用。
-                var sceneFramework = type == typeof(ReferencePoolChecks) ? null
-                    : (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(frameworkPath));
+                var sceneFramework = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(frameworkPath));
                 if (sceneFramework != null)
                 {
                     var configuration = JArray.Parse(File.ReadAllText("Tools/Documentation/examples-layout.json"))
@@ -126,7 +125,7 @@ public static class BuildExampleScenes
                 string[] states = type == typeof(ProcedureEntryExample) ? new[] { "ExampleLaunch01" }
                     : type == typeof(ChangeProcedureExample) ? new[] { "ExampleLaunch02", "ExampleMenu02", "ExamplePlay02" }
                     : type == typeof(ProcedureDataExample) ? new[] { "ExampleSelect03", "ExampleLoad03" }
-                    : type == typeof(InspectProcedures) ? new[] { "ExampleInspect04", "ExampleInspectIdle04" } : null;
+                    : null;
                 if (states != null)
                 {
                     var child = UnityEngine.Object.Instantiate(source.GetComponentInChildren<ProcedureComponent>().gameObject, sceneFramework.transform);
@@ -287,7 +286,7 @@ public static class BuildExampleScenes
                     var panel = canvas.GetComponentInChildren<ScrollRect>().GetComponent<RectTransform>();
                     if (panel.anchorMax.x < .75f)
                     {
-                        var view = new SerializedObject(canvas.gameObject.AddComponent<UnityQGameFramework.Examples.Presentation.ExampleSceneLayout>());
+                        var view = new SerializedObject(canvas.gameObject.AddComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>());
                         view.FindProperty("controls").objectReferenceValue = panel;
                         view.FindProperty("legend").objectReferenceValue = canvas.transform.Find("Panel_Status");
                         view.FindProperty("sceneCamera").objectReferenceValue = moduleRoot.EndsWith("_UI") ? null : camera;
@@ -618,7 +617,7 @@ public static class BuildExampleScenes
         text.fontSize = 24;
         text.alignment = TextAnchor.MiddleCenter;
         text.text = "窗口";
-        var view = new SerializedObject(root.AddComponent<UnityQGameFramework.Examples.Presentation.ExampleSceneLayout>());
+        var view = new SerializedObject(root.AddComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>());
         view.FindProperty("window").objectReferenceValue = panel.GetComponent<RectTransform>();
         view.ApplyModifiedPropertiesWithoutUndo();
         var data = new SerializedObject(root.GetComponent(viewType));

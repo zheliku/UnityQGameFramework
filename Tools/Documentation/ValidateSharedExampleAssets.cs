@@ -43,7 +43,7 @@ public static class ValidateSharedExampleAssets
                     {
                         if (migrated)
                         {
-                            if (framework.name != "QGF" || PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(framework) != "Assets/Examples/Common/Prefabs/QGF.prefab")
+                            if (framework.name != "QGF" || PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(framework) != "Assets/Examples/01_Modules/Common/Prefabs/QGF.prefab")
                                 throw new Exception("Expected shared QGF instance: " + path);
                             prefabs++;
                         }
@@ -97,7 +97,7 @@ public static class ValidateSharedExampleAssets
             var after = JObject.Parse(json);
             var differences = before.Properties().Where(p => !JToken.DeepEquals(p.Value, after[p.Name])).Select(p => p.Name).ToArray();
             if (differences.Length != 0) throw new Exception("Framework configuration changed: " + string.Join(", ", differences));
-            if (Directory.GetFiles("Assets/Examples/Common/Prefabs", "*.prefab").Length != 1) throw new Exception("Expected one shared prefab.");
+            if (Directory.GetFiles("Assets/Examples/01_Modules/Common/Prefabs", "*.prefab").Length != 1) throw new Exception("Expected one shared prefab.");
         }
         return new { passed = true, scenes, frameworkInstances = snapshots.Count, sharedInstances = prefabs, configurationsPreserved = migrated };
     }

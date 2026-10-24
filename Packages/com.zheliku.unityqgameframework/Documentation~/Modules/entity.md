@@ -73,7 +73,7 @@ Hierarchy 中应出现带 Entity 和 RotatingCubeLogic 的实例，并持续旋�
 
 ## 分清三种编号
 
-[Entity 示例](../../Samples~/13_Entity/)使用旋转的蓝色 Cube，按显示/隐藏/取消、复用与缓存、多实例与分组查询、父子挂接四组组织。02 会在画面里对比复用前后的实例 ID，并显示等待进度：
+[Entity 示例](../../Samples~/01_Modules/13_Entity/)使用旋转的蓝色 Cube，演示显示/隐藏和复用两个核心流程。复用场景会在画面里对比复用前后的实例 ID，并显示等待进度：
 
 ![Entity 示例验证复用](../Images/example-entity.png)
 

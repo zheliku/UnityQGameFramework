@@ -84,9 +84,9 @@ git lfs pull
 
 ## 4. 再运行 StarForce
 
-导入 **22 · StarForce**，打开 `StarForce Launcher.unity` 并运行。点击开始进入战斗，按住鼠标左键移动飞机并开火。
+导入 **03 · StarForce**，打开 `StarForce Launcher.unity` 并运行。点击开始进入战斗，按住鼠标左键移动飞机并开火。
 
-源码目录是 `Assets/Examples/22_StarForce`。Launcher 负责初始化和预加载；Menu、Main 场景由资源模块加载。
+源码目录是 `Assets/Examples/02_StarForce`，Package Manager 中的 Sample 名称为 `02_StarForce`。Launcher 负责初始化和预加载；Menu、Main 场景由资源模块加载。
 
 ## 5. 创建自己的启动流程
 
@@ -127,9 +127,9 @@ namespace MyGame
             dataTable.LoadDataTables(loader => new Tables(loader));
 
             // Inspector 引用模式同步解析；加载失败时不会注册部分表。
-            if (!dataTable.HasDataTable<DRItem>()) return;
+            if (!dataTable.HasDataTable<TbItem>()) return;
 
-            var item = dataTable.GetDataTable<DRItem>().GetDataRow(1);
+            var item = dataTable.GetDataTable<TbItem>().GetDataRow(1);
             Log.Info(item == null ? "找不到道具 1" : item.Name);
         }
     }

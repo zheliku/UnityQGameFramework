@@ -15,7 +15,7 @@ Excel 表定义 + Excel 数据 + luban.conf
                               ↑
                        Data/Catalog.asset
                               ↓ DataTableComponent.LoadDataTables
-                    Tables 与 QGF 数据表视图
+                    Luban 强类型表对象
                               ↓
                       游戏代码查询记录
 ```
@@ -109,9 +109,9 @@ dataTable.LoadDataTables(loader => new Tables(loader));
 这种 Inspector 引用方式会同步解析 Catalog 已引用的二进制，并发布整组表。调用结束后先检查加载是否成功：
 
 ```csharp
-if (!dataTable.HasDataTable<DRItem>()) return;
+if (!dataTable.HasDataTable<TbItem>()) return;
 
-var items = dataTable.GetDataTable<DRItem>();
+var items = dataTable.GetDataTable<TbItem>();
 var potion = items.GetDataRow(1);
 if (potion != null) Log.Info($"{potion.Name}：{potion.Price}");
 ```
@@ -124,10 +124,10 @@ Id 是业务主键，不是 Excel 物理行号。Id 为 1 的记录放到第十�
 
 ```csharp
 bool hasCheapItem = items.HasDataRow(row => row.Price <= 20);
-DRItem firstCheapItem = items.GetDataRow(row => row.Price <= 20);
-DRItem[] cheapItems = items.GetDataRows(row => row.Price <= 20);
-DRItem[] sorted = items.GetDataRows((a, b) => a.Price.CompareTo(b.Price));
-DRItem[] cheapSorted = items.GetDataRows(
+var firstCheapItem = items.GetDataRow(row => row.Price <= 20);
+var cheapItems = items.GetDataRows(row => row.Price <= 20);
+var sorted = items.GetDataRows((a, b) => a.Price.CompareTo(b.Price));
+var cheapSorted = items.GetDataRows(
     row => row.Price <= 20,
     (a, b) => a.Price.CompareTo(b.Price));
 ```
@@ -154,7 +154,7 @@ var names = items.Where(row => row.Price <= 20)
 
 条件查询会遍历记录。频繁查询大表时，在 Luban schema 中定义索引。
 
-其他常用属性有 `Count`、`MinIdDataRow`、`MaxIdDataRow`；`GetAllDataRows()` 取得全部记录。空表的最小、最大记录为 null。
+其他常用属性有 `Count`、`DataMap`、`DataList`；`GetAllDataRows()` 取得全部记录。需要最小或最大键时，在业务侧按键字段比较。
 
 ## 5. 再添加一张 Weapon 表
 
@@ -180,28 +180,22 @@ var names = items.Where(row => row.Price <= 20)
 加载 Tables 的代码不变，查询改成：
 
 ```csharp
-var weapons = dataTable.GetDataTable<DRWeapon>();
+var weapons = dataTable.GetDataTable<TbWeapon>();
 var weapon = weapons.GetDataRow(101);
 ```
 
 ## 6. 数组、结构、引用和其他主键
 
-QGF 查询视图适用于记录为 class、主键为 `int Id` 的 map 表。它提供熟悉的行查询接口，同时直接引用 Luban 的记录，没有复制第二套行数据。
+所有表统一从 `GetDataTable<TbXxx>()` 取得，返回的就是 Luban 生成表。`DataMap`、`DataList`、生成的索引和 QGF 条件查询使用同一份记录。
 
-更多 Luban 能力从同一个组件取得原生入口：
+- map 表按实际键类型生成 `GetDataRow(key)` 和 `HasDataRow(key)`，支持字符串、长整数、枚举，以及名称不是 Id 的主键。
+- 复合索引的 list 表生成 `GetDataRow(key1, key2, ...)`；多个独立索引保留 Luban 的 `GetByXxx`。
+- 无主键的 list 表使用 `DataList`、枚举和条件查询；one 表使用 `Data`，其行数为 1。
+- 所有表都在整组构造、引用解析和版本校验成功后登记。跨表引用属性直接指向被引用记录。
 
-```csharp
-var tables = dataTable.GetLubanTables<Tables>();
-var item = tables.TbItem.Get(1);
-var map = tables.TbItem.DataMap;
-var list = tables.TbItem.DataList;
-```
+`GetDataRow(key)` 在缺键时返回默认值：class 为 null，struct 为其默认值。原生 `Get` 和索引器保留 Luban 的缺键行为。one 表字段与表元数据重名时从 `Data` 读取，例如 `rules.Data.Count`；`rules.Count` 始终是行数。
 
-`item` 与 QGF `GetDataRow(1)` 返回同一条对象。通过原生入口可访问 Luban 生成的字符串主键、复合索引、list/one 表和跨表引用属性；具体方法由 schema 决定。
-
-例如在字段类型中使用 `list,int` 可以表达整数列表；复用结构登记在 `__beans__`，枚举登记在 `__enums__`。这些是 Luban 的结构与序列化规则，QGF 不再设计另一套对应语法。填写复杂 schema 时参考 [官方 Excel schema](https://www.datable.cn/docs/schema/excel-schema) 和 [Luban 文档](https://www.datable.cn/docs/intro)。
-
-同一记录类型用于多张表时，第一张 QGF 视图使用空名称，其余使用完整表名作为 name。可在运行时 DataTable Inspector 或 `GetAllDataTables()` 中查看，再调用 `GetDataTable<记录类型>(name)`。不要仅凭 DR 类型推断它属于哪张命名表。
+同一行结构用于多张表时，分别使用各自的 `TbXxx` 类型查询。需要登记同一种表的额外实例时，可在生成表的构造函数传入 name，再通过 `GetDataTable<TbXxx>(name)` 查询。
 
 ## 7. Profile、全局选择和 Catalog
 
@@ -226,7 +220,7 @@ Profile 放在 `Editor/LubanProfile.asset`，字段为：
 
 全局选择位于 `QGF > Settings > Profile`，也可在 DataTable Inspector 选择 Profile 后点 **设为全局**。设置保存在 `ProjectSettings/UnityQGameFrameworkSettings.asset`，团队应一起提交。
 
-Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，交给 `new Tables(loader)`；构造、跨表引用解析和版本校验成功后注册 QGF 表视图。
+Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，交给 `new Tables(loader)`；构造、跨表引用解析和版本校验成功后登记全部生成表。
 
 全局 Profile 改成默认配置后，StarForce 仍能运行，是因为 Launcher 的 Catalog 仍然引用示例数据。这是明确的两个选择。需要改变运行时数据时，先生成目标 Profile，再在组件点击 **使用全局 Catalog**，或手动拖入目标 Catalog。
 
@@ -334,11 +328,11 @@ namespace MyGame
 
 上面的成功、失败事件也适用于 Inspector 引用方式。事件携带调用时传入的 UserData，用来区分加载请求。事件参数会回收到引用池，不要把整个 args 存下来长期使用。
 
-异步方法返回请求序号；`CancelLoadDataTables()` 取消当前请求的发布，晚到的资源回调仍会释放资产。`IsLoading` 表示资源请求是否在进行，`Count` 表示已注册的 QGF 视图数量，原生 list/one 表不一定计入这个数量。
+异步方法返回请求序号；`CancelLoadDataTables()` 取消当前请求的发布，晚到的资源回调仍会释放资产。`IsLoading` 表示资源请求是否在进行，`Count` 表示已登记的全部表数量，包含 map、list 和 one。`IsLoaded` 表示整组表已经发布。
 
 一个组件同时持有一组 Tables。重复加载前调用 `UnloadDataTables()`；它取消在途请求，并解除组件对整组表的引用。业务自己保存的记录引用也应在更换配置时一并更新。
 
-`DestroyDataTable<T>()` 只移除对应查询视图，不等于卸载整组原生 Tables。通常切换配置使用整组卸载即可。
+`DestroyDataTable<TbXxx>()` 移除对应登记，不改写业务仍持有的表及记录。切换配置使用 `UnloadDataTables()`，并更新业务保存的旧记录引用。
 
 ## 10. 移动目录与提交版本控制
 

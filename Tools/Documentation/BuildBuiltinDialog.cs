@@ -13,7 +13,7 @@ public static class BuildBuiltinDialog
     {
         if (!Application.dataPath.Contains("Artifacts~") || EditorApplication.isPlayingOrWillChangePlaymode)
             throw new InvalidOperationException("Use the stopped Consumer project.");
-        const string path = "Assets/Examples/22_StarForce/GameMain/UI/UIForms/DialogForm.prefab";
+        const string path = "Assets/Examples/02_StarForce/GameMain/UI/UIForms/DialogForm.prefab";
         var root = PrefabUtility.LoadPrefabContents(path);
         try
         {
@@ -34,7 +34,7 @@ public static class BuildBuiltinDialog
             layout.childForceExpandWidth = layout.childForceExpandHeight = false;
             mask.GetComponent<Image>().color = new Color(.01f, .02f, .03f, .4f);
             var image = panel.GetComponent<Image>();
-            image.sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Examples/22_StarForce/GameMain/UI/UISprites/Common/dialog-background.png");
+            image.sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Examples/02_StarForce/GameMain/UI/UISprites/Common/dialog-background.png");
             if (image.sprite == null) throw new InvalidOperationException("The opaque dialog background sprite could not be loaded.");
             image.type = Image.Type.Sliced;
             image.color = new Color(.025f, .07f, .1f, 1f);
@@ -53,7 +53,7 @@ public static class BuildBuiltinDialog
         if (!Application.dataPath.Contains("Artifacts~") || !File.Exists("QgfExampleConsumer~.json"))
             throw new InvalidOperationException("Use the isolated Consumer project.");
         if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Stop Play first.");
-        const string folder = "Assets/Examples/22_StarForce/GameMain/";
+        const string folder = "Assets/Examples/02_StarForce/GameMain/";
         const string path = folder + "UI/UIForms/BuiltinDialogForm.prefab";
         var source = AssetDatabase.LoadAssetAtPath<GameObject>(folder + "UI/UIForms/DialogForm.prefab");
         var preview = EditorSceneManager.NewPreviewScene();

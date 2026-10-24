@@ -21,7 +21,7 @@ public static class AuditHelperContracts
     {
         Assembly core = typeof(FrameworkEntry).Assembly, runtime = typeof(BaseComponent).Assembly;
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => assembly == core || assembly == runtime
-            || assembly.GetName().Name.StartsWith("UnityQGameFramework.Examples.", StringComparison.Ordinal)).ToArray();
+            || assembly.GetName().Name.StartsWith("UnityQGameFramework.Examples.Modules.", StringComparison.Ordinal)).ToArray();
         var calls = new List<object>();
         var unused = new List<object>();
         var implementations = new List<object>();

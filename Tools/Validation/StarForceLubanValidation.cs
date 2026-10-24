@@ -57,31 +57,31 @@ public static class StarForceLubanValidation
             await Task.Delay(50);
         }
         Require(UnityEngine.Object.FindFirstObjectByType<StarForce.MenuForm>() != null, "Wait for the stable menu before lifecycle tests.");
-        var tables = component.GetLubanTables<StarForce.Tables>();
+        var tables = component;
         Require(tables != null && component.Count == 11, "All 11 tables must be published.");
         int checkedValues = CompareOriginalTables(tables);
-        var entities = component.GetDataTable<StarForce.DREntity>();
-        Require(ReferenceEquals(entities.GetDataRow(10000), tables.TbEntity.Get(10000)), "Facade must share native records.");
+        var entities = component.GetDataTable<StarForce.TbEntity>();
+        Require(ReferenceEquals(entities.GetDataRow(10000), tables.GetDataTable<StarForce.TbEntity>().DataMap[10000]), "Facade must share native records.");
         Require(entities.GetDataRow(-1) == null && !entities.HasDataRow(-1), "Missing rows preserve UGF null semantics.");
-        Require(entities.MinIdDataRow.Id == 10000 && entities.MaxIdDataRow.Id == 70002, "Min/max ID queries.");
+        Require(entities.Min(row => row.Id) == 10000 && entities.Max(row => row.Id) == 70002, "Min/max ID queries.");
         Require(entities.GetDataRows(row => row.Id >= 70000).Length == 3, "Predicate query.");
         var resultList = new List<StarForce.DREntity> { entities.GetDataRow(10000) };
         entities.GetDataRows(row => row.Id >= 70000, (a, b) => b.Id.CompareTo(a.Id), resultList);
         Require(resultList.Count == 3 && resultList[0].Id == 70002, "List overload clears and sorts.");
-        Require(entities.Count() == entities.Count && component.HasDataTable(typeof(StarForce.DREntity)), "Enumeration and type lookup.");
+        Require(entities.Count() == entities.Count && component.HasDataTable(typeof(StarForce.TbEntity)), "Enumeration and type lookup.");
         var manager = FrameworkEntry.GetModule<IDataTableManager>();
-        var named = new DataTable<StarForce.DREntity>("Validation", tables.TbEntity.DataMap);
+        var named = new StarForce.TbEntity(new ByteBuf(component.Catalog.GetAssets()["tbentity"].bytes), "Validation");
         manager.RegisterDataTables(new[] { named });
-        Require(ReferenceEquals(component.GetDataTable<StarForce.DREntity>("Validation"), named), "Named table lookup.");
-        var pending = new DataTable<StarForce.DREntity>("Pending", tables.TbEntity.DataMap);
+        Require(ReferenceEquals(component.GetDataTable<StarForce.TbEntity>("Validation"), named), "Named table lookup.");
+        var pending = new StarForce.TbEntity(new ByteBuf(component.Catalog.GetAssets()["tbentity"].bytes), "Pending");
         Expect<FrameworkException>(() => manager.RegisterDataTables(new DataTableBase[] { pending, named }));
-        Require(!component.HasDataTable<StarForce.DREntity>("Pending"), "Duplicate registration must be atomic.");
+        Require(!component.HasDataTable<StarForce.TbEntity>("Pending"), "Duplicate registration must be atomic.");
         component.DestroyDataTable((DataTableBase)named);
 
         var catalog = component.Catalog;
         string path = AssetDatabase.GetAssetPath(catalog);
         component.UnloadDataTables();
-        Require(component.Count == 0 && component.LubanTables == null, "Unload releases the entire set.");
+        Require(component.Count == 0 && !component.IsLoaded, "Unload releases the entire set.");
         int successes = 0, failures = 0;
         EventHandler<GameEventArgs> success = (sender, args) => { if (ReferenceEquals(((LoadDataTableSuccessEventArgs)args).UserData, component)) ++successes; };
         EventHandler<GameEventArgs> failure = (sender, args) => { if (ReferenceEquals(((LoadDataTableFailureEventArgs)args).UserData, component)) ++failures; };
@@ -115,13 +115,13 @@ public static class StarForceLubanValidation
         return result;
     }
 
-    private static int CompareOriginalTables(StarForce.Tables tables)
+    private static int CompareOriginalTables(DataTableComponent tables)
     {
         var expected = JArray.Parse(File.ReadAllText("Tools/Validation/StarForceOriginalTables.json"));
         int values = 0;
         foreach (JToken table in expected)
         {
-            object native = typeof(StarForce.Tables).GetProperty("Tb" + table["name"]).GetValue(tables);
+            object native = tables.GetDataTable(typeof(StarForce.TbEntity).Assembly.GetType("StarForce.Tb" + table["name"]));
             var rows = ((IEnumerable)native.GetType().GetProperty("DataList").GetValue(native)).Cast<object>().ToArray();
             JArray fields = (JArray)table["fields"], records = (JArray)table["rows"];
             Require(rows.Length == records.Count, "Row count: " + table["name"]);

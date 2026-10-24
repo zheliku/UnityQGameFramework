@@ -2,7 +2,7 @@
 
 Procedure 管理启动、登录、菜单、战斗等游戏阶段。每个阶段在进入时准备所需数据和资源，离开时清理；加载完成后再切换到下一阶段。
 
-[Procedure 示例](../../Samples~/06_Procedure/) 已配置流程类型和入口，可查看当前流程与停留时间，操作切换、传值和查询。完整的一局流程见 [点点点](../../Samples~/00_PointPointPoint/README.md)。
+[Procedure 示例](../../Samples~/01_Modules/06_Procedure/) 已配置流程类型和入口，可查看当前流程与停留时间，操作切换、传值和查询。完整的一局流程见 [点点点](../../Samples~/00_PointPointPoint/README.md)。
 
 Procedure 本身是纯 C# 状态。ProcedureManager 使用 FsmManager 创建一个以 `IProcedureManager` 为持有者的状态机；当前流程的更新来自 Fsm。Unity 的 ProcedureComponent 负责根据 Inspector 里的类型名创建状态并启动入口流程。
 
@@ -82,7 +82,7 @@ StarForce 的做法值得沿用：OnEnter 订阅结果并发起请求，成功�
 
 ## 几个边界
 
-前四个 [Procedure 示例](../../Samples~/06_Procedure/) 使用组件初始化，观察启动、往返、传值和查询。第五个示例单独展示 Core 的 `Initialize` 与 `StartProcedure`，场景不放 ProcedureComponent，避免重复初始化同一个全局流程管理器。一般业务不用手动重复组件已完成的启动步骤。
+三个 [Procedure 示例](../../Samples~/01_Modules/06_Procedure/) 使用组件初始化，观察启动、切换和传值。一般业务不用手动重复组件已完成的启动步骤。
 
 - Procedure 不是 MonoBehaviour，不能依靠 Inspector 给流程对象序列化普通字段；它由类型名和无参构造函数创建。
 - 流程必须出现在 Available Procedures 中，才能参与这一个流程状态机。

@@ -8,7 +8,7 @@ public static class GenerateExampleTables
 {
     public static async Task<object> Run()
     {
-        const string root = "Assets/Examples/11_DataTable/Common/Config";
+        const string root = "Assets/Examples/01_Modules/11_DataTable/Common/Config";
         EditorApplication.LockReloadAssemblies();
         try
         {

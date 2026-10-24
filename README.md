@@ -16,20 +16,22 @@ QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-编译完成后，Samples 中可分别导入点点点、21 个模块示例和 StarForce。每个编号目录对应一个 Sample；模块按需导入。
+编译完成后，Samples 中有三个导入项：点点点、模块示例和 StarForce。模块示例内部按模块编号，并包含一份公共资源。
 
 游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
 
 ## 开发
 
 ```text
-Assets/Examples/                         示例开发目录
+Assets/Examples/00_PointPointPoint/       点点点
+Assets/Examples/01_Modules/               模块示例
+Assets/Examples/02_StarForce/             StarForce
 Packages/com.zheliku.unityqgameframework/ UPM 包
 Tools/Packaging/                        同步与打包
 Artifacts~/                             本机产物与验证记录
 ```
 
-修改示例后，同步发布副本并检查包：
+示例只在 Assets 中编辑，目录与包内 Samples~ 相同。修改后原样复制发布并检查包：
 
 ```sh
 python Tools/Packaging/sync_samples.py

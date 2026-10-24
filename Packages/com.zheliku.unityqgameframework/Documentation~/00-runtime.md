@@ -228,7 +228,7 @@ Download、WebRequest、资源加载和声音代理 Helper 的事件供内部代
 
 `IEntity`、`IUIForm` 的 OnInit 是 Core 的初始化入口；Unity 层会决定是否创建或复用 Logic。EntityLogic.OnInit 在创建该逻辑时调用，UIFormLogic.OnInit 在新界面实例上调用；每次显示、打开时的业务数据放在 OnShow、OnOpen。Handle 在这两个 Unity 实现中都是 GameObject。
 
-另外两类常见接口不是 Helper：`IReference.Clear()` 在引用归还时重置内容，示例见 ReferencePool；`IDataRow.Id` 是 Luban 表视图使用的行编号，当前接口没有旧版的文本解析方法。生成的 DRItem 和手写的 PreviewRow 都可以实现它。
+`IReference.Clear()` 不是 Helper，它在引用归还时重置内容，示例见 ReferencePool。数据表行已不再要求实现 IDataRow；具体键由 Luban schema 定义，生成表继承 DataTable<T> 提供公共查询。
 
 可从 [Entity](Modules/entity.md)、[UI](Modules/ui.md)、[Network](Modules/network.md)、[Setting](Modules/setting.md) 和 [Debugger](Modules/debugger.md) 的现有示例继续查看实现。
 

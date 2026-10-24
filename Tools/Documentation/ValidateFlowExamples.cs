@@ -18,7 +18,7 @@ using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Fsm;
 using UnityQGameFramework.Core.Procedure;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateFlowExamples
@@ -39,7 +39,7 @@ public static class ValidateFlowExamples
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var modules = JArray.Parse(File.ReadAllText("Tools/Documentation/examples-layout.json"));
         var cases = layouts.Properties().Where(pair => new[] { "05_Fsm", "06_Procedure", "07_ReferencePool" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         foreach (string name in new[] { "InspectFsmStates", "CoreProcedureStart" })
             cases.Add(new { name, layout = layouts[name], mode = 1 });
@@ -72,10 +72,10 @@ public static class ValidateFlowExamples
             foreach (var test in cases)
             {
                 string source = (string)test.layout["script"];
-                string folder = source.Split('/')[2];
+                string folder = "01_Modules/" + source.Split('/')[3];
                 string anchor = AssetDatabase.GUIDToAssetPath((string)modules.Single(module => (string)module["folder"] == folder)["anchorGuid"]);
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported module not found: " + folder);
-                string script = Path.GetDirectoryName(anchor).Replace('\\', '/') + source.Substring(("Assets/Examples/" + folder).Length);
+                string script = Path.GetDirectoryName(anchor).Replace('\\', '/') + source.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 Application.runInBackground = true;
@@ -86,8 +86,8 @@ public static class ValidateFlowExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(TwoStates).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(TwoStates).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");

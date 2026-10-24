@@ -2,7 +2,7 @@
 
 ReferencePool 按类型缓存实现 `IReference` 的普通 C# 对象。事件参数、FSM 数据包装和内部任务都用它复用临时实例。
 
-[ReferencePool 示例](../../Samples~/07_ReferencePool/) 对照实例复用、`Clear` 回调、容器接管、容量调整和严格检查。
+[ReferencePool 示例](../../Samples~/01_Modules/07_ReferencePool/) 对照实例复用和 `Clear` 回调；容器接管等扩展 API 可在同一管理器上调用。
 
 `QGF.ReferencePool.EnableStrictCheck` 转发到 Core 的 `ReferencePool.EnableStrictCheck`；组件负责按 Inspector 中的策略设置初始值。独立的强制检查示例直接使用 Core 静态入口，不启动框架，避免清理正在被其他模块使用的引用。
 

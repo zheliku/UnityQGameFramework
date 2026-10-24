@@ -70,7 +70,7 @@ public static class ValidateStarForceGame
             EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
             await Wait(() => Find<MenuForm>() != null && Entry.Procedure.CurrentProcedure is ProcedureMenu, "launch to menu");
             jsonChecks = StarForceJsonChecks.Run();
-            Require(Entry.DataTable.GetDataTable<DRScene>().GetDataRow(1) != null, "Luban scene data");
+            Require(Entry.DataTable.GetDataTable<TbScene>().GetDataRow(1) != null, "Luban scene data");
             Require(Entry.Config.GetInt("Scene.Menu") == 1, "TOML config");
             await Screenshot("starforce-menu");
 

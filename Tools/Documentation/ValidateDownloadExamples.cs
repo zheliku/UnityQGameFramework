@@ -17,7 +17,7 @@ using UnityEngine.UI;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateDownloadExamples
@@ -37,7 +37,7 @@ public static class ValidateDownloadExamples
         assertions.Clear();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "19_Download" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
@@ -67,10 +67,10 @@ public static class ValidateDownloadExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("e1db92c5a1f04414ab9307b6836aacd1");
+                string anchor = AssetDatabase.GUIDToAssetPath("c939d5324e4b51d2854cd7c1f8104eef");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Download sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/19_Download".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
@@ -80,8 +80,8 @@ public static class ValidateDownloadExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(DownloadFileExample).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(DownloadFileExample).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");
@@ -200,13 +200,7 @@ public static class ValidateDownloadExamples
             await Click(button("enqueueButton"), mouse);
             Require(QGF.Download.Paused && QGF.Download.WorkingAgentCount == 0 && QGF.Download.WaitingTaskCount == 3, "Paused before enqueue, no request starts");
             Require(text("queueText").text.Contains("等待中"), "Paused queue shows waiting states");
-            for (int i = 0; i < 4; i++)
-            {
-                dropdown("queryMode").value = i;
-                await Task.Delay(80);
-                Require(Field<List<TaskInfo>>(example, "tasks").Count == (i < 2 ? 3 : 2), "All/tag array/List snapshots " + i);
-            }
-            dropdown("queryMode").value = 0;
+            Require(Field<List<TaskInfo>>(example, "tasks").Count == 3, "The queue lists all pending downloads");
             await Click(toggle, mouse);
             await Until(() => text("queueText").text.Contains("执行中"), 1000, "Started task state is readable");
             Require(Field<List<string>>(example, "order").SequenceEqual(new[] { "high" }), "Priority 10 first although added second");
@@ -220,22 +214,17 @@ public static class ValidateDownloadExamples
             Require(string.Join(",", Field<List<string>>(example, "order")) == "high,other,low" && Field<int>(example, "callbacks") == 3, "Actual priority order and three completions");
             string dir = Field<string>(example, "directory");
             Require(new[] { "low", "high", "other" }.All(n => File.ReadAllBytes(Path.Combine(dir, n + ".bin")).SequenceEqual(new byte[] { 1, 2, 3, 4 })), "Each queue task owns separate exact disk file");
-            for (int i = 0; i < 3; i++)
-            {
-                await Click(button("enqueueButton"), mouse);
-                dropdown("cancelMode").value = i;
-                await Click(button("cancelButton"), mouse);
-                string expected = i == 0 ? "low 任务已移除。" : i == 1 ? "Example.Batch 已移除 2 个任务。" : "全部下载已移除 3 个任务。";
-                Require(text("resultText").text == expected, "Removal result is readable " + i);
-                int remaining = i == 0 ? 2 : i == 1 ? 1 : 0;
-                Require(QGF.Download.GetAllDownloadInfos().Length == remaining && Field<int>(example, "callbacks") == 0, "Remove serial/tag/all without callbacks " + i);
-                if (i == 0) Require(!QGF.Download.GetDownloadInfo(Field<int>(example, "low")).IsValid, "Removed low serial invalid");
-                if (remaining > 0)
-                {
-                    dropdown("cancelMode").value = 2;
-                    await Click(button("cancelButton"), mouse);
-                }
-            }
+            await Click(button("enqueueButton"), mouse);
+            Require(QGF.Download.Paused && QGF.Download.WaitingTaskCount == 3, "Second batch waits until resumed");
+            await Click(button("cancelButton"), mouse);
+            Require(text("resultText").text == "low 任务已移除。", "Serial cancellation result is readable");
+            Require(!QGF.Download.GetDownloadInfo(Field<int>(example, "low")).IsValid
+                && QGF.Download.GetAllDownloadInfos().Length == 2 && Field<int>(example, "callbacks") == 0,
+                "Removing low emits no completion callback and leaves other tasks queued");
+            await Click(toggle, mouse);
+            await Until(() => QGF.Download.GetAllDownloadInfos().Length == 0, 5000, "Remaining downloads complete after cancellation");
+            Require(string.Join(",", Field<List<string>>(example, "order")) == "high,other"
+                && Field<int>(example, "callbacks") == 2, "Remaining downloads retain priority order");
         }
         else if (name == "DownloadFailure")
         {

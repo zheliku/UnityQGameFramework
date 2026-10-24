@@ -2,7 +2,7 @@
 
 Localization 用键读取当前语言的文本，例如 `Game.Name` 和 `Menu.Start`。界面保存键名，不直接写各语言的文案；读取字符串时还可以传格式化参数。它与 Config 分开管理。
 
-[Localization 示例](../../Samples~/10_Localization/) 共用 `Common/Dictionary.toml`，演示读取、切换语言、格式化、增删键和加载字典。
+[Localization 示例](../../Samples~/01_Modules/10_Localization/) 共用 `Common/Dictionary.toml`，演示读取和切换语言。
 
 | 示例 | 操作与观察 |
 | --- | --- |

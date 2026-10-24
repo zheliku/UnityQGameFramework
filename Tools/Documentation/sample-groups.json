@@ -1,0 +1,20 @@
+[
+  {
+    "folder": "00_PointPointPoint",
+    "source": "00_PointPointPoint",
+    "displayName": "00 · 点点点",
+    "description": "从启动、菜单到游玩、结算与最高分保存。"
+  },
+  {
+    "folder": "01_Modules",
+    "source": "01_Modules",
+    "displayName": "01 · 模块示例",
+    "description": "按模块查看 QGF 的常用调用；每个场景只演示一项核心功能。"
+  },
+  {
+    "folder": "02_StarForce",
+    "source": "02_StarForce",
+    "displayName": "02 · StarForce",
+    "description": "多模块协作的射击游戏；使用 URP 项目运行 Launcher 场景。"
+  }
+]

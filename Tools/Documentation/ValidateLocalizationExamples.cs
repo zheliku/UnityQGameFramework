@@ -16,7 +16,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Examples;
+using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
 public static class ValidateLocalizationExamples
@@ -36,7 +36,7 @@ public static class ValidateLocalizationExamples
         assertions.Clear();
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "10_Localization" }
-            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/" + folder + "/")))
+            .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
@@ -66,10 +66,10 @@ public static class ValidateLocalizationExamples
             foreach (var test in cases)
             {
                 string sourcePath = (string)test.layout["script"];
-                string anchor = AssetDatabase.GUIDToAssetPath("546e1e2e8f2a49bdaeb03ad61edce340");
+                string anchor = AssetDatabase.GUIDToAssetPath("65b405e18b505ad68d6d522e4d443543");
                 if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Debugger sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
-                string script = moduleRoot + sourcePath.Substring("Assets/Examples/10_Localization".Length);
+                string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
                 EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor")).Focus();
@@ -79,8 +79,8 @@ public static class ValidateLocalizationExamples
                     InputSystem.DisableDevice(pointer);
                 }
                 await Task.Delay(550);
-                var type = typeof(ReadTranslation).Assembly.GetType("UnityQGameFramework.Examples." + test.name)
-                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples." + test.name)).First(candidate => candidate != null);
+                var type = typeof(ReadTranslation).Assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)
+                    ?? AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType("UnityQGameFramework.Examples.Modules." + test.name)).First(candidate => candidate != null);
                 var example = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                 Require(example != null, test.name + " component");
                 Require(EventSystem.current?.currentInputModule != null, test.name + " input module");
@@ -223,17 +223,16 @@ public static class ValidateLocalizationExamples
         }
         else if (name == "LoadDictionary")
         {
-            for (int entry = 0; entry < 4; entry++)
+            for (int language = 0; language < 2; language++)
             {
-                dropdown("loadMode").value = entry;
-                dropdown("languageMode").value = entry % 2;
+                dropdown("languageMode").value = language;
                 await Click(button("loadButton"), mouse);
                 Require(Field<bool>(example, "loading") && !button("loadButton").interactable && localization.DictionaryCount == 0,
                     "ReadData is asynchronous and locks controls");
-                await Until(() => !Field<bool>(example, "loading"), 6000, "Dictionary load " + entry);
-                string expected = entry % 2 == 0 ? "我的飞行游戏" : "My Flying Game";
+                await Until(() => !Field<bool>(example, "loading"), 6000, "Dictionary load " + language);
+                string expected = language == 0 ? "我的飞行游戏" : "My Flying Game";
                 Require(localization.GetString("Game.Name") == expected && text("stateText").text.Contains(expected), "ReadData result matches requested language");
-                Require(text("contextText").text.Contains(entry >= 2 ? "UserData：当前对象" : "UserData：未设置"), "ReadData context entry " + entry);
+                Require(text("contextText").text.Contains("UserData：当前对象"), "ReadData returns the request owner");
             }
             await Click(toggle("failureToggle"), mouse);
             await Click(button("loadButton"), mouse);

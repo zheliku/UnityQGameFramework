@@ -10,7 +10,7 @@ using UnityQGameFramework.Runtime;
 /// <summary>Run with Unity CLI run_script outside Play Mode. Restores all temporary moves.</summary>
 public static class LubanEditorValidation
 {
-    private const string Root = "Assets/Examples/22_StarForce/UnityQGameFramework/Config";
+    private const string Root = "Assets/Examples/02_StarForce/UnityQGameFramework/Config";
     public static async Task<object> Run()
     {
         if (EditorApplication.isPlaying) throw new Exception("Stop Play Mode first.");

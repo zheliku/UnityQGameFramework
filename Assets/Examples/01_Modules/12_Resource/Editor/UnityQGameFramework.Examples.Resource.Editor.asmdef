@@ -1,0 +1,14 @@
+{
+  "name": "UnityQGameFramework.Examples.Modules.Resource.Editor",
+  "rootNamespace": "UnityQGameFramework.Examples.Modules.Editor",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Runtime",
+    "UnityQGameFramework.Editor",
+    "UnityQGameFramework.Examples.Modules"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}

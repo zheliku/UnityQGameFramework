@@ -13,7 +13,7 @@ UnityQGameFramework 的框架源码沿用 MIT 许可；下列组件保留各自�
 ## StarForce UI artwork
 
 - The tutorial button outline and checkmark are copied unchanged from StarForce `Assets/GameMain/UI/UISprites/Common/button-outline.png` and `checked.png`, commit `d4ce803353f89852c4d58df65b2482a3b08eb11f`.
-- Copyright (c) 2013-2021 Jiang Yin; upstream MIT notice retained in [LICENSE.md](LICENSE.md) and [StarForce's license](Samples~/22_StarForce/LICENSE.md).
+- Copyright (c) 2013-2021 Jiang Yin; upstream MIT notice retained in [LICENSE.md](LICENSE.md) and [StarForce's license](Samples~/02_StarForce/LICENSE.md).
 - Each numbered Sample carries its own small UI images, so importing a module does not require importing StarForce.
 
 ## SharpZipLib 0.86.0.518
@@ -32,7 +32,7 @@ The binary is retained to preserve the upstream compression baseline. Dependency
 ## Luban
 
 - Official generator: [Luban v5.1.0](https://github.com/focus-creative-games/luban/tree/v5.1.0), commit `df34215d2e22035073d1af83d44e3ac0744dc3b3`.
-- Templates copied from `Templates/cs-bin/bean.sbn`, `table.sbn`, `tables.sbn`; changes adapt the private runtime namespace, implement `IDataRow` and publish QGF views. License retained at `Editor/Luban/Templates~/LICENSE.txt`.
+- Templates copied from `Templates/cs-bin/bean.sbn`, `table.sbn`, `tables.sbn`; changes adapt the private runtime namespace and make generated tables implement the QGF table contract. License retained at `Editor/Luban/Templates~/LICENSE.txt`.
 - Minimal binary runtime: [luban_unity](https://github.com/focus-creative-games/luban_unity/tree/061314200e2f03307c4d90b448e1de7b85431905), commit `061314200e2f03307c4d90b448e1de7b85431905`, package version 1.2.0. Only `ByteBuf.cs`, `BeanBase.cs`, `StringUtil.cs` are bundled. Copyright 2025 Code Philosophy, MIT.
 - Runtime changes: namespace `Luban` → `UnityQGameFramework.Luban`, separate assembly with unsafe code enabled. Full runtime license: `Runtime/Luban/LICENSE.txt`.
 - The compiler is downloaded on demand into Library, with release SHA-256 `bac9a1b8d69cfeaa7ef1d8c67b34a007324d1cd158e0b14294521b3879ba5213`. No compiler binaries are bundled in the UPM package.

@@ -14,15 +14,26 @@ using Luban = UnityQGameFramework.Luban;
 
 namespace UnityQGameFramework.Config
 {
-public sealed partial class DRItem : UnityQGameFramework.Luban.BeanBase, UnityQGameFramework.Core.DataTable.IDataRow
+/// <summary>
+/// Luban 生成的数据对象。
+/// </summary>
+public sealed partial class DRItem : UnityQGameFramework.Luban.BeanBase
 {
-    int UnityQGameFramework.Core.DataTable.IDataRow.Id => Id;
-    public DRItem(ByteBuf _buf) 
+    /// <summary>
+    /// 使用二进制缓冲区初始化数据对象。
+    /// </summary>
+    /// <param name="_buf">数据对象二进制缓冲区。</param>
+    public DRItem(ByteBuf _buf)
     {
         Id = _buf.ReadInt();
         Name = _buf.ReadString();
     }
 
+    /// <summary>
+    /// 从二进制缓冲区反序列化数据对象。
+    /// </summary>
+    /// <param name="_buf">数据对象二进制缓冲区。</param>
+    /// <returns>反序列化的数据对象。</returns>
     public static DRItem DeserializeDRItem(ByteBuf _buf)
     {
         return new DRItem(_buf);
@@ -36,14 +47,32 @@ public sealed partial class DRItem : UnityQGameFramework.Luban.BeanBase, UnityQG
     /// 名称
     /// </summary>
     public readonly string Name;
-   
-    public const int __ID__ = 2024800449;
-    public override int GetTypeId() => __ID__;
 
+    /// <summary>
+    /// 数据对象类型编号。
+    /// </summary>
+    public const int __ID__ = 2024800449;
+    /// <summary>
+    /// 获取数据对象类型编号。
+    /// </summary>
+    /// <returns>数据对象类型编号。</returns>
+    public override int GetTypeId()
+    {
+        return __ID__;
+    }
+
+    /// <summary>
+    /// 解析数据对象中的跨表引用。
+    /// </summary>
+    /// <param name="tables">数据表集合。</param>
     public  void ResolveRef(Tables tables)
     {
     }
 
+    /// <summary>
+    /// 获取数据对象的字符串表示。
+    /// </summary>
+    /// <returns>数据对象的字符串表示。</returns>
     public override string ToString()
     {
         return "{ "
@@ -53,4 +82,3 @@ public sealed partial class DRItem : UnityQGameFramework.Luban.BeanBase, UnityQG
     }
 }
 }
-
