@@ -36,8 +36,8 @@ public static class ValidateStarForceBuild
         if (memory.Any(pair => EditorJsonUtility.ToJson(Unsupported.GetSerializedAssetInterfaceSingleton(pair.Key)) != pair.Value))
             throw new Exception("Build changed in-memory settings.");
         if (errors.Count != 0) throw new Exception("Build errors: " + string.Join("\n", errors));
-        string resources = folder + "/StarForce_Data/StreamingAssets/" + StarForce.GameEntry.ResourceFolder;
-        if (!File.Exists(resources + "/GameFrameworkVersion.dat")) throw new Exception("Missing Package resource list.");
+        string resources = folder + "/StarForce_Data/StreamingAssets/yoo/QgfExamples.StarForce";
+        if (!File.Exists(resources + "/BuiltinCatalog.bytes")) throw new Exception("Missing YooAsset builtin catalog.");
         return new { passed = true, player, unity = Application.unityVersion, settingsUnchanged = true,
             settingsMemoryUnchanged = true, sceneUnchanged = true, projectStreamingAssetsUnchanged = true,
             packageFiles = Directory.GetFiles(resources, "*", SearchOption.AllDirectories).Length, editorErrors = 0 };

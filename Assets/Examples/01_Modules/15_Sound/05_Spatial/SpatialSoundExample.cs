@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +8,9 @@ using PlaySoundSuccessEventArgs = UnityQGameFramework.Runtime.PlaySoundSuccessEv
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示三维声音的位置、距离和声相。
+    /// </summary>
     public sealed class SpatialSoundExample : MonoBehaviour
     {
         [SerializeField] private string soundGuid;
@@ -45,7 +47,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // 应用新坐标前结束旧序号，避免把一次试听叠成多路声音。
             if (serialId != 0) QGF.Sound.StopSound(serialId);
-            string asset = UnityEditor.AssetDatabase.GUIDToAssetPath(soundGuid);
+            string asset = soundGuid;
             Vector3 position = sourceMarker.position;
             // 把当前位置传给 Sound；成功后在代理上设置 3D 播放属性。
             serialId = QGF.Sound.PlaySound(asset, "World", position);
@@ -94,4 +96,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

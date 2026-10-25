@@ -240,8 +240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75169dd8c031500c9abdbb08efdc5754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityQGameFramework.Examples.Modules::UnityQGameFramework.Examples.Modules.SwitchRoomsExample
-  blueRoomGuid: 5dde6a9f68995b74be05f2ff04aa3649
-  orangeRoomGuid: e8e134f974c6554db2b76d6e7de76d5d
+  blueRoomLocation: 5dde6a9f68995b74be05f2ff04aa3649
+  orangeRoomLocation: e8e134f974c6554db2b76d6e7de76d5d
   switchButton: {fileID: 1964286571}
   stateText: {fileID: 1132346639}
 --- !u!4 &615259270

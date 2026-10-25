@@ -18,9 +18,10 @@ Core 的 asmdef 设置了 `noEngineReferences: true`，不引用 Unity 引擎程
 flowchart TD
     Game[游戏流程与业务逻辑] --> Component[Unity 组件入口]
     Component --> Manager[Core 管理器]
-    Manager --> Contract[Helper 与资源接口]
-    Contract --> Unity[Unity 默认实现]
-    Unity --> Engine[AssetDatabase / AssetBundle / SceneManager / AudioSource]
+    Manager --> Resource[ResourceComponent 与 Core ResourceManager]
+    Resource --> Backend[YooAsset 资源后端]
+    Backend --> Engine[EditorSimulate / Offline / Host]
+    Engine --> Unity[Unity 资产、场景与音频 API]
 ```
 
 这不是一次单向调用。异步任务完成后，辅助器通过接口事件通知管理器，管理器更新自己的记录，组件再将结果转成游戏可订阅的事件。
@@ -143,7 +144,7 @@ Event.Fire 将参数入队，Event.Update 轮询队列并派发。FireNow 在调
 1. 游戏调用 `UIComponent.OpenUIForm`，传入完整资源路径、分组和 userData；界面预制体上挂有自己的 UIFormLogic。
 2. UIManager 分配界面序列号，先检查实例池能否复用该资源的对象。
 3. 需要新实例时，UIManager 向 Resource 请求预制体。
-4. 编辑器资源模式走 EditorResourceComponent；发行资源模式走 ResourceManager 的加载任务与辅助器。
+4. 编辑器通过 ResourceSettings 对应的 ResourceBuildProfile 加载 YooAsset 模拟包；Player 使用同一配置中的 Offline 或 Host 包设置。
 5. 资源成功返回后，UIFormHelper 创建预制体实例，UIForm 取得预制体上已有的 UIFormLogic 并初始化。
 6. UIManager 将界面加入 UIGroup，处理深度、暂停和覆盖关系，调用 OnOpen。
 7. UIComponent 将成功或失败转换为 EventComponent 的事件。业务根据 userData 判断结果是否属于自己。
@@ -155,7 +156,7 @@ Entity 的显示和隐藏与这条链路相似。Sound 也是通过 Resource 取
 
 ## 6. StarForce 的启动路线
 
-编辑器资源模式下，主要流程为：
+编辑器模拟包下，主要流程为：
 
 ```text
 ProcedureLaunch
@@ -182,7 +183,7 @@ ProcedureMain
 
 这里的多个“完成”不是同一件事。场景加载完成不等于玩家实体已经显示；进入主流程不等于 UI 已打开。每个异步入口都要等待自己的完成通知。
 
-发行资源模式还会进入资源初始化、版本检查或更新流程。不要因为编辑器可以直接从 Assets 加载，就省掉 Player 的资源构建和初始化；也不要把编辑器试玩通过当成资源更新链路已经通过。
+Player 使用 ResourceSettings 中的 Offline 或 Host 配置，并按游戏流程初始化资源包、检查版本或下载资源。不要把编辑器模拟包的试玩当成 Player 资源链路已经通过。
 
 ## 7. Config、DataTable、Setting 和 DataNode 有什么区别
 

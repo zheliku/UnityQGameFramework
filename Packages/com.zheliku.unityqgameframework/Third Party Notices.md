@@ -52,6 +52,13 @@ The binary is retained to preserve the upstream compression baseline. Dependency
 - Source archive SHA-256: `8a938cba442e4f0289d9c55c34a2b53afaedbd2684041df1d7adc2f0dcb7dbe5`.
 - QGF bundles the official runtime and editor source. Do not install a second UniTask copy in the same Unity project. Unity-facing sample waits use UniTask directly; no tutorial-specific asynchronous wrapper is added.
 
+## YooAsset 3.0.6
+
+- Source: [tuyoogame/YooAsset, tag 3.0.6](https://github.com/tuyoogame/YooAsset/tree/3.0.6), commit `3b4cfb36cc2e81b9558ab74d65fee2cf2eac2804`.
+- The official runtime and editor source are bundled in `Runtime/Plugins/YooAsset`; upstream game samples are excluded.
+- Apache-2.0; [full license](Runtime/Plugins/YooAsset/LICENSE.txt). Upstream file hashes are recorded in `Tools/Packaging/yooasset-source.json` in the development repository.
+- Unity Scriptable Build Pipeline 2.1.4 is resolved through the Unity Registry. Do not install a second YooAsset source copy alongside the bundled distribution.
+
 ## Optional editor tools (not bundled)
 
 `QGF > Extensions` offers installation links for the following independent packages. Their source and artwork are not included in the QGF UPM package; installing QGF alone does not install them. Their upstream licenses remain applicable to separate installations.

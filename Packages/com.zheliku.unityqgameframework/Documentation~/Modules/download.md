@@ -1,6 +1,6 @@
 # Download：下载文件到磁盘
 
-Download 把 URI 的内容写入磁盘文件。Resource 更新也用它下载资源；普通下载不会自动导入 AssetDatabase，也不会生成 AssetBundle。
+Download 把 URI 的内容写入磁盘文件。YooAsset 资源包的版本、清单和 Bundle 下载由 Resource 包操作处理；普通 Download 不会自动导入 AssetDatabase，也不会生成 AssetBundle。
 
 [Download 示例](../../Samples~/01_Modules/19_Download/) 自带本机 HTTP 服务，可操作文件保存、进度和取消。下图按已知文件长度计算百分比。
 

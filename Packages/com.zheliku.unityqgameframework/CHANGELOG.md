@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- 内置 YooAsset 3.0.6 源码、许可证和版本锁定；增加资源配置、构建 Profile、模拟构建与 Player 资源包构建入口。
+- 增加 UniTask 资源等待与取消处理；旧 Resource 模块的整体迁移尚在进行。
+- ResourceComponent 可指定 ResourceSettings，接入 YooAsset 资产借用、原生文件与场景加载；增加异步加载、独立句柄、包初始化和安全销毁入口。
+- 增加 `LoadDataTablesAsync<T>`，与原有表集事件入口共用请求记录，支持取消、失败异常及重试。
+- 增加 `DownloadResourcesAsync`，统一 YooAsset 下载的 UniTask 等待、失败异常和取消；StarForce 增加下载确认、进度、重试及更新后缓存清理流程。
+- StarForce 预载 Luban 表集与主字体改用 UniTask，启动失败提示不依赖资源包；修复内置对话框同帧连续打开时丢失重试提示。
+- 示例改用资产 GUID 作为 Bundle 名，缩短按 Profile 隔离的构建缓存路径，修复 Windows 深层目录下的资源构建路径过长错误。
+- 联机包可关闭内置文件系统，支持没有 StreamingAssets 首包的纯远端下载；修正 HTTP 更新示例强制读取缺失的 BuiltinCatalog 的问题。
+- 重载启动场景时等待 QGF 上一实例完成资源包关闭，修复 StarForce 切换语言后同名包仍被占用、停在初始化的问题。
+- Player 资源构建现在同步生成首包目录并部署 `BuiltinCatalog.bytes`，修复离线 Player 启动时缺少内置资源目录的问题。
+- 同一 Profile 和版本可重复构建，只覆盖该版本产物并保留增量缓存。
+- 打包器支持排除内置 UniTask 或 YooAsset，供已安装官方依赖的项目使用；默认分发继续内置源码。
+
 ## [0.1.0-exp.8] - 2026-10-24
 
 ### Changed

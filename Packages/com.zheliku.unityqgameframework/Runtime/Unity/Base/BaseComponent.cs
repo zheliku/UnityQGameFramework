@@ -5,7 +5,6 @@
 
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Localization;
-using UnityQGameFramework.Core.Resource;
 using System;
 using UnityEngine;
 
@@ -22,9 +21,6 @@ namespace UnityQGameFramework.Runtime
         private const int DefaultDpi = 96;  // default windows dpi
 
         private float m_GameSpeedBeforePause = 1f;
-
-        [SerializeField]
-        private bool m_EditorResourceMode = true;
 
         [SerializeField]
         private Language m_EditorLanguage = Language.Unspecified;
@@ -57,35 +53,34 @@ namespace UnityQGameFramework.Runtime
         private bool m_NeverSleep = true;
 
         /// <summary>
-        /// 获取或设置是否使用编辑器资源模式（仅编辑器内有效）。
-        /// </summary>
-        public bool EditorResourceMode
-        {
-            get => m_EditorResourceMode;
-            set => m_EditorResourceMode = value;
-        }
-
-        /// <summary>
         /// 获取或设置编辑器语言（仅编辑器内有效）。
         /// </summary>
         public Language EditorLanguage
         {
-            get => m_EditorLanguage;
-            set => m_EditorLanguage = value;
+            get
+            {
+                return m_EditorLanguage;
+            }
+            set
+            {
+                m_EditorLanguage = value;
+            }
         }
-
-        /// <summary>
-        /// 获取或设置编辑器资源辅助器。
-        /// </summary>
-        public IResourceManager EditorResourceHelper { get; set; }
 
         /// <summary>
         /// 获取或设置游戏帧率。
         /// </summary>
         public int FrameRate
         {
-            get => m_FrameRate;
-            set => Application.targetFrameRate = m_FrameRate = value;
+            get
+            {
+                return m_FrameRate;
+            }
+            set
+            {
+                m_FrameRate = value;
+                Application.targetFrameRate = value;
+            }
         }
 
         /// <summary>
@@ -93,27 +88,53 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float GameSpeed
         {
-            get => m_GameSpeed;
-            set => Time.timeScale = m_GameSpeed = value >= 0f ? value : 0f;
+            get
+            {
+                return m_GameSpeed;
+            }
+            set
+            {
+                m_GameSpeed = value >= 0f ? value : 0f;
+                Time.timeScale = m_GameSpeed;
+            }
         }
 
         /// <summary>
         /// 获取游戏是否暂停。
         /// </summary>
-        public bool IsGamePaused => m_GameSpeed <= 0f;
+        public bool IsGamePaused
+        {
+            get
+            {
+                return m_GameSpeed <= 0f;
+            }
+        }
 
         /// <summary>
         /// 获取是否正常游戏速度。
         /// </summary>
-        public bool IsNormalGameSpeed => m_GameSpeed == 1f;
+        public bool IsNormalGameSpeed
+        {
+            get
+            {
+                return m_GameSpeed == 1f;
+            }
+        }
 
         /// <summary>
         /// 获取或设置是否允许后台运行。
         /// </summary>
         public bool RunInBackground
         {
-            get => m_RunInBackground;
-            set => Application.runInBackground = m_RunInBackground = value;
+            get
+            {
+                return m_RunInBackground;
+            }
+            set
+            {
+                m_RunInBackground = value;
+                Application.runInBackground = value;
+            }
         }
 
         /// <summary>
@@ -153,12 +174,6 @@ namespace UnityQGameFramework.Runtime
             if (Utility.Converter.ScreenDpi <= 0)
             {
                 Utility.Converter.ScreenDpi = DefaultDpi;
-            }
-
-            m_EditorResourceMode &= Application.isEditor;
-            if (m_EditorResourceMode)
-            {
-                Log.Info("Editor Resource Mode enabled.");
             }
 
             Application.targetFrameRate = m_FrameRate;

@@ -4,7 +4,9 @@
     "references": [
         "UnityQGameFramework.Core",
         "UnityQGameFramework.Luban",
-        "UnityEngine.UI"
+        "UnityEngine.UI",
+        "UniTask",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": []

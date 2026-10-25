@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
@@ -8,6 +7,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示 QGF.Entity 隐藏、回池和实例复用。
+    /// </summary>
     public sealed class ReuseCubeEntity : MonoBehaviour
     {
         [SerializeField] private string prefabGuid;
@@ -22,7 +24,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            asset = UnityEditor.AssetDatabase.GUIDToAssetPath(prefabGuid);
+            asset = prefabGuid;
             // 实体组管理实例缓存，容量用于空闲回收。
             QGF.Entity.AddEntityGroup("Example", 0.2f, 8, 1f, 0);
             QGF.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShown);
@@ -96,4 +98,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

@@ -110,7 +110,7 @@ Unity 工程的 Core 更新统一由 BaseComponent 驱动。
 - `#if UNITY_EDITOR` 用于隔离依赖 `UnityEditor` API 或编辑器专用辅助类的代码，不是每个脚本都要加。独立编辑器工具放入 Editor 文件夹或 Editor 程序集；整份 MonoBehaviour 被宏包住时，该类型不会编译进 Player。需要在 Player 使用的组件应保留在运行程序集，并提供 Player 可用的资源路径与加载实现。
 - 自己的 asmdef 按使用的功能引用 Core、Runtime、Luban；可选插件由使用它的程序集引用。
 
-资源路径使用正斜线并包含正确扩展名，例如 `Assets/MyGame/Prefabs/Enemy.prefab`。不要把 Assets 下的完整路径、Resources.Load 的相对路径和网络 URL 混用。
+资源位置由 YooAsset 的 ResourceBuildProfile 决定。启用包的 `EnableAddressable` 并使用 `AddressByFileName` 时，传文件名且不带扩展名；启用 `IncludeAssetGUID` 时也可以传 Unity 资产 GUID。不要把 `Assets/...` 文件路径、YooAsset 地址和网络 URL 混用。
 
 ## 9. 加入一个功能时如何验收
 
@@ -122,7 +122,7 @@ Unity 工程的 Core 更新统一由 BaseComponent 驱动。
 4. 关闭后修改背包，不再调用已关闭界面的监听函数。
 5. 资源加载失败时有具体资源路径和失败原因，流程不会永远停在“加载中”。
 
-编辑器资源模式验证玩法迭代；Player 还要验证资源打包、启动场景、平台与网络环境。两者不能互相替代。
+Editor Simulation 验证玩法和资源收集；Player 还要验证实际包构建、启动场景、平台与网络环境。两者不能互相替代。
 
 ## 10. 文档和示例的写法
 

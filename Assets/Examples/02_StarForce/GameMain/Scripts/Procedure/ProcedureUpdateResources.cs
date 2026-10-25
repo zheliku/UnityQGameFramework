@@ -1,255 +1,215 @@
-using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using System.Collections.Generic;
+//------------------------------------------------------------
+// Unity Q Game Framework
+// Copyright © 2013-2021 Jiang Yin. All rights reserved.
+//------------------------------------------------------------
+
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
+using YooAsset;
 using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 确认并下载资源更新。
+    /// </summary>
     public class ProcedureUpdateResources : ProcedureBase
     {
-        private bool m_UpdateResourcesComplete = false;
-        private int m_UpdateCount = 0;
-        private long m_UpdateTotalCompressedLength = 0L;
-        private int m_UpdateSuccessCount = 0;
-        private List<UpdateLengthData> m_UpdateLengthData = new List<UpdateLengthData>();
-        private UpdateResourceForm m_UpdateResourceForm = null;
+        private bool m_Complete;
+        private bool m_DownloadedResources;
+        private CancellationTokenSource m_Cancellation;
+        private ResourceDownloaderOperation m_Downloader;
+        private UpdateResourceForm m_Form;
+        private long m_PreviousDownloadBytes;
+        private float m_PreviousProgressTime;
+        private float m_DownloadSpeedKB;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
-
-            m_UpdateResourcesComplete = false;
-            m_UpdateCount = procedureOwner.GetData<VarInt32>("UpdateResourceCount");
-            procedureOwner.RemoveData("UpdateResourceCount");
-            m_UpdateTotalCompressedLength = procedureOwner.GetData<VarInt64>("UpdateResourceTotalCompressedLength");
-            procedureOwner.RemoveData("UpdateResourceTotalCompressedLength");
-            m_UpdateSuccessCount = 0;
-            m_UpdateLengthData.Clear();
-            m_UpdateResourceForm = null;
-
-            GameEntry.Event.Subscribe(ResourceUpdateStartEventArgs.EventId, OnResourceUpdateStart);
-            GameEntry.Event.Subscribe(ResourceUpdateChangedEventArgs.EventId, OnResourceUpdateChanged);
-            GameEntry.Event.Subscribe(ResourceUpdateSuccessEventArgs.EventId, OnResourceUpdateSuccess);
-            GameEntry.Event.Subscribe(ResourceUpdateFailureEventArgs.EventId, OnResourceUpdateFailure);
-
-            if (Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
-            {
-                GameEntry.UI.OpenDialog(new DialogParams
-                {
-                    Mode = 2,
-                    Title = GameEntry.Localization.GetString("UpdateResourceViaCarrierDataNetwork.Title"),
-                    Message = GameEntry.Localization.GetString("UpdateResourceViaCarrierDataNetwork.Message"),
-                    ConfirmText = GameEntry.Localization.GetString("UpdateResourceViaCarrierDataNetwork.UpdateButton"),
-                    OnClickConfirm = StartUpdateResources,
-                    CancelText = GameEntry.Localization.GetString("UpdateResourceViaCarrierDataNetwork.QuitButton"),
-                    OnClickCancel = delegate (object userData) { UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit); },
-                });
-
-                return;
-            }
-
-            StartUpdateResources(null);
-        }
-
-        protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
-        {
-            if (m_UpdateResourceForm != null)
-            {
-                Object.Destroy(m_UpdateResourceForm.gameObject);
-                m_UpdateResourceForm = null;
-            }
-
-            GameEntry.Event.Unsubscribe(ResourceUpdateStartEventArgs.EventId, OnResourceUpdateStart);
-            GameEntry.Event.Unsubscribe(ResourceUpdateChangedEventArgs.EventId, OnResourceUpdateChanged);
-            GameEntry.Event.Unsubscribe(ResourceUpdateSuccessEventArgs.EventId, OnResourceUpdateSuccess);
-            GameEntry.Event.Unsubscribe(ResourceUpdateFailureEventArgs.EventId, OnResourceUpdateFailure);
-
-            base.OnLeave(procedureOwner, isShutdown);
+            m_Complete = false;
+            m_DownloadedResources = false;
+            m_Cancellation = new CancellationTokenSource();
+            PrepareDownloadAsync(m_Cancellation.Token).Forget();
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-
-            if (!m_UpdateResourcesComplete)
+            if (m_Form != null && m_Downloader != null)
+            {
+                UpdateProgress();
+            }
+            if (!m_Complete)
             {
                 return;
             }
 
-            ChangeState<ProcedurePreload>(procedureOwner);
-        }
-
-        private void StartUpdateResources(object userData)
-        {
-            if (m_UpdateResourceForm == null)
+            if (m_DownloadedResources)
             {
-                m_UpdateResourceForm = Object.Instantiate(GameEntry.BuiltinData.UpdateResourceFormTemplate);
-            }
-
-            Log.Info("Start update resources...");
-            GameEntry.Resource.UpdateResources(OnUpdateResourcesComplete);
-        }
-
-        private void RefreshProgress()
-        {
-            long currentTotalUpdateLength = 0L;
-            for (int i = 0; i < m_UpdateLengthData.Count; i++)
-            {
-                currentTotalUpdateLength += m_UpdateLengthData[i].Length;
-            }
-
-            float progressTotal = (float)currentTotalUpdateLength / m_UpdateTotalCompressedLength;
-            string descriptionText = GameEntry.Localization.GetString(
-                "UpdateResource.Tips",
-                m_UpdateSuccessCount.ToString(),
-                m_UpdateCount.ToString(),
-                GetByteLengthString(currentTotalUpdateLength),
-                GetByteLengthString(m_UpdateTotalCompressedLength),
-                progressTotal,
-                GetByteLengthString((int)GameEntry.Download.CurrentSpeed));
-            m_UpdateResourceForm.SetProgress(progressTotal, descriptionText);
-        }
-
-        private string GetByteLengthString(long byteLength)
-        {
-            if (byteLength < 1024L) // 2 ^ 10
-            {
-                return Utility.Text.Format("{0} Bytes", byteLength);
-            }
-
-            if (byteLength < 1048576L) // 2 ^ 20
-            {
-                return Utility.Text.Format("{0:F2} KB", byteLength / 1024f);
-            }
-
-            if (byteLength < 1073741824L) // 2 ^ 30
-            {
-                return Utility.Text.Format("{0:F2} MB", byteLength / 1048576f);
-            }
-
-            if (byteLength < 1099511627776L) // 2 ^ 40
-            {
-                return Utility.Text.Format("{0:F2} GB", byteLength / 1073741824f);
-            }
-
-            if (byteLength < 1125899906842624L) // 2 ^ 50
-            {
-                return Utility.Text.Format("{0:F2} TB", byteLength / 1099511627776f);
-            }
-
-            if (byteLength < 1152921504606846976L) // 2 ^ 60
-            {
-                return Utility.Text.Format("{0:F2} PB", byteLength / 1125899906842624f);
-            }
-
-            return Utility.Text.Format("{0:F2} EB", byteLength / 1152921504606846976f);
-        }
-
-        private void OnUpdateResourcesComplete(UnityQGameFramework.Core.Resource.IResourceGroup resourceGroup, bool result)
-        {
-            if (result)
-            {
-                m_UpdateResourcesComplete = true;
-                Log.Info("Update resources complete with no errors.");
+                ChangeState<ProcedureClearUnusedCache>(procedureOwner);
             }
             else
             {
-                Log.Error("Update resources complete with errors.");
+                ChangeState<ProcedurePreload>(procedureOwner);
             }
         }
 
-        private void OnResourceUpdateStart(object sender, GameEventArgs e)
+        protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
-            ResourceUpdateStartEventArgs ne = (ResourceUpdateStartEventArgs)e;
-
-            for (int i = 0; i < m_UpdateLengthData.Count; i++)
+            if (m_Cancellation != null)
             {
-                if (m_UpdateLengthData[i].Name == ne.Name)
+                if (!m_Cancellation.IsCancellationRequested)
                 {
-                    Log.Warning("Update resource '{0}' is invalid.", ne.Name);
-                    m_UpdateLengthData[i].Length = 0;
-                    RefreshProgress();
+                    m_Cancellation.Cancel();
+                }
+                m_Cancellation.Dispose();
+                m_Cancellation = null;
+            }
+
+            if (m_Downloader != null && !m_Downloader.IsDone)
+            {
+                m_Downloader.CancelDownload();
+            }
+            m_Downloader = null;
+            DestroyProgressForm();
+            base.OnLeave(procedureOwner, isShutdown);
+        }
+
+        private async UniTask PrepareDownloadAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                // QGF 登记下载操作；下载器只包含当前清单中尚未就绪的资源。
+                m_Downloader = GameEntry.Resource.CreateResourceDownloader(new ResourceDownloaderOptions(4, 2));
+                if (m_Downloader.TotalDownloadCount == 0)
+                {
+                    // 空下载器也要完成，避免一直作为在途操作占用资源包。
+                    await GameEntry.Resource.DownloadResourcesAsync(m_Downloader, cancellationToken);
+                    m_Complete = true;
                     return;
                 }
-            }
 
-            m_UpdateLengthData.Add(new UpdateLengthData(ne.Name));
+                ShowDownloadPrompt(cancellationToken);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                ShowFailure(exception, () => PrepareDownloadAsync(cancellationToken).Forget());
+            }
         }
 
-        private void OnResourceUpdateChanged(object sender, GameEventArgs e)
+        private void ShowDownloadPrompt(CancellationToken cancellationToken)
         {
-            ResourceUpdateChangedEventArgs ne = (ResourceUpdateChangedEventArgs)e;
+            bool isCarrierData = Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork;
+            string titleKey = isCarrierData ? "UpdateResourceViaCarrierDataNetwork.Title" : "UpdateResource.Title";
+            string messageKey = isCarrierData ? "UpdateResourceViaCarrierDataNetwork.Message" : "UpdateResource.Message";
+            string confirmKey = isCarrierData ? "UpdateResourceViaCarrierDataNetwork.UpdateButton" : "UpdateResource.DownloadButton";
+            string cancelKey = isCarrierData ? "UpdateResourceViaCarrierDataNetwork.QuitButton" : "UpdateResource.QuitButton";
+            float totalSizeMB = m_Downloader.TotalDownloadBytes / 1048576f;
 
-            for (int i = 0; i < m_UpdateLengthData.Count; i++)
+            // 资源表尚未加载，QGF.UI 会显示 Launcher 随场景携带的内置对话框。
+            GameEntry.UI.OpenDialog(new DialogParams
             {
-                if (m_UpdateLengthData[i].Name == ne.Name)
-                {
-                    m_UpdateLengthData[i].Length = ne.CurrentLength;
-                    RefreshProgress();
-                    return;
-                }
-            }
-
-            Log.Warning("Update resource '{0}' is invalid.", ne.Name);
+                Mode = 2,
+                Title = GameEntry.Localization.GetString(titleKey),
+                Message = GameEntry.Localization.GetString(messageKey, m_Downloader.TotalDownloadCount, totalSizeMB),
+                ConfirmText = GameEntry.Localization.GetString(confirmKey),
+                OnClickConfirm = userData => DownloadAsync(cancellationToken).Forget(),
+                CancelText = GameEntry.Localization.GetString(cancelKey),
+                OnClickCancel = userData => UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit)
+            });
         }
 
-        private void OnResourceUpdateSuccess(object sender, GameEventArgs e)
+        private async UniTask DownloadAsync(CancellationToken cancellationToken)
         {
-            ResourceUpdateSuccessEventArgs ne = (ResourceUpdateSuccessEventArgs)e;
-
-            for (int i = 0; i < m_UpdateLengthData.Count; i++)
+            try
             {
-                if (m_UpdateLengthData[i].Name == ne.Name)
-                {
-                    m_UpdateLengthData[i].Length = ne.CompressedLength;
-                    m_UpdateSuccessCount++;
-                    RefreshProgress();
-                    return;
-                }
-            }
+                cancellationToken.ThrowIfCancellationRequested();
+                m_Form = UnityEngine.Object.Instantiate(GameEntry.BuiltinData.UpdateResourceFormTemplate);
+                m_PreviousDownloadBytes = 0L;
+                m_PreviousProgressTime = Time.realtimeSinceStartup;
+                m_DownloadSpeedKB = 0f;
 
-            Log.Warning("Update resource '{0}' is invalid.", ne.Name);
+                // QGF 负责等待、失败异常和取消下载，流程只处理界面与下一阶段。
+                await GameEntry.Resource.DownloadResourcesAsync(m_Downloader, cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
+                UpdateProgress();
+                m_DownloadedResources = true;
+                m_Complete = true;
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                DestroyProgressForm();
+                ShowFailure(exception, () => PrepareDownloadAsync(cancellationToken).Forget());
+            }
         }
 
-        private void OnResourceUpdateFailure(object sender, GameEventArgs e)
+        private void UpdateProgress()
         {
-            ResourceUpdateFailureEventArgs ne = (ResourceUpdateFailureEventArgs)e;
-            if (ne.RetryCount >= ne.TotalRetryCount)
+            long currentDownloadBytes = m_Downloader.CurrentDownloadBytes;
+            float currentTime = Time.realtimeSinceStartup;
+            float elapsedTime = currentTime - m_PreviousProgressTime;
+            if (elapsedTime >= 0.5f)
             {
-                Log.Error(
-                    "Update resource '{0}' failure from '{1}' with error message '{2}', retry count '{3}'.",
-                    ne.Name,
-                    ne.DownloadUri,
-                    ne.ErrorMessage,
-                    ne.RetryCount.ToString());
+                m_DownloadSpeedKB = (currentDownloadBytes - m_PreviousDownloadBytes) / elapsedTime / 1024f;
+                m_PreviousDownloadBytes = currentDownloadBytes;
+                m_PreviousProgressTime = currentTime;
+            }
+
+            float progress = m_Downloader.TotalDownloadBytes == 0L
+                ? 1f
+                : (float)currentDownloadBytes / m_Downloader.TotalDownloadBytes;
+            string description = GameEntry.Localization.GetString(
+                "UpdateResource.Tips",
+                m_Downloader.CurrentDownloadCount,
+                m_Downloader.TotalDownloadCount,
+                currentDownloadBytes / 1048576f,
+                m_Downloader.TotalDownloadBytes / 1048576f,
+                progress,
+                m_DownloadSpeedKB);
+            m_Form.SetProgress(progress, description);
+        }
+
+        private void ShowFailure(Exception exception, Action retryAction)
+        {
+            if (m_Downloader != null && !m_Downloader.IsDone)
+            {
+                m_Downloader.CancelDownload();
+            }
+            m_Downloader = null;
+            DestroyProgressForm();
+            Log.Warning("Resource update failed: {0}", exception.Message);
+            GameEntry.UI.OpenDialog(new DialogParams
+            {
+                Mode = 2,
+                Title = GameEntry.Localization.GetString("UpdateResource.Title"),
+                Message = exception.Message,
+                ConfirmText = GameEntry.Localization.GetString("UpdateResource.RetryButton"),
+                OnClickConfirm = userData => retryAction(),
+                CancelText = GameEntry.Localization.GetString("UpdateResource.QuitButton"),
+                OnClickCancel = userData => UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit)
+            });
+        }
+
+        private void DestroyProgressForm()
+        {
+            if (m_Form == null)
+            {
                 return;
             }
 
-            for (int i = 0; i < m_UpdateLengthData.Count; i++)
-            {
-                if (m_UpdateLengthData[i].Name == ne.Name)
-                {
-                    m_UpdateLengthData.Remove(m_UpdateLengthData[i]);
-                    RefreshProgress();
-                    return;
-                }
-            }
-
-            Log.Warning("Update resource '{0}' is invalid.", ne.Name);
-        }
-
-        private class UpdateLengthData
-        {
-            public UpdateLengthData(string name)
-            {
-                Name = name;
-            }
-
-            public string Name { get; }
-
-            public int Length { get; set; }
+            UnityEngine.Object.Destroy(m_Form.gameObject);
+            m_Form = null;
         }
     }
 }

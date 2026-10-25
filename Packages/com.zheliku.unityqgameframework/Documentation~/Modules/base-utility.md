@@ -25,9 +25,7 @@ FrameRate 写入 Application.targetFrameRate，实际帧率仍受平台、垂直
 
 暂停不会停止 Base.Update。Core 同时收到 deltaTime 与 unscaledDeltaTime，下载、网络和使用真实时间的状态仍可能继续工作。参见 [运行链路](../00-runtime.md) 中的更新时间说明。
 
-Editor Resource Mode 在编辑器启动时决定 Resource 使用的路径。运行中改这个 bool 不能当成一次完整的资源后端切换；要测试发行加载流程，应在启动前完成配置并重新运行。
-
-`EditorLanguage` 设置编辑器运行时使用的语言；`EditorResourceHelper` 由编辑器资源组件在初始化时接入。这三项属于启动配置，不作为运行中的开关演示。
+`EditorLanguage` 可指定编辑器运行时使用的测试语言；Player 始终根据用户设置和系统语言选择语言。
 
 ## 一个 JSON 与路径实验
 

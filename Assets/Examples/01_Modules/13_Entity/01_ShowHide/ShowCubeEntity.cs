@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core.Event;
@@ -6,6 +5,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 通过 QGF.Entity 显示和隐藏 Cube 实体。
+    /// </summary>
     public sealed class ShowCubeEntity : MonoBehaviour
     {
         [SerializeField] private string prefabGuid;
@@ -15,8 +17,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            // 编辑器资源模式使用资产路径；GUID 让示例移动文件夹后仍能找到预制体。
-            asset = UnityEditor.AssetDatabase.GUIDToAssetPath(prefabGuid);
+            asset = prefabGuid;
             QGF.Entity.AddEntityGroup("Example", 30f, 8, 60f, 0);
             QGF.Event.Subscribe(ShowEntityFailureEventArgs.EventId, OnFailed);
             showButton.onClick.AddListener(() =>
@@ -54,4 +55,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

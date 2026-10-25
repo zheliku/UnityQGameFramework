@@ -55,7 +55,13 @@ namespace UnityQGameFramework.Core.DataTable
             {
                 throw new ArgumentNullException(nameof(condition));
             }
-            foreach (T row in this) if (condition(row)) return true;
+            foreach (T row in this)
+            {
+                if (condition(row))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -70,7 +76,13 @@ namespace UnityQGameFramework.Core.DataTable
             {
                 throw new ArgumentNullException(nameof(condition));
             }
-            foreach (T row in this) if (condition(row)) return row;
+            foreach (T row in this)
+            {
+                if (condition(row))
+                {
+                    return row;
+                }
+            }
             return default;
         }
 
@@ -103,8 +115,8 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取排序后的数据表行。
         /// </summary>
-        /// <param name="comparison">要排序的条件。</param>
-        /// <returns>符合查询条件的数据表行。</returns>
+        /// <param name="comparison">数据表行的排序比较器。</param>
+        /// <returns>排序后的数据表行。</returns>
         public T[] GetDataRows(Comparison<T> comparison)
         {
             var results = new List<T>(Count);
@@ -115,7 +127,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取排序后的数据表行。
         /// </summary>
-        /// <param name="comparison">要排序的条件。</param>
+        /// <param name="comparison">数据表行的排序比较器。</param>
         /// <param name="results">接收数据表行的结果列表。</param>
         public void GetDataRows(Comparison<T> comparison, List<T> results)
         {
@@ -131,8 +143,8 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取排序后的符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <param name="comparison">要排序的条件。</param>
-        /// <returns>符合查询条件的数据表行。</returns>
+        /// <param name="comparison">数据表行的排序比较器。</param>
+        /// <returns>按指定条件筛选并排序后的数据表行。</returns>
         public T[] GetDataRows(Predicate<T> condition, Comparison<T> comparison)
         {
             var results = new List<T>();
@@ -144,7 +156,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取排序后的符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <param name="comparison">要排序的条件。</param>
+        /// <param name="comparison">数据表行的排序比较器。</param>
         /// <param name="results">接收数据表行的结果列表。</param>
         public void GetDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results)
         {
@@ -188,7 +200,13 @@ namespace UnityQGameFramework.Core.DataTable
             }
             results.Clear();
             // 按生成表的原始顺序枚举；排序只改变结果列表。
-            foreach (T row in this) if (condition == null || condition(row)) results.Add(row);
+            foreach (T row in this)
+            {
+                if (condition == null || condition(row))
+                {
+                    results.Add(row);
+                }
+            }
         }
     }
 }

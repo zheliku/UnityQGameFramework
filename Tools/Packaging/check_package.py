@@ -14,6 +14,10 @@ def git(root, *args):
     return subprocess.check_output(['git', '-C', str(root), *args], text=True, encoding='utf-8').splitlines()
 
 
+def file_digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def main():
     root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(description=__doc__)
@@ -31,6 +35,17 @@ def main():
             errors.append('Bundled UniTask differs from its pinned upstream source: ' + name)
     if not (plugin / 'LICENSE.txt').is_file():
         errors.append('Bundled UniTask license is missing.')
+    yooasset = json.loads((root / 'Tools/Packaging/yooasset-source.json').read_text(encoding='utf-8-sig'))
+    yooasset_root = package / yooasset['destination']
+    for name, digest in yooasset['files'].items():
+        path = yooasset_root / name
+        accepted = {digest}
+        if name in yooasset.get('unityImportHashes', {}):
+            accepted.add(yooasset['unityImportHashes'][name])
+        if not path.is_file() or file_digest(path) not in accepted:
+            errors.append('Bundled YooAsset differs from its pinned upstream source: ' + name)
+    if yooasset.get('version') != '3.0.6' or not (yooasset_root / 'LICENSE.txt').is_file():
+        errors.append('Bundled YooAsset version or license is missing.')
     if manifest['name'] != package.name:
         errors.append('Package name does not match its directory.')
     optional_tools = {'com.annulusgames.alchemy', 'com.borodar.rainbow-folders'}
@@ -118,7 +133,7 @@ def main():
                          for path in parent.glob('*.asmdef')), None)
         editor_only_assembly = assembly is not None and 'Editor' in json.loads(
             assembly.read_text(encoding='utf-8-sig')).get('includePlatforms', [])
-        editor_fixture = re.search(r'\bUnityEditor(?:\.|\b)|\bResourceExamplePaths\b|\bResourceFixtureManifest\b', content)
+        editor_fixture = re.search(r'\bUnityEditor(?:\.|\b)|\bAssetDatabase\b|\bResourceBuildService\b|\bResourceBuildProfile\b', content)
         if editor_fixture and not content.lstrip().startswith('#if UNITY_EDITOR') and not editor_only_assembly:
             errors.append('An example using Editor APIs or fixtures needs an Editor-only guard: ' + script.relative_to(root).as_posix())
         if re.search(r'\bAwaitable\b', content):

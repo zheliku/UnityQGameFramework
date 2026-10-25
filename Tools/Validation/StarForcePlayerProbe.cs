@@ -52,8 +52,9 @@ public sealed class StarForcePlayerProbe : MonoBehaviour
         {
             await Until(() => Find<MenuForm>() != null && Entry.Procedure?.CurrentProcedure is ProcedureMenu, "Package boot");
             result.jsonChecks = StarForceJsonChecks.Run();
-            Require(!Entry.Base.EditorResourceMode && Entry.Resource.ResourceMode == ResourceMode.Package, "Actual Package backend");
-            Require(Entry.Resource.ReadOnlyPath.Replace('\\', '/').EndsWith("/StreamingAssets/" + Entry.ResourceFolder), "Sample-owned resource path");
+            Require(!Application.isEditor && Entry.Resource.ResourceMode == ResourceMode.Package, "Actual Package backend");
+            Require(Entry.Resource.Settings.GetPackage().PlayMode == ResourcePlayMode.Offline
+                && Entry.Resource.Settings.DefaultPackageName == "QgfExamples.StarForce", "Sample-owned YooAsset package");
             Require(Entry.Config.GetInt("Scene.Menu") == 1 && Entry.DataTable.GetDataTable<TbScene>().GetDataRow(2) != null, "TOML and Luban data");
             result.packageBoot = true;
             if (run == "second")

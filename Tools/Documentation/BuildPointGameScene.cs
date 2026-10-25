@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityQGameFramework.Examples.Modules.PointPointPoint;
+using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
 public static class BuildPointGameScene

@@ -8,6 +8,7 @@ using UnityQGameFramework.Core.Localization;
 using System;
 using System.Text;
 using UnityEngine;
+using YooAsset;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -87,8 +88,16 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否读取字典成功。</returns>
         public override bool ReadData(ILocalizationManager localizationManager, string dictionaryAssetName, object dictionaryAsset, object userData)
         {
-            if (dictionaryAsset is TextAsset text) return localizationManager.ParseData(text.text, userData);
-            Log.Warning("Dictionary asset '{0}' is not a TextAsset.", dictionaryAssetName);
+            if (dictionaryAsset is TextAsset text)
+            {
+                return localizationManager.ParseData(text.text, userData);
+            }
+            if (dictionaryAsset is RawFileObject rawFile)
+            {
+                byte[] bytes = rawFile.GetBytes();
+                return ParseData(localizationManager, bytes, 0, bytes.Length, userData);
+            }
+            Log.Warning("Dictionary asset '{0}' is not a text or raw file asset.", dictionaryAssetName);
             return false;
         }
 
@@ -116,8 +125,16 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否解析字典成功。</returns>
         public override bool ParseData(ILocalizationManager localizationManager, string dictionaryString, object userData)
         {
-            try { TomlLocalizationParser.ParseAndAdd(localizationManager, dictionaryString); return true; }
-            catch (Exception exception) { Log.Warning("Cannot parse TOML dictionary: {0}", exception.Message); return false; }
+            try
+            {
+                TomlLocalizationParser.ParseAndAdd(localizationManager, dictionaryString);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Warning("Cannot parse TOML dictionary: {0}", exception.Message);
+                return false;
+            }
         }
 
         /// <summary>
@@ -131,8 +148,15 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否解析字典成功。</returns>
         public override bool ParseData(ILocalizationManager localizationManager, byte[] dictionaryBytes, int startIndex, int length, object userData)
         {
-            try { return ParseData(localizationManager, Utf8.GetString(dictionaryBytes, startIndex, length), userData); }
-            catch (Exception exception) { Log.Warning("Cannot decode UTF-8 dictionary: {0}", exception.Message); return false; }
+            try
+            {
+                return ParseData(localizationManager, Utf8.GetString(dictionaryBytes, startIndex, length), userData);
+            }
+            catch (Exception exception)
+            {
+                Log.Warning("Cannot decode UTF-8 dictionary: {0}", exception.Message);
+                return false;
+            }
         }
 
         /// <summary>

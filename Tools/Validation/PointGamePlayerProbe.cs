@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core.Resource;
-using UnityQGameFramework.Examples.Modules.PointPointPoint;
+using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
 // 仅复制到隔离验收工程，不随 Sample 发布。通过命令行参数启用。
@@ -35,8 +35,9 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
             await Until(() => GameEntry.GetComponent<ProcedureComponent>()?.CurrentProcedure is PointGameMenu
                 && Game() != null, "Package boot and asynchronous menu form");
             object game = Game();
-            Require(!QGF.Base.EditorResourceMode && QGF.Resource.ResourceMode == ResourceMode.Package, "Actual Player Package backend");
-            Require(QGF.Resource.ReadOnlyPath.Replace('\\', '/').EndsWith("/StreamingAssets/" + PointGameResources.Folder), "Sample-owned resource path");
+            Require(!Application.isEditor && QGF.Resource.ResourceMode == ResourceMode.Package, "Actual Player Package backend");
+            Require(QGF.Resource.Settings.GetPackage().PlayMode == ResourcePlayMode.Offline
+                && QGF.Resource.Settings.DefaultPackageName == "QgfExamples.PointPointPoint", "Sample-owned YooAsset package");
             Require((int)Get(game, "TargetCount") == 10 && (float)Get(game, "Duration") == 20, "Rules loaded from bundled TOML");
             Require(GameEntry.GetComponent<BaseComponent>().gameObject.name == "QGF", "QGF root name");
             result.packageBoot = true;

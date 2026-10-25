@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +7,13 @@ using UnityQGameFramework.Examples.Modules.TableData;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 通过 QGF.DataTable 加载 Luban 数据表目录。
+    /// </summary>
     public sealed class LoadCatalogExample : MonoBehaviour
     {
+        private const string CatalogAssetGuid = "b60d82a09e25580ca731c520aef667d6";
+
         [SerializeField] private Button loadButton, cancelButton, unloadButton;
         [SerializeField] private Text stateText, rowsText;
 
@@ -19,7 +23,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            catalogName = UnityEditor.AssetDatabase.GetAssetPath(QGF.DataTable.Catalog);
+            catalogName = CatalogAssetGuid;
             QGF.Event.Subscribe(LoadDataTableSuccessEventArgs.EventId, OnLoaded);
             QGF.Event.Subscribe(LoadDataTableFailureEventArgs.EventId, OnFailed);
             loadButton.onClick.AddListener(Load);
@@ -103,4 +107,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

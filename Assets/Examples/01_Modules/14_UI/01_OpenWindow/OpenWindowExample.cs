@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core.Event;
@@ -6,6 +5,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 通过 QGF.UI 加载并关闭窗口。
+    /// </summary>
     public sealed class OpenWindowExample : MonoBehaviour
     {
         [SerializeField] private string windowGuid;
@@ -16,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            asset = UnityEditor.AssetDatabase.GUIDToAssetPath(windowGuid);
+            asset = windowGuid;
             QGF.UI.AddUIGroup("Example", 0);
             QGF.Event.Subscribe(OpenUIFormFailureEventArgs.EventId, OnFailed);
             openButton.onClick.AddListener(() =>
@@ -54,4 +56,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

@@ -6,7 +6,8 @@
     "UnityQGameFramework.Runtime",
     "UnityQGameFramework.Luban",
     "UnityEngine.UI",
-    "UniTask"
+    "UniTask",
+    "YooAsset"
   ],
   "autoReferenced": true
 }

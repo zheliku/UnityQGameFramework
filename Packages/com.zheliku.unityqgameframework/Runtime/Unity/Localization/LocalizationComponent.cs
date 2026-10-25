@@ -43,24 +43,48 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public Language Language
         {
-            get => m_LocalizationManager.Language;
-            set => m_LocalizationManager.Language = value;
+            get
+            {
+                return m_LocalizationManager.Language;
+            }
+            set
+            {
+                m_LocalizationManager.Language = value;
+            }
         }
 
         /// <summary>
         /// 获取系统语言。
         /// </summary>
-        public Language SystemLanguage => m_LocalizationManager.SystemLanguage;
+        public Language SystemLanguage
+        {
+            get
+            {
+                return m_LocalizationManager.SystemLanguage;
+            }
+        }
 
         /// <summary>
         /// 获取当前字典的文本条目数量。
         /// </summary>
-        public int DictionaryCount => m_LocalizationManager.DictionaryCount;
+        public int DictionaryCount
+        {
+            get
+            {
+                return m_LocalizationManager.DictionaryCount;
+            }
+        }
 
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        public int CachedBytesSize => m_LocalizationManager.CachedBytesSize;
+        public int CachedBytesSize
+        {
+            get
+            {
+                return m_LocalizationManager.CachedBytesSize;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -106,14 +130,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_LocalizationManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_LocalizationManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_LocalizationManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
             LocalizationHelperBase localizationHelper = Helper.CreateHelper(m_LocalizationHelperTypeName, m_CustomLocalizationHelper);
             if (localizationHelper == null)
@@ -129,7 +146,7 @@ namespace UnityQGameFramework.Runtime
 
             m_LocalizationManager.SetDataProviderHelper(localizationHelper);
             m_LocalizationManager.SetLocalizationHelper(localizationHelper);
-            m_LocalizationManager.Language = baseComponent.EditorResourceMode && baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
+            m_LocalizationManager.Language = Application.isEditor && baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
             if (m_CachedBytesSize > 0)
             {
                 EnsureCachedBytesSize(m_CachedBytesSize);

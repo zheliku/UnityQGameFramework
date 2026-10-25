@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +6,9 @@ using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 通过 QGF.Config 从资源包读取 TOML 配置。
+    /// </summary>
     public sealed class LoadConfigAsset : MonoBehaviour
     {
         [SerializeField] private Button loadButton;
@@ -14,7 +16,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField] private Text contextText;
         [SerializeField] private Text cacheText;
         [SerializeField] private Button reserveButton, freeButton;
-        [SerializeField] private TextAsset config;
+        [SerializeField] private string configAssetGuid;
 
         private void Start()
         {
@@ -30,9 +32,8 @@ namespace UnityQGameFramework.Examples.Modules
                 QGF.Config.RemoveConfig("Level.Name");
                 stateText.text = "读取中";
                 loadButton.interactable = false;
-                string path = UnityEditor.AssetDatabase.GetAssetPath(config);
-                // EditorResourceMode 使用资产路径；发布游戏时由资源模块处理打包后的路径。
-                QGF.Config.ReadData(path, this);
+                // 使用稳定的资产 GUID 定位 TOML，移动文件夹后也不必改运行时代码。
+                QGF.Config.ReadData(configAssetGuid, this);
             });
         }
 
@@ -44,7 +45,10 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnLoaded(object sender, GameEventArgs args)
         {
             var e = (LoadConfigSuccessEventArgs)args;
-            if (e.ConfigAssetName != UnityEditor.AssetDatabase.GetAssetPath(config)) return;
+            if (e.ConfigAssetName != configAssetGuid)
+            {
+                return;
+            }
             stateText.text = "已读取：" + QGF.Config.GetString("Level.Name");
             contextText.text = ReferenceEquals(e.UserData, this) ? "UserData：当前对象" : "UserData：未设置";
             loadButton.interactable = true;
@@ -53,7 +57,10 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnFailed(object sender, GameEventArgs args)
         {
             var e = (LoadConfigFailureEventArgs)args;
-            if (e.ConfigAssetName != UnityEditor.AssetDatabase.GetAssetPath(config)) return;
+            if (e.ConfigAssetName != configAssetGuid)
+            {
+                return;
+            }
             stateText.text = "读取失败：" + e.ErrorMessage;
             loadButton.interactable = true;
         }
@@ -62,10 +69,18 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // EventComponent 持有这些回调；销毁时解除订阅。
             var events = GameEntry.GetComponent<EventComponent>();
-            if (events == null) return;
-            if (events.Check(LoadConfigSuccessEventArgs.EventId, OnLoaded)) events.Unsubscribe(LoadConfigSuccessEventArgs.EventId, OnLoaded);
-            if (events.Check(LoadConfigFailureEventArgs.EventId, OnFailed)) events.Unsubscribe(LoadConfigFailureEventArgs.EventId, OnFailed);
+            if (events == null)
+            {
+                return;
+            }
+            if (events.Check(LoadConfigSuccessEventArgs.EventId, OnLoaded))
+            {
+                events.Unsubscribe(LoadConfigSuccessEventArgs.EventId, OnLoaded);
+            }
+            if (events.Check(LoadConfigFailureEventArgs.EventId, OnFailed))
+            {
+                events.Unsubscribe(LoadConfigFailureEventArgs.EventId, OnFailed);
+            }
         }
     }
 }
-#endif

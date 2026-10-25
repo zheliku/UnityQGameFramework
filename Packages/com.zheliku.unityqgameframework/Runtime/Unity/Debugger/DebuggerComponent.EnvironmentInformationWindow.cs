@@ -13,18 +13,10 @@ namespace UnityQGameFramework.Runtime
     {
         private sealed class EnvironmentInformationWindow : ScrollableDebuggerWindowBase
         {
-            private BaseComponent m_BaseComponent = null;
             private ResourceComponent m_ResourceComponent = null;
 
             public override void Initialize(params object[] args)
             {
-                m_BaseComponent = GameEntry.GetComponent<BaseComponent>();
-                if (m_BaseComponent == null)
-                {
-                    Log.Fatal("Base component is invalid.");
-                    return;
-                }
-
                 m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();
                 if (m_ResourceComponent == null)
                 {
@@ -43,7 +35,7 @@ namespace UnityQGameFramework.Runtime
                     DrawItem("Game Identifier", Application.identifier);
                     DrawItem("Unity Q Game Framework Version", Version.FrameworkVersion);
                     DrawItem("Game Version", Utility.Text.Format("{0} ({1})", Version.GameVersion, Version.InternalGameVersion));
-                    DrawItem("Resource Version", m_BaseComponent.EditorResourceMode ? "Unavailable in editor resource mode" : (string.IsNullOrEmpty(m_ResourceComponent.ApplicableGameVersion) ? "Unknown" : Utility.Text.Format("{0} ({1})", m_ResourceComponent.ApplicableGameVersion, m_ResourceComponent.InternalResourceVersion)));
+                    DrawItem("Resource Version", m_ResourceComponent.Settings == null ? "Resource Settings missing" : (string.IsNullOrEmpty(m_ResourceComponent.ApplicableGameVersion) ? "Unknown" : Utility.Text.Format("{0} ({1})", m_ResourceComponent.ApplicableGameVersion, m_ResourceComponent.InternalResourceVersion)));
                     DrawItem("Application Version", Application.version);
                     DrawItem("Unity Version", Application.unityVersion);
                     DrawItem("Platform", Application.platform.ToString());

@@ -4,7 +4,9 @@
   "references": [
     "UnityQGameFramework.Core",
     "UnityQGameFramework.Runtime",
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "UniTask",
+    "YooAsset"
   ],
   "autoReferenced": true
 }

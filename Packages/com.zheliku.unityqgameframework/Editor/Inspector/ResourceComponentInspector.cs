@@ -1,13 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core;
 using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
@@ -17,379 +13,157 @@ namespace UnityQGameFramework.Editor
     [CustomEditor(typeof(ResourceComponent))]
     internal sealed class ResourceComponentInspector : FrameworkInspector
     {
-        private static readonly string[] ResourceModeNames = new string[] { "Package", "Updatable", "Updatable While Playing" };
-
-        private SerializedProperty m_ResourceMode = null;
-        private SerializedProperty m_ReadWritePathType = null;
-        private SerializedProperty m_MinUnloadUnusedAssetsInterval = null;
-        private SerializedProperty m_MaxUnloadUnusedAssetsInterval = null;
-        private SerializedProperty m_AssetAutoReleaseInterval = null;
-        private SerializedProperty m_AssetCapacity = null;
-        private SerializedProperty m_AssetExpireTime = null;
-        private SerializedProperty m_AssetPriority = null;
-        private SerializedProperty m_ResourceAutoReleaseInterval = null;
-        private SerializedProperty m_ResourceCapacity = null;
-        private SerializedProperty m_ResourceExpireTime = null;
-        private SerializedProperty m_ResourcePriority = null;
-        private SerializedProperty m_UpdatePrefixUri = null;
-        private SerializedProperty m_GenerateReadWriteVersionListLength = null;
-        private SerializedProperty m_UpdateRetryCount = null;
-        private SerializedProperty m_InstanceRoot = null;
-        private SerializedProperty m_LoadResourceAgentHelperCount = null;
-
-        private FieldInfo m_EditorResourceModeFieldInfo = null;
-
-        private int m_ResourceModeIndex = 0;
-        private HelperInfo<ResourceHelperBase> m_ResourceHelperInfo = new HelperInfo<ResourceHelperBase>("Resource");
-        private HelperInfo<LoadResourceAgentHelperBase> m_LoadResourceAgentHelperInfo = new HelperInfo<LoadResourceAgentHelperBase>("LoadResourceAgent");
-
+        /// <summary>
+        /// 绘制资源组件面板。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
             serializedObject.Update();
 
-            ResourceComponent t = (ResourceComponent)target;
-
-            bool isEditorResourceMode = (bool)m_EditorResourceModeFieldInfo.GetValue(target);
-
-            if (isEditorResourceMode)
+            ResourceComponent component = (ResourceComponent)target;
+            SerializedProperty settingsProperty = serializedObject.FindProperty("m_Settings");
+            using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
             {
-                EditorGUILayout.HelpBox("Editor Resource Mode uses project assets. Bundle options are disabled.", MessageType.Warning);
+                EditorGUILayout.PropertyField(settingsProperty, new GUIContent("Resource Settings"));
             }
 
-            EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
+            ResourceSettings settings = settingsProperty.objectReferenceValue as ResourceSettings;
+            if (settings == null)
             {
-                if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
-                {
-                    EditorGUILayout.EnumPopup("Resource Mode", t.ResourceMode);
-                }
-                else
-                {
-                    int selectedIndex = EditorGUILayout.Popup("Resource Mode", m_ResourceModeIndex, ResourceModeNames);
-                    if (selectedIndex != m_ResourceModeIndex)
-                    {
-                        m_ResourceModeIndex = selectedIndex;
-                        m_ResourceMode.enumValueIndex = selectedIndex + 1;
-                    }
-                }
-
-                m_ReadWritePathType.enumValueIndex = (int)(ReadWritePathType)EditorGUILayout.EnumPopup("Read-Write Path Type", t.ReadWritePathType);
-            }
-            EditorGUI.EndDisabledGroup();
-
-            float minUnloadUnusedAssetsInterval = EditorGUILayout.Slider("Min Unload Unused Assets Interval", m_MinUnloadUnusedAssetsInterval.floatValue, 0f, 3600f);
-            if (minUnloadUnusedAssetsInterval != m_MinUnloadUnusedAssetsInterval.floatValue)
-            {
-                if (EditorApplication.isPlaying)
-                {
-                    t.MinUnloadUnusedAssetsInterval = minUnloadUnusedAssetsInterval;
-                }
-                else
-                {
-                    m_MinUnloadUnusedAssetsInterval.floatValue = minUnloadUnusedAssetsInterval;
-                }
+                DrawMissingSettings(component, settingsProperty);
+                serializedObject.ApplyModifiedProperties();
+                return;
             }
 
-            float maxUnloadUnusedAssetsInterval = EditorGUILayout.Slider("Max Unload Unused Assets Interval", m_MaxUnloadUnusedAssetsInterval.floatValue, 0f, 3600f);
-            if (maxUnloadUnusedAssetsInterval != m_MaxUnloadUnusedAssetsInterval.floatValue)
+            EditorGUILayout.LabelField("Default Package", settings.DefaultPackageName);
+            for (int index = 0; index < settings.Packages.Count; index++)
             {
-                if (EditorApplication.isPlaying)
+                ResourcePackageSettings package = settings.Packages[index];
+                if (package == null)
                 {
-                    t.MaxUnloadUnusedAssetsInterval = maxUnloadUnusedAssetsInterval;
+                    continue;
                 }
-                else
-                {
-                    m_MaxUnloadUnusedAssetsInterval.floatValue = maxUnloadUnusedAssetsInterval;
-                }
+
+                DrawPackage(settings, package);
             }
 
-            EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying && isEditorResourceMode);
+            EditorGUILayout.HelpBox("Add asset collectors to each build profile before building the package.", MessageType.Info);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_ReadWritePathType"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_MinUnloadUnusedAssetsInterval"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_MaxUnloadUnusedAssetsInterval"));
+
+            if (EditorApplication.isPlaying)
             {
-                float assetAutoReleaseInterval = EditorGUILayout.DelayedFloatField("Asset Auto Release Interval", m_AssetAutoReleaseInterval.floatValue);
-                if (assetAutoReleaseInterval != m_AssetAutoReleaseInterval.floatValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.AssetAutoReleaseInterval = assetAutoReleaseInterval;
-                    }
-                    else
-                    {
-                        m_AssetAutoReleaseInterval.floatValue = assetAutoReleaseInterval;
-                    }
-                }
-
-                int assetCapacity = EditorGUILayout.DelayedIntField("Asset Capacity", m_AssetCapacity.intValue);
-                if (assetCapacity != m_AssetCapacity.intValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.AssetCapacity = assetCapacity;
-                    }
-                    else
-                    {
-                        m_AssetCapacity.intValue = assetCapacity;
-                    }
-                }
-
-                float assetExpireTime = EditorGUILayout.DelayedFloatField("Asset Expire Time", m_AssetExpireTime.floatValue);
-                if (assetExpireTime != m_AssetExpireTime.floatValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.AssetExpireTime = assetExpireTime;
-                    }
-                    else
-                    {
-                        m_AssetExpireTime.floatValue = assetExpireTime;
-                    }
-                }
-
-                int assetPriority = EditorGUILayout.DelayedIntField("Asset Priority", m_AssetPriority.intValue);
-                if (assetPriority != m_AssetPriority.intValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.AssetPriority = assetPriority;
-                    }
-                    else
-                    {
-                        m_AssetPriority.intValue = assetPriority;
-                    }
-                }
-
-                float resourceAutoReleaseInterval = EditorGUILayout.DelayedFloatField("Resource Auto Release Interval", m_ResourceAutoReleaseInterval.floatValue);
-                if (resourceAutoReleaseInterval != m_ResourceAutoReleaseInterval.floatValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.ResourceAutoReleaseInterval = resourceAutoReleaseInterval;
-                    }
-                    else
-                    {
-                        m_ResourceAutoReleaseInterval.floatValue = resourceAutoReleaseInterval;
-                    }
-                }
-
-                int resourceCapacity = EditorGUILayout.DelayedIntField("Resource Capacity", m_ResourceCapacity.intValue);
-                if (resourceCapacity != m_ResourceCapacity.intValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.ResourceCapacity = resourceCapacity;
-                    }
-                    else
-                    {
-                        m_ResourceCapacity.intValue = resourceCapacity;
-                    }
-                }
-
-                float resourceExpireTime = EditorGUILayout.DelayedFloatField("Resource Expire Time", m_ResourceExpireTime.floatValue);
-                if (resourceExpireTime != m_ResourceExpireTime.floatValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.ResourceExpireTime = resourceExpireTime;
-                    }
-                    else
-                    {
-                        m_ResourceExpireTime.floatValue = resourceExpireTime;
-                    }
-                }
-
-                int resourcePriority = EditorGUILayout.DelayedIntField("Resource Priority", m_ResourcePriority.intValue);
-                if (resourcePriority != m_ResourcePriority.intValue)
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        t.ResourcePriority = resourcePriority;
-                    }
-                    else
-                    {
-                        m_ResourcePriority.intValue = resourcePriority;
-                    }
-                }
-
-                if (m_ResourceModeIndex > 0)
-                {
-                    string updatePrefixUri = EditorGUILayout.DelayedTextField("Update Prefix Uri", m_UpdatePrefixUri.stringValue);
-                    if (updatePrefixUri != m_UpdatePrefixUri.stringValue)
-                    {
-                        if (EditorApplication.isPlaying)
-                        {
-                            t.UpdatePrefixUri = updatePrefixUri;
-                        }
-                        else
-                        {
-                            m_UpdatePrefixUri.stringValue = updatePrefixUri;
-                        }
-                    }
-
-                    int generateReadWriteVersionListLength = EditorGUILayout.DelayedIntField("Generate Read-Write Version List Length", m_GenerateReadWriteVersionListLength.intValue);
-                    if (generateReadWriteVersionListLength != m_GenerateReadWriteVersionListLength.intValue)
-                    {
-                        if (EditorApplication.isPlaying)
-                        {
-                            t.GenerateReadWriteVersionListLength = generateReadWriteVersionListLength;
-                        }
-                        else
-                        {
-                            m_GenerateReadWriteVersionListLength.intValue = generateReadWriteVersionListLength;
-                        }
-                    }
-
-                    int updateRetryCount = EditorGUILayout.DelayedIntField("Update Retry Count", m_UpdateRetryCount.intValue);
-                    if (updateRetryCount != m_UpdateRetryCount.intValue)
-                    {
-                        if (EditorApplication.isPlaying)
-                        {
-                            t.UpdateRetryCount = updateRetryCount;
-                        }
-                        else
-                        {
-                            m_UpdateRetryCount.intValue = updateRetryCount;
-                        }
-                    }
-                }
-            }
-            EditorGUI.EndDisabledGroup();
-
-            EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
-            {
-                EditorGUILayout.PropertyField(m_InstanceRoot);
-
-                m_ResourceHelperInfo.Draw();
-                m_LoadResourceAgentHelperInfo.Draw();
-                m_LoadResourceAgentHelperCount.intValue = EditorGUILayout.IntSlider("Load Resource Agent Helper Count", m_LoadResourceAgentHelperCount.intValue, 1, 128);
-            }
-            EditorGUI.EndDisabledGroup();
-
-            if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
-            {
-                EditorGUILayout.LabelField("Unload Unused Assets", Utility.Text.Format("{0:F2} / {1:F2}", t.LastUnloadUnusedAssetsOperationElapseSeconds, t.MaxUnloadUnusedAssetsInterval));
-                EditorGUILayout.LabelField("Read-Only Path", t.ReadOnlyPath.ToString());
-                EditorGUILayout.LabelField("Read-Write Path", t.ReadWritePath.ToString());
-                EditorGUILayout.LabelField("Current Variant", t.CurrentVariant ?? "<Unknwon>");
-                EditorGUILayout.LabelField("Applicable Game Version", isEditorResourceMode ? "N/A" : t.ApplicableGameVersion ?? "<Unknwon>");
-                EditorGUILayout.LabelField("Internal Resource Version", isEditorResourceMode ? "N/A" : t.InternalResourceVersion.ToString());
-                EditorGUILayout.LabelField("Asset Count", isEditorResourceMode ? "N/A" : t.AssetCount.ToString());
-                EditorGUILayout.LabelField("Resource Count", isEditorResourceMode ? "N/A" : t.ResourceCount.ToString());
-                EditorGUILayout.LabelField("Resource Group Count", isEditorResourceMode ? "N/A" : t.ResourceGroupCount.ToString());
-                if (m_ResourceModeIndex > 0)
-                {
-                    EditorGUILayout.LabelField("Applying Resource Pack Path", isEditorResourceMode ? "N/A" : t.ApplyingResourcePackPath ?? "<Unknwon>");
-                    EditorGUILayout.LabelField("Apply Waiting Count", isEditorResourceMode ? "N/A" : t.ApplyWaitingCount.ToString());
-                    EditorGUILayout.LabelField("Updating Resource Group", isEditorResourceMode ? "N/A" : t.UpdatingResourceGroup != null ? t.UpdatingResourceGroup.Name : "<Unknwon>");
-                    EditorGUILayout.LabelField("Update Waiting Count", isEditorResourceMode ? "N/A" : t.UpdateWaitingCount.ToString());
-                    EditorGUILayout.LabelField("Update Waiting While Playing Count", isEditorResourceMode ? "N/A" : t.UpdateWaitingWhilePlayingCount.ToString());
-                    EditorGUILayout.LabelField("Update Candidate Count", isEditorResourceMode ? "N/A" : t.UpdateCandidateCount.ToString());
-                }
-                EditorGUILayout.LabelField("Load Total Agent Count", isEditorResourceMode ? "N/A" : t.LoadTotalAgentCount.ToString());
-                EditorGUILayout.LabelField("Load Free Agent Count", isEditorResourceMode ? "N/A" : t.LoadFreeAgentCount.ToString());
-                EditorGUILayout.LabelField("Load Working Agent Count", isEditorResourceMode ? "N/A" : t.LoadWorkingAgentCount.ToString());
-                EditorGUILayout.LabelField("Load Waiting Task Count", isEditorResourceMode ? "N/A" : t.LoadWaitingTaskCount.ToString());
-                if (!isEditorResourceMode)
-                {
-                    EditorGUILayout.BeginVertical("box");
-                    {
-                        TaskInfo[] loadAssetInfos = t.GetAllLoadAssetInfos();
-                        if (loadAssetInfos.Length > 0)
-                        {
-                            foreach (TaskInfo loadAssetInfo in loadAssetInfos)
-                            {
-                                DrawLoadAssetInfo(loadAssetInfo);
-                            }
-
-                            if (GUILayout.Button("Export CSV Data"))
-                            {
-                                string exportFileName = EditorUtility.SaveFilePanel("Export CSV Data", string.Empty, "Load Asset Task Data.csv", string.Empty);
-                                if (!string.IsNullOrEmpty(exportFileName))
-                                {
-                                    try
-                                    {
-                                        int index = 0;
-                                        string[] data = new string[loadAssetInfos.Length + 1];
-                                        data[index++] = "Load Asset Name,Serial Id,Priority,Status";
-                                        foreach (TaskInfo loadAssetInfo in loadAssetInfos)
-                                        {
-                                            data[index++] = Utility.Text.Format("{0},{1},{2},{3}", loadAssetInfo.Description, loadAssetInfo.SerialId, loadAssetInfo.Priority, loadAssetInfo.Status);
-                                        }
-
-                                        File.WriteAllLines(exportFileName, data, Encoding.UTF8);
-                                        Debug.Log(Utility.Text.Format("Export load asset task CSV data to '{0}' success.", exportFileName));
-                                    }
-                                    catch (Exception exception)
-                                    {
-                                        Debug.LogError(Utility.Text.Format("Export load asset task CSV data to '{0}' failure, exception is '{1}'.", exportFileName, exception));
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            GUILayout.Label("Load Asset Task is Empty ...");
-                        }
-                    }
-                    EditorGUILayout.EndVertical();
-                }
+                EditorGUILayout.LabelField("Read-Only Path", component.ReadOnlyPath);
+                EditorGUILayout.LabelField("Read-Write Path", component.ReadWritePath);
+                EditorGUILayout.LabelField("Asset Count", component.AssetCount.ToString());
+                EditorGUILayout.LabelField("Loading Requests", component.LoadWorkingAgentCount.ToString());
             }
 
             serializedObject.ApplyModifiedProperties();
-
-            Repaint();
         }
 
-        protected override void OnCompileComplete()
+        private static void DrawMissingSettings(ResourceComponent component, SerializedProperty settingsProperty)
         {
-            base.OnCompileComplete();
+            EditorGUILayout.HelpBox("Resource Settings is required for YooAsset loading. It is stored in Assets and assigned to this component; importing QGF does not change project settings.", MessageType.Warning);
 
-            RefreshTypeNames();
+            string componentPath = AssetDatabase.GetAssetPath(component);
+            bool packageAsset = EditorUtility.IsPersistent(component) && componentPath.StartsWith("Packages/", StringComparison.Ordinal);
+            if (packageAsset)
+            {
+                EditorGUILayout.HelpBox("Create a scene instance of this package prefab, then assign its Resource Settings.", MessageType.Info);
+            }
+
+            using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode || packageAsset))
+            {
+                if (GUILayout.Button("Create Resource Settings"))
+                {
+                    CreateResourceSettings(settingsProperty.serializedObject, settingsProperty);
+                }
+            }
         }
 
-        private void OnEnable()
+        private static void DrawPackage(ResourceSettings settings, ResourcePackageSettings package)
         {
-            m_ResourceMode = serializedObject.FindProperty("m_ResourceMode");
-            m_ReadWritePathType = serializedObject.FindProperty("m_ReadWritePathType");
-            m_MinUnloadUnusedAssetsInterval = serializedObject.FindProperty("m_MinUnloadUnusedAssetsInterval");
-            m_MaxUnloadUnusedAssetsInterval = serializedObject.FindProperty("m_MaxUnloadUnusedAssetsInterval");
-            m_AssetAutoReleaseInterval = serializedObject.FindProperty("m_AssetAutoReleaseInterval");
-            m_AssetCapacity = serializedObject.FindProperty("m_AssetCapacity");
-            m_AssetExpireTime = serializedObject.FindProperty("m_AssetExpireTime");
-            m_AssetPriority = serializedObject.FindProperty("m_AssetPriority");
-            m_ResourceAutoReleaseInterval = serializedObject.FindProperty("m_ResourceAutoReleaseInterval");
-            m_ResourceCapacity = serializedObject.FindProperty("m_ResourceCapacity");
-            m_ResourceExpireTime = serializedObject.FindProperty("m_ResourceExpireTime");
-            m_ResourcePriority = serializedObject.FindProperty("m_ResourcePriority");
-            m_UpdatePrefixUri = serializedObject.FindProperty("m_UpdatePrefixUri");
-            m_GenerateReadWriteVersionListLength = serializedObject.FindProperty("m_GenerateReadWriteVersionListLength");
-            m_UpdateRetryCount = serializedObject.FindProperty("m_UpdateRetryCount");
-            m_InstanceRoot = serializedObject.FindProperty("m_InstanceRoot");
-            m_LoadResourceAgentHelperCount = serializedObject.FindProperty("m_LoadResourceAgentHelperCount");
+            ResourceBuildProfile profile = ResourceBuildService.FindProfile(settings, package.Name);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(package.Name, package.PlayMode.ToString());
 
-            m_EditorResourceModeFieldInfo = target.GetType().GetField("m_EditorResourceMode", BindingFlags.NonPublic | BindingFlags.Instance);
+            using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
+            {
+                if (profile == null)
+                {
+                    if (GUILayout.Button("Create Profile", GUILayout.Width(110)))
+                    {
+                        profile = CreateResourceBuildProfile(settings, package.Name);
+                        Selection.activeObject = profile;
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button(settings.UseEditorSimulation ? "Build Simulation" : "Build Player", GUILayout.Width(125)))
+                    {
+                        ResourceBuildService.Build(profile, settings.UseEditorSimulation);
+                    }
+                    if (GUILayout.Button("Select", GUILayout.Width(64)))
+                    {
+                        Selection.activeObject = profile;
+                    }
+                }
+            }
 
-            m_ResourceHelperInfo.Init(serializedObject);
-            m_LoadResourceAgentHelperInfo.Init(serializedObject);
-
-            RefreshModes();
-            RefreshTypeNames();
+            EditorGUILayout.EndHorizontal();
         }
 
-        private void DrawLoadAssetInfo(TaskInfo loadAssetInfo)
+        private static void CreateResourceSettings(SerializedObject serializedObject, SerializedProperty settingsProperty)
         {
-            EditorGUILayout.LabelField(loadAssetInfo.Description, Utility.Text.Format("[SerialId]{0} [Priority]{1} [Status]{2}", loadAssetInfo.SerialId, loadAssetInfo.Priority, loadAssetInfo.Status));
-        }
+            EnsureFolder("Assets/UnityQGameFramework/Resource/Editor");
 
-        private void RefreshModes()
-        {
-            m_ResourceModeIndex = m_ResourceMode.enumValueIndex > 0 ? m_ResourceMode.enumValueIndex - 1 : 0;
-        }
+            ResourceSettings settings = CreateInstance<ResourceSettings>();
+            string settingsPath = AssetDatabase.GenerateUniqueAssetPath("Assets/UnityQGameFramework/Resource/ResourceSettings.asset");
+            AssetDatabase.CreateAsset(settings, settingsPath);
 
-        private void RefreshTypeNames()
-        {
-            m_ResourceHelperInfo.Refresh();
-            m_LoadResourceAgentHelperInfo.Refresh();
+            foreach (ResourcePackageSettings package in settings.Packages)
+            {
+                if (package != null)
+                {
+                    CreateResourceBuildProfile(settings, package.Name);
+                }
+            }
+
+            settingsProperty.objectReferenceValue = settings;
             serializedObject.ApplyModifiedProperties();
+            AssetDatabase.SaveAssets();
+            EditorGUIUtility.PingObject(settings);
+        }
+
+        private static ResourceBuildProfile CreateResourceBuildProfile(ResourceSettings settings, string packageName)
+        {
+            EnsureFolder("Assets/UnityQGameFramework/Resource/Editor");
+
+            ResourceBuildProfile profile = CreateInstance<ResourceBuildProfile>();
+            profile.Initialize(settings, packageName);
+            string fileName = packageName.Replace('/', '_').Replace('\\', '_');
+            string path = AssetDatabase.GenerateUniqueAssetPath("Assets/UnityQGameFramework/Resource/Editor/" + fileName + ".asset");
+            AssetDatabase.CreateAsset(profile, path);
+            AssetDatabase.SaveAssets();
+            return profile;
+        }
+
+        private static void EnsureFolder(string path)
+        {
+            if (AssetDatabase.IsValidFolder(path))
+            {
+                return;
+            }
+
+            int separator = path.LastIndexOf('/');
+            string parent = path.Substring(0, separator);
+            string folderName = path.Substring(separator + 1);
+            EnsureFolder(parent);
+            AssetDatabase.CreateFolder(parent, folderName);
         }
     }
 }

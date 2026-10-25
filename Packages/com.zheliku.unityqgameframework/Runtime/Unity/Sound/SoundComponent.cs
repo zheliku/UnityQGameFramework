@@ -63,12 +63,24 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取声音组数量。
         /// </summary>
-        public int SoundGroupCount => m_SoundManager.SoundGroupCount;
+        public int SoundGroupCount
+        {
+            get
+            {
+                return m_SoundManager.SoundGroupCount;
+            }
+        }
 
         /// <summary>
         /// 获取声音混响器。
         /// </summary>
-        public AudioMixer AudioMixer => m_AudioMixer;
+        public AudioMixer AudioMixer
+        {
+            get
+            {
+                return m_AudioMixer;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -119,14 +131,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_SoundManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_SoundManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_SoundManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
             SoundHelperBase soundHelper = Helper.CreateHelper(m_SoundHelperTypeName, m_CustomSoundHelper);
             if (soundHelper == null)

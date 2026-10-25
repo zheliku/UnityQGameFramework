@@ -83,13 +83,13 @@ namespace QgfDocs
 
 ## 从资产读取
 
-将 TOML 保存为 `Assets/MyGame/Localization/Default.toml`，在预加载流程里调用：
+将 TOML 保存为 `Assets/MyGame/Localization/Default.toml`，加入 ResourceBuildProfile 的收集规则，并设置 `EnableAddressable` 与 `AddressByFileName`。在预加载流程里调用：
 
 ```csharp
 // 方法内片段：先订阅成功和失败事件，再发起读取。
 var localization = QGF.Localization;
 localization.Language = Language.ChineseSimplified;
-localization.ReadData("Assets/MyGame/Localization/Default.toml", this);
+localization.ReadData("Default", this);
 ```
 
 ReadData 经 Resource 加载 TextAsset，再由 DefaultLocalizationHelper 调用 TOML 解析器，完成后释放资产引用。加载是异步的，不能紧接下一行就 GetString。

@@ -1,10 +1,12 @@
-#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 通过 QGF.Sound 播放一次性提示音。
+    /// </summary>
     public sealed class OneShotSoundExample : MonoBehaviour
     {
         [SerializeField] private string soundGuid;
@@ -15,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            asset = UnityEditor.AssetDatabase.GUIDToAssetPath(soundGuid);
+            asset = soundGuid;
             // 组统一控制音量；一个代理同时播放一路声音。
             QGF.Sound.AddSoundGroup("Prompt", false, false, 0.25f, 1);
             playButton.onClick.AddListener(() =>
@@ -38,4 +40,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

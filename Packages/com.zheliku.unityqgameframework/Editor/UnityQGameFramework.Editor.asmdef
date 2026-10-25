@@ -3,7 +3,9 @@
     "rootNamespace": "UnityQGameFramework.Editor",
     "references": [
         "UnityQGameFramework.Core",
-        "UnityQGameFramework.Runtime"
+        "UnityQGameFramework.Runtime",
+        "YooAsset",
+        "YooAsset.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
@@ -15,13 +16,20 @@ namespace UnityQGameFramework.Examples.Modules
             var cancellation = scenes.destroyCancellationToken;
             try
             {
-                while (scenes.SceneIsLoading(assetName) || scenes.SceneIsUnloading(assetName))
-                    await UniTask.NextFrame(cancellation);
-                cancellation.ThrowIfCancellationRequested();
-                if (scenes.SceneIsLoaded(assetName)) scenes.UnloadScene(assetName);
+                if (scenes.SceneIsLoading(assetName))
+                {
+                    await UniTask.WaitUntil(() => !scenes.SceneIsLoading(assetName), cancellationToken: cancellation);
+                }
+                if (scenes.SceneIsLoaded(assetName))
+                {
+                    await scenes.UnloadSceneAsync(assetName, cancellation);
+                }
             }
             catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
-            catch (Exception exception) { Log.Error(exception); }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
         }
     }
 }

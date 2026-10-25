@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityQGameFramework.Examples.Modules.PointPointPoint;
+using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
 // Only copied into disposable compatibility projects, never installed with QGF.

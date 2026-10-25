@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace UnityQGameFramework.Core.Resource
     /// <summary>
     /// 资源管理器。
     /// </summary>
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager, IResourceBackendHost
     {
         private const string RemoteVersionListFileName = "GameFrameworkVersion.dat";
         private const string LocalVersionListFileName = "GameFrameworkList.dat";
@@ -39,6 +39,10 @@ namespace UnityQGameFramework.Core.Resource
         private ResourceUpdater m_ResourceUpdater;
         private ResourceLoader m_ResourceLoader;
         private IResourceHelper m_ResourceHelper;
+        private IResourceBackend m_ResourceBackend;
+        private string m_ReadOnlyPath;
+        private string m_ReadWritePath;
+        private ResourceMode m_ResourceMode;
 
         private bool m_RefuseSetFlag;
         private MemoryStream m_CachedStream;
@@ -118,22 +122,58 @@ namespace UnityQGameFramework.Core.Resource
         /// 获取游戏框架模块优先级。
         /// </summary>
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        internal override int Priority => 3;
+        internal override int Priority
+        {
+            get
+            {
+                return 3;
+            }
+        }
 
         /// <summary>
         /// 获取资源只读区路径。
         /// </summary>
-        public string ReadOnlyPath { get; private set; }
+        public string ReadOnlyPath
+        {
+            get
+            {
+                return m_ResourceBackend != null ? m_ResourceBackend.ReadOnlyPath : m_ReadOnlyPath;
+            }
+            private set
+            {
+                m_ReadOnlyPath = value;
+            }
+        }
 
         /// <summary>
         /// 获取资源读写区路径。
         /// </summary>
-        public string ReadWritePath { get; private set; }
+        public string ReadWritePath
+        {
+            get
+            {
+                return m_ResourceBackend != null ? m_ResourceBackend.ReadWritePath : m_ReadWritePath;
+            }
+            private set
+            {
+                m_ReadWritePath = value;
+            }
+        }
 
         /// <summary>
         /// 获取资源模式。
         /// </summary>
-        public ResourceMode ResourceMode { get; private set; }
+        public ResourceMode ResourceMode
+        {
+            get
+            {
+                return m_ResourceBackend != null ? m_ResourceBackend.ResourceMode : m_ResourceMode;
+            }
+            private set
+            {
+                m_ResourceMode = value;
+            }
+        }
 
         /// <summary>
         /// 获取当前变体。
@@ -178,17 +218,35 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源数量。
         /// </summary>
-        public int AssetCount => m_AssetInfos != null ? m_AssetInfos.Count : 0;
+        public int AssetCount
+        {
+            get
+            {
+                return m_ResourceBackend != null ? m_ResourceBackend.AssetCount : m_AssetInfos != null ? m_AssetInfos.Count : 0;
+            }
+        }
 
         /// <summary>
         /// 获取资源数量。
         /// </summary>
-        public int ResourceCount => m_ResourceInfos != null ? m_ResourceInfos.Count : 0;
+        public int ResourceCount
+        {
+            get
+            {
+                return m_ResourceInfos != null ? m_ResourceInfos.Count : 0;
+            }
+        }
 
         /// <summary>
         /// 获取资源组数量。
         /// </summary>
-        public int ResourceGroupCount => m_ResourceGroups.Count;
+        public int ResourceGroupCount
+        {
+            get
+            {
+                return m_ResourceGroups.Count;
+            }
+        }
 
         /// <summary>
         /// 获取或设置资源更新下载地址前缀。
@@ -218,12 +276,24 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取正在应用的资源包路径。
         /// </summary>
-        public string ApplyingResourcePackPath => m_ResourceUpdater != null ? m_ResourceUpdater.ApplyingResourcePackPath : null;
+        public string ApplyingResourcePackPath
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.ApplyingResourcePackPath : null;
+            }
+        }
 
         /// <summary>
         /// 获取等待应用资源数量。
         /// </summary>
-        public int ApplyWaitingCount => m_ResourceUpdater != null ? m_ResourceUpdater.ApplyWaitingCount : 0;
+        public int ApplyWaitingCount
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.ApplyWaitingCount : 0;
+            }
+        }
 
         /// <summary>
         /// 获取或设置资源更新重试次数。
@@ -248,50 +318,104 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取正在更新的资源组。
         /// </summary>
-        public IResourceGroup UpdatingResourceGroup => m_ResourceUpdater != null ? m_ResourceUpdater.UpdatingResourceGroup : null;
+        public IResourceGroup UpdatingResourceGroup
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdatingResourceGroup : null;
+            }
+        }
 
         /// <summary>
         /// 获取等待更新资源数量。
         /// </summary>
-        public int UpdateWaitingCount => m_ResourceUpdater != null ? m_ResourceUpdater.UpdateWaitingCount : 0;
+        public int UpdateWaitingCount
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateWaitingCount : 0;
+            }
+        }
 
         /// <summary>
         /// 获取使用时下载的等待更新资源数量。
         /// </summary>
-        public int UpdateWaitingWhilePlayingCount => m_ResourceUpdater != null ? m_ResourceUpdater.UpdateWaitingWhilePlayingCount : 0;
+        public int UpdateWaitingWhilePlayingCount
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateWaitingWhilePlayingCount : 0;
+            }
+        }
 
         /// <summary>
         /// 获取候选更新资源数量。
         /// </summary>
-        public int UpdateCandidateCount => m_ResourceUpdater != null ? m_ResourceUpdater.UpdateCandidateCount : 0;
+        public int UpdateCandidateCount
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateCandidateCount : 0;
+            }
+        }
 
         /// <summary>
         /// 获取加载资源代理总数量。
         /// </summary>
-        public int LoadTotalAgentCount => m_ResourceLoader.TotalAgentCount;
+        public int LoadTotalAgentCount
+        {
+            get
+            {
+                return m_ResourceLoader.TotalAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用加载资源代理数量。
         /// </summary>
-        public int LoadFreeAgentCount => m_ResourceLoader.FreeAgentCount;
+        public int LoadFreeAgentCount
+        {
+            get
+            {
+                return m_ResourceLoader.FreeAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取工作中加载资源代理数量。
         /// </summary>
-        public int LoadWorkingAgentCount => m_ResourceLoader.WorkingAgentCount;
+        public int LoadWorkingAgentCount
+        {
+            get
+            {
+                return m_ResourceBackend != null ? m_ResourceBackend.LoadWorkingAgentCount : m_ResourceLoader.WorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取等待加载资源任务数量。
         /// </summary>
-        public int LoadWaitingTaskCount => m_ResourceLoader.WaitingTaskCount;
+        public int LoadWaitingTaskCount
+        {
+            get
+            {
+                return m_ResourceLoader.WaitingTaskCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置资源对象池自动释放可释放对象的间隔秒数。
         /// </summary>
         public float AssetAutoReleaseInterval
         {
-            get => m_ResourceLoader.AssetAutoReleaseInterval;
-            set => m_ResourceLoader.AssetAutoReleaseInterval = value;
+            get
+            {
+                return m_ResourceLoader.AssetAutoReleaseInterval;
+            }
+            set
+            {
+                m_ResourceLoader.AssetAutoReleaseInterval = value;
+            }
         }
 
         /// <summary>
@@ -299,8 +423,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public int AssetCapacity
         {
-            get => m_ResourceLoader.AssetCapacity;
-            set => m_ResourceLoader.AssetCapacity = value;
+            get
+            {
+                return m_ResourceLoader.AssetCapacity;
+            }
+            set
+            {
+                m_ResourceLoader.AssetCapacity = value;
+            }
         }
 
         /// <summary>
@@ -308,8 +438,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public float AssetExpireTime
         {
-            get => m_ResourceLoader.AssetExpireTime;
-            set => m_ResourceLoader.AssetExpireTime = value;
+            get
+            {
+                return m_ResourceLoader.AssetExpireTime;
+            }
+            set
+            {
+                m_ResourceLoader.AssetExpireTime = value;
+            }
         }
 
         /// <summary>
@@ -317,8 +453,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public int AssetPriority
         {
-            get => m_ResourceLoader.AssetPriority;
-            set => m_ResourceLoader.AssetPriority = value;
+            get
+            {
+                return m_ResourceLoader.AssetPriority;
+            }
+            set
+            {
+                m_ResourceLoader.AssetPriority = value;
+            }
         }
 
         /// <summary>
@@ -326,8 +468,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public float ResourceAutoReleaseInterval
         {
-            get => m_ResourceLoader.ResourceAutoReleaseInterval;
-            set => m_ResourceLoader.ResourceAutoReleaseInterval = value;
+            get
+            {
+                return m_ResourceLoader.ResourceAutoReleaseInterval;
+            }
+            set
+            {
+                m_ResourceLoader.ResourceAutoReleaseInterval = value;
+            }
         }
 
         /// <summary>
@@ -335,8 +483,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public int ResourceCapacity
         {
-            get => m_ResourceLoader.ResourceCapacity;
-            set => m_ResourceLoader.ResourceCapacity = value;
+            get
+            {
+                return m_ResourceLoader.ResourceCapacity;
+            }
+            set
+            {
+                m_ResourceLoader.ResourceCapacity = value;
+            }
         }
 
         /// <summary>
@@ -344,8 +498,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public float ResourceExpireTime
         {
-            get => m_ResourceLoader.ResourceExpireTime;
-            set => m_ResourceLoader.ResourceExpireTime = value;
+            get
+            {
+                return m_ResourceLoader.ResourceExpireTime;
+            }
+            set
+            {
+                m_ResourceLoader.ResourceExpireTime = value;
+            }
         }
 
         /// <summary>
@@ -353,8 +513,14 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         public int ResourcePriority
         {
-            get => m_ResourceLoader.ResourcePriority;
-            set => m_ResourceLoader.ResourcePriority = value;
+            get
+            {
+                return m_ResourceLoader.ResourcePriority;
+            }
+            set
+            {
+                m_ResourceLoader.ResourcePriority = value;
+            }
         }
 
         /// <summary>
@@ -529,6 +695,11 @@ namespace UnityQGameFramework.Core.Resource
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.Update(elapseSeconds, realElapseSeconds);
+                return;
+            }
             if (m_ResourceVerifier != null)
             {
                 m_ResourceVerifier.Update(elapseSeconds, realElapseSeconds);
@@ -548,6 +719,12 @@ namespace UnityQGameFramework.Core.Resource
         /// </summary>
         internal override void Shutdown()
         {
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.Shutdown();
+                m_ResourceBackend = null;
+            }
+
             if (m_ResourceIniter != null)
             {
                 m_ResourceIniter.Shutdown();
@@ -628,6 +805,25 @@ namespace UnityQGameFramework.Core.Resource
         }
 
         /// <summary>
+        /// 设置资源后端。
+        /// </summary>
+        /// <param name="resourceBackend">资源后端。</param>
+        public void SetResourceBackend(IResourceBackend resourceBackend)
+        {
+            if (resourceBackend == null)
+            {
+                throw new FrameworkException("Resource backend is invalid.");
+            }
+
+            if (m_ResourceBackend != null || m_RefuseSetFlag || m_ResourceLoader.TotalAgentCount > 0)
+            {
+                throw new FrameworkException("You must set the resource backend before loading resources.");
+            }
+
+            m_ResourceBackend = resourceBackend;
+        }
+
+        /// <summary>
         /// 设置资源只读区路径。
         /// </summary>
         /// <param name="readOnlyPath">资源只读区路径。</param>
@@ -636,6 +832,12 @@ namespace UnityQGameFramework.Core.Resource
             if (string.IsNullOrEmpty(readOnlyPath))
             {
                 throw new FrameworkException("Read-only path is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.SetPaths(readOnlyPath, ReadWritePath);
+                return;
             }
 
             if (m_RefuseSetFlag)
@@ -662,6 +864,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Read-write path is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.SetPaths(ReadOnlyPath, readWritePath);
+                return;
+            }
+
             if (m_RefuseSetFlag)
             {
                 throw new FrameworkException("You can not set read-write path at this time.");
@@ -681,6 +889,14 @@ namespace UnityQGameFramework.Core.Resource
         /// <param name="resourceMode">资源模式。</param>
         public void SetResourceMode(ResourceMode resourceMode)
         {
+            if (m_ResourceBackend != null)
+            {
+                if (resourceMode != m_ResourceBackend.ResourceMode)
+                {
+                    throw new FrameworkException("Set the YooAsset play mode in ResourceSettings.");
+                }
+                return;
+            }
             if (resourceMode == ResourceMode.Unspecified)
             {
                 throw new FrameworkException("Resource mode is invalid.");
@@ -864,6 +1080,12 @@ namespace UnityQGameFramework.Core.Resource
         /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成时的回调函数。</param>
         public void InitResources(InitResourcesCompleteCallback initResourcesCompleteCallback)
         {
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.Initialize(initResourcesCompleteCallback);
+                return;
+            }
+
             if (initResourcesCompleteCallback == null)
             {
                 throw new FrameworkException("Init resources complete callback is invalid.");
@@ -1229,6 +1451,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Asset name is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                return m_ResourceBackend.HasAsset(assetName);
+            }
+
             return m_ResourceLoader.HasAsset(assetName);
         }
 
@@ -1247,6 +1474,12 @@ namespace UnityQGameFramework.Core.Resource
             if (loadAssetCallbacks == null)
             {
                 throw new FrameworkException("Load asset callbacks is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, null);
+                return;
             }
 
             m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, null);
@@ -1270,6 +1503,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load asset callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, null);
+                return;
+            }
+
             m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, null);
         }
 
@@ -1291,6 +1530,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load asset callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, null, priority, loadAssetCallbacks, null);
+                return;
+            }
+
             m_ResourceLoader.LoadAsset(assetName, null, priority, loadAssetCallbacks, null);
         }
 
@@ -1310,6 +1555,12 @@ namespace UnityQGameFramework.Core.Resource
             if (loadAssetCallbacks == null)
             {
                 throw new FrameworkException("Load asset callbacks is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, userData);
+                return;
             }
 
             m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, userData);
@@ -1334,6 +1585,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load asset callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, null);
+                return;
+            }
+
             m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, null);
         }
 
@@ -1356,6 +1613,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load asset callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, userData);
+                return;
+            }
+
             m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, userData);
         }
 
@@ -1376,6 +1639,12 @@ namespace UnityQGameFramework.Core.Resource
             if (loadAssetCallbacks == null)
             {
                 throw new FrameworkException("Load asset callbacks is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, null, priority, loadAssetCallbacks, userData);
+                return;
             }
 
             m_ResourceLoader.LoadAsset(assetName, null, priority, loadAssetCallbacks, userData);
@@ -1401,6 +1670,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load asset callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, userData);
+                return;
+            }
+
             m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, userData);
         }
 
@@ -1417,6 +1692,12 @@ namespace UnityQGameFramework.Core.Resource
 
             if (m_ResourceLoader == null)
             {
+                return;
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.UnloadAsset(asset);
                 return;
             }
 
@@ -1440,6 +1721,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load scene callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, null);
+                return;
+            }
+
             m_ResourceLoader.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, null);
         }
 
@@ -1461,6 +1748,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load scene callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadScene(sceneAssetName, priority, loadSceneCallbacks, null);
+                return;
+            }
+
             m_ResourceLoader.LoadScene(sceneAssetName, priority, loadSceneCallbacks, null);
         }
 
@@ -1480,6 +1773,12 @@ namespace UnityQGameFramework.Core.Resource
             if (loadSceneCallbacks == null)
             {
                 throw new FrameworkException("Load scene callbacks is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, userData);
+                return;
             }
 
             m_ResourceLoader.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, userData);
@@ -1504,6 +1803,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load scene callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadScene(sceneAssetName, priority, loadSceneCallbacks, userData);
+                return;
+            }
+
             m_ResourceLoader.LoadScene(sceneAssetName, priority, loadSceneCallbacks, userData);
         }
 
@@ -1522,6 +1827,12 @@ namespace UnityQGameFramework.Core.Resource
             if (unloadSceneCallbacks == null)
             {
                 throw new FrameworkException("Unload scene callbacks is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.UnloadScene(sceneAssetName, unloadSceneCallbacks, null);
+                return;
             }
 
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, null);
@@ -1545,6 +1856,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Unload scene callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
+                return;
+            }
+
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
         }
 
@@ -1561,6 +1878,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Binary asset name is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.GetBinaryPath(binaryAssetName);
         }
 
@@ -1575,6 +1897,11 @@ namespace UnityQGameFramework.Core.Resource
         /// <returns>是否获取二进制资源的实际路径成功。</returns>
         public bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out bool storageInFileSystem, out string relativePath, out string fileName)
         {
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.GetBinaryPath(binaryAssetName, out storageInReadOnly, out storageInFileSystem, out relativePath, out fileName);
         }
 
@@ -1585,6 +1912,11 @@ namespace UnityQGameFramework.Core.Resource
         /// <returns>二进制资源的长度。</returns>
         public int GetBinaryLength(string binaryAssetName)
         {
+            if (m_ResourceBackend != null)
+            {
+                return m_ResourceBackend.GetBinaryLength(binaryAssetName);
+            }
+
             return m_ResourceLoader.GetBinaryLength(binaryAssetName);
         }
 
@@ -1603,6 +1935,12 @@ namespace UnityQGameFramework.Core.Resource
             if (loadBinaryCallbacks == null)
             {
                 throw new FrameworkException("Load binary callbacks is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadBinary(binaryAssetName, loadBinaryCallbacks, null);
+                return;
             }
 
             m_ResourceLoader.LoadBinary(binaryAssetName, loadBinaryCallbacks, null);
@@ -1626,6 +1964,12 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Load binary callbacks is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                m_ResourceBackend.LoadBinary(binaryAssetName, loadBinaryCallbacks, userData);
+                return;
+            }
+
             m_ResourceLoader.LoadBinary(binaryAssetName, loadBinaryCallbacks, userData);
         }
 
@@ -1639,6 +1983,11 @@ namespace UnityQGameFramework.Core.Resource
             if (string.IsNullOrEmpty(binaryAssetName))
             {
                 throw new FrameworkException("Binary asset name is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName);
@@ -1662,6 +2011,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Buffer is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName, buffer, 0, buffer.Length);
         }
 
@@ -1682,6 +2036,11 @@ namespace UnityQGameFramework.Core.Resource
             if (buffer == null)
             {
                 throw new FrameworkException("Buffer is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName, buffer, startIndex, buffer.Length - startIndex);
@@ -1707,6 +2066,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Buffer is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName, buffer, startIndex, length);
         }
 
@@ -1721,6 +2085,11 @@ namespace UnityQGameFramework.Core.Resource
             if (string.IsNullOrEmpty(binaryAssetName))
             {
                 throw new FrameworkException("Binary asset name is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0, length);
@@ -1738,6 +2107,11 @@ namespace UnityQGameFramework.Core.Resource
             if (string.IsNullOrEmpty(binaryAssetName))
             {
                 throw new FrameworkException("Binary asset name is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, length);
@@ -1761,6 +2135,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Buffer is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0, buffer, 0, buffer.Length);
         }
 
@@ -1781,6 +2160,11 @@ namespace UnityQGameFramework.Core.Resource
             if (buffer == null)
             {
                 throw new FrameworkException("Buffer is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0, buffer, 0, length);
@@ -1806,6 +2190,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Buffer is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0, buffer, startIndex, length);
         }
 
@@ -1826,6 +2215,11 @@ namespace UnityQGameFramework.Core.Resource
             if (buffer == null)
             {
                 throw new FrameworkException("Buffer is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, buffer, 0, buffer.Length);
@@ -1851,6 +2245,11 @@ namespace UnityQGameFramework.Core.Resource
                 throw new FrameworkException("Buffer is invalid.");
             }
 
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
+            }
+
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, buffer, 0, length);
         }
 
@@ -1873,6 +2272,11 @@ namespace UnityQGameFramework.Core.Resource
             if (buffer == null)
             {
                 throw new FrameworkException("Buffer is invalid.");
+            }
+
+            if (m_ResourceBackend != null)
+            {
+                throw new NotSupportedException("UGF file-container APIs are not supported by YooAsset. Use LoadBinary instead.");
             }
 
             return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, buffer, startIndex, length);

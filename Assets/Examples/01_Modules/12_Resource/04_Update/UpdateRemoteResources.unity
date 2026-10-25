@@ -1780,7 +1780,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u68C0\u67E5\u65F6\u5FFD\u7565\u5176\u4ED6\u53D8\u4F53"
+  m_Text: "\u4e0b\u8f7d\u5b8c\u6210\u540e\u81ea\u52a8\u52a0\u8f7d Cube"
 --- !u!222 &707746095
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2282,9 +2282,9 @@ MonoBehaviour:
   updateButton: {fileID: 360792460}
   stopButton: {fileID: 1825635120}
   loadButton: {fileID: 1339818699}
-  verifyMode: {fileID: 1479794378}
+  concurrencyMode: {fileID: 1479794378}
   groupMode: {fileID: 98816773}
-  ignoreVariantToggle: {fileID: 1498590844}
+  autoLoadToggle: {fileID: 1498590844}
   failureToggle: {fileID: 466106840}
   stateText: {fileID: 11712909}
   groupsText: {fileID: 862360024}
@@ -2740,7 +2740,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "3. \u66F4\u65B0\u6240\u9009\u7EC4 / \u91CD\u8BD5"
+  m_Text: "2. \u4e0b\u8f7d\u6240\u9009\u6807\u7b7e / \u91cd\u8bd5"
 --- !u!222 &988073570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3001,7 +3001,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8DF3\u8FC7\u672C\u5730\u6821\u9A8C"
+  m_Text: "\u5e76\u53d1\u4e0b\u8f7d\uff1a1"
 --- !u!222 &1115225648
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3021,10 +3021,6 @@ PrefabInstance:
     - target: {fileID: 1605777599409387773, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
       propertyPath: m_ResourceMode
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1762272399753092959, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
-      propertyPath: m_EditorResourceMode
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3469854889470876099, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4193,7 +4189,7 @@ GameObject:
   - component: {fileID: 1479794378}
   - component: {fileID: 1479794377}
   m_Layer: 0
-  m_Name: Dropdown_VerifyMode
+  m_Name: Dropdown_ConcurrencyMode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4290,11 +4286,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: "\u8DF3\u8FC7\u672C\u5730\u6821\u9A8C"
+    - m_Text: "\u5e76\u53d1\u4e0b\u8f7d\uff1a1"
       m_Image: {fileID: 0}
-    - m_Text: "\u5148\u6821\u9A8C\u672C\u5730\u7F13\u5B58\uFF08\u9ED8\u8BA4\uFF09"
+    - m_Text: "\u5e76\u53d1\u4e0b\u8f7d\uff1a2"
       m_Image: {fileID: 0}
-    - m_Text: "\u5148\u6821\u9A8C\u672C\u5730\u7F13\u5B58\uFF0816 KB / \u5E27\uFF09"
+    - m_Text: "\u5e76\u53d1\u4e0b\u8f7d\uff1a4"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4856,7 +4852,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "2. \u68C0\u67E5\u672C\u5730\u8D44\u6E90"
+  m_Text: "\u5f52\u8fd8 Cube / \u6e05\u7406\u5185\u5b58"
 --- !u!222 &1601513597
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5617,7 +5613,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "1. \u4E0B\u8F7D\u7248\u672C\u6E05\u5355"
+  m_Text: "1. \u521d\u59cb\u5316\u8054\u673a\u5305"
 --- !u!222 &1979131034
 CanvasRenderer:
   m_ObjectHideFlags: 0

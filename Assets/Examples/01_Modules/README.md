@@ -2,7 +2,7 @@
 
 每个场景只演示一项核心功能。运行场景，再阅读同名 C# 脚本。
 
-模块资源使用编辑器资源模式；Player 的资源构建流程见点点点和 StarForce。
+模块 Sample 使用独立 ResourceSettings 和 YooAsset Editor Simulation；导入时不会修改项目设置。Player 构建流程见点点点和 StarForce。
 
 | 场景 | 内容 |
 | --- | --- |

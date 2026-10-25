@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,6 +6,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示 QGF.UI 关闭后复用窗口实例。
+    /// </summary>
     public sealed class ReopenWindowExample : MonoBehaviour
     {
         [SerializeField] private string windowGuid;
@@ -21,7 +23,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            asset = UnityEditor.AssetDatabase.GUIDToAssetPath(windowGuid);
+            asset = windowGuid;
             QGF.UI.AddUIGroup("Example", 0);
             // UI 组件管理实例池，容量用于空闲回收。
             QGF.UI.InstanceAutoReleaseInterval = .2f;
@@ -91,4 +93,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

@@ -20,9 +20,11 @@ FeatureEnabled = true
 
 标准 TOML 的嵌套表会映射为点分隔的运行时键：`Player.MaxHp`、`Game.Title`。这不是在 TOML 里引入自定义语法。
 
+将 TOML 加入 `ResourceBuildProfile` 的收集规则，启用包的 `EnableAddressable` 并把地址规则设为 `AddressByFileName`。代码传文件名 `Game`，不传 `Assets/...` 路径或 `.toml` 扩展名。
+
 ## 加载完成后再读取
 
-创建 `ConfigGuideProcedure.cs`，在框架 Procedure 的 Available Procedures 中勾选它，并设为入口。Base 勾选 Editor Resource Mode。下面是完整示例：
+创建 `ConfigGuideProcedure.cs`，在框架 Procedure 的 Available Procedures 中勾选它，并设为入口。编辑器使用对应 Profile 构建的模拟包。下面是完整示例：
 
 ```csharp
 using UnityEngine;
@@ -45,7 +47,7 @@ namespace QgfDocs
             events = QGF.Event;
             events.Subscribe(LoadConfigSuccessEventArgs.EventId, OnLoaded);
             events.Subscribe(LoadConfigFailureEventArgs.EventId, OnFailed);
-            config.ReadData("Assets/MyGame/Configs/Game.toml", this);
+            config.ReadData("Game", this);
         }
 
         private void OnLoaded(object sender, GameEventArgs e)
@@ -73,11 +75,11 @@ namespace QgfDocs
 }
 ```
 
-成功后 Console 输出标题、100 和 4.5。发行模式下，同一条资产路径需要进入自己的资源构建和运行时资源索引，不能直接把编辑器的 AssetDatabase 路径当成磁盘文件读取。
+成功后 Console 输出标题、100 和 4.5。Player 使用相同的 YooAsset 地址读取构建后的资源包。
 
 ## ParseData 与 ReadData 的区别
 
-`ReadData(path, userData)` 通过资源系统异步读取。`ParseData(text)` 直接解析已经拿到的 TOML 字符串，返回 bool；适合内置文本或测试，不会替你加载文件。
+`ReadData(location, userData)` 通过资源系统异步读取。`ParseData(text)` 直接解析已经拿到的 TOML 字符串，返回 bool；适合内置文本或测试，不会替你加载文件。
 
 `GetBool/GetInt/GetFloat/GetString` 有带默认值的重载。缺键时，不带默认值的版本会抛异常；需要可选参数时显式传默认值。默认值用于缺键，不应拿它掩盖必需配置没有加载的问题。
 

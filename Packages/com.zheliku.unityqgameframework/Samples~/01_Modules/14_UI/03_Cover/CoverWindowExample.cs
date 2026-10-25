@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +5,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示 QGF.UI 窗口覆盖和重新聚焦。
+    /// </summary>
     public sealed class CoverWindowExample : MonoBehaviour
     {
         [SerializeField] private string windowGuid;
@@ -18,7 +20,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            asset = UnityEditor.AssetDatabase.GUIDToAssetPath(windowGuid);
+            asset = windowGuid;
             QGF.UI.AddUIGroup("Example", 0);
             // 先打开底层窗口；Update 等它加载完成后才允许打开上层。
             bottom = QGF.UI.OpenUIForm(asset, "Example", "底层：背包");
@@ -64,4 +66,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

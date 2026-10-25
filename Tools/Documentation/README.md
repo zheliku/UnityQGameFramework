@@ -15,6 +15,10 @@
 
 当前精简版先运行模块行为检查，再运行 Sample 导入和 StarForce 检查；未包含专门断言的场景只算启动检查。
 
+跨版本复核使用 `Tools/Validation/CurrentSampleCompatibility.cs`。在隔离工程复制当前三个示例和所需验证脚本后，通过 Unity CLI 的 `open --batchmode --args "-executeMethod CurrentSampleCompatibility.Run"` 启动。它检查场景与预制体引用、数据表操作、StarForce 启动、点点点流程和 UniTask；报告写入隔离工程的 `Artifacts~`，完成后自动退出。2022.3、6.0、6.3 分别使用匹配的 URP 版本；原生鼠标输入和界面截图由单独的游戏检查覆盖。
+
+隔离工程的 Editor 目录需要上述脚本，以及 `ExampleCompatibilityChecks`、`CompatibilitySmoke`、`ValidateSampleStructure`、`ValidateModuleExamples`、`ModuleExampleActions`；同时复制当前 `ugui-layouts.json` 和 `examples-layout.json` 到相同的 Tools/Documentation 路径，并安装 Newtonsoft JSON。真实 Git 安装检查使用 `QgfGitInstallValidation~.json` 标记，要求 PackageSource 为 Git。
+
 ## Sample 与包
 
 `Assets/Examples` 与 `Samples~` 都只有 `00_PointPointPoint`、`01_Modules`、`02_StarForce` 三个目录。`sample-groups.json` 登记同名源目录；`ugui-layouts.json` 记录保留场景的界面，`examples-layout.json` 记录模块设置。

@@ -6,7 +6,7 @@ Sound 管理声音组、播放请求和播放代理。资源模块加载 AudioCl
 
 ## 播放一段循环音乐
 
-准备 `Assets/MyGame/Audio/GuideMusic.wav`，在 Inspector 确认能预览。Base 开启编辑器资源模式，创建下面完整入口流程：
+准备 `Assets/MyGame/Audio/GuideMusic.wav`，并将它加入 ResourceBuildProfile 的收集规则。启用 `EnableAddressable`，把地址规则设为 `AddressByFileName`，然后创建下面完整入口流程：
 
 ```csharp
 using UnityQGameFramework.Core.Fsm;
@@ -30,7 +30,7 @@ namespace QgfDocs
             var parameters = PlaySoundParams.Create();
             parameters.Loop = true;
             parameters.SpatialBlend = 0f;
-            serialId = sounds.PlaySound("Assets/MyGame/Audio/GuideMusic.wav", "GuideMusic", parameters);
+            serialId = sounds.PlaySound("GuideMusic", "GuideMusic", parameters);
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> owner, bool isShutdown)

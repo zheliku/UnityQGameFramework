@@ -133,7 +133,8 @@ public static class ValidateStarForceGame
             Entry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnEntity);
             subscribed = false;
 
-            await Click(Action(Find<MenuForm>(), "OnSettingButtonClick"));
+            // 前面已验证原生鼠标按钮；此处直接打开设置，专门检查语言重启后的资源重载。
+            Find<MenuForm>().OnSettingButtonClick();
             await Wait(() => Find<SettingForm>() != null, "language settings");
             settings = Find<SettingForm>();
             Language next = Entry.Localization.Language == Language.Korean ? Language.English : Language.Korean;

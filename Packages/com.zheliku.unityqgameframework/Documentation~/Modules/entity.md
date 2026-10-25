@@ -6,7 +6,7 @@ Entity 管理需要运行时创建、隐藏、附着或复用的游戏对象。�
 
 ## 显示一个旋转 Cube
 
-先创建 `Assets/MyGame/Prefabs/Cube.prefab`。预制体只需要普通 Cube，不要给它加全局的 EntityComponent，也不需要预先挂下面的逻辑组件，框架会按类型添加。
+先创建 `Assets/MyGame/Prefabs/Cube.prefab`。预制体只需要普通 Cube，不要给它加全局的 EntityComponent，也不需要预先挂下面的逻辑组件，框架会按类型添加。将预制体加入 ResourceBuildProfile，启用 `EnableAddressable` 并使用 `AddressByFileName`。
 
 创建 `RotatingCubeLogic.cs`：
 
@@ -34,7 +34,7 @@ namespace QgfDocs
 }
 ```
 
-再创建 `EntityGuideProcedure.cs`，设为入口流程，Base 开启编辑器资源模式：
+再创建 `EntityGuideProcedure.cs`，设为入口流程，并确保框架预制体引用了项目的 ResourceSettings：
 
 ```csharp
 using UnityEngine;
@@ -56,7 +56,7 @@ namespace QgfDocs
             if (!entities.HasEntityGroup("Guide"))
                 entities.AddEntityGroup("Guide", 30f, 8, 60f, 0);
             entities.ShowEntity<RotatingCubeLogic>(CubeId,
-                "Assets/MyGame/Prefabs/Cube.prefab", "Guide", Vector3.zero);
+                "Cube", "Guide", Vector3.zero);
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> owner, bool isShutdown)

@@ -6,8 +6,11 @@
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Core.Scene;
+using UnityQGameFramework.Core.Event;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -93,14 +96,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_SceneManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_SceneManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_SceneManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
         }
 
         /// <summary>
@@ -230,12 +226,6 @@ namespace UnityQGameFramework.Runtime
                 return false;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
-            {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
-                return false;
-            }
-
             return m_SceneManager.HasScene(sceneAssetName);
         }
 
@@ -282,13 +272,106 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
+            m_SceneManager.LoadScene(sceneAssetName, priority, userData);
+        }
+
+        /// <summary>
+        /// 异步加载场景。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="cancellationToken">取消标记。场景加载不能立即中止，完成后会补偿卸载。</param>
+        /// <returns>场景加载任务。</returns>
+        public UniTask LoadSceneAsync(string sceneAssetName, CancellationToken cancellationToken = default)
+        {
+            return LoadSceneAsync(sceneAssetName, DefaultPriority, cancellationToken);
+        }
+
+        /// <summary>
+        /// 异步加载场景。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="priority">加载场景资源的优先级。</param>
+        /// <param name="cancellationToken">取消标记。场景加载不能立即中止，完成后会补偿卸载。</param>
+        /// <returns>场景加载任务。</returns>
+        public async UniTask LoadSceneAsync(string sceneAssetName, int priority, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            SceneAsyncRequest request = new SceneAsyncRequest();
+            EventHandler<GameEventArgs> successHandler = null;
+            EventHandler<GameEventArgs> failureHandler = null;
+            CancellationTokenRegistration cancellation = default;
+
+            void Unsubscribe()
             {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
-                return;
+                if (!request.Pending)
+                {
+                    return;
+                }
+
+                request.Pending = false;
+                m_EventComponent.Unsubscribe(LoadSceneSuccessEventArgs.EventId, successHandler);
+                m_EventComponent.Unsubscribe(LoadSceneFailureEventArgs.EventId, failureHandler);
             }
 
-            m_SceneManager.LoadScene(sceneAssetName, priority, userData);
+            successHandler = (sender, eventArgs) =>
+            {
+                LoadSceneSuccessEventArgs args = (LoadSceneSuccessEventArgs)eventArgs;
+                if (!ReferenceEquals(args.UserData, request))
+                {
+                    return;
+                }
+
+                Unsubscribe();
+                cancellation.Dispose();
+                if (request.Cancelled)
+                {
+                    // 取消只取消等待；底层加载完成后必须归还场景句柄。
+                    UnloadSceneAsync(args.SceneAssetName).Forget();
+                    return;
+                }
+
+                request.Completion.TrySetResult();
+            };
+            failureHandler = (sender, eventArgs) =>
+            {
+                LoadSceneFailureEventArgs args = (LoadSceneFailureEventArgs)eventArgs;
+                if (!ReferenceEquals(args.UserData, request))
+                {
+                    return;
+                }
+
+                Unsubscribe();
+                cancellation.Dispose();
+                if (!request.Cancelled)
+                {
+                    request.Completion.TrySetException(new FrameworkException(args.ErrorMessage));
+                }
+            };
+
+            m_EventComponent.Subscribe(LoadSceneSuccessEventArgs.EventId, successHandler);
+            m_EventComponent.Subscribe(LoadSceneFailureEventArgs.EventId, failureHandler);
+            cancellation = cancellationToken.Register(() =>
+            {
+                request.Cancelled = true;
+                request.Completion.TrySetCanceled(cancellationToken);
+            });
+
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                LoadScene(sceneAssetName, priority, request);
+                request.Started = true;
+                await request.Completion.Task;
+            }
+            catch
+            {
+                if (request.Pending && (!request.Cancelled || !request.Started))
+                {
+                    Unsubscribe();
+                    cancellation.Dispose();
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -313,14 +396,116 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
-            {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
-                return;
-            }
-
             m_SceneManager.UnloadScene(sceneAssetName, userData);
             m_SceneOrder.Remove(sceneAssetName);
+        }
+
+        /// <summary>
+        /// 异步卸载场景。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="cancellationToken">取消标记。取消只取消等待，不会中止已发出的卸载。</param>
+        /// <returns>场景卸载任务。</returns>
+        public UniTask UnloadSceneAsync(string sceneAssetName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            SceneAsyncRequest request = new SceneAsyncRequest();
+            EventHandler<GameEventArgs> successHandler = null;
+            EventHandler<GameEventArgs> failureHandler = null;
+            CancellationTokenRegistration cancellation = default;
+
+            void Unsubscribe()
+            {
+                if (!request.Pending)
+                {
+                    return;
+                }
+
+                request.Pending = false;
+                m_EventComponent.Unsubscribe(UnloadSceneSuccessEventArgs.EventId, successHandler);
+                m_EventComponent.Unsubscribe(UnloadSceneFailureEventArgs.EventId, failureHandler);
+            }
+
+            successHandler = (sender, eventArgs) =>
+            {
+                UnloadSceneSuccessEventArgs args = (UnloadSceneSuccessEventArgs)eventArgs;
+                if (!ReferenceEquals(args.UserData, request))
+                {
+                    return;
+                }
+
+                Unsubscribe();
+                cancellation.Dispose();
+                request.Completion.TrySetResult();
+            };
+            failureHandler = (sender, eventArgs) =>
+            {
+                UnloadSceneFailureEventArgs args = (UnloadSceneFailureEventArgs)eventArgs;
+                if (!ReferenceEquals(args.UserData, request))
+                {
+                    return;
+                }
+
+                Unsubscribe();
+                cancellation.Dispose();
+                if (!request.Cancelled)
+                {
+                    request.Completion.TrySetException(new FrameworkException("Unload scene failure: " + args.SceneAssetName));
+                }
+            };
+
+            m_EventComponent.Subscribe(UnloadSceneSuccessEventArgs.EventId, successHandler);
+            m_EventComponent.Subscribe(UnloadSceneFailureEventArgs.EventId, failureHandler);
+            cancellation = cancellationToken.Register(() =>
+            {
+                request.Cancelled = true;
+                request.Completion.TrySetCanceled(cancellationToken);
+            });
+
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                UnloadScene(sceneAssetName, request);
+                request.Started = true;
+                return AwaitSceneRequestAsync(request, cancellation, successHandler, failureHandler);
+            }
+            catch
+            {
+                if (request.Pending && (!request.Cancelled || !request.Started))
+                {
+                    Unsubscribe();
+                    cancellation.Dispose();
+                }
+                throw;
+            }
+        }
+
+        private async UniTask AwaitSceneRequestAsync(SceneAsyncRequest request, CancellationTokenRegistration cancellation,
+            EventHandler<GameEventArgs> successHandler, EventHandler<GameEventArgs> failureHandler)
+        {
+            try
+            {
+                await request.Completion.Task;
+            }
+            catch
+            {
+                if (request.Pending && (!request.Cancelled || !request.Started))
+                {
+                    request.Pending = false;
+                    m_EventComponent.Unsubscribe(UnloadSceneSuccessEventArgs.EventId, successHandler);
+                    m_EventComponent.Unsubscribe(UnloadSceneFailureEventArgs.EventId, failureHandler);
+                    cancellation.Dispose();
+                }
+                throw;
+            }
+        }
+
+        private sealed class SceneAsyncRequest
+        {
+            internal readonly UniTaskCompletionSource Completion = new UniTaskCompletionSource();
+            internal bool Pending = true;
+            internal bool Cancelled;
+            internal bool Started;
         }
 
         /// <summary>
@@ -333,12 +518,6 @@ namespace UnityQGameFramework.Runtime
             if (string.IsNullOrEmpty(sceneAssetName))
             {
                 Log.Error("Scene asset name is invalid.");
-                return;
-            }
-
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
-            {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
                 return;
             }
 
@@ -400,6 +579,14 @@ namespace UnityQGameFramework.Runtime
                 }
 
                 Scene scene = SceneManager.GetSceneByName(GetSceneName(maxSceneName));
+                if (!scene.IsValid())
+                {
+                    string loadedSceneName = GameEntry.GetComponent<ResourceComponent>().GetLoadedSceneName(maxSceneName);
+                    if (!string.IsNullOrEmpty(loadedSceneName))
+                    {
+                        scene = SceneManager.GetSceneByName(loadedSceneName);
+                    }
+                }
                 if (!scene.IsValid())
                 {
                     Log.Error("Active scene '{0}' is invalid.", maxSceneName);

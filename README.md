@@ -41,6 +41,8 @@ python Tools/Documentation/check_docs.py
 
 `python Tools/Packaging/prepare_upm.py` 生成 tgz。发布时同步 package.json、框架版本和 Changelog。
 
+消费项目已安装官方 UniTask 或 YooAsset 时，可分别追加 `--external-dependency unitask`、`--external-dependency yooasset` 生成排除对应内置副本的包。输出的 `external-dependencies.json` 列出消费项目需要安装的官方 Git URL；默认 Git 包仍包含两个插件，不能与官方副本同时安装。
+
 ## 文档与扩展
 
 - [运行机制](Packages/com.zheliku.unityqgameframework/Documentation~/00-runtime.md)：初始化、统一更新与关闭。

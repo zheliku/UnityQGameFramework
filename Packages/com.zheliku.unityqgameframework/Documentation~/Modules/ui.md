@@ -8,7 +8,7 @@ UIComponent → UIManager → Resource / ObjectPool → UIFormHelper → UIFormL
 
 ## 创建一个最小窗口
 
-创建 Canvas，设为 Screen Space - Overlay。添加一个 Text 作为标题、一个 Button 作为关闭按钮。把根节点保存为 `Assets/MyGame/UI/GuideWindow.prefab`，删除场景中的原实例。
+创建 Canvas，设为 Screen Space - Overlay。添加一个 Text 作为标题、一个 Button 作为关闭按钮。把根节点保存为 `Assets/MyGame/UI/GuideWindow.prefab`，删除场景中的原实例。将预制体加入 ResourceBuildProfile，启用 `EnableAddressable` 并使用 `AddressByFileName`。
 
 在预制体根节点挂 `GuideWindow`，并把关闭按钮的 OnClick 绑定到它的 Close 方法：
 
@@ -67,7 +67,7 @@ namespace QgfDocs
             base.OnEnter(owner);
             ui = QGF.UI;
             if (!ui.HasUIGroup("Guide")) ui.AddUIGroup("Guide", 0);
-            serialId = ui.OpenUIForm("Assets/MyGame/UI/GuideWindow.prefab", "Guide", "第一次打开");
+            serialId = ui.OpenUIForm("GuideWindow", "Guide", "第一次打开");
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> owner, bool isShutdown)
@@ -79,7 +79,7 @@ namespace QgfDocs
 }
 ```
 
-场景需要框架预制体、摄像机和 EventSystem。EventSystem 的输入模块要与项目输入后端匹配：旧输入使用 StandaloneInputModule，Input System 使用其对应 UI 输入模块。开启编辑器资源模式后运行，看到窗口并可通过按钮关闭。
+场景需要已配置 ResourceSettings 的框架预制体、摄像机和 EventSystem。EventSystem 的输入模块要与项目输入后端匹配：旧输入使用 StandaloneInputModule，Input System 使用其对应 UI 输入模块。运行后可看到窗口并通过按钮关闭。
 
 ## 序列号与资源名
 

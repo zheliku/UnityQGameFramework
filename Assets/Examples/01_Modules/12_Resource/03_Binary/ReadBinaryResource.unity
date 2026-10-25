@@ -206,10 +206,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1762272399753092959, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
-      propertyPath: m_EditorResourceMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3469854889470876099, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -676,7 +672,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  \u4E8C\u8FDB\u5236\u6587\u4EF6\u7247\u6BB5"
+  m_Text: "03  \u539f\u751f\u6587\u4ef6\u4e0e\u72ec\u7acb\u5b57\u8282\u6570\u636e"
 --- !u!222 &712105151
 CanvasRenderer:
   m_ObjectHideFlags: 0

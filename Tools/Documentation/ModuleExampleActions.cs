@@ -93,7 +93,7 @@ public static class ModuleExampleActions
                 await Click("initializeButton");
                 await Until(() => Field<bool>("initialized"), "Binary package initialized");
                 await Click("readButton");
-                byte[] original = File.ReadAllBytes(ResourceExamplePaths.Fixture.FileSystemAssetName);
+                byte[] original = File.ReadAllBytes(UnityEditor.AssetDatabase.GUIDToAssetPath(ResourceExamplePaths.BinaryGuid));
                 Require(Field<byte[]>("result").SequenceEqual(original.Skip(8).Take(16)), "Exact binary source segment");
                 break;
             case "SoundGroupVolumeExample":

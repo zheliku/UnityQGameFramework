@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +6,12 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 通过 QGF.Scene 加载并卸载房间场景。
+    /// </summary>
     public sealed class LoadRoomExample : MonoBehaviour
     {
-        [SerializeField] private string roomGuid;
+        [SerializeField] private string roomLocation;
         [SerializeField] private Button loadButton, unloadButton;
         [SerializeField] private Text stateText;
         private string room;
@@ -17,7 +19,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            room = UnityEditor.AssetDatabase.GUIDToAssetPath(roomGuid);
+            room = roomLocation;
             QGF.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnResult);
             QGF.Event.Subscribe(LoadSceneFailureEventArgs.EventId, OnResult);
             QGF.Event.Subscribe(UnloadSceneSuccessEventArgs.EventId, OnResult);
@@ -67,4 +69,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

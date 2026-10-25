@@ -144,6 +144,19 @@ public static class ValidateStarForceDialogs
                 await Task.Delay(100);
                 Check(Object.FindFirstObjectByType<BuiltinDialogForm>() == null, "Builtin instance destroyed: " + language);
             }
+            Entry.BuiltinData.OpenDialog(new DialogParams
+            {
+                Mode = 1,
+                Title = "重试",
+                OnClickConfirm = _ => Entry.BuiltinData.OpenDialog(new DialogParams { Mode = 1, Title = "再次确认" })
+            });
+            var firstDialog = Object.FindFirstObjectByType<BuiltinDialogForm>();
+            firstDialog.OnConfirmButtonClick();
+            var secondDialog = Object.FindFirstObjectByType<BuiltinDialogForm>();
+            Check(secondDialog != null && secondDialog != firstDialog, "Builtin callback can open the next dialog in the same frame");
+            secondDialog.OnConfirmButtonClick();
+            await Task.Delay(100);
+            Check(Object.FindFirstObjectByType<BuiltinDialogForm>() == null, "Chained builtin dialogs are destroyed");
             Check(errors.Count == 0, "No runtime errors: " + string.Join("\n", errors));
         }
         finally

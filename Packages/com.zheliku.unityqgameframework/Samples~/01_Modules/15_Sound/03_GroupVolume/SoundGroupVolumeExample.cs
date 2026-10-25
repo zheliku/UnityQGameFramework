@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core.Event;
@@ -8,6 +7,9 @@ using PlaySoundSuccessEventArgs = UnityQGameFramework.Runtime.PlaySoundSuccessEv
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示声音组音量与单次播放音量。
+    /// </summary>
     public sealed class SoundGroupVolumeExample : MonoBehaviour
     {
         [SerializeField] private string soundGuid;
@@ -45,7 +47,7 @@ namespace UnityQGameFramework.Examples.Modules
             parameters.VolumeInSoundGroup = voiceVolumeSlider.value;
             parameters.MuteInSoundGroup = voiceMuteToggle.isOn;
             serialId = QGF.Sound.PlaySound(
-                UnityEditor.AssetDatabase.GUIDToAssetPath(soundGuid), "Music", parameters);
+                soundGuid, "Music", parameters);
             agent = null;
         }
 
@@ -77,4 +79,3 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 }
-#endif

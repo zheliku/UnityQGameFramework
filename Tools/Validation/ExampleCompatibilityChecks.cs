@@ -35,7 +35,7 @@ public static class ExampleCompatibilityChecks
             }
         }
         foreach (string name in new[] { "StarForce.BuiltinDialogForm", "StarForce.DialogForm", "StarForce.ProcedureMenu",
-            "UnityQGameFramework.Examples.Modules.PointPointPoint.PointGamePlay" })
+            "UnityQGameFramework.Examples.PointPointPoint.PointGamePlay" })
             if (!AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetType(name) != null))
                 throw new Exception("Missing game example type: " + name);
         EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");

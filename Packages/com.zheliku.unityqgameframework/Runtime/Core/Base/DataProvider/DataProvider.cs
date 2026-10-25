@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -19,7 +19,6 @@ namespace UnityQGameFramework.Core
 
         private readonly T m_Owner;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
-        private readonly LoadBinaryCallbacks m_LoadBinaryCallbacks;
         private IResourceManager m_ResourceManager;
         private IDataProviderHelper<T> m_DataProviderHelper;
         private EventHandler<ReadDataSuccessEventArgs> m_ReadDataSuccessEventHandler;
@@ -34,8 +33,7 @@ namespace UnityQGameFramework.Core
         public DataProvider(T owner)
         {
             m_Owner = owner;
-            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
-            m_LoadBinaryCallbacks = new LoadBinaryCallbacks(LoadBinarySuccessCallback, LoadAssetOrBinaryFailureCallback);
+            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
             m_ResourceManager = null;
             m_DataProviderHelper = null;
             m_ReadDataSuccessEventHandler = null;
@@ -47,7 +45,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        public static int CachedBytesSize => s_CachedBytes != null ? s_CachedBytes.Length : 0;
+        public static int CachedBytesSize
+        {
+            get
+            {
+                return s_CachedBytes != null ? s_CachedBytes.Length : 0;
+            }
+        }
 
         /// <summary>
         /// 读取数据成功事件。
@@ -183,58 +187,8 @@ namespace UnityQGameFramework.Core
                 throw new FrameworkException("You must set data provider helper first.");
             }
 
-            HasAssetResult result = m_ResourceManager.HasAsset(dataAssetName);
-            switch (result)
-            {
-                case HasAssetResult.AssetOnDisk:
-                case HasAssetResult.AssetOnFileSystem:
-                    m_ResourceManager.LoadAsset(dataAssetName, priority, m_LoadAssetCallbacks, userData);
-                    break;
-
-                case HasAssetResult.BinaryOnDisk:
-                    m_ResourceManager.LoadBinary(dataAssetName, m_LoadBinaryCallbacks, userData);
-                    break;
-
-                case HasAssetResult.BinaryOnFileSystem:
-                    int dataLength = m_ResourceManager.GetBinaryLength(dataAssetName);
-                    EnsureCachedBytesSize(dataLength);
-                    if (dataLength != m_ResourceManager.LoadBinaryFromFileSystem(dataAssetName, s_CachedBytes))
-                    {
-                        throw new FrameworkException(Utility.Text.Format("Load binary '{0}' from file system with internal error.", dataAssetName));
-                    }
-
-                    try
-                    {
-                        if (!m_DataProviderHelper.ReadData(m_Owner, dataAssetName, s_CachedBytes, 0, dataLength, userData))
-                        {
-                            throw new FrameworkException(Utility.Text.Format("Load data failure in data provider helper, data asset name '{0}'.", dataAssetName));
-                        }
-
-                        if (m_ReadDataSuccessEventHandler != null)
-                        {
-                            ReadDataSuccessEventArgs loadDataSuccessEventArgs = ReadDataSuccessEventArgs.Create(dataAssetName, 0f, userData);
-                            m_ReadDataSuccessEventHandler(this, loadDataSuccessEventArgs);
-                            ReferencePool.Release(loadDataSuccessEventArgs);
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        if (m_ReadDataFailureEventHandler != null)
-                        {
-                            ReadDataFailureEventArgs loadDataFailureEventArgs = ReadDataFailureEventArgs.Create(dataAssetName, exception.ToString(), userData);
-                            m_ReadDataFailureEventHandler(this, loadDataFailureEventArgs);
-                            ReferencePool.Release(loadDataFailureEventArgs);
-                            return;
-                        }
-
-                        throw;
-                    }
-
-                    break;
-
-                default:
-                    throw new FrameworkException(Utility.Text.Format("Data asset '{0}' is '{1}'.", dataAssetName, result));
-            }
+            // 资源后端负责等待包就绪，数据提供者不再判断旧文件容器的存储位置。
+            m_ResourceManager.LoadAsset(dataAssetName, priority, m_LoadAssetCallbacks, userData);
         }
 
         /// <summary>
@@ -425,7 +379,7 @@ namespace UnityQGameFramework.Core
             }
         }
 
-        private void LoadAssetOrBinaryFailureCallback(string dataAssetName, LoadResourceStatus status, string errorMessage, object userData)
+        private void LoadAssetFailureCallback(string dataAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             string appendErrorMessage = Utility.Text.Format("Load data failure, data asset name '{0}', status '{1}', error message '{2}'.", dataAssetName, status, errorMessage);
             if (m_ReadDataFailureEventHandler != null)
@@ -459,34 +413,5 @@ namespace UnityQGameFramework.Core
             }
         }
 
-        private void LoadBinarySuccessCallback(string dataAssetName, byte[] dataBytes, float duration, object userData)
-        {
-            try
-            {
-                if (!m_DataProviderHelper.ReadData(m_Owner, dataAssetName, dataBytes, 0, dataBytes.Length, userData))
-                {
-                    throw new FrameworkException(Utility.Text.Format("Load data failure in data provider helper, data asset name '{0}'.", dataAssetName));
-                }
-
-                if (m_ReadDataSuccessEventHandler != null)
-                {
-                    ReadDataSuccessEventArgs loadDataSuccessEventArgs = ReadDataSuccessEventArgs.Create(dataAssetName, duration, userData);
-                    m_ReadDataSuccessEventHandler(this, loadDataSuccessEventArgs);
-                    ReferencePool.Release(loadDataSuccessEventArgs);
-                }
-            }
-            catch (Exception exception)
-            {
-                if (m_ReadDataFailureEventHandler != null)
-                {
-                    ReadDataFailureEventArgs loadDataFailureEventArgs = ReadDataFailureEventArgs.Create(dataAssetName, exception.ToString(), userData);
-                    m_ReadDataFailureEventHandler(this, loadDataFailureEventArgs);
-                    ReferencePool.Release(loadDataFailureEventArgs);
-                    return;
-                }
-
-                throw;
-            }
-        }
     }
 }

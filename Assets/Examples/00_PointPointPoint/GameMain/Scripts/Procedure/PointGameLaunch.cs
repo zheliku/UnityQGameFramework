@@ -1,4 +1,7 @@
+using System;
 using System.IO;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.Event;
@@ -8,15 +11,20 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.PointPointPoint
 {
+    /// <summary>
+    /// 初始化点点点游戏数据并加载配置。
+    /// </summary>
     public sealed class PointGameLaunch : ProcedureBase
     {
         private bool loaded;
         private object request;
+        private CancellationTokenSource cancellation;
 
         protected override void OnEnter(IFsm<IProcedureManager> owner)
         {
             base.OnEnter(owner);
             loaded = false;
+            cancellation = new CancellationTokenSource();
             object token = request = new object();
             // 从启动场景定位 GameMain，移动整个示例目录后仍可找到资产。
             string root = Path.GetDirectoryName(Path.GetDirectoryName(SceneManager.GetActiveScene().path)).Replace('\\', '/');
@@ -30,30 +38,61 @@ namespace UnityQGameFramework.Examples.PointPointPoint
             // 先订阅再读取，回调通过 UserData 识别本流程的请求。
             QGF.Event.Subscribe(LoadConfigSuccessEventArgs.EventId, OnLoaded);
             QGF.Event.Subscribe(LoadConfigFailureEventArgs.EventId, OnFailed);
-            // 编辑器直接读资产；Player 先初始化包内清单，再通过同一资产名读取 TOML。
+            // 资源模块等待包初始化，模拟模式和 Player 使用同一套 TOML 读取接口。
             string configAsset = root + "/Configs/Game.toml";
-            if (QGF.Base.EditorResourceMode) QGF.Config.ReadData(configAsset, token);
-            else QGF.Resource.InitResources(() =>
+            InitializeAsync(configAsset, token, cancellation).Forget();
+        }
+
+        private async UniTask InitializeAsync(string configAsset, object token, CancellationTokenSource cancellation)
+        {
+            CancellationToken cancellationToken = cancellation.Token;
+            try
             {
-                if (ReferenceEquals(request, token)) QGF.Config.ReadData(configAsset, token);
-            });
+                await QGF.Resource.InitializePackageAsync(cancellationToken: cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
+                QGF.Config.ReadData(configAsset, token);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (System.Exception exception)
+            {
+                Log.Error("PointPointPoint resource initialization failed: {0}", exception.Message);
+            }
+            finally
+            {
+                cancellation.Dispose();
+                if (ReferenceEquals(this.cancellation, cancellation))
+                {
+                    this.cancellation = null;
+                }
+            }
         }
 
         private void OnLoaded(object sender, GameEventArgs args)
         {
-            if (ReferenceEquals(((LoadConfigSuccessEventArgs)args).UserData, request)) loaded = true;
+            if (ReferenceEquals(((LoadConfigSuccessEventArgs)args).UserData, request))
+            {
+                loaded = true;
+            }
         }
 
         private void OnFailed(object sender, GameEventArgs args)
         {
             var failure = (LoadConfigFailureEventArgs)args;
-            if (ReferenceEquals(failure.UserData, request)) Log.Error(failure.ErrorMessage);
+            if (ReferenceEquals(failure.UserData, request))
+            {
+                Log.Error(failure.ErrorMessage);
+            }
         }
 
         protected override void OnUpdate(IFsm<IProcedureManager> owner, float elapsed, float realElapsed)
         {
             base.OnUpdate(owner, elapsed, realElapsed);
-            if (!loaded) return;
+            if (!loaded)
+            {
+                return;
+            }
             var game = (PointGameData)owner.GetData<VarObject>("Game").Value;
             // Config 已加载完成，读取规则后才创建这一局的初始状态。
             game.Duration = QGF.Config.GetFloat("Game.Duration");
@@ -69,11 +108,21 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         protected override void OnLeave(IFsm<IProcedureManager> owner, bool shutdown)
         {
             request = null;
+            if (cancellation != null && !cancellation.IsCancellationRequested)
+            {
+                cancellation.Cancel();
+            }
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(LoadConfigSuccessEventArgs.EventId, OnLoaded)) events.Unsubscribe(LoadConfigSuccessEventArgs.EventId, OnLoaded);
-                if (events.Check(LoadConfigFailureEventArgs.EventId, OnFailed)) events.Unsubscribe(LoadConfigFailureEventArgs.EventId, OnFailed);
+                if (events.Check(LoadConfigSuccessEventArgs.EventId, OnLoaded))
+                {
+                    events.Unsubscribe(LoadConfigSuccessEventArgs.EventId, OnLoaded);
+                }
+                if (events.Check(LoadConfigFailureEventArgs.EventId, OnFailed))
+                {
+                    events.Unsubscribe(LoadConfigFailureEventArgs.EventId, OnFailed);
+                }
             }
             base.OnLeave(owner, shutdown);
         }

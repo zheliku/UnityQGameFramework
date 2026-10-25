@@ -909,7 +909,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u8D44\u6E90\u5305\u4E2D\u7684\u8D44\u4EA7"
+  m_Text: "02  \u8d44\u6e90\u5305\u4e0e\u663e\u5f0f\u53e5\u67c4"
 --- !u!222 &771612972
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -926,10 +926,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1762272399753092959, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
-      propertyPath: m_EditorResourceMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3469854889470876099, guid: 1120d89a18a158f7bbf94da8aea961c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

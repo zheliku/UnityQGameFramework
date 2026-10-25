@@ -41,12 +41,24 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取全局配置项数量。
         /// </summary>
-        public int Count => m_ConfigManager.Count;
+        public int Count
+        {
+            get
+            {
+                return m_ConfigManager.Count;
+            }
+        }
 
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        public int CachedBytesSize => m_ConfigManager.CachedBytesSize;
+        public int CachedBytesSize
+        {
+            get
+            {
+                return m_ConfigManager.CachedBytesSize;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -92,14 +104,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_ConfigManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_ConfigManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_ConfigManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
             ConfigHelperBase configHelper = Helper.CreateHelper(m_ConfigHelperTypeName, m_CustomConfigHelper);
             if (configHelper == null)

@@ -1,68 +1,82 @@
-#if UNITY_EDITOR
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 读取原生文件，并在业务侧提取所需的字节片段。
+    /// </summary>
     public sealed class ReadBinaryResource : MonoBehaviour
     {
         [SerializeField] private Button initializeButton, readButton;
         [SerializeField] private Text stateText, pathText, bytesText;
-
-        private ResourceFixtureManifest fixture;
         private byte[] result;
         private bool initialized, loading;
 
         private void Start()
         {
-            fixture = ResourceExamplePaths.Fixture;
-            stateText.text = fixture == null ? ResourceExamplePaths.Notice : "初始化资源包，再读取 Archive 中的一段字节。";
+            stateText.text = "初始化 Raw 包，读取文件，再提取偏移 8 开始的 16 个字节。";
             initializeButton.onClick.AddListener(Initialize);
-            readButton.onClick.AddListener(ReadFileSegment);
+            readButton.onClick.AddListener(ReadFile);
         }
 
-        private void Initialize()
+        private async void Initialize()
         {
             loading = true;
-            // Package 初始化读取资源清单，之后才能按资源名查询二进制文件。
-            QGF.Resource.InitResources(() =>
+            try
             {
-                if (this == null) return;
+                await QGF.Resource.InitializePackageAsync(ResourceExamplePaths.RawPackageName, destroyCancellationToken);
                 initialized = true;
+                stateText.text = "原生文件包已就绪。";
+            }
+            catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                stateText.text = exception.Message;
+            }
+            finally
+            {
                 loading = false;
-                stateText.text = "资源包已初始化。";
-            });
+            }
         }
 
-        private void ReadFileSegment()
+        private async void ReadFile()
         {
-            const int offset = 8;
-            const int length = 16;
-            string file = fixture.FileSystemAssetName;
-            // offset 是源文件位置；该重载只返回指定区间的新 byte[]。
-            result = QGF.Resource.LoadBinarySegmentFromFileSystem(file, offset, length);
-            stateText.text = $"从文件偏移 {offset} 读取 {result.Length} 字节。";
+            loading = true;
+            try
+            {
+                // 返回的 bytes 已脱离资源句柄，读取完成后无需再手动 UnloadAsset。
+                byte[] bytes = await QGF.Resource.LoadBinaryAsync(ResourceExamplePaths.BinaryGuid, ResourceExamplePaths.RawPackageName, destroyCancellationToken);
+                const int offset = 8;
+                int length = Math.Min(16, Math.Max(0, bytes.Length - offset));
+                result = new byte[length];
+                Buffer.BlockCopy(bytes, Math.Min(offset, bytes.Length), result, 0, length);
+                pathText.text = $"资源包：{ResourceExamplePaths.RawPackageName}\n完整文件：{bytes.Length} 字节；本次片段：{length} 字节";
+                bytesText.text = BitConverter.ToString(result);
+                stateText.text = "文件内容属于本次读取；片段提取由业务代码完成。";
+            }
+            catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                stateText.text = exception.Message;
+            }
+            finally
+            {
+                loading = false;
+            }
         }
 
         private void Update()
         {
-            initializeButton.interactable = fixture != null && !initialized && !loading;
+            initializeButton.interactable = !initialized && !loading;
             readButton.interactable = initialized && !loading;
-            if (!initialized) return;
-
-            string file = fixture.FileSystemAssetName;
-            bool found = QGF.Resource.GetBinaryPath(file, out bool readOnly, out bool inFileSystem,
-                out string relative, out string fileName);
-            pathText.text = $"资源长度：{QGF.Resource.GetBinaryLength(file)} 字节\n"
-                + $"位置：{(readOnly ? "只读" : "读写")} · {(inFileSystem ? "文件系统" : "散文件")}\n"
-                + $"路径：{(found ? relative + "/" + fileName : "未找到")}";
-            bytesText.text = result == null
-                ? "尚未读取。"
-                : $"已读取 {result.Length} 字节\n前 16 字节：{BitConverter.ToString(result, 0, Math.Min(16, result.Length))}";
         }
     }
 }
-#endif

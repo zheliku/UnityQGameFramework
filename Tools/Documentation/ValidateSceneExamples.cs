@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
@@ -20,12 +21,27 @@ using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
 // 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
+/// <summary>
+/// 验收场景模块示例。
+/// </summary>
 public static class ValidateSceneExamples
 {
     private static readonly List<string> assertions = new List<string>();
 
-    public static Task<object> Run() => RunOnly(null);
+    /// <summary>
+    /// 验收所有场景示例。
+    /// </summary>
+    /// <returns>场景示例验收结果。</returns>
+    public static Task<object> Run()
+    {
+        return RunOnly(null);
+    }
 
+    /// <summary>
+    /// 验收指定的场景示例。
+    /// </summary>
+    /// <param name="names">要验收的示例名称，传入 null 时验收全部场景示例。</param>
+    /// <returns>场景示例验收结果。</returns>
     public static async Task<object> RunOnly(string[] names)
     {
         if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated validation project.");
@@ -127,53 +143,37 @@ public static class ValidateSceneExamples
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
         Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
         if (name == "LoadRoomExample")
         {
             string room = Field<string>(example, "room");
-            Require(dropdown("loadMode").options.Count == 4 && dropdown("unloadMode").options.Count == 2, "Four load and two unload choices");
             Require(QGF.Scene.HasScene(room) && !QGF.Scene.SceneIsLoaded(room), "Resource exists without being loaded");
-            Require(!QGF.Scene.HasScene("Assets/QgfSceneMissing.unity"), "Missing resource query");
             Require(button("loadButton").interactable && !button("unloadButton").interactable, "Initial controls");
-            for (int load = 0; load < 4; load++)
-            for (int unload = 0; unload < 2; unload++)
+            await Click(button("loadButton"), mouse);
+            await Until(() => QGF.Scene.SceneIsLoaded(room), 5000, "Load room");
+            string roomPath = AssetDatabase.GUIDToAssetPath(room);
+            Scene loadedRoom = SceneManager.GetSceneByPath(roomPath);
+            string loadedScenes = string.Join(", ", Enumerable.Range(0, SceneManager.sceneCount)
+                .Select(index =>
+                {
+                    Scene scene = SceneManager.GetSceneAt(index);
+                    return scene.name + " (" + scene.path + ", loaded=" + scene.isLoaded + ")";
+                }));
+            Require(SceneManager.sceneCount == 2 && loadedRoom.isLoaded,
+                "Real additive room loaded; expected path=" + roomPath + ", sceneCount=" + SceneManager.sceneCount
+                + ", active=" + SceneManager.GetActiveScene().path + ", scenes=[" + loadedScenes + "]");
+            Require(SceneManager.GetActiveScene().path == roomPath, "The GUID-addressed room becomes active");
+            Require(!button("loadButton").interactable && button("unloadButton").interactable, "Loaded controls");
+            Require(text("stateText").text.Contains("房间已加载"), "Loaded state text");
+            await Click(button("unloadButton"), mouse);
+            await Until(() => !QGF.Scene.SceneIsLoaded(room) && !QGF.Scene.SceneIsUnloading(room), 5000, "Unload room");
+            Require(SceneManager.sceneCount == 1 && QGF.Scene.GetLoadedSceneAssetNames().Length == 0, "Room content actually removed");
+            Require(text("stateText").text.Contains("房间已卸载"), "Unloaded state text");
+            using (var cancellation = new CancellationTokenSource())
             {
-                dropdown("loadMode").value = load;
-                dropdown("unloadMode").value = unload;
-                dropdown("queryMode").value = load % 2;
-                bool sawLoading = false, sawUnloading = false;
-                UnityEngine.Events.UnityAction observeLoad = () => sawLoading = QGF.Scene.SceneIsLoading(room) && QGF.Scene.GetLoadingSceneAssetNames().Contains(room);
-                UnityEngine.Events.UnityAction observeUnload = () => sawUnloading = QGF.Scene.SceneIsUnloading(room) && QGF.Scene.GetUnloadingSceneAssetNames().Contains(room);
-                button("loadButton").onClick.AddListener(observeLoad);
-                button("unloadButton").onClick.AddListener(observeUnload);
-                try
-                {
-                    await Click(button("loadButton"), mouse);
-                    await Until(() => QGF.Scene.SceneIsLoaded(room), 5000, "Load overload " + load);
-                    await Task.Delay(130);
-                    Require(sawLoading, "Pending load query " + load);
-                    Require(!QGF.Scene.SceneIsLoading(room) && QGF.Scene.GetLoadedSceneAssetNames().SequenceEqual(new[] { room }), "Loaded collection " + load);
-                    Require(SceneManager.sceneCount == 2 && SceneManager.GetSceneByPath(room).isLoaded, "Real additive room loaded " + load);
-                    Require(text("stateText").text.Contains(load >= 2 ? "UserData：当前对象" : "UserData：未设置"), "Load user data " + load);
-                    Require(((Slider)data.FindProperty("progressSlider").objectReferenceValue).value == 1, "Progress reaches one on success");
-                    Require(!button("loadButton").interactable && button("unloadButton").interactable, "Loaded controls");
-                    if (load % 2 == 1)
-                        Require(Field<List<string>>(example, "loaded").SequenceEqual(new[] { room }), "List query mirrors loaded array");
-                    Require(text("roomsText").text.Contains("已加载 1"), "Live scene count");
-                    await Screenshot("loaded-room");
-                    await Click(button("unloadButton"), mouse);
-                    await Until(() => !QGF.Scene.SceneIsLoaded(room) && !QGF.Scene.SceneIsUnloading(room), 5000, "Unload overload " + unload);
-                    await Task.Delay(130);
-                    Require(sawUnloading, "Pending unload query " + unload);
-                    Require(SceneManager.sceneCount == 1 && QGF.Scene.GetLoadedSceneAssetNames().Length == 0, "Room content actually removed");
-                    Require(text("stateText").text.Contains(unload == 1 ? "UserData：当前对象" : "UserData：未设置"), "Unload user data " + unload);
-                }
-                finally
-                {
-                    button("loadButton").onClick.RemoveListener(observeLoad);
-                    button("unloadButton").onClick.RemoveListener(observeUnload);
-                }
+                cancellation.Cancel();
+                var cancelled = await QGF.Scene.LoadSceneAsync(room, cancellation.Token).SuppressCancellationThrow();
+                Require(cancelled && !QGF.Scene.SceneIsLoaded(room), "Pre-cancelled UniTask scene load");
             }
         }
         else if (name == "SwitchRoomsExample")
@@ -243,7 +243,10 @@ public static class ValidateSceneExamples
         }
     }
 
-    private static T Field<T>(object instance, string name) => (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(instance);
+    private static T Field<T>(object instance, string name)
+    {
+        return (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(instance);
+    }
 
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {

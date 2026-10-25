@@ -24,6 +24,8 @@ def main():
     )
     parser.add_argument('--require-committed', action='store_true',
                         help='Reject unpublished package changes before staging a release')
+    parser.add_argument('--external-dependency', choices=['unitask', 'yooasset'], action='append', default=[],
+                        help='Exclude a bundled plugin; the consumer must install its official package')
     args = parser.parse_args()
     package_source = root / "Packages/com.zheliku.unityqgameframework"
     example_source = root / "Assets/Examples/02_StarForce"
@@ -32,7 +34,7 @@ def main():
     output = (
         args.output.resolve()
         if args.output
-        else artifacts_root / "UPM" / manifest["version"]
+        else artifacts_root / "UPM" / (manifest["version"] + ("-external-" + "-".join(sorted(set(args.external_dependency))) if args.external_dependency else ""))
     )
     if artifacts_root not in output.parents:
         parser.error("Output must be a new directory below this repository's Artifacts~/")
@@ -46,11 +48,37 @@ def main():
     check = [sys.executable, str(Path(__file__).with_name('check_package.py'))]
     if args.require_committed:
         check.append('--require-committed')
-    subprocess.run(check, check=True)
+    validation = subprocess.run(check, check=True, stdout=subprocess.PIPE, text=True, encoding='utf-8')
+    check_result = json.loads(validation.stdout)
+
+    plugins = {
+        'unitask': {
+            'directory': 'UniTask',
+            'name': 'com.cysharp.unitask',
+            'version': '2.5.11',
+            'url': 'https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11',
+        },
+        'yooasset': {
+            'directory': 'YooAsset',
+            'name': 'com.tuyoogame.yooasset',
+            'version': '3.0.6',
+            'url': 'https://github.com/tuyoogame/YooAsset.git?path=Assets/YooAsset#3.0.6',
+        },
+    }
+    external = [plugins[name] for name in sorted(set(args.external_dependency))]
+
+    def ignore_plugins(directory, names):
+        if Path(directory).resolve() != (package_source / 'Runtime/Plugins').resolve():
+            return []
+        excluded = set()
+        for plugin in external:
+            excluded.add(plugin['directory'])
+            excluded.add(plugin['directory'] + '.meta')
+        return excluded.intersection(names)
 
     # Samples~ is already present in the Git package; reject a stale mirror.
     staged_package = output / "Packages" / manifest["name"]
-    shutil.copytree(package_source, staged_package)
+    shutil.copytree(package_source, staged_package, ignore=ignore_plugins)
     sample_files = {}
     for sample in manifest['samples']:
         name = sample['path'].removeprefix('Samples~/')
@@ -60,6 +88,13 @@ def main():
     (staged_package / "package.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
+    if external:
+        readme = staged_package / 'README.md'
+        external_note = '\n本分发包排除了内置的 ' + '、'.join(plugin['directory'] for plugin in external) + '；安装前请在项目中安装对应的官方包。\n'
+        readme.write_text(readme.read_text(encoding='utf-8-sig') + external_note, encoding='utf-8')
+        (output / 'external-dependencies.json').write_text(
+            json.dumps({plugin['name']: plugin['url'] for plugin in external}, indent=2) + '\n', encoding='utf-8'
+        )
     archive = output / f"{manifest['name']}-{manifest['version']}.tgz"
     with tarfile.open(archive, "w:gz") as stream:
         stream.add(staged_package, arcname="package")
@@ -74,6 +109,11 @@ def main():
         stream.getmember("package/Samples~/01_Modules/Common/Prefabs/QGF.prefab")
         stream.getmember("package/Samples~/01_Modules/02_Config/01_ReadValues/ReadConfigValues.unity")
         stream.getmember("package/Samples~/00_PointPointPoint/GameMain/Scenes/PointPointPoint.unity")
+        names = stream.getnames()
+        for plugin in external:
+            prefix = 'package/Runtime/Plugins/' + plugin['directory']
+            if any(name == prefix or name == prefix + '.meta' or name.startswith(prefix + '/') for name in names):
+                raise RuntimeError('External dependency was bundled: ' + plugin['name'])
     print(
         json.dumps(
             {
@@ -81,6 +121,8 @@ def main():
                 "archive": str(archive),
                 "sampleFilesVerified": sample_files,
                 "sampleBytesPreserved": True,
+                "sourceCheckPassed": check_result['passed'],
+                "externalDependencies": external,
                 "published": False,
             },
             ensure_ascii=False,

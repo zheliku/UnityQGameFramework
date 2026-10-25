@@ -328,7 +328,9 @@ namespace MyGame
 
 上面的成功、失败事件也适用于 Inspector 引用方式。事件携带调用时传入的 UserData，用来区分加载请求。事件参数会回收到引用池，不要把整个 args 存下来长期使用。
 
-异步方法返回请求序号；`CancelLoadDataTables()` 取消当前请求的发布，晚到的资源回调仍会释放资产。`IsLoading` 表示资源请求是否在进行，`Count` 表示已登记的全部表数量，包含 map、list 和 one。`IsLoaded` 表示整组表已经发布。
+上面的事件入口返回请求序号。使用 UniTask 时，可调用 `await dataTable.LoadDataTablesAsync(path, loader => new Tables(loader), cancellationToken: token)`，直接取得生成的 Tables；加载或解析失败会抛出异常，取消会抛出 `OperationCanceledException`。两个入口使用相同的请求记录和事件通知。
+
+`CancelLoadDataTables()` 取消当前请求的发布，晚到的资源回调仍会释放资产。表构造及结构校验通过后，组件先归还 Catalog 资源，再完成异步任务；表和记录不再依赖 Unity 资产。`IsLoading` 表示资源请求是否在进行，`Count` 表示已登记的全部表数量，包含 map、list 和 one。`IsLoaded` 表示整组表已经发布。
 
 一个组件同时持有一组 Tables。重复加载前调用 `UnloadDataTables()`；它取消在途请求，并解除组件对整组表的引用。业务自己保存的记录引用也应在更换配置时一并更新。
 
@@ -373,20 +375,17 @@ int menuScene = config.GetInt("Scene.Menu");
 
 当前 Config 映射支持字符串、布尔、Int32 和 Single，以及嵌套章节；数组和结构化记录放 Luban。`Setting` 模块则保存玩家运行中修改的设置，例如音量与语言，和只读初始配置另有分工。
 
-StarForce 的 `GameMain/Configs` 是历史资源目录，其中还放着这些独立文件：
+StarForce 的 `GameMain/Configs` 仍保存运行时 TOML：
 
 | 文件 | 读取方与用途 |
 | --- | --- |
-| DefaultConfig.toml | ConfigComponent，Game.Id、Scene.Menu 等游戏参数 |
-| DefaultDictionary.toml | LocalizationComponent，版本检查与资源更新阶段的内置翻译 |
-| BuildInfo.toml | BuiltinDataComponent，发行与版本检查信息 |
-| BuildSettings.toml | 编辑器场景工具，主动执行添加场景菜单时使用的清单 |
-| ResourceBuilder.toml | 资源构建工具的打包选项 |
-| ResourceCollection.toml | 资源集合、分组、变体与资产 GUID 清单 |
-| ResourceEditor.toml | 资源编辑器的搜索目录与过滤条件 |
-| AudioMixer.mixer、DebuggerSkin.guiskin | Unity 序列化资产，分别用于音频混合与调试界面 |
+| DefaultConfig.toml | ConfigComponent，游戏参数 |
+| DefaultDictionary.toml | LocalizationComponent，内置翻译 |
+| BuildInfo.toml | BuiltinDataComponent，发行信息 |
+| BuildSettings.toml | 编辑器场景工具使用的清单 |
+| AudioMixer.mixer、DebuggerSkin.guiskin | Unity 序列化资产 |
 
-以上文本配置统一使用 TOML，并由 Tomlyn 解析。各模块映射自己的数据结构：Config 读取标量参数，Localization 读取翻译，编辑器资源工具读取清单与构建选项。旧 XML 读写器已移除。`Source/luban.conf` 保持官方 Luban 的 JSON 格式，由 Luban 编译器读取；Unity 的 link.xml 则是构建链接器要求的保留规则。
+以上文本配置统一使用 TOML，并由 Tomlyn 解析。资源构建不再读取 ResourceBuilder、ResourceCollection 或 ResourceEditor 文本；YooAsset 的运行时配置和收集规则分别保存在 `ResourceSettings.asset` 与 `ResourceBuildProfile.asset`。
 
 ### 本地化的层级表
 
@@ -403,53 +402,22 @@ Name = "게임 프레임워크"
 StartButton = "시작"
 ```
 
-Localization 选择当前语言，再把内部层级映射成查询键。`Language.Korean` 下，`GetString("Game.Name")` 取得韩语游戏名，`GetString("Menu.StartButton")` 取得开始按钮文字。没有当前语言、字段值不是字符串、或映射后产生重复键时，整份加载失败并保留已有字典。
+Localization 选择当前语言，再把内部层级映射成查询键。`Language.Korean` 下，`GetString("Game.Name")` 取得韩语游戏名，`GetString("Menu.StartButton")` 取得开始按钮文字。
 
-`[Korean.Game]` 是标准的嵌套表声明；先写 `[Korean]` 再写 `[Game]` 会得到两个同级表。`[Korean]` 下写 `Game.Name = "..."` 也能表示子表。加引号的 `"Game.Name"` 表示包含句点的单个键。解析器支持这些标准形式，示例采用子表标题以方便分类阅读。语法规则见 [TOML 官方规范](https://toml.io/en/v1.0.0#table)。
-
-字典的字符串与 UTF-8 byte[] 加载入口均读取 TOML。多语言文本在 `GameMain/Localization/<语言>/Dictionaries/Default.toml`，启动阶段先加载 `Configs/DefaultDictionary.toml` 中的内置翻译。场景使用框架的 DefaultLocalizationHelper，无需示例专用 XML 辅助器。
-
-从仍含 XML 字典的旧 Sample 升级时，保存自己的修改后重新导入新 Sample。除了文件名和读取逻辑，Launcher 对内置字典、BuildInfo 的 TextAsset 引用也已更新；自己的场景迁移这两类文件后，应重新指定对应 TOML 资产。
-
-### 编辑器资源配置
-
-`BuildSettings.toml` 的场景路径相对配置文件，不会因 Sample 导入位置变化而失效：
-
-```toml
-[BuildSettings]
-DefaultScenes = ["../../StarForce Launcher.unity", "../Scenes/Menu.unity", "../Scenes/Main.unity"]
-SearchScenePaths = ["../Scenes"]
-```
-
-只有主动执行 `QGF > Scenes` 菜单才应用到构建列表。导入或运行示例不会自动调用这个菜单。
-
-`ResourceBuilder.toml` 使用可读的枚举名和原生布尔值，例如：
-
-```toml
-[ResourceBuilder]
-InternalResourceVersion = 0
-Platforms = "Windows64, Android"
-AssetBundleCompression = "LZ4"
-AdditionalCompressionSelected = true
-```
-
-这是字段节选，编辑时保留完整文件中的辅助器、输出选项等字段。打开构建工具时仍沿用原流程，读取已保存的资源版本并将本次待构建版本加一。资源编辑器与构建器的保存操作也写 TOML，写入失败保留原文件。
-
-`ResourceCollection.toml` 使用标准表数组：每个 `[[Resources]]` 声明一个资源，每个 `[[Assets]]` 将资产 GUID 关联到资源名和可选变体。分组是 `ResourceGroups = ["Base", "Battle"]` 这样的字符串数组。通常在 `QGF > Resources > Collection` 中维护它，保存时保留资产 GUID。
-
-读取资源集合会先校验完整的新集合，成功后替换当前集合；格式错误、重复资源或无效资产引用会报告错误，保留原文件与原有有效集合。资源构建报告写为 `BuildReport.toml`，含摘要、资产依赖与各平台的长度、哈希及压缩信息。
+`[Korean.Game]` 是标准的嵌套表声明；加引号的 `"Game.Name"` 表示包含句点的单个键。示例采用子表标题，避免把层级键误认为一个普通字符串。
 
 ## 12. 出错时检查哪一步
 
-| 现象                                        | 先检查                                             |
-| ------------------------------------------- | -------------------------------------------------- |
-| 找不到工作表                                | __tables__.input 中的页签名与文件名          |
-| 新字段没有生成                              | ##var、##type、##group 与 target 导出组            |
-| Id 重复或字段类型错误                       | Console 中 Luban 报出的工作簿、工作表和单元格      |
-| 改表后游戏还是旧值                          | 是否保存 Excel、生成正确 Profile、引用目标 Catalog |
-| C# 与数据版本不匹配                         | 是否只提交了 C#、bytes、Catalog 中的一部分         |
-| 场景能运行但生成了另一套表                  | 全局 Profile 与组件 Catalog 是独立选择             |
-| 输出被拒绝覆盖                              | 目标目录是否已有另一 Profile 或手写的同名文件      |
-| 初始化缺少 __beans__、__enums__ | 更新框架并等待编译；初始模板应存在但可没有数据行   |
+| 现象 | 先检查 |
+| --- | --- |
+| 找不到工作表 | `__tables__.xlsx` 中的页签名与文件名 |
+| 新字段没有生成 | `##var`、`##type`、`##group` 与导出组 |
+| Id 重复或字段类型错误 | Console 中 Luban 报出的工作簿、工作表和单元格 |
+| 改表后游戏还是旧值 | 是否保存 Excel、生成正确 Profile、引用目标 Catalog |
+| C# 与数据版本不匹配 | 是否只提交了 C#、bytes、Catalog 中的一部分 |
+| 场景找不到资产 | ResourceSettings 的默认包、Profile 收集目录和 GUID |
+| 资源包初始化失败 | Profile 是否已构建、编辑器模拟输出是否完整 |
+| Host 下载失败 | HostServer、FallbackServer、清单版本和下载器状态 |
+| 运行时 TOML 读取失败 | TOML 子表层级、UTF-8 编码和 Config／Localization 组件 |
 
-遇到复杂 schema 问题，先用 Luban Console 输出定位源表。遇到资源加载问题，检查 Catalog 是否在资源集合及构建结果中。两者分开检查，通常比反复重新导入整个包更容易找到原因。
+遇到复杂 schema 问题，先用 Luban Console 输出定位源表。遇到资源加载问题，先检查 YooAsset 包清单和 Profile 收集结果；两者分开检查，通常比反复重新导入整个包更容易找到原因。

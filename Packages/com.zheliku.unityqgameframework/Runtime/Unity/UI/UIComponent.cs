@@ -75,15 +75,27 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取界面组数量。
         /// </summary>
-        public int UIGroupCount => m_UIManager.UIGroupCount;
+        public int UIGroupCount
+        {
+            get
+            {
+                return m_UIManager.UIGroupCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置界面实例对象池自动释放可释放对象的间隔秒数。
         /// </summary>
         public float InstanceAutoReleaseInterval
         {
-            get => m_UIManager.InstanceAutoReleaseInterval;
-            set => m_UIManager.InstanceAutoReleaseInterval = m_InstanceAutoReleaseInterval = value;
+            get
+            {
+                return m_UIManager.InstanceAutoReleaseInterval;
+            }
+            set
+            {
+                m_UIManager.InstanceAutoReleaseInterval = m_InstanceAutoReleaseInterval = value;
+            }
         }
 
         /// <summary>
@@ -91,8 +103,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int InstanceCapacity
         {
-            get => m_UIManager.InstanceCapacity;
-            set => m_UIManager.InstanceCapacity = m_InstanceCapacity = value;
+            get
+            {
+                return m_UIManager.InstanceCapacity;
+            }
+            set
+            {
+                m_UIManager.InstanceCapacity = m_InstanceCapacity = value;
+            }
         }
 
         /// <summary>
@@ -100,8 +118,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float InstanceExpireTime
         {
-            get => m_UIManager.InstanceExpireTime;
-            set => m_UIManager.InstanceExpireTime = m_InstanceExpireTime = value;
+            get
+            {
+                return m_UIManager.InstanceExpireTime;
+            }
+            set
+            {
+                m_UIManager.InstanceExpireTime = m_InstanceExpireTime = value;
+            }
         }
 
         /// <summary>
@@ -109,8 +133,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int InstancePriority
         {
-            get => m_UIManager.InstancePriority;
-            set => m_UIManager.InstancePriority = m_InstancePriority = value;
+            get
+            {
+                return m_UIManager.InstancePriority;
+            }
+            set
+            {
+                m_UIManager.InstancePriority = m_InstancePriority = value;
+            }
         }
 
         /// <summary>
@@ -166,14 +196,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_UIManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_UIManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_UIManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
             m_UIManager.SetObjectPoolManager(FrameworkEntry.GetModule<IObjectPoolManager>());
             m_UIManager.InstanceAutoReleaseInterval = m_InstanceAutoReleaseInterval;

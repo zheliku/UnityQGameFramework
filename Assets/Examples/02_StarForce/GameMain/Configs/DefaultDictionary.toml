@@ -8,7 +8,13 @@ Korean = "Korean"
 Tips = "Checking if the game needs update. Please wait..."
 
 [English.UpdateResource]
-Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+Tips = "{0}/{1}, {2:F1}/{3:F1} MB, {4:P0}, {5:F1} KB/s"
+Title = "RESOURCE UPDATE"
+Message = "Download {0} files ({1:F1} MB) now?"
+DownloadButton = "DOWNLOAD"
+RetryButton = "RETRY"
+QuitButton = "QUIT"
+Cleaning = "Cleaning unused resource cache..."
 
 [ChineseSimplified.Language]
 English = "英语"
@@ -20,7 +26,13 @@ Korean = "韩语"
 Tips = "正在检查游戏是否需要更新，请稍候……"
 
 [ChineseSimplified.UpdateResource]
-Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+Tips = "{0}/{1}, {2:F1}/{3:F1} MB, {4:P0}, {5:F1} KB/s"
+Title = "资源更新"
+Message = "需要下载 {0} 个文件，共 {1:F1} MB。现在下载吗？"
+DownloadButton = "下载"
+RetryButton = "重试"
+QuitButton = "退出"
+Cleaning = "正在清理未使用的资源缓存……"
 
 [ChineseTraditional.Language]
 English = "英語"
@@ -32,7 +44,13 @@ Korean = "韓語"
 Tips = "正在檢查遊戲是否需要更新，請稍候……"
 
 [ChineseTraditional.UpdateResource]
-Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+Tips = "{0}/{1}, {2:F1}/{3:F1} MB, {4:P0}, {5:F1} KB/s"
+Title = "資源更新"
+Message = "需要下載 {0} 個檔案，共 {1:F1} MB。現在下載嗎？"
+DownloadButton = "下載"
+RetryButton = "重試"
+QuitButton = "退出"
+Cleaning = "正在清理未使用的資源快取……"
 
 [Korean.Language]
 English = "영어"
@@ -44,7 +62,13 @@ Korean = "한국어"
 Tips = "게임 최신 버전 검색중..."
 
 [Korean.UpdateResource]
-Tips = "{0}/{1}, {2}/{3}, {4:P0}, {5}/s"
+Tips = "{0}/{1}, {2:F1}/{3:F1} MB, {4:P0}, {5:F1} KB/s"
+Title = "리소스 업데이트"
+Message = "{0}개 파일({1:F1} MB)을 다운로드할까요?"
+DownloadButton = "다운로드"
+RetryButton = "재시도"
+QuitButton = "종료"
+Cleaning = "사용하지 않는 리소스 캐시를 정리하는 중..."
 
 [English.Dialog]
 ConfirmButton = "OK"
@@ -59,7 +83,7 @@ QuitButton = "QUIT"
 
 [English.UpdateResourceViaCarrierDataNetwork]
 Title = "MOBILE DATA"
-Message = "Download game resources using mobile data?"
+Message = "Download {0} files ({1:F1} MB) using mobile data?"
 UpdateButton = "DOWNLOAD"
 QuitButton = "QUIT"
 
@@ -76,7 +100,7 @@ QuitButton = "退出"
 
 [ChineseSimplified.UpdateResourceViaCarrierDataNetwork]
 Title = "移动网络下载"
-Message = "当前使用移动网络，是否下载游戏资源？"
+Message = "当前使用移动网络，需下载 {0} 个文件，共 {1:F1} MB。是否继续？"
 UpdateButton = "下载"
 QuitButton = "退出"
 
@@ -93,7 +117,7 @@ QuitButton = "退出"
 
 [ChineseTraditional.UpdateResourceViaCarrierDataNetwork]
 Title = "行動網路下載"
-Message = "目前使用行動網路，是否下載遊戲資源？"
+Message = "目前使用行動網路，需下載 {0} 個檔案，共 {1:F1} MB。是否繼續？"
 UpdateButton = "下載"
 QuitButton = "退出"
 
@@ -110,6 +134,6 @@ QuitButton = "아웃"
 
 [Korean.UpdateResourceViaCarrierDataNetwork]
 Title = "모바일 데이터"
-Message = "모바일 데이터로 게임 리소스를 다운로드하시겠습니까?"
+Message = "모바일 데이터로 {0}개 파일({1:F1} MB)을 다운로드할까요?"
 UpdateButton = "다운로드"
 QuitButton = "종료"

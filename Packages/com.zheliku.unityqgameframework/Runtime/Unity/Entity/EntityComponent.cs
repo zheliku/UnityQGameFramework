@@ -55,12 +55,24 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体数量。
         /// </summary>
-        public int EntityCount => m_EntityManager.EntityCount;
+        public int EntityCount
+        {
+            get
+            {
+                return m_EntityManager.EntityCount;
+            }
+        }
 
         /// <summary>
         /// 获取实体组数量。
         /// </summary>
-        public int EntityGroupCount => m_EntityManager.EntityGroupCount;
+        public int EntityGroupCount
+        {
+            get
+            {
+                return m_EntityManager.EntityGroupCount;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -108,14 +120,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_EntityManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_EntityManager.SetResourceManager(FrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_EntityManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
             m_EntityManager.SetObjectPoolManager(FrameworkEntry.GetModule<IObjectPoolManager>());
 

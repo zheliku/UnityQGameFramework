@@ -40,7 +40,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        /// <returns>已登记的数据表，未登记时返回 null。</returns>
         T GetDataTable<T>(string name = null) where T : DataTableBase;
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        /// <returns>已登记的数据表，未登记时返回 null。</returns>
         DataTableBase GetDataTable(Type tableType, string name = null);
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取所有数据表。
         /// </summary>
-        /// <param name="results">所有数据表。</param>
+        /// <param name="results">接收所有数据表的结果列表。</param>
         void GetAllDataTables(List<DataTableBase> results);
 
         /// <summary>

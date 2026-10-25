@@ -20,14 +20,13 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Resource")]
-    public sealed class ResourceComponent : FrameworkComponent
+    public sealed partial class ResourceComponent : FrameworkComponent
     {
         private const int DefaultPriority = 0;
         private const int OneMegaBytes = 1024 * 1024;
 
         private IResourceManager m_ResourceManager = null;
         private EventComponent m_EventComponent = null;
-        private bool m_EditorResourceMode = false;
         private bool m_ForceUnloadUnusedAssets = false;
         private bool m_PreorderUnloadUnusedAssets = false;
         private bool m_PerformGCCollect = false;
@@ -100,52 +99,112 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源只读路径。
         /// </summary>
-        public string ReadOnlyPath => m_ResourceManager.ReadOnlyPath;
+        public string ReadOnlyPath
+        {
+            get
+            {
+                return m_ResourceManager.ReadOnlyPath;
+            }
+        }
 
         /// <summary>
         /// 获取资源读写路径。
         /// </summary>
-        public string ReadWritePath => m_ResourceManager.ReadWritePath;
+        public string ReadWritePath
+        {
+            get
+            {
+                return m_ResourceManager.ReadWritePath;
+            }
+        }
 
         /// <summary>
         /// 获取资源模式。
         /// </summary>
-        public ResourceMode ResourceMode => m_ResourceManager.ResourceMode;
+        public ResourceMode ResourceMode
+        {
+            get
+            {
+                return m_ResourceManager.ResourceMode;
+            }
+        }
 
         /// <summary>
         /// 获取资源读写路径类型。
         /// </summary>
-        public ReadWritePathType ReadWritePathType => m_ReadWritePathType;
+        public ReadWritePathType ReadWritePathType
+        {
+            get
+            {
+                return m_ReadWritePathType;
+            }
+        }
 
         /// <summary>
         /// 设置当前变体。
         /// </summary>
-        public string CurrentVariant => m_ResourceManager.CurrentVariant;
+        public string CurrentVariant
+        {
+            get
+            {
+                return m_ResourceManager.CurrentVariant;
+            }
+        }
 
         /// <summary>
         /// 获取单机模式版本资源列表序列化器。
         /// </summary>
-        public PackageVersionListSerializer PackageVersionListSerializer => m_ResourceManager.PackageVersionListSerializer;
+        public PackageVersionListSerializer PackageVersionListSerializer
+        {
+            get
+            {
+                return m_ResourceManager.PackageVersionListSerializer;
+            }
+        }
 
         /// <summary>
         /// 获取可更新模式版本资源列表序列化器。
         /// </summary>
-        public UpdatableVersionListSerializer UpdatableVersionListSerializer => m_ResourceManager.UpdatableVersionListSerializer;
+        public UpdatableVersionListSerializer UpdatableVersionListSerializer
+        {
+            get
+            {
+                return m_ResourceManager.UpdatableVersionListSerializer;
+            }
+        }
 
         /// <summary>
         /// 获取本地只读区版本资源列表序列化器。
         /// </summary>
-        public ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer => m_ResourceManager.ReadOnlyVersionListSerializer;
+        public ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer
+        {
+            get
+            {
+                return m_ResourceManager.ReadOnlyVersionListSerializer;
+            }
+        }
 
         /// <summary>
         /// 获取本地读写区版本资源列表序列化器。
         /// </summary>
-        public ReadWriteVersionListSerializer ReadWriteVersionListSerializer => m_ResourceManager.ReadWriteVersionListSerializer;
+        public ReadWriteVersionListSerializer ReadWriteVersionListSerializer
+        {
+            get
+            {
+                return m_ResourceManager.ReadWriteVersionListSerializer;
+            }
+        }
 
         /// <summary>
         /// 获取资源包版本资源列表序列化器。
         /// </summary>
-        public ResourcePackVersionListSerializer ResourcePackVersionListSerializer => m_ResourceManager.ResourcePackVersionListSerializer;
+        public ResourcePackVersionListSerializer ResourcePackVersionListSerializer
+        {
+            get
+            {
+                return m_ResourceManager.ResourcePackVersionListSerializer;
+            }
+        }
 
         /// <summary>
         /// 获取无用资源释放的等待时长，以秒为单位。
@@ -157,8 +216,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float MinUnloadUnusedAssetsInterval
         {
-            get => m_MinUnloadUnusedAssetsInterval;
-            set => m_MinUnloadUnusedAssetsInterval = value;
+            get
+            {
+                return m_MinUnloadUnusedAssetsInterval;
+            }
+            set
+            {
+                m_MinUnloadUnusedAssetsInterval = value;
+            }
         }
 
         /// <summary>
@@ -166,42 +231,84 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float MaxUnloadUnusedAssetsInterval
         {
-            get => m_MaxUnloadUnusedAssetsInterval;
-            set => m_MaxUnloadUnusedAssetsInterval = value;
+            get
+            {
+                return m_MaxUnloadUnusedAssetsInterval;
+            }
+            set
+            {
+                m_MaxUnloadUnusedAssetsInterval = value;
+            }
         }
 
         /// <summary>
         /// 获取当前资源适用的游戏版本号。
         /// </summary>
-        public string ApplicableGameVersion => m_ResourceManager.ApplicableGameVersion;
+        public string ApplicableGameVersion
+        {
+            get
+            {
+                return m_ResourceManager.ApplicableGameVersion;
+            }
+        }
 
         /// <summary>
         /// 获取当前内部资源版本号。
         /// </summary>
-        public int InternalResourceVersion => m_ResourceManager.InternalResourceVersion;
+        public int InternalResourceVersion
+        {
+            get
+            {
+                return m_ResourceManager.InternalResourceVersion;
+            }
+        }
 
         /// <summary>
         /// 获取资源数量。
         /// </summary>
-        public int AssetCount => m_ResourceManager.AssetCount;
+        public int AssetCount
+        {
+            get
+            {
+                return m_ResourceManager.AssetCount;
+            }
+        }
 
         /// <summary>
         /// 获取资源数量。
         /// </summary>
-        public int ResourceCount => m_ResourceManager.ResourceCount;
+        public int ResourceCount
+        {
+            get
+            {
+                return m_ResourceManager.ResourceCount;
+            }
+        }
 
         /// <summary>
         /// 获取资源组数量。
         /// </summary>
-        public int ResourceGroupCount => m_ResourceManager.ResourceGroupCount;
+        public int ResourceGroupCount
+        {
+            get
+            {
+                return m_ResourceManager.ResourceGroupCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置资源更新下载地址。
         /// </summary>
         public string UpdatePrefixUri
         {
-            get => m_ResourceManager.UpdatePrefixUri;
-            set => m_ResourceManager.UpdatePrefixUri = m_UpdatePrefixUri = value;
+            get
+            {
+                return m_ResourceManager.UpdatePrefixUri;
+            }
+            set
+            {
+                m_ResourceManager.UpdatePrefixUri = m_UpdatePrefixUri = value;
+            }
         }
 
         /// <summary>
@@ -209,76 +316,154 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int GenerateReadWriteVersionListLength
         {
-            get => m_ResourceManager.GenerateReadWriteVersionListLength;
-            set => m_ResourceManager.GenerateReadWriteVersionListLength = m_GenerateReadWriteVersionListLength = value;
+            get
+            {
+                return m_ResourceManager.GenerateReadWriteVersionListLength;
+            }
+            set
+            {
+                m_ResourceManager.GenerateReadWriteVersionListLength = m_GenerateReadWriteVersionListLength = value;
+            }
         }
 
         /// <summary>
         /// 获取正在应用的资源包路径。
         /// </summary>
-        public string ApplyingResourcePackPath => m_ResourceManager.ApplyingResourcePackPath;
+        public string ApplyingResourcePackPath
+        {
+            get
+            {
+                return m_ResourceManager.ApplyingResourcePackPath;
+            }
+        }
 
         /// <summary>
         /// 获取等待应用资源数量。
         /// </summary>
-        public int ApplyWaitingCount => m_ResourceManager.ApplyWaitingCount;
+        public int ApplyWaitingCount
+        {
+            get
+            {
+                return m_ResourceManager.ApplyWaitingCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置资源更新重试次数。
         /// </summary>
         public int UpdateRetryCount
         {
-            get => m_ResourceManager.UpdateRetryCount;
-            set => m_ResourceManager.UpdateRetryCount = m_UpdateRetryCount = value;
+            get
+            {
+                return m_ResourceManager.UpdateRetryCount;
+            }
+            set
+            {
+                m_ResourceManager.UpdateRetryCount = m_UpdateRetryCount = value;
+            }
         }
 
         /// <summary>
         /// 获取正在更新的资源组。
         /// </summary>
-        public IResourceGroup UpdatingResourceGroup => m_ResourceManager.UpdatingResourceGroup;
+        public IResourceGroup UpdatingResourceGroup
+        {
+            get
+            {
+                return m_ResourceManager.UpdatingResourceGroup;
+            }
+        }
 
         /// <summary>
         /// 获取等待更新资源数量。
         /// </summary>
-        public int UpdateWaitingCount => m_ResourceManager.UpdateWaitingCount;
+        public int UpdateWaitingCount
+        {
+            get
+            {
+                return m_ResourceManager.UpdateWaitingCount;
+            }
+        }
 
         /// <summary>
         /// 获取使用时下载的等待更新资源数量。
         /// </summary>
-        public int UpdateWaitingWhilePlayingCount => m_ResourceManager.UpdateWaitingWhilePlayingCount;
+        public int UpdateWaitingWhilePlayingCount
+        {
+            get
+            {
+                return m_ResourceManager.UpdateWaitingWhilePlayingCount;
+            }
+        }
 
         /// <summary>
         /// 获取候选更新资源数量。
         /// </summary>
-        public int UpdateCandidateCount => m_ResourceManager.UpdateCandidateCount;
+        public int UpdateCandidateCount
+        {
+            get
+            {
+                return m_ResourceManager.UpdateCandidateCount;
+            }
+        }
 
         /// <summary>
         /// 获取加载资源代理总数量。
         /// </summary>
-        public int LoadTotalAgentCount => m_ResourceManager.LoadTotalAgentCount;
+        public int LoadTotalAgentCount
+        {
+            get
+            {
+                return m_ResourceManager.LoadTotalAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用加载资源代理数量。
         /// </summary>
-        public int LoadFreeAgentCount => m_ResourceManager.LoadFreeAgentCount;
+        public int LoadFreeAgentCount
+        {
+            get
+            {
+                return m_ResourceManager.LoadFreeAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取工作中加载资源代理数量。
         /// </summary>
-        public int LoadWorkingAgentCount => m_ResourceManager.LoadWorkingAgentCount;
+        public int LoadWorkingAgentCount
+        {
+            get
+            {
+                return m_ResourceManager.LoadWorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取等待加载资源任务数量。
         /// </summary>
-        public int LoadWaitingTaskCount => m_ResourceManager.LoadWaitingTaskCount;
+        public int LoadWaitingTaskCount
+        {
+            get
+            {
+                return m_ResourceManager.LoadWaitingTaskCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置资源对象池自动释放可释放对象的间隔秒数。
         /// </summary>
         public float AssetAutoReleaseInterval
         {
-            get => m_ResourceManager.AssetAutoReleaseInterval;
-            set => m_ResourceManager.AssetAutoReleaseInterval = m_AssetAutoReleaseInterval = value;
+            get
+            {
+                return m_ResourceManager.AssetAutoReleaseInterval;
+            }
+            set
+            {
+                m_ResourceManager.AssetAutoReleaseInterval = m_AssetAutoReleaseInterval = value;
+            }
         }
 
         /// <summary>
@@ -286,8 +471,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int AssetCapacity
         {
-            get => m_ResourceManager.AssetCapacity;
-            set => m_ResourceManager.AssetCapacity = m_AssetCapacity = value;
+            get
+            {
+                return m_ResourceManager.AssetCapacity;
+            }
+            set
+            {
+                m_ResourceManager.AssetCapacity = m_AssetCapacity = value;
+            }
         }
 
         /// <summary>
@@ -295,8 +486,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float AssetExpireTime
         {
-            get => m_ResourceManager.AssetExpireTime;
-            set => m_ResourceManager.AssetExpireTime = m_AssetExpireTime = value;
+            get
+            {
+                return m_ResourceManager.AssetExpireTime;
+            }
+            set
+            {
+                m_ResourceManager.AssetExpireTime = m_AssetExpireTime = value;
+            }
         }
 
         /// <summary>
@@ -304,8 +501,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int AssetPriority
         {
-            get => m_ResourceManager.AssetPriority;
-            set => m_ResourceManager.AssetPriority = m_AssetPriority = value;
+            get
+            {
+                return m_ResourceManager.AssetPriority;
+            }
+            set
+            {
+                m_ResourceManager.AssetPriority = m_AssetPriority = value;
+            }
         }
 
         /// <summary>
@@ -313,8 +516,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float ResourceAutoReleaseInterval
         {
-            get => m_ResourceManager.ResourceAutoReleaseInterval;
-            set => m_ResourceManager.ResourceAutoReleaseInterval = m_ResourceAutoReleaseInterval = value;
+            get
+            {
+                return m_ResourceManager.ResourceAutoReleaseInterval;
+            }
+            set
+            {
+                m_ResourceManager.ResourceAutoReleaseInterval = m_ResourceAutoReleaseInterval = value;
+            }
         }
 
         /// <summary>
@@ -322,8 +531,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int ResourceCapacity
         {
-            get => m_ResourceManager.ResourceCapacity;
-            set => m_ResourceManager.ResourceCapacity = m_ResourceCapacity = value;
+            get
+            {
+                return m_ResourceManager.ResourceCapacity;
+            }
+            set
+            {
+                m_ResourceManager.ResourceCapacity = m_ResourceCapacity = value;
+            }
         }
 
         /// <summary>
@@ -331,8 +546,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float ResourceExpireTime
         {
-            get => m_ResourceManager.ResourceExpireTime;
-            set => m_ResourceManager.ResourceExpireTime = m_ResourceExpireTime = value;
+            get
+            {
+                return m_ResourceManager.ResourceExpireTime;
+            }
+            set
+            {
+                m_ResourceManager.ResourceExpireTime = m_ResourceExpireTime = value;
+            }
         }
 
         /// <summary>
@@ -340,8 +561,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int ResourcePriority
         {
-            get => m_ResourceManager.ResourcePriority;
-            set => m_ResourceManager.ResourcePriority = m_ResourcePriority = value;
+            get
+            {
+                return m_ResourceManager.ResourcePriority;
+            }
+            set
+            {
+                m_ResourceManager.ResourcePriority = m_ResourcePriority = value;
+            }
         }
 
         /// <summary>
@@ -350,6 +577,19 @@ namespace UnityQGameFramework.Runtime
         protected override void Awake()
         {
             base.Awake();
+
+            m_ResourceManager = FrameworkEntry.GetModule<IResourceManager>();
+            if (m_Settings == null)
+            {
+                return;
+            }
+
+            string readOnlyPath = string.IsNullOrEmpty(m_ResourceManager.ReadOnlyPath) ? Application.streamingAssetsPath : m_ResourceManager.ReadOnlyPath;
+            string readWritePath = string.IsNullOrEmpty(m_ResourceManager.ReadWritePath)
+                ? m_ReadWritePathType == ReadWritePathType.TemporaryCache ? Application.temporaryCachePath : Application.persistentDataPath
+                : m_ResourceManager.ReadWritePath;
+            m_YooAssetBackend = new YooAssetResourceBackend(m_Settings, readOnlyPath, readWritePath);
+            ((IResourceBackendHost)m_ResourceManager).SetResourceBackend(m_YooAssetBackend);
         }
 
         private void Start()
@@ -368,11 +608,16 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            m_EditorResourceMode = baseComponent.EditorResourceMode;
-            m_ResourceManager = m_EditorResourceMode ? baseComponent.EditorResourceHelper : FrameworkEntry.GetModule<IResourceManager>();
+            m_ResourceManager = ResourceManager;
             if (m_ResourceManager == null)
             {
                 Log.Fatal("Resource manager is invalid.");
+                return;
+            }
+
+            if (m_Settings == null)
+            {
+                Log.Warning("Resource Settings is not assigned. Resource loading is unavailable until this component is configured.");
                 return;
             }
 
@@ -405,7 +650,7 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
-            if (m_EditorResourceMode)
+            if (m_Settings == null || m_YooAssetBackend != null)
             {
                 return;
             }
@@ -465,6 +710,10 @@ namespace UnityQGameFramework.Runtime
                 m_ForceUnloadUnusedAssets = false;
                 m_PreorderUnloadUnusedAssets = false;
                 LastUnloadUnusedAssetsOperationElapseSeconds = 0f;
+                if (m_YooAssetBackend != null)
+                {
+                    m_YooAssetBackend.UnloadUnusedAssets();
+                }
                 m_AsyncOperation = Resources.UnloadUnusedAssets();
             }
 
@@ -809,7 +1058,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (!assetName.StartsWith("Assets/", StringComparison.Ordinal))
+            if (m_YooAssetBackend == null && !assetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Asset name '{0}' is invalid.", assetName);
                 return;
@@ -886,7 +1135,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            if (!binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
+            if (m_YooAssetBackend == null && !binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Binary asset name '{0}' is invalid.", binaryAssetName);
                 return;
@@ -908,7 +1157,7 @@ namespace UnityQGameFramework.Runtime
                 return null;
             }
 
-            if (!binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
+            if (m_YooAssetBackend == null && !binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Binary asset name '{0}' is invalid.", binaryAssetName);
                 return null;
@@ -968,7 +1217,7 @@ namespace UnityQGameFramework.Runtime
                 return 0;
             }
 
-            if (!binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
+            if (m_YooAssetBackend == null && !binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Binary asset name '{0}' is invalid.", binaryAssetName);
                 return 0;
@@ -1009,7 +1258,7 @@ namespace UnityQGameFramework.Runtime
                 return null;
             }
 
-            if (!binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
+            if (m_YooAssetBackend == null && !binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Binary asset name '{0}' is invalid.", binaryAssetName);
                 return null;
@@ -1108,7 +1357,7 @@ namespace UnityQGameFramework.Runtime
                 return 0;
             }
 
-            if (!binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
+            if (m_YooAssetBackend == null && !binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Binary asset name '{0}' is invalid.", binaryAssetName);
                 return 0;

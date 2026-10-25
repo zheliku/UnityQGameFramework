@@ -65,14 +65,14 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取排序后的数据表行。
         /// </summary>
-        /// <param name="comparison">要排序的条件。</param>
-        /// <returns>符合查询条件的数据表行。</returns>
+        /// <param name="comparison">数据表行的排序比较器。</param>
+        /// <returns>排序后的数据表行。</returns>
         T[] GetDataRows(Comparison<T> comparison);
 
         /// <summary>
         /// 获取排序后的数据表行。
         /// </summary>
-        /// <param name="comparison">要排序的条件。</param>
+        /// <param name="comparison">数据表行的排序比较器。</param>
         /// <param name="results">接收数据表行的结果列表。</param>
         void GetDataRows(Comparison<T> comparison, List<T> results);
 
@@ -80,15 +80,15 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取排序后的符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <param name="comparison">要排序的条件。</param>
-        /// <returns>符合查询条件的数据表行。</returns>
+        /// <param name="comparison">数据表行的排序比较器。</param>
+        /// <returns>按指定条件筛选并排序后的数据表行。</returns>
         T[] GetDataRows(Predicate<T> condition, Comparison<T> comparison);
 
         /// <summary>
         /// 获取排序后的符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <param name="comparison">要排序的条件。</param>
+        /// <param name="comparison">数据表行的排序比较器。</param>
         /// <param name="results">接收数据表行的结果列表。</param>
         void GetDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results);
 

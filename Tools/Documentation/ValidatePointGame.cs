@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using UnityQGameFramework.Examples.Modules.PointPointPoint;
+using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
 public static class ValidatePointGame

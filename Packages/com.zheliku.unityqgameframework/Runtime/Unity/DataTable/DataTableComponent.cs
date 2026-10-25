@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.DataTable;
@@ -21,6 +23,7 @@ namespace UnityQGameFramework.Runtime
         private EventComponent m_EventComponent;
         private int m_LoadSerial;
         private LubanTableSet m_LoadedTables;
+        private LoadRequest m_LoadRequest;
 
         [SerializeField] private LubanDataTableCatalog m_LubanCatalog;
 
@@ -80,7 +83,7 @@ namespace UnityQGameFramework.Runtime
         /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="factory">数据表集合的构造方法。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>已加载的数据表集合，解析失败时返回空。</returns>
+        /// <returns>已加载的数据表集合，解析失败时返回 null。</returns>
         public T LoadDataTables<T>(Func<Func<string, ByteBuf>, T> factory, object userData = null) where T : LubanTableSet
         {
             if (factory == null)
@@ -117,7 +120,7 @@ namespace UnityQGameFramework.Runtime
             return tables;
         }
 
-        private T PublishTables<T>(LubanDataTableCatalog catalog, Func<Func<string, ByteBuf>, T> factory) where T : LubanTableSet
+        private T PublishTables<T>(LubanDataTableCatalog catalog, Func<Func<string, ByteBuf>, T> factory, LoadRequest request = null) where T : LubanTableSet
         {
             Dictionary<string, TextAsset> assets = catalog.GetAssets();
             var buffers = new List<ByteBuf>();
@@ -136,10 +139,20 @@ namespace UnityQGameFramework.Runtime
                 throw new InvalidOperationException("Luban schema and generated C# do not match. Regenerate the configuration.");
             }
             foreach (ByteBuf buffer in buffers)
+            {
                 if (buffer.NotEmpty)
                 {
                     throw new InvalidOperationException("Trailing bytes in Luban data. Check the generated C# version.");
                 }
+            }
+            if (request != null)
+            {
+                request.CancellationToken.ThrowIfCancellationRequested();
+                if (!ReferenceEquals(m_LoadRequest, request))
+                {
+                    throw new OperationCanceledException("The data-table request was cancelled.");
+                }
+            }
             m_DataTableManager.RegisterDataTables(tables.DataTables);
             m_LoadedTables = tables;
             return tables;
@@ -166,6 +179,47 @@ namespace UnityQGameFramework.Runtime
         public int LoadDataTables<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
             object userData = null, int priority = 0) where T : LubanTableSet
         {
+            return LoadDataTables(catalogAssetName, factory, userData, priority, new LoadRequest());
+        }
+
+        /// <summary>
+        /// 异步加载并登记 Luban 数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表集合的类型。</typeparam>
+        /// <param name="catalogAssetName">数据表目录资源名称。</param>
+        /// <param name="factory">数据表集合的构造方法。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="priority">加载资源的优先级。</param>
+        /// <param name="cancellationToken">取消标记，取消后不登记本次加载的表。</param>
+        /// <returns>已加载的数据表集合。</returns>
+        public async UniTask<T> LoadDataTablesAsync<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
+            object userData = null, int priority = 0, CancellationToken cancellationToken = default) where T : LubanTableSet
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var request = new LoadRequest
+            {
+                CancellationToken = cancellationToken,
+                Completion = new UniTaskCompletionSource<LubanTableSet>()
+            };
+            int serial = LoadDataTables(catalogAssetName, factory, userData, priority, request);
+            try
+            {
+                return (T)await ResourceOperation.WithCancellation(request.Completion.Task, cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                await UniTask.SwitchToMainThread();
+                if (this != null && serial == m_LoadSerial && ReferenceEquals(m_LoadRequest, request))
+                {
+                    CancelLoadDataTables();
+                }
+                throw;
+            }
+        }
+
+        private int LoadDataTables<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
+            object userData, int priority, LoadRequest request) where T : LubanTableSet
+        {
             if (string.IsNullOrWhiteSpace(catalogAssetName))
             {
                 throw new ArgumentException("Catalog asset name is required.", nameof(catalogAssetName));
@@ -187,6 +241,7 @@ namespace UnityQGameFramework.Runtime
                 throw new InvalidOperationException("Unload the current table set before loading another one.");
             }
             int serial = ++m_LoadSerial;
+            m_LoadRequest = request;
             IsLoading = true;
             ResourceComponent resource = m_ResourceComponent;
             try
@@ -194,41 +249,69 @@ namespace UnityQGameFramework.Runtime
                 resource.LoadAsset(catalogAssetName, typeof(LubanDataTableCatalog), priority, new LoadAssetCallbacks(
                 (assetName, asset, duration, context) =>
                 {
+                    T tables = null;
+                    Exception error = null;
                     try
                     {
                         if (this == null || serial != m_LoadSerial)
                         {
                             return;
                         }
+                        request.CancellationToken.ThrowIfCancellationRequested();
                         var catalog = asset as LubanDataTableCatalog;
                         if (catalog == null)
                         {
                             throw new InvalidOperationException("The asset is not a Luban data-table catalog.");
                         }
-                        PublishTables(catalog, factory);
-                        IsLoading = false;
-                        m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(assetName, duration, userData));
+                        tables = PublishTables(catalog, factory, request);
                     }
                     catch (Exception exception)
                     {
-                        if (this != null && serial == m_LoadSerial)
-                        {
-                            Fail(assetName, exception.Message, userData);
-                        }
+                        error = exception;
                     }
-                    finally { resource.UnloadAsset(asset); }
+                    finally
+                    {
+                        resource.UnloadAsset(asset);
+                    }
+                    if (this == null || serial != m_LoadSerial)
+                    {
+                        return;
+                    }
+                    if (error is OperationCanceledException)
+                    {
+                        CancelLoadDataTables();
+                    }
+                    else if (error != null)
+                    {
+                        Fail(assetName, error.Message, userData);
+                    }
+                    else
+                    {
+                        IsLoading = false;
+                        m_LoadRequest = null;
+                        m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(assetName, duration, userData));
+                        request.Completion?.TrySetResult(tables);
+                    }
                 },
                 (assetName, status, error, context) =>
                 {
                     if (this != null && serial == m_LoadSerial)
                     {
-                        Fail(assetName, error, userData);
+                        if (request.CancellationToken.IsCancellationRequested)
+                        {
+                            CancelLoadDataTables();
+                        }
+                        else
+                        {
+                            Fail(assetName, error, userData);
+                        }
                     }
                 }), userData);
             }
             catch
             {
                 IsLoading = false;
+                m_LoadRequest = null;
                 throw;
             }
             return serial;
@@ -241,6 +324,9 @@ namespace UnityQGameFramework.Runtime
         {
             ++m_LoadSerial;
             IsLoading = false;
+            LoadRequest request = m_LoadRequest;
+            m_LoadRequest = null;
+            request?.Completion?.TrySetCanceled(request.CancellationToken);
         }
 
         /// <summary>
@@ -256,7 +342,9 @@ namespace UnityQGameFramework.Runtime
             foreach (DataTableBase table in m_LoadedTables.DataTables)
             {
                 if (ReferenceEquals(m_DataTableManager.GetDataTable(table.Type, table.Name), table))
+                {
                     m_DataTableManager.DestroyDataTable(table);
+                }
             }
             m_LoadedTables = null;
         }
@@ -269,8 +357,20 @@ namespace UnityQGameFramework.Runtime
         private void Fail(string assetName, string error, object userData)
         {
             IsLoading = false;
+            LoadRequest request = m_LoadRequest;
+            m_LoadRequest = null;
+            request?.Completion?.TrySetException(new FrameworkException(error));
             Log.Warning("Load Luban data tables failed: {0}: {1}", assetName, error);
             m_EventComponent.Fire(this, LoadDataTableFailureEventArgs.Create(assetName, error, userData));
+        }
+
+        /// <summary>
+        /// 数据表加载请求。
+        /// </summary>
+        private sealed class LoadRequest
+        {
+            internal CancellationToken CancellationToken;
+            internal UniTaskCompletionSource<LubanTableSet> Completion;
         }
 
         /// <summary>
@@ -300,7 +400,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        /// <returns>已登记的数据表，未登记时返回 null。</returns>
         public T GetDataTable<T>(string name = null) where T : DataTableBase
         {
             return m_DataTableManager.GetDataTable<T>(name);
@@ -311,7 +411,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
-        /// <returns>要获取的数据表，未登记时返回空。</returns>
+        /// <returns>已登记的数据表，未登记时返回 null。</returns>
         public DataTableBase GetDataTable(Type tableType, string name = null)
         {
             return m_DataTableManager.GetDataTable(tableType, name);
@@ -329,7 +429,7 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有数据表。
         /// </summary>
-        /// <param name="results">所有数据表。</param>
+        /// <param name="results">接收所有数据表的结果列表。</param>
         public void GetAllDataTables(List<DataTableBase> results)
         {
             m_DataTableManager.GetAllDataTables(results);

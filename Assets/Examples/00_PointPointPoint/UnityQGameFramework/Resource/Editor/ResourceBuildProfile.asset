@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37aab7420a3dcf46985551877becd9c, type: 3}
+  m_Name: ResourceBuildProfile
+  m_EditorClassIdentifier: 
+  m_Settings: {fileID: 11400000, guid: b8df0efa960c5fde5d4475dcf00a8c2c, type: 2}
+  m_Version: 1.0.0
+  m_BundleType: 2
+  m_Package:
+    PackageName: QgfExamples.PointPointPoint
+    PackageDesc: 
+    EnableAddressable: 0
+    SupportExtensionless: 1
+    LocationToLower: 0
+    IncludeAssetGUID: 1
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: Base
+      GroupDesc: 
+      AssetTags: Base
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/00_PointPointPoint/GameMain/Configs
+        CollectorGUID: e40dafd4fbfc45b6969b20fee3c8a348
+        CollectorType: 0
+        AddressRuleName: AddressDisable
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Examples/00_PointPointPoint/GameMain/UI
+        CollectorGUID: 5c641ccfa6d20ad49829f6bbd4504df2
+        CollectorType: 0
+        AddressRuleName: AddressDisable
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
