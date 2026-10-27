@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -35,12 +35,24 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// 获取游戏框架模块优先级。
         /// </summary>
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        internal override int Priority => 6;
+        internal override int Priority
+        {
+            get
+            {
+                return 6;
+            }
+        }
 
         /// <summary>
         /// 获取对象池数量。
         /// </summary>
-        public int Count => m_ObjectPools.Count;
+        public int Count
+        {
+            get
+            {
+                return m_ObjectPools.Count;
+            }
+        }
 
         /// <summary>
         /// 对象池管理器轮询。
@@ -1216,11 +1228,21 @@ namespace UnityQGameFramework.Core.ObjectPool
             }
         }
 
+        /// <summary>
+        /// 检查对象池是否存在。
+        /// </summary>
+        /// <param name="typeNamePair">对象池的对象类型和名称。</param>
+        /// <returns>是否存在指定的对象池。</returns>
         private bool InternalHasObjectPool(TypeNamePair typeNamePair)
         {
             return m_ObjectPools.ContainsKey(typeNamePair);
         }
 
+        /// <summary>
+        /// 获取对象池。
+        /// </summary>
+        /// <param name="typeNamePair">对象池的对象类型和名称。</param>
+        /// <returns>指定的对象池；不存在时返回空。</returns>
         private ObjectPoolBase InternalGetObjectPool(TypeNamePair typeNamePair)
         {
             ObjectPoolBase objectPool = null;
@@ -1232,6 +1254,17 @@ namespace UnityQGameFramework.Core.ObjectPool
             return null;
         }
 
+        /// <summary>
+        /// 创建对象池。
+        /// </summary>
+        /// <typeparam name="T">池中对象类型。</typeparam>
+        /// <param name="name">对象池名称。</param>
+        /// <param name="allowMultiSpawn">是否允许同一对象同时被多次获取。</param>
+        /// <param name="autoReleaseInterval">自动释放检查间隔，以秒为单位。</param>
+        /// <param name="capacity">对象池容量。</param>
+        /// <param name="expireTime">闲置对象过期时间，以秒为单位。</param>
+        /// <param name="priority">对象池释放优先级。</param>
+        /// <returns>创建的对象池。</returns>
         private IObjectPool<T> InternalCreateObjectPool<T>(string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
         {
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
@@ -1245,6 +1278,17 @@ namespace UnityQGameFramework.Core.ObjectPool
             return objectPool;
         }
 
+        /// <summary>
+        /// 创建对象池。
+        /// </summary>
+        /// <param name="objectType">池中对象类型。</param>
+        /// <param name="name">对象池名称。</param>
+        /// <param name="allowMultiSpawn">是否允许同一对象同时被多次获取。</param>
+        /// <param name="autoReleaseInterval">自动释放检查间隔，以秒为单位。</param>
+        /// <param name="capacity">对象池容量。</param>
+        /// <param name="expireTime">闲置对象过期时间，以秒为单位。</param>
+        /// <param name="priority">对象池释放优先级。</param>
+        /// <returns>创建的对象池。</returns>
         private ObjectPoolBase InternalCreateObjectPool(Type objectType, string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
         {
             if (objectType == null)
@@ -1269,6 +1313,11 @@ namespace UnityQGameFramework.Core.ObjectPool
             return objectPool;
         }
 
+        /// <summary>
+        /// 销毁对象池并释放池中对象。
+        /// </summary>
+        /// <param name="typeNamePair">对象池的对象类型和名称。</param>
+        /// <returns>是否成功销毁对象池。</returns>
         private bool InternalDestroyObjectPool(TypeNamePair typeNamePair)
         {
             ObjectPoolBase objectPool = null;
@@ -1281,6 +1330,12 @@ namespace UnityQGameFramework.Core.ObjectPool
             return false;
         }
 
+        /// <summary>
+        /// 按优先级比较对象池。
+        /// </summary>
+        /// <param name="a">要比较的第一个对象池。</param>
+        /// <param name="b">要比较的第二个对象池。</param>
+        /// <returns>表示对象池排序关系的有符号整数。</returns>
         private static int ObjectPoolComparer(ObjectPoolBase a, ObjectPoolBase b)
         {
             return a.Priority.CompareTo(b.Priority);

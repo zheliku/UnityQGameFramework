@@ -19,53 +19,78 @@ namespace UnityQGameFramework.Runtime
     public sealed class WebRequestComponent : FrameworkComponent
     {
         private const int DefaultPriority = 0;
-
         private IWebRequestManager m_WebRequestManager = null;
         private EventComponent m_EventComponent = null;
         private readonly Dictionary<int, WWWFormInfo> m_TaskData = new Dictionary<int, WWWFormInfo>();
-
         [SerializeField]
         private Transform m_InstanceRoot = null;
-
         [SerializeField]
         private string m_WebRequestAgentHelperTypeName = "UnityQGameFramework.Runtime.UnityWebRequestAgentHelper";
-
         [SerializeField]
         private WebRequestAgentHelperBase m_CustomWebRequestAgentHelper = null;
-
         [SerializeField]
         private int m_WebRequestAgentHelperCount = 1;
-
         [SerializeField]
         private float m_Timeout = 30f;
 
         /// <summary>
         /// 获取 Web 请求代理总数量。
         /// </summary>
-        public int TotalAgentCount => m_WebRequestManager.TotalAgentCount;
+        public int TotalAgentCount
+        {
+            get
+            {
+                return m_WebRequestManager.TotalAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用 Web 请求代理数量。
         /// </summary>
-        public int FreeAgentCount => m_WebRequestManager.FreeAgentCount;
+        public int FreeAgentCount
+        {
+            get
+            {
+                return m_WebRequestManager.FreeAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取工作中 Web 请求代理数量。
         /// </summary>
-        public int WorkingAgentCount => m_WebRequestManager.WorkingAgentCount;
+        public int WorkingAgentCount
+        {
+            get
+            {
+                return m_WebRequestManager.WorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取等待 Web 请求数量。
         /// </summary>
-        public int WaitingTaskCount => m_WebRequestManager.WaitingTaskCount;
+        public int WaitingTaskCount
+        {
+            get
+            {
+                return m_WebRequestManager.WaitingTaskCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置 Web 请求超时时长，以秒为单位。
         /// </summary>
         public float Timeout
         {
-            get => m_WebRequestManager.Timeout;
-            set => m_WebRequestManager.Timeout = m_Timeout = value;
+            get
+            {
+                return m_WebRequestManager.Timeout;
+            }
+
+            set
+            {
+                m_WebRequestManager.Timeout = m_Timeout = value;
+            }
         }
 
         /// <summary>
@@ -74,7 +99,6 @@ namespace UnityQGameFramework.Runtime
         protected override void Awake()
         {
             base.Awake();
-
             m_WebRequestManager = FrameworkEntry.GetModule<IWebRequestManager>();
             if (m_WebRequestManager == null)
             {
@@ -88,6 +112,9 @@ namespace UnityQGameFramework.Runtime
             m_WebRequestManager.WebRequestFailure += OnWebRequestFailure;
         }
 
+        /// <summary>
+        /// 创建 Web 请求代理并连接事件组件。
+        /// </summary>
         private void Start()
         {
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
@@ -110,9 +137,16 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 归还仍登记在组件中的表单请求数据。
+        /// </summary>
         private void OnDestroy()
         {
-            if (m_WebRequestManager == null) return;
+            if (m_WebRequestManager == null)
+            {
+                return;
+            }
+
             RemoveAllWebRequests();
             m_WebRequestManager.WebRequestStart -= OnWebRequestStart;
             m_WebRequestManager.WebRequestSuccess -= OnWebRequestSuccess;
@@ -466,7 +500,11 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否移除 Web 请求任务成功。</returns>
         public bool RemoveWebRequest(int serialId)
         {
-            if (!m_WebRequestManager.RemoveWebRequest(serialId)) return false;
+            if (!m_WebRequestManager.RemoveWebRequest(serialId))
+            {
+                return false;
+            }
+
             ReleaseTaskData(serialId);
             return true;
         }
@@ -480,7 +518,11 @@ namespace UnityQGameFramework.Runtime
         {
             TaskInfo[] tasks = m_WebRequestManager.GetWebRequestInfos(tag);
             int count = m_WebRequestManager.RemoveWebRequests(tag);
-            foreach (TaskInfo task in tasks) ReleaseTaskData(task.SerialId);
+            foreach (TaskInfo task in tasks)
+            {
+                ReleaseTaskData(task.SerialId);
+            }
+
             return count;
         }
 
@@ -491,7 +533,11 @@ namespace UnityQGameFramework.Runtime
         public int RemoveAllWebRequests()
         {
             int count = m_WebRequestManager.RemoveAllWebRequests();
-            foreach (WWWFormInfo data in m_TaskData.Values) ReferencePool.Release(data);
+            foreach (WWWFormInfo data in m_TaskData.Values)
+            {
+                ReferencePool.Release(data);
+            }
+
             m_TaskData.Clear();
             return count;
         }
@@ -513,7 +559,6 @@ namespace UnityQGameFramework.Runtime
             Transform transform = webRequestAgentHelper.transform;
             transform.SetParent(m_InstanceRoot);
             transform.localScale = Vector3.one;
-
             m_WebRequestManager.AddWebRequestAgentHelper(webRequestAgentHelper);
         }
 
@@ -544,24 +589,47 @@ namespace UnityQGameFramework.Runtime
         }
 
         // 正常完成由结果事件归还；取消没有结果事件，需要在移除任务时归还。
+        /// <summary>
+        /// 移除并归还请求对应的表单数据。
+        /// </summary>
+        /// <param name="serialId">Web 请求序列编号。</param>
         private void ReleaseTaskData(int serialId)
         {
-            if (!m_TaskData.TryGetValue(serialId, out WWWFormInfo data)) return;
+            if (!m_TaskData.TryGetValue(serialId, out WWWFormInfo data))
+            {
+                return;
+            }
+
             m_TaskData.Remove(serialId);
             ReferencePool.Release(data);
         }
 
+        /// <summary>
+        /// 派发 Web 请求开始事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnWebRequestStart(object sender, UnityQGameFramework.Core.WebRequest.WebRequestStartEventArgs e)
         {
             m_EventComponent.Fire(this, WebRequestStartEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发 Web 请求成功事件并归还请求数据。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnWebRequestSuccess(object sender, UnityQGameFramework.Core.WebRequest.WebRequestSuccessEventArgs e)
         {
             m_TaskData.Remove(e.SerialId);
             m_EventComponent.Fire(this, WebRequestSuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发 Web 请求失败事件并归还请求数据。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnWebRequestFailure(object sender, UnityQGameFramework.Core.WebRequest.WebRequestFailureEventArgs e)
         {
             m_TaskData.Remove(e.SerialId);

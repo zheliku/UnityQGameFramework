@@ -11,22 +11,59 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 620342455f6933f40915a27cbdb5a51e, type: 3}
   m_Name: ResourceSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_DefaultPackageName: QgfExamples.Modules
-  m_UseEditorSimulation: 1
+  m_SerializationVersion: 3
+  m_CachePathType: 2
+  m_MinUnloadUnusedAssetsInterval: 60
+  m_MaxUnloadUnusedAssetsInterval: 300
+  m_EditorCollector: {fileID: 11400000, guid: 41ae50e5305d4a108f8aa25232680305, type: 2}
   m_Packages:
-  - m_Name: QgfExamples.Modules
-    m_PlayMode: 1
-    m_HostServer: 
-    m_FallbackServer: 
-    m_PackageVersion: 
-  - m_Name: QgfExamples.Modules.Remote
-    m_PlayMode: 2
-    m_HostServer: 
-    m_FallbackServer: 
-    m_PackageVersion: 
+  - m_Name: QgfExamples.Modules.ByFileName
+    m_Mode: 1
+    m_LegacyPlayMode: -1
+    m_UseBuiltinFiles: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:
+    m_InitializerTypeName:
+  - m_Name: QgfExamples.Modules.ByFolder
+    m_Mode: 1
+    m_LegacyPlayMode: -1
+    m_UseBuiltinFiles: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:
+    m_InitializerTypeName:
+  - m_Name: QgfExamples.Modules.ByGroup
+    m_Mode: 1
+    m_LegacyPlayMode: -1
+    m_UseBuiltinFiles: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:
+    m_InitializerTypeName:
   - m_Name: QgfExamples.Modules.Raw
-    m_PlayMode: 1
-    m_HostServer: 
-    m_FallbackServer: 
-    m_PackageVersion: 
+    m_Mode: 1
+    m_LegacyPlayMode: -1
+    m_UseBuiltinFiles: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:
+    m_InitializerTypeName:
+  - m_Name: QgfExamples.Modules.Remote
+    m_Mode: 3
+    m_LegacyPlayMode: -1
+    m_UseBuiltinFiles: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:
+    m_InitializerTypeName:
+  - m_Name: QgfExamples.Modules
+    m_Mode: 1
+    m_LegacyPlayMode: -1
+    m_UseBuiltinFiles: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:
+    m_InitializerTypeName:

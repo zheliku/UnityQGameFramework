@@ -23,6 +23,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.Boolean 到 System.Boolean 变量类的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>从引用池获取并保存指定值的变量对象。</returns>
         public static implicit operator VarBoolean(bool value)
         {
             VarBoolean varValue = ReferencePool.Acquire<VarBoolean>();
@@ -34,6 +35,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.Boolean 变量类到 System.Boolean 的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>变量对象中保存的值。</returns>
         public static implicit operator bool(VarBoolean value)
         {
             return value.Value;

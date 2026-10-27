@@ -24,6 +24,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.DateTime 到 System.DateTime 变量类的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>从引用池获取并保存指定值的变量对象。</returns>
         public static implicit operator VarDateTime(DateTime value)
         {
             VarDateTime varValue = ReferencePool.Acquire<VarDateTime>();
@@ -35,6 +36,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.DateTime 变量类到 System.DateTime 的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>变量对象中保存的值。</returns>
         public static implicit operator DateTime(VarDateTime value)
         {
             return value.Value;

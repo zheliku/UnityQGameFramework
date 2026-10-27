@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -20,6 +20,9 @@ namespace UnityQGameFramework.Core.Resource
             private readonly Dictionary<ResourceName, string> m_CachedFileSystemNames;
             private string m_CurrentVariant;
 
+            /// <summary>
+            /// 资源初始化完成回调。
+            /// </summary>
             public FrameworkAction ResourceInitComplete;
 
             /// <summary>
@@ -45,6 +48,7 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 初始化资源。
             /// </summary>
+            /// <param name="currentVariant">当前资源变体。</param>
             public void InitResources(string currentVariant)
             {
                 m_CurrentVariant = currentVariant;
@@ -62,6 +66,13 @@ namespace UnityQGameFramework.Core.Resource
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.ReadOnlyPath, RemoteVersionListFileName)), new LoadBytesCallbacks(OnLoadPackageVersionListSuccess, OnLoadPackageVersionListFailure), null);
             }
 
+            /// <summary>
+            /// 解析内置版本列表并登记资源。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="bytes">读取的文件数据。</param>
+            /// <param name="duration">读取耗时，以秒为单位。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadPackageVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 MemoryStream memoryStream = null;
@@ -170,6 +181,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 处理内置版本列表读取失败。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="errorMessage">文件读取错误信息。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadPackageVersionListFailure(string fileUri, string errorMessage, object userData)
             {
                 throw new FrameworkException(Utility.Text.Format("Package version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));

@@ -7,7 +7,7 @@ namespace UnityQGameFramework.Editor
     /// <summary>
     /// 按资产 GUID 分别打包资源。
     /// </summary>
-    [DisplayName("资源包名: 资产 GUID")]
+    [DisplayName("Bundle Name: Asset GUID")]
     public sealed class PackByGuid : IBundlePackRule
     {
         /// <summary>

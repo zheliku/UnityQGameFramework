@@ -16,6 +16,7 @@ namespace UnityQGameFramework.Runtime
     internal sealed partial class YooAssetResourceBackend : IResourceBackend
     {
         private static readonly Dictionary<string, YooAssetResourceBackend> s_ShuttingDownPackages = new Dictionary<string, YooAssetResourceBackend>(StringComparer.Ordinal);
+        private static int s_DestroyingPackageCount;
         private readonly ResourceSettings m_Settings;
         private readonly Dictionary<string, PackageInfo> m_Packages = new Dictionary<string, PackageInfo>(StringComparer.Ordinal);
         private readonly CancellationTokenSource m_ShutdownCancellation = new CancellationTokenSource();
@@ -24,6 +25,12 @@ namespace UnityQGameFramework.Runtime
         private bool m_Shutdown;
         private int m_LoadingCount;
 
+        /// <summary>
+        /// 创建使用指定配置和目录的资源后端。
+        /// </summary>
+        /// <param name="settings">共享的资源运行配置。</param>
+        /// <param name="readOnlyPath">StreamingAssets 根目录。</param>
+        /// <param name="readWritePath">下载缓存根目录。</param>
         internal YooAssetResourceBackend(ResourceSettings settings, string readOnlyPath, string readWritePath)
         {
             if (settings == null)
@@ -35,6 +42,7 @@ namespace UnityQGameFramework.Runtime
             m_Settings = settings;
             m_ShutdownToken = m_ShutdownCancellation.Token;
             SetPaths(readOnlyPath, readWritePath);
+            Application.quitting += Shutdown;
         }
 
         /// <summary>
@@ -54,8 +62,8 @@ namespace UnityQGameFramework.Runtime
         {
             get
             {
-                ResourcePlayMode mode = GetPlayMode(m_Settings.GetPackage());
-                return mode == ResourcePlayMode.Host || mode == ResourcePlayMode.Web ? ResourceMode.Updatable : ResourceMode.Package;
+                EPlayMode mode = m_Settings.GetPackage().PlayMode;
+                return mode == EPlayMode.HostPlayMode || mode == EPlayMode.WebPlayMode ? ResourceMode.Updatable : ResourceMode.Package;
             }
         }
 
@@ -122,11 +130,25 @@ namespace UnityQGameFramework.Runtime
             InitializeCallbackAsync(callback).Forget();
         }
 
+        /// <summary>
+        /// 按配置初始化资源包并加载清单。
+        /// </summary>
+        /// <param name="packageName">资源包名称，为空时使用默认包。</param>
+        /// <param name="cancellationToken">仅取消本次等待的标记。</param>
+        /// <returns>已准备好加载资产的资源包。</returns>
         internal UniTask<ResourcePackage> InitializePackageAsync(string packageName, CancellationToken cancellationToken)
         {
             return InitializePackageAsync(packageName, null, null, cancellationToken);
         }
 
+        /// <summary>
+        /// 合并同一包的初始化请求，防止重复创建文件系统。
+        /// </summary>
+        /// <param name="packageName">资源包名称，为空时使用默认包。</param>
+        /// <param name="options">显式的官方选项，为空时按配置创建。</param>
+        /// <param name="version">指定清单版本，为空时使用配置或文件系统当前版本。</param>
+        /// <param name="cancellationToken">仅取消本次等待的标记。</param>
+        /// <returns>已准备好加载资产的资源包。</returns>
         internal async UniTask<ResourcePackage> InitializePackageAsync(string packageName, InitializePackageOptions options, string version, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -174,6 +196,12 @@ namespace UnityQGameFramework.Runtime
             return package.Package;
         }
 
+        /// <summary>
+        /// 在没有活跃借用和请求时销毁资源包。
+        /// </summary>
+        /// <param name="packageName">资源包名称，为空时使用默认包。</param>
+        /// <param name="cancellationToken">取消等待的标记，销毁开始后仍完成注销。</param>
+        /// <returns>资源包销毁任务。</returns>
         internal async UniTask DestroyPackageAsync(string packageName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -190,6 +218,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             package.Destroying = true;
+            s_DestroyingPackageCount++;
             try
             {
                 // 销毁发出后必须完成注销，不能因取消等待留下半销毁的包。
@@ -199,11 +228,18 @@ namespace UnityQGameFramework.Runtime
             }
             finally
             {
+                s_DestroyingPackageCount--;
                 package.Destroying = false;
             }
             cancellationToken.ThrowIfCancellationRequested();
         }
 
+        /// <summary>
+        /// 为已初始化的资源包创建下载器。
+        /// </summary>
+        /// <param name="options">YooAsset 下载器选项。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <returns>已登记的 YooAsset 下载器。</returns>
         internal ResourceDownloaderOperation CreateResourceDownloader(ResourceDownloaderOptions options, string packageName)
         {
             ThrowIfShutdown();
@@ -217,6 +253,12 @@ namespace UnityQGameFramework.Runtime
             return operation;
         }
 
+        /// <summary>
+        /// 启动已登记的下载器并等待完成，取消时停止下载。
+        /// </summary>
+        /// <param name="downloader">由当前资源后端创建的下载器。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>等待下载完成的异步任务。</returns>
         internal async UniTask DownloadResourcesAsync(ResourceDownloaderOperation downloader, CancellationToken cancellationToken)
         {
             if (downloader == null)
@@ -265,6 +307,14 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查资源借用和在途操作后清理资源包缓存。
+        /// </summary>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <param name="clearMethod">YooAsset 缓存清理方式。</param>
+        /// <param name="clearParameter">缓存清理方式所需的参数。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>等待缓存清理完成的异步任务。</returns>
         internal async UniTask ClearCacheAsync(string packageName, string clearMethod, object clearParameter, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -292,6 +342,11 @@ namespace UnityQGameFramework.Runtime
             UnloadUnusedAssetsAsync(m_ShutdownToken).Forget();
         }
 
+        /// <summary>
+        /// 请求卸载所有已就绪资源包中的闲置资产。
+        /// </summary>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>等待闲置资产卸载完成的异步任务。</returns>
         internal async UniTask UnloadUnusedAssetsAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -335,6 +390,7 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
             m_Shutdown = true;
+            Application.quitting -= Shutdown;
             var packageNames = new List<string>(m_Packages.Keys);
             foreach (string packageName in packageNames)
             {
@@ -345,12 +401,23 @@ namespace UnityQGameFramework.Runtime
             ShutdownAsync(packageNames).Forget();
         }
 
+        /// <summary>
+        /// 初始化默认资源包后执行完成回调。
+        /// </summary>
+        /// <param name="callback">默认资源包初始化完成回调。</param>
+        /// <returns>等待初始化和回调完成的异步任务。</returns>
         private async UniTask InitializeCallbackAsync(InitResourcesCompleteCallback callback)
         {
             await InitializePackageAsync(null, null, null, m_ShutdownToken);
             callback();
         }
 
+        /// <summary>
+        /// 初始化文件系统、读取版本并加载清单，再发布完成状态。
+        /// </summary>
+        /// <param name="package">当前包的状态与参数。</param>
+        /// <param name="completion">同一包所有等待者共用的完成源。</param>
+        /// <returns>初始化任务。</returns>
         private async UniTask InitializePackageAsync(PackageInfo package, UniTaskCompletionSource completion)
         {
             Exception error = null;
@@ -394,6 +461,11 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 获取资源包状态，不存在时创建并登记所有权。
+        /// </summary>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <returns>当前后端持有的资源包状态。</returns>
         private PackageInfo CreatePackage(string packageName)
         {
             string name = GetPackageName(packageName);
@@ -415,30 +487,35 @@ namespace UnityQGameFramework.Runtime
             return package;
         }
 
+        /// <summary>
+        /// 按资源包配置的运行模式创建 YooAsset 原生初始化选项。
+        /// </summary>
+        /// <param name="settings">当前资源包配置。</param>
+        /// <returns>默认选项或自定义初始化扩展返回的选项。</returns>
         private InitializePackageOptions CreateOptions(ResourcePackageSettings settings)
         {
             string builtinRoot = ReadOnlyPath.TrimEnd('/', '\\') + "/yoo/" + settings.Name;
             string cacheRoot = Path.Combine(ReadWritePath, "QGF", "Resources", settings.Name);
-            switch (GetPlayMode(settings))
+            switch (settings.PlayMode)
             {
-                case ResourcePlayMode.EditorSimulate:
-                    if (!Application.isEditor || ResourceComponent.EditorSimulationBuilder == null)
+                case EPlayMode.EditorSimulateMode:
+                    if (!Application.isEditor || ResourceComponent.EditorPackageBuilder == null)
                     {
                         throw new FrameworkException("Editor simulation is only available in the Unity Editor.");
                     }
-                    string root = ResourceComponent.EditorSimulationBuilder(m_Settings, settings.Name);
+                    string root = ResourceComponent.EditorPackageBuilder(m_Settings, settings.Name, true);
                     return new EditorSimulateModeOptions
                     {
                         EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(root)
                     };
 
-                case ResourcePlayMode.Offline:
+                case EPlayMode.OfflinePlayMode:
                     return new OfflinePlayModeOptions
                     {
                         BuiltinFileSystemParameters = FileSystemParameters.CreateDefaultBuiltinFileSystemParameters(builtinRoot)
                     };
 
-                case ResourcePlayMode.Host:
+                case EPlayMode.HostPlayMode:
                     return new HostPlayModeOptions
                     {
                         BuiltinFileSystemParameters = settings.UseBuiltinFiles
@@ -447,28 +524,41 @@ namespace UnityQGameFramework.Runtime
                         CacheFileSystemParameters = FileSystemParameters.CreateDefaultSandboxFileSystemParameters(new RemoteService(settings), cacheRoot)
                     };
 
-                case ResourcePlayMode.Web:
+                case EPlayMode.WebPlayMode:
                     return new WebPlayModeOptions
                     {
                         WebServerFileSystemParameters = FileSystemParameters.CreateDefaultWebServerFileSystemParameters(),
                         WebNetworkFileSystemParameters = FileSystemParameters.CreateDefaultWebNetworkFileSystemParameters(new RemoteService(settings))
                     };
 
+                case EPlayMode.CustomPlayMode:
+                    System.Type type = Utility.Assembly.GetType(settings.InitializerTypeName);
+                    if (type == null || type.IsAbstract || !typeof(IResourcePackageInitializer).IsAssignableFrom(type))
+                    {
+                        throw new FrameworkException("The custom initializer must implement IResourcePackageInitializer: " + settings.InitializerTypeName);
+                    }
+                    var initializer = (IResourcePackageInitializer)Activator.CreateInstance(type);
+                    return initializer.CreateOptions(settings, builtinRoot, cacheRoot)
+                        ?? throw new FrameworkException("The custom initializer returned null options: " + settings.Name);
+
                 default:
                     throw new FrameworkException("Resource play mode is invalid.");
             }
         }
 
-        private ResourcePlayMode GetPlayMode(ResourcePackageSettings settings)
-        {
-            return Application.isEditor && m_Settings.UseEditorSimulation ? ResourcePlayMode.EditorSimulate : settings.PlayMode;
-        }
-
+        /// <summary>
+        /// 将空资源包名称解析为默认包名称。
+        /// </summary>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <returns>实际使用的资源包名称。</returns>
         private string GetPackageName(string packageName)
         {
             return string.IsNullOrEmpty(packageName) ? m_Settings.DefaultPackageName : packageName;
         }
 
+        /// <summary>
+        /// 资源后端已关闭时抛出取消异常。
+        /// </summary>
         private void ThrowIfShutdown()
         {
             if (m_Shutdown)
@@ -477,6 +567,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 移除已释放的资产句柄和已完成的操作登记。
+        /// </summary>
+        /// <param name="package">资源包状态记录。</param>
         private static void RemoveReleasedHandles(PackageInfo package)
         {
             for (int i = package.Assets.Count - 1; i >= 0; i--)
@@ -495,6 +589,11 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 等待在途操作归还句柄，再销毁当前后端创建的资源包。
+        /// </summary>
+        /// <param name="packageNames">本次关闭的资源包名称列表。</param>
+        /// <returns>完成资源后端关闭的异步任务。</returns>
         private async UniTask ShutdownAsync(List<string> packageNames)
         {
             Exception error = null;
@@ -541,6 +640,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查是否还有正在初始化或销毁的资源包。
+        /// </summary>
+        /// <returns>是否存在尚未结束的资源包初始化或销毁。</returns>
         private bool HasInitializingPackage()
         {
             foreach (PackageInfo package in m_Packages.Values)
@@ -553,6 +656,10 @@ namespace UnityQGameFramework.Runtime
             return false;
         }
 
+        /// <summary>
+        /// 检查资源包是否仍有未完成的操作。
+        /// </summary>
+        /// <returns>是否存在未完成的资源操作。</returns>
         private bool HasPendingOperations()
         {
             foreach (PackageInfo package in m_Packages.Values)
@@ -568,6 +675,9 @@ namespace UnityQGameFramework.Runtime
             return false;
         }
 
+        /// <summary>
+        /// 取消当前后端尚未完成的下载器。
+        /// </summary>
         private void CancelPendingDownloaders()
         {
             foreach (PackageInfo package in m_Packages.Values)
@@ -588,19 +698,71 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         private sealed class PackageInfo
         {
+            /// <summary>
+            /// 资源包运行设置。
+            /// </summary>
             internal readonly ResourcePackageSettings Settings;
+
+            /// <summary>
+            /// 当前后端持有的 YooAsset 资源包。
+            /// </summary>
             internal readonly ResourcePackage Package;
+
+            /// <summary>
+            /// 尚未移除的资产借用登记。
+            /// </summary>
             internal readonly List<AssetBorrow> Assets = new List<AssetBorrow>();
+
+            /// <summary>
+            /// 需要跟踪完成状态的原生资源操作。
+            /// </summary>
             internal readonly List<AsyncOperationBase> Operations = new List<AsyncOperationBase>();
+
+            /// <summary>
+            /// 按资源地址登记的场景借用。
+            /// </summary>
             internal readonly Dictionary<string, SceneInfo> Scenes = new Dictionary<string, SceneInfo>(StringComparer.Ordinal);
+
+            /// <summary>
+            /// 供调用方共同等待的初始化结果。
+            /// </summary>
             internal UniTaskCompletionSource Initialization;
+
+            /// <summary>
+            /// 本次资源包初始化选项。
+            /// </summary>
             internal InitializePackageOptions Options;
+
+            /// <summary>
+            /// 本次加载的资源清单版本。
+            /// </summary>
             internal string Version;
+
+            /// <summary>
+            /// 资源包是否正在初始化。
+            /// </summary>
             internal bool Initializing;
+
+            /// <summary>
+            /// 资源包是否已初始化并加载清单。
+            /// </summary>
             internal bool Ready;
+
+            /// <summary>
+            /// 资源包是否正在销毁。
+            /// </summary>
             internal bool Destroying;
+
+            /// <summary>
+            /// 当前资源包的在途请求数量。
+            /// </summary>
             internal int Requests;
 
+            /// <summary>
+            /// 初始化资源包状态记录。
+            /// </summary>
+            /// <param name="settings">资源包运行设置。</param>
+            /// <param name="package">当前后端持有的 YooAsset 资源包。</param>
             internal PackageInfo(ResourcePackageSettings settings, ResourcePackage package)
             {
                 Settings = settings;
@@ -615,6 +777,10 @@ namespace UnityQGameFramework.Runtime
         {
             private readonly ResourcePackageSettings m_Settings;
 
+            /// <summary>
+            /// 初始化资源包的远端地址服务。
+            /// </summary>
+            /// <param name="settings">资源包运行设置。</param>
             internal RemoteService(ResourcePackageSettings settings)
             {
                 if (string.IsNullOrWhiteSpace(settings.HostServer))
@@ -657,6 +823,13 @@ namespace UnityQGameFramework.Runtime
             /// <param name="message">日志内容。</param>
             public void LogWarning(string message)
             {
+                // YooAsset 关闭时会终止常驻下载调度器；运行中的任务中断仍按警告记录。
+                if ((!YooAssets.IsInitialized || s_DestroyingPackageCount > 0 || s_ShuttingDownPackages.Count > 0)
+                    && message == "Async operation 'DownloadSchedulerOperation' has been aborted.")
+                {
+                    Runtime.Log.Debug("{0}", message);
+                    return;
+                }
                 Runtime.Log.Warning("{0}", message);
             }
 
@@ -675,7 +848,7 @@ namespace UnityQGameFramework.Runtime
             /// <param name="exception">异常。</param>
             public void LogException(Exception exception)
             {
-                Runtime.Log.Error("{0}", exception);
+                Runtime.Log.Error(exception);
             }
         }
     }

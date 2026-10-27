@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -13,6 +13,10 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示运行时内存采样结果。
+        /// </summary>
+        /// <typeparam name="T">需要采样的 Unity 对象类型。</typeparam>
         private sealed partial class RuntimeMemoryInformationWindow<T> : ScrollableDebuggerWindowBase where T : UnityEngine.Object
         {
             private const int ShowSampleCount = 300;
@@ -24,6 +28,9 @@ namespace UnityQGameFramework.Runtime
             private long m_DuplicateSampleSize = 0L;
             private int m_DuplicateSimpleCount = 0;
 
+            /// <summary>
+            /// 绘制运行时内存采样。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 string typeName = typeof(T).Name;
@@ -83,6 +90,9 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 采样已加载对象的内存并标记重复记录。
+            /// </summary>
             private void TakeSample()
             {
                 m_SampleTime = DateTime.UtcNow;
@@ -113,6 +123,12 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 按内存大小降序，再按类型和名称比较采样记录。
+            /// </summary>
+            /// <param name="a">第一条采样记录。</param>
+            /// <param name="b">第二条采样记录。</param>
+            /// <returns>表示采样排序关系的有符号整数。</returns>
             private static int SampleComparer(Sample a, Sample b)
             {
                 int result = b.Size.CompareTo(a.Size);

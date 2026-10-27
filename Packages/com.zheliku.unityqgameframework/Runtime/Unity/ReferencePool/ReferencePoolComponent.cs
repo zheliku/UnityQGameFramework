@@ -46,6 +46,9 @@ namespace UnityQGameFramework.Runtime
             base.Awake();
         }
 
+        /// <summary>
+        /// 根据运行环境设置引用池严格检查。
+        /// </summary>
         private void Start()
         {
             switch (m_EnableStrictCheck)

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -23,7 +23,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取引用池的数量。
         /// </summary>
-        public static int Count => s_ReferenceCollections.Count;
+        public static int Count
+        {
+            get
+            {
+                return s_ReferenceCollections.Count;
+            }
+        }
 
         /// <summary>
         /// 获取所有引用池的信息。
@@ -160,6 +166,10 @@ namespace UnityQGameFramework.Core
             GetReferenceCollection(referenceType).RemoveAll();
         }
 
+        /// <summary>
+        /// 检查类型是否可用于引用池。
+        /// </summary>
+        /// <param name="referenceType">要检查的引用类型。</param>
         private static void InternalCheckReferenceType(Type referenceType)
         {
             if (!EnableStrictCheck)
@@ -183,6 +193,11 @@ namespace UnityQGameFramework.Core
             }
         }
 
+        /// <summary>
+        /// 获取指定类型的引用集合，不存在时创建。
+        /// </summary>
+        /// <param name="referenceType">引用对象类型。</param>
+        /// <returns>指定类型的引用集合。</returns>
         private static ReferenceCollection GetReferenceCollection(Type referenceType)
         {
             if (referenceType == null)

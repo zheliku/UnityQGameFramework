@@ -111,6 +111,8 @@ namespace StarForce
         /// <summary>
         /// 获取实体间的距离。
         /// </summary>
+        /// <param name="fromEntity">起始实体。</param>
+        /// <param name="toEntity">目标实体。</param>
         /// <returns>实体间的距离。</returns>
         public static float GetDistance(Entity fromEntity, Entity toEntity)
         {
@@ -119,6 +121,11 @@ namespace StarForce
             return (toTransform.position - fromTransform.position).magnitude;
         }
 
+        /// <summary>
+        /// 根据阵营关系结算实体碰撞。
+        /// </summary>
+        /// <param name="entity">要操作的实体。</param>
+        /// <param name="other">碰撞到的另一个实体。</param>
         public static void PerformCollision(TargetableObject entity, Entity other)
         {
             // A collider can still receive queued callbacks after its entity has been returned to the pool.
@@ -185,17 +192,31 @@ namespace StarForce
             return attack * attack / (attack + defense);
         }
 
+        /// <summary>
+        /// 表示一对阵营关系。
+        /// </summary>
         [StructLayout(LayoutKind.Auto)]
         private struct CampPair
         {
+            /// <summary>
+            /// 表示一对阵营关系。
+            /// </summary>
+            /// <param name="first">第一个阵营。</param>
+            /// <param name="second">第二个阵营。</param>
             public CampPair(CampType first, CampType second)
             {
                 First = first;
                 Second = second;
             }
 
+            /// <summary>
+            /// 获取第一个阵营。
+            /// </summary>
             public CampType First { get; }
 
+            /// <summary>
+            /// 获取第二个阵营。
+            /// </summary>
             public CampType Second { get; }
         }
     }

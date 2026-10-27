@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -134,6 +134,13 @@ namespace UnityQGameFramework.Core
                 bytes[offset + 3] = (byte)(crc32 & 0xff);
             }
 
+            /// <summary>
+            /// 对流的指定前缀执行异或解密后计算完整流的 CRC32 校验值。
+            /// </summary>
+            /// <param name="stream">待校验的数据流。</param>
+            /// <param name="code">按位置与流数据异或的字节序列。</param>
+            /// <param name="length">需要异或解密的前缀字节数。</param>
+            /// <returns>CRC32 校验值。</returns>
             internal static int GetCrc32(Stream stream, byte[] code, int length)
             {
                 if (stream == null)

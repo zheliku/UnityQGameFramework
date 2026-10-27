@@ -8,12 +8,27 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 持续生成小行星的生存玩法。
+    /// </summary>
     public class SurvivalGame : GameBase
     {
         private float m_ElapseSeconds = 0f;
 
-        public override GameMode GameMode => GameMode.Survival;
+        /// <summary>
+        /// 获取当前游戏模式。
+        /// </summary>
+        public override GameMode GameMode
+        {
+            get
+            {
+                return GameMode.Survival;
+            }
+        }
 
+        /// <summary>
+        /// 初始化下载代理。
+        /// </summary>
         public override void Initialize()
         {
             base.Initialize();
@@ -21,6 +36,11 @@ namespace StarForce
             m_ElapseSeconds = 0f;
         }
 
+        /// <summary>
+        /// 所有游戏框架模块轮询。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public override void Update(float elapseSeconds, float realElapseSeconds)
         {
             base.Update(elapseSeconds, realElapseSeconds);

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -54,7 +54,13 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 获取下载任务的描述。
             /// </summary>
-            public override string Description => DownloadPath;
+            public override string Description
+            {
+                get
+                {
+                    return DownloadPath;
+                }
+            }
 
             /// <summary>
             /// 创建下载任务。

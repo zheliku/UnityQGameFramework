@@ -117,3 +117,6 @@ InitTestScene*.unity*
 /Artifacts~/
 /QgfBackup~/
 /QgfBuild~/
+/Bundles/
+/Tools/Style/bin/
+/Tools/Style/obj/

@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace UnityQGameFramework.Core.DataTable
 {
+    /// <summary>
+    /// 管理已登记的数据表及其加载状态。
+    /// </summary>
     internal sealed class DataTableManager : FrameworkModule, IDataTableManager
     {
         private readonly Dictionary<TypeNamePair, DataTableBase> m_DataTables = new Dictionary<TypeNamePair, DataTableBase>();
@@ -22,10 +25,19 @@ namespace UnityQGameFramework.Core.DataTable
                 return m_DataTables.Count;
             }
         }
+
+        /// <summary>
+        /// 更新数据表管理器。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
         }
         // 卸载解除管理器引用，不改写业务仍持有的记录及跨表引用。
+        /// <summary>
+        /// 清理已注册的数据表。
+        /// </summary>
         internal override void Shutdown()
         {
             m_DataTables.Clear();
@@ -167,6 +179,12 @@ namespace UnityQGameFramework.Core.DataTable
             return m_DataTables.TryGetValue(key, out var current) && ReferenceEquals(current, table) && m_DataTables.Remove(key);
         }
 
+        /// <summary>
+        /// 创建数据表的类型名称标识。
+        /// </summary>
+        /// <param name="tableType">数据表类型。</param>
+        /// <param name="name">数据表名称。</param>
+        /// <returns>数据表的类型名称标识。</returns>
         private static TypeNamePair Key(Type tableType, string name)
         {
             if (tableType == null)

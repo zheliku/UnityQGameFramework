@@ -345,6 +345,13 @@ namespace UnityQGameFramework.Core
             m_DataProviderHelper = dataProviderHelper;
         }
 
+        /// <summary>
+        /// 解析加载完成的数据资源并通知读取结果。
+        /// </summary>
+        /// <param name="dataAssetName">数据资源名称。</param>
+        /// <param name="dataAsset">加载完成的数据资源。</param>
+        /// <param name="duration">加载耗时，以秒为单位。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadAssetSuccessCallback(string dataAssetName, object dataAsset, float duration, object userData)
         {
             try
@@ -379,6 +386,13 @@ namespace UnityQGameFramework.Core
             }
         }
 
+        /// <summary>
+        /// 通知数据资源加载失败。
+        /// </summary>
+        /// <param name="dataAssetName">数据资源名称。</param>
+        /// <param name="status">加载失败状态。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadAssetFailureCallback(string dataAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             string appendErrorMessage = Utility.Text.Format("Load data failure, data asset name '{0}', status '{1}', error message '{2}'.", dataAssetName, status, errorMessage);
@@ -393,6 +407,12 @@ namespace UnityQGameFramework.Core
             throw new FrameworkException(appendErrorMessage);
         }
 
+        /// <summary>
+        /// 通知数据资源加载进度。
+        /// </summary>
+        /// <param name="dataAssetName">数据资源名称。</param>
+        /// <param name="progress">加载进度。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadAssetUpdateCallback(string dataAssetName, float progress, object userData)
         {
             if (m_ReadDataUpdateEventHandler != null)
@@ -403,6 +423,14 @@ namespace UnityQGameFramework.Core
             }
         }
 
+        /// <summary>
+        /// 通知数据依赖资源加载进度。
+        /// </summary>
+        /// <param name="dataAssetName">数据资源名称。</param>
+        /// <param name="dependencyAssetName">依赖资源名称。</param>
+        /// <param name="loadedCount">已加载的依赖资源数量。</param>
+        /// <param name="totalCount">依赖资源总数量。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadAssetDependencyAssetCallback(string dataAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             if (m_ReadDataDependencyAssetEventHandler != null)

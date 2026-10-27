@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -29,12 +29,24 @@ namespace UnityQGameFramework.Runtime
         /// 获取当前是否正在播放。
         /// </summary>
         // 暂停仍占用代理，不能被当成播放结束回收或空闲代理抢占。
-        public override bool IsPlaying => m_AudioSource.isPlaying || m_IsPaused;
+        public override bool IsPlaying
+        {
+            get
+            {
+                return m_AudioSource.isPlaying || m_IsPaused;
+            }
+        }
 
         /// <summary>
         /// 获取声音长度。
         /// </summary>
-        public override float Length => m_AudioSource.clip != null ? m_AudioSource.clip.length : 0f;
+        public override float Length
+        {
+            get
+            {
+                return m_AudioSource.clip != null ? m_AudioSource.clip.length : 0f;
+            }
+        }
 
         /// <summary>
         /// 获取或设置播放位置。
@@ -60,8 +72,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override bool Mute
         {
-            get => m_AudioSource.mute;
-            set => m_AudioSource.mute = value;
+            get
+            {
+                return m_AudioSource.mute;
+            }
+            set
+            {
+                m_AudioSource.mute = value;
+            }
         }
 
         /// <summary>
@@ -69,8 +87,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override bool Loop
         {
-            get => m_AudioSource.loop;
-            set => m_AudioSource.loop = value;
+            get
+            {
+                return m_AudioSource.loop;
+            }
+            set
+            {
+                m_AudioSource.loop = value;
+            }
         }
 
         /// <summary>
@@ -78,8 +102,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override int Priority
         {
-            get => 128 - m_AudioSource.priority;
-            set => m_AudioSource.priority = 128 - value;
+            get
+            {
+                return 128 - m_AudioSource.priority;
+            }
+            set
+            {
+                m_AudioSource.priority = 128 - value;
+            }
         }
 
         /// <summary>
@@ -87,8 +117,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override float Volume
         {
-            get => m_AudioSource.volume;
-            set => m_AudioSource.volume = value;
+            get
+            {
+                return m_AudioSource.volume;
+            }
+            set
+            {
+                m_AudioSource.volume = value;
+            }
         }
 
         /// <summary>
@@ -96,8 +132,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override float Pitch
         {
-            get => m_AudioSource.pitch;
-            set => m_AudioSource.pitch = value;
+            get
+            {
+                return m_AudioSource.pitch;
+            }
+            set
+            {
+                m_AudioSource.pitch = value;
+            }
         }
 
         /// <summary>
@@ -105,8 +147,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override float PanStereo
         {
-            get => m_AudioSource.panStereo;
-            set => m_AudioSource.panStereo = value;
+            get
+            {
+                return m_AudioSource.panStereo;
+            }
+            set
+            {
+                m_AudioSource.panStereo = value;
+            }
         }
 
         /// <summary>
@@ -114,8 +162,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override float SpatialBlend
         {
-            get => m_AudioSource.spatialBlend;
-            set => m_AudioSource.spatialBlend = value;
+            get
+            {
+                return m_AudioSource.spatialBlend;
+            }
+            set
+            {
+                m_AudioSource.spatialBlend = value;
+            }
         }
 
         /// <summary>
@@ -123,8 +177,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override float MaxDistance
         {
-            get => m_AudioSource.maxDistance;
-            set => m_AudioSource.maxDistance = value;
+            get
+            {
+                return m_AudioSource.maxDistance;
+            }
+            set
+            {
+                m_AudioSource.maxDistance = value;
+            }
         }
 
         /// <summary>
@@ -132,8 +192,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override float DopplerLevel
         {
-            get => m_AudioSource.dopplerLevel;
-            set => m_AudioSource.dopplerLevel = value;
+            get
+            {
+                return m_AudioSource.dopplerLevel;
+            }
+            set
+            {
+                m_AudioSource.dopplerLevel = value;
+            }
         }
 
         /// <summary>
@@ -141,8 +207,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public override AudioMixerGroup AudioMixerGroup
         {
-            get => m_AudioSource.outputAudioMixerGroup;
-            set => m_AudioSource.outputAudioMixerGroup = value;
+            get
+            {
+                return m_AudioSource.outputAudioMixerGroup;
+            }
+            set
+            {
+                m_AudioSource.outputAudioMixerGroup = value;
+            }
         }
 
         /// <summary>
@@ -308,6 +380,9 @@ namespace UnityQGameFramework.Runtime
             m_CachedTransform.position = worldPosition;
         }
 
+        /// <summary>
+        /// 获取音源并初始化声音代理状态。
+        /// </summary>
         private void Awake()
         {
             m_CachedTransform = transform;
@@ -316,6 +391,9 @@ namespace UnityQGameFramework.Runtime
             m_AudioSource.rolloffMode = AudioRolloffMode.Custom;
         }
 
+        /// <summary>
+        /// 更新声音位置并检测播放结束。
+        /// </summary>
         private void Update()
         {
             if (!m_ApplicationPauseFlag && !IsPlaying && m_AudioSource.clip != null && m_ResetSoundAgentEventHandler != null)
@@ -332,11 +410,18 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 记录应用暂停状态。
+        /// </summary>
+        /// <param name="pause">应用是否暂停。</param>
         private void OnApplicationPause(bool pause)
         {
             m_ApplicationPauseFlag = pause;
         }
 
+        /// <summary>
+        /// 根据绑定实体更新音源位置。
+        /// </summary>
         private void UpdateAgentPosition()
         {
             if (m_BindingEntityLogic.Available)
@@ -353,18 +438,35 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 淡出声音后停止播放。
+        /// </summary>
+        /// <param name="fadeOutSeconds">淡出时长，以秒为单位。</param>
+        /// <returns>执行淡出和停止的协程。</returns>
         private IEnumerator StopCo(float fadeOutSeconds)
         {
             yield return FadeToVolume(m_AudioSource, 0f, fadeOutSeconds);
             m_AudioSource.Stop();
         }
 
+        /// <summary>
+        /// 淡出声音后暂停播放。
+        /// </summary>
+        /// <param name="fadeOutSeconds">淡出时长，以秒为单位。</param>
+        /// <returns>执行淡出和暂停的协程。</returns>
         private IEnumerator PauseCo(float fadeOutSeconds)
         {
             yield return FadeToVolume(m_AudioSource, 0f, fadeOutSeconds);
             m_AudioSource.Pause();
         }
 
+        /// <summary>
+        /// 在指定时间内将音源音量渐变到目标值。
+        /// </summary>
+        /// <param name="audioSource">要调整的音源。</param>
+        /// <param name="volume">目标音量。</param>
+        /// <param name="duration">渐变时长，以秒为单位。</param>
+        /// <returns>执行音量渐变的协程。</returns>
         private IEnumerator FadeToVolume(AudioSource audioSource, float volume, float duration)
         {
             float time = 0f;

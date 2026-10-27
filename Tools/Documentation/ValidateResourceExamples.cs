@@ -22,13 +22,29 @@ using UnityQGameFramework.Core.ObjectPool;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
-// 开发验收工具，不随 Sample 导入。按钮和 Toggle 使用输入系统鼠标事件。
+/// <summary>
+/// 用输入系统的鼠标事件检查资源示例，不随 Sample 导入。
+/// </summary>
 public static class ValidateResourceExamples
 {
     private static readonly List<string> assertions = new List<string>();
+    private static readonly List<string> expectedHttpErrors = new List<string>();
+    private static string expectedHttpErrorPrefix;
 
-    public static Task<object> Run() => RunOnly(null);
+    /// <summary>
+    /// 检查全部资源示例。
+    /// </summary>
+    /// <returns>资源示例检查结果。</returns>
+    public static Task<object> Run()
+    {
+        return RunOnly(null);
+    }
 
+    /// <summary>
+    /// 检查指定资源示例。
+    /// </summary>
+    /// <param name="names">示例名称，为空时检查全部示例。</param>
+    /// <returns>资源示例检查结果。</returns>
     public static async Task<object> RunOnly(string[] names)
     {
         if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated validation project.");
@@ -38,13 +54,18 @@ public static class ValidateResourceExamples
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
             throw new Exception("Unsaved scene.");
         assertions.Clear();
-        UnityQGameFramework.Examples.Modules.Editor.BuildResourceExamples.Build();
+        expectedHttpErrors.Clear();
+        expectedHttpErrorPrefix = null;
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var cases = layouts.Properties().Where(pair => new[] { "12_Resource" }
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
-            .SelectMany(pair => Enumerable.Range(0, pair.Name == "VerifyCachedResources" || pair.Name == "SelectResourceVariant" ? 4 : pair.Name == "UpdateRemoteResources" ? 3 : pair.Name == "LoadResourcesOnDemand" ? 2 : 1)
+            .SelectMany(pair => Enumerable.Range(0, pair.Name == "UpdateRemoteResources" ? 3 : 1)
                 .Select(mode => new { name = pair.Name, layout = pair.Value, mode })).ToList();
         if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (cases.Any(test => test.name == "UpdateRemoteResources"))
+        {
+            UnityQGameFramework.Examples.Modules.Editor.UpdateRemoteResourcesInspector.BuildResources();
+        }
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -65,7 +86,18 @@ public static class ValidateResourceExamples
         Application.LogCallback capture = (message, stack, kind) =>
         {
             if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert)
+            {
+                // 只接受故障开关期间、本次本地服务器返回的 Bundle 404；其他错误仍使检查失败。
+                if (kind == LogType.Error && expectedHttpErrorPrefix != null
+                    && message.Contains("[UnityWebRequestFile] Request failed.")
+                    && message.Contains("URL: '" + expectedHttpErrorPrefix)
+                    && message.Contains(".bundle', HttpCode=404,"))
+                {
+                    expectedHttpErrors.Add(message);
+                    return;
+                }
                 errors.Add(message + "\n" + stack);
+            }
         };
         Application.logMessageReceived += capture;
         try
@@ -116,6 +148,7 @@ public static class ValidateResourceExamples
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
+            expectedHttpErrorPrefix = null;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
@@ -126,7 +159,7 @@ public static class ValidateResourceExamples
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
         var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown, Slider and InputField values set by the test; buttons and toggles use native mouse clicks",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count, expectedHttp404Errors = expectedHttpErrors };
         Directory.CreateDirectory("Artifacts~/ResourceExamples");
         string report = names == null ? "resource-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/ResourceExamples/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
@@ -141,456 +174,141 @@ public static class ValidateResourceExamples
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
         Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
         var resource = QGF.Resource;
-        if (name == "LoadResourcesOnDemand")
-        {
-            await Click(button("prepareButton"), mouse);
-            await Until(() => Field<bool>(example, "checkedResources"), 8000, "On-demand version and local check");
-            var server = Field<ResourceHttpServer>(example, "server");
-            var onDemandFixture = ResourceExamplePaths.Fixture;
-            var baseGroup = resource.GetResourceGroup("Base");
-            var dataGroup = resource.GetResourceGroup("Data");
-            Require(resource.ResourceMode == ResourceMode.UpdatableWhilePlaying && resource.UpdateCandidateCount == 3,
-                "On-demand starts with all three resources missing");
-            Require(baseGroup.ReadyCount == 0 && dataGroup.ReadyCount == 0 && server.Requests == 1,
-                "Check downloads only the version list");
-            Require(resource.HasAsset(onDemandFixture.PrefabAssetName) == HasAssetResult.AssetOnDisk
-                && resource.HasAsset(onDemandFixture.DiskAssetName) == HasAssetResult.BinaryOnDisk,
-                "HasAsset reports registered location even when resource is missing in this mode");
-            Require(resource.GenerateReadWriteVersionListLength == 16 * 1024 && resource.UpdatingResourceGroup == null,
-                "Writable-list threshold applied; no group update started");
-            await Click(button("readButton"), mouse);
-            Require(text("binaryText").text.Contains("NotReady") && server.Requests == 1
-                && resource.UpdateWaitingWhilePlayingCount == 0, "LoadBinary returns NotReady without starting a download");
-            if (mode == 1) await Click(toggle("failureToggle"), mouse);
-            await Click(button("loadButton"), mouse);
-            await Until(() => resource.UpdateWaitingWhilePlayingCount == 1, 4000, "LoadAsset queues its missing Bundle download");
-            Require(resource.LoadWaitingTaskCount + resource.LoadWorkingAgentCount == 1
-                && resource.UpdatingResourceGroup == null && resource.UpdateWaitingCount == 0,
-                "One load waits for one on-demand download without a group update");
-            await Screenshot("resource-on-demand-pending-" + mode);
-            if (mode == 1)
-            {
-                await Until(() => Field<bool>(example, "downloadFailed"), 8000, "On-demand download exhausts retries");
-                await Until(() => QGF.Download.WorkingAgentCount + QGF.Download.WaitingTaskCount == 0, 4000, "Failed download queue drained");
-                Require(server.Requests == 3 && resource.UpdateWaitingWhilePlayingCount == 0 && !baseGroup.Ready,
-                    "Initial download and one retry failed; resource remains missing");
-                await Task.Delay(500);
-                Require(Field<bool>(example, "loading") && Field<int>(example, "loadCount") == 0
-                    && Field<int>(example, "loadFailureCount") == 0 && resource.LoadWaitingTaskCount + resource.LoadWorkingAgentCount == 1,
-                    "Download failure event does not complete or fail the pending LoadAsset task");
-                await Screenshot("resource-on-demand-recover");
-                await Click(toggle("failureToggle"), mouse);
-                await Click(button("recoverButton"), mouse);
-                Require(resource.UpdatingResourceGroup?.Name == "Base", "Recovery updates Base without resubmitting LoadAsset");
-            }
-            await Until(() => Field<GameObject>(example, "instance") != null && !Field<bool>(example, "updating"), 12000, "Original LoadAsset completes after download");
-            Require(baseGroup.Ready && !dataGroup.Ready && resource.UpdateCandidateCount == 2,
-                "Loading Cube downloads only Base; Data stays missing");
-            Require(Field<int>(example, "loadCount") == 1 && Field<int>(example, "loadFailureCount") == 0
-                && resource.UpdateWaitingWhilePlayingCount == 0, "Original asset request completes exactly once");
-            Require(File.Exists(Path.Combine(resource.ReadWritePath, "GameFrameworkList.dat")), "Completed batch persists writable resource list");
-            int requests = server.Requests;
-            await Click(button("readButton"), mouse);
-            Require(text("binaryText").text.Contains("NotReady") && server.Requests == requests,
-                "Binary is still unavailable after loading an unrelated Bundle");
-            await Click(button("updateDataButton"), mouse);
-            Require(resource.UpdatingResourceGroup?.Name == "Data" && resource.UpdateWaitingWhilePlayingCount == 0,
-                "Explicit Data update has its own queue and group");
-            await Until(() => !Field<bool>(example, "updating") && dataGroup.Ready, 12000, "Data group completes");
-            await Click(button("readButton"), mouse);
-            await Until(() => text("binaryText").text.Contains("读取成功"), 5000, "Binary reads after explicit update");
-            Require(resource.UpdateCandidateCount == 0 && resource.GetResourceGroup().Ready
-                && resource.UpdatingResourceGroup == null && server.Requests == requests + 2,
-                "All three resources ready; Data downloaded its two resources exactly once");
-            Require(text("binaryText").text.Contains(Encoding.UTF8.GetString(File.ReadAllBytes(onDemandFixture.DiskAssetName))),
-                "Downloaded binary bytes match source content");
-            await Screenshot("resource-on-demand-ready-" + mode);
-            return;
-        }
         if (name == "LoadCubePrefab")
         {
-            await Until(() => Field<GameObject>(example, "asset") != null, 6000, "Editor prefab load");
-            Require(QGF.Base.EditorResourceMode && Field<GameObject>(example, "first") != null && Field<GameObject>(example, "second") != null,
-                "Editor source asset produces two scene instances");
+            await Until(() => Field<GameObject>(example, "asset") != null, 10000, "Path load returns the prefab asset");
+            Require(Field<GameObject>(example, "first") != null && Field<GameObject>(example, "second") != null,
+                "One borrowed asset creates two scene instances");
             await Click(button("removeButton"), mouse);
-            Require(Field<GameObject>(example, "first") == null && Field<GameObject>(example, "second") != null, "Destroying one instance preserves the other");
+            Require(Field<GameObject>(example, "first") == null && Field<GameObject>(example, "second") != null,
+                "Destroying one instance preserves the other");
+            await Screenshot("resource-prefab-instances");
             await Click(button("releaseButton"), mouse);
-            await Until(() => Field<GameObject>(example, "asset") == null, 4000, "Asset released after instances");
-            Require(Field<GameObject>(example, "second") == null, "All scene instances removed before release");
+            await Until(() => Field<GameObject>(example, "asset") == null, 4000, "Prefab borrow returned");
+            Require(Field<GameObject>(example, "second") == null, "Instances destroyed before returning the prefab");
             return;
         }
-        if (name == "InspectResourceCache")
+        if (name == "LoadAddressRules")
         {
-            await Click(button("initializeButton"), mouse);
-            await Until(() => Field<bool>(example, "initialized"), 10000, "Cache scene Package initialization");
-            var assetPool = Field<ObjectPoolBase>(example, "assetPool");
-            var resourcePool = Field<ObjectPoolBase>(example, "resourcePool");
-            Require(assetPool.Count == 0 && resourcePool.Count == 0 && resource.ResourceMode == ResourceMode.Package,
-                "Initialization creates empty real asset/resource pools");
-            for (int policy = 0; policy < 3; policy++)
+            string[] addresses = { "Cube", "Art_Cube", "Demo_Cube" };
+            for (int index = 0; index < addresses.Length; index++)
             {
-                dropdown("policyMode").value = policy;
-                await Task.Delay(100);
-                Require(resource.AssetCapacity == (policy == 1 ? 0 : 4) && resource.ResourceCapacity == resource.AssetCapacity
-                    && resource.AssetExpireTime == (policy == 2 ? 2 : 30) && resource.ResourceExpireTime == resource.AssetExpireTime
-                    && resource.AssetAutoReleaseInterval == (policy == 2 ? .25f : 30) && resource.ResourceAutoReleaseInterval == resource.AssetAutoReleaseInterval,
-                    "Policy updates component and Core pool settings " + policy);
-                Require(assetPool.Capacity == resource.AssetCapacity && resourcePool.Capacity == resource.ResourceCapacity
-                    && assetPool.ExpireTime == resource.AssetExpireTime && resourcePool.AutoReleaseInterval == resource.ResourceAutoReleaseInterval
-                    && assetPool.Priority == resource.AssetPriority && resourcePool.Priority == resource.ResourcePriority,
-                    "Live settings reach the actual asset and resource pools " + policy);
+                dropdown("ruleDropdown").value = index;
                 await Click(button("loadButton"), mouse);
-                await Until(() => Field<GameObject>(example, "instance") != null && !Field<bool>(example, "busy"), 6000, "Cache Cube load " + policy);
-                Require(assetPool.Count == 1 && resourcePool.Count == 1 && assetPool.GetAllObjectInfos().Single().SpawnCount == 1
-                    && resourcePool.GetAllObjectInfos().Single().SpawnCount == 1, "One scene instance holds asset and bundle references " + policy);
-                Require(resource.LoadWorkingAgentCount == 0 && resource.LoadWaitingTaskCount == 0, "Load task queue drained " + policy);
-                if (policy == 0)
-                {
-                    // 清理计时从本次强制请求开始，预约检查不依赖前面步骤的耗时。
-                    int cleanups = Field<int>(example, "cleanupCount");
-                    await Click(button("forceButton"), mouse);
-                    await Until(() => Field<int>(example, "cleanupCount") > cleanups, 5000, "Forced Unity cleanup resets elapsed timer");
-                    Require(Field<GameObject>(example, "instance") != null && assetPool.Count == 1 && resourcePool.Count == 1,
-                        "Unity cleanup preserves in-use QGF assets and instance");
-                    await Screenshot("resource-cache-loaded");
-                    int id = Field<int>(example, "currentAssetId");
-                    await Click(button("returnButton"), mouse);
-                    await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "busy"), 4000, "Return cached asset after instance destruction");
-                    Require(assetPool.Count == 1 && assetPool.GetAllObjectInfos().Single().SpawnCount == 0 && assetPool.CanReleaseCount == 1
-                        && resourcePool.GetAllObjectInfos().Single().SpawnCount == 1,
-                        "Returned asset remains cached and still holds its bundle");
-                    await Screenshot("resource-cache-retained");
-                    cleanups = Field<int>(example, "cleanupCount");
-                    await Click(toggle("gcToggle"), mouse);
-                    await Click(button("forceButton"), mouse);
-                    await Until(() => Field<int>(example, "cleanupCount") > cleanups, 5000, "Forced Unity cleanup with GC request");
-                    Require(assetPool.Count == 1 && resourcePool.Count == 1, "Unity cleanup does not empty QGF caches");
-                    ((Slider)data.FindProperty("minimumSlider").objectReferenceValue).value = 5;
-                    ((Slider)data.FindProperty("maximumSlider").objectReferenceValue).value = 12;
-                    cleanups = Field<int>(example, "cleanupCount");
-                    await Click(button("reserveButton"), mouse);
-                    await Task.Delay(400);
-                    Require(Field<int>(example, "cleanupCount") == cleanups && resource.LastUnloadUnusedAssetsOperationElapseSeconds < resource.MinUnloadUnusedAssetsInterval,
-                        "Reserved cleanup waits for minimum interval instead of running immediately");
-                    await Until(() => Field<int>(example, "cleanupCount") > cleanups, 7000, "Reserved Unity cleanup executes at minimum interval");
-                    Require(resource.MinUnloadUnusedAssetsInterval == 5 && resource.MaxUnloadUnusedAssetsInterval == 12,
-                        "GUI interval settings applied");
-                    await Click(button("loadButton"), mouse);
-                    await Until(() => Field<GameObject>(example, "instance") != null && !Field<bool>(example, "busy"), 6000, "Reload from retained cache");
-                    Require(Field<int>(example, "currentAssetId") == id, "Reload reuses retained prefab asset");
-                    await Click(button("returnButton"), mouse);
-                    await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "busy"), 4000, "Return reloaded asset");
-                }
-                else
-                {
-                    if (policy == 2)
-                    {
-                        await Task.Delay(2300);
-                        Require(assetPool.Count == 1 && resourcePool.Count == 1 && Field<GameObject>(example, "instance") != null,
-                            "Expired policy cannot release assets while they remain borrowed");
-                    }
-                    await Click(button("returnButton"), mouse);
-                    await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "busy"), 4000, "Return asset under policy " + policy);
-                    await Until(() => assetPool.Count == 0 && resourcePool.Count == 0, 6000, "Policy releases asset then bundle " + policy);
-                    Require(assetPool.CanReleaseCount == 0 && resourcePool.CanReleaseCount == 0 && Field<GameObject>(example, "instance") == null,
-                        "No cache or live instance after pool eviction " + policy);
-                    await Screenshot("resource-cache-policy-" + policy);
-                }
+                await Until(() => Field<GameObject>(example, "asset") != null, 10000, "String address resolves: " + addresses[index]);
+                var instance = Field<GameObject>(example, "instance");
+                Require(instance != null && instance.GetComponent<Renderer>().sharedMaterial.shader.isSupported,
+                    "Address creates an instance with a supported shader");
+                Require(text("stateText").text.Contains(addresses[index]), "Resolved string address is visible");
+                await Screenshot("resource-address-" + index);
+                await Click(button("releaseButton"), mouse);
+                await Until(() => Field<GameObject>(example, "asset") == null, 4000, "Borrow returned to the selected package");
+                Require(Field<GameObject>(example, "instance") == null, "Address instance destroyed");
             }
-            int lastCleanup = Field<int>(example, "cleanupCount");
-            await Click(button("forceButton"), mouse);
-            await Until(() => Field<int>(example, "cleanupCount") > lastCleanup, 5000, "Reset timer for automatic maximum-interval check");
-            lastCleanup = Field<int>(example, "cleanupCount");
-            await Task.Delay(500);
-            Require(Field<int>(example, "cleanupCount") == lastCleanup, "No immediate automatic cleanup before maximum interval");
-            await Until(() => Field<int>(example, "cleanupCount") > lastCleanup, 14000, "Unity cleanup runs at maximum interval without a reservation");
-            await Screenshot("resource-cache-cleanup");
             return;
         }
-        if (name == "SelectResourceVariant")
-        {
-            var variantFixture = ResourceExamplePaths.Fixture;
-            bool hard = mode >= 2, custom = mode % 2 == 1;
-            dropdown("variantMode").value = hard ? 1 : 0;
-            if (toggle("customDecryptToggle").isOn != custom) await Click(toggle("customDecryptToggle"), mouse);
-            await Click(button("initializeButton"), mouse);
-            await Until(() =>
-            {
-                if (text("stateText").text.StartsWith("初始化失败")) throw new Exception(text("stateText").text);
-                return Field<bool>(example, "initialized");
-            }, 10000, "Variant Package initialized " + mode);
-            try
-            {
-                resource.SetDecryptResourceCallback(null);
-                throw new Exception("Changing the decrypt callback after agent creation was accepted.");
-            }
-            catch (FrameworkException exception)
-            {
-                Require(exception.Message.Contains("before add load resource agent"), "Callback configuration locks after Resource.Start");
-            }
-            Require(resource.ResourceMode == ResourceMode.Package && resource.CurrentVariant == (hard ? "hard" : "normal"),
-                "Selected variant set before initialization");
-            Require(resource.AssetCount == 2 && resource.ResourceCount == 2 && resource.ResourceGroupCount == 3,
-                "One variant and one common resource registered");
-            Require(resource.InternalResourceVersion == 2 && resource.ApplicableGameVersion == Application.version,
-                "Variant package version metadata");
-            string selected = hard ? variantFixture.HardVariantAsset : variantFixture.NormalVariantAsset;
-            string other = hard ? variantFixture.NormalVariantAsset : variantFixture.HardVariantAsset;
-            Require(resource.HasAsset(selected) == HasAssetResult.BinaryOnFileSystem && resource.HasAsset(other) == HasAssetResult.NotExist
-                && resource.HasAsset(variantFixture.PrefabAssetName) == HasAssetResult.AssetOnDisk, "Current-only assets and common Cube availability");
-            Require(!dropdown("variantMode").interactable && !toggle("customDecryptToggle").interactable,
-                "Initialization locks variant choice for this run");
-            await Click(button("loadButton"), mouse);
-            await Until(() => Field<object>(example, "payload") != null && !Field<bool>(example, "loading"), 10000, "Decrypted variant payload applied " + mode);
-            var variantCube = Field<GameObject>(example, "instance");
-            Require(variantCube != null && Mathf.Approximately(variantCube.transform.localScale.x, hard ? 1.7f : 1f), "Loaded payload changes visible Cube size");
-            var block = new MaterialPropertyBlock();
-            variantCube.GetComponent<Renderer>().GetPropertyBlock(block);
-            ColorUtility.TryParseHtmlString(hard ? "#FF9457" : "#37B8FF", out var expectedColor);
-            Require(Vector4.Distance(block.GetColor("_BaseColor"), expectedColor) < .001f,
-                "Loaded payload changes visible Cube color without changing shared material");
-            Require(text("payloadText").text.Contains(hard ? "挑战模式" : "标准模式") && text("payloadText").text.Contains(hard ? "伤害 25" : "伤害 10"),
-                "GUI shows actual decoded payload");
-            Require(Field<int>(example, "decryptCount") == (custom ? 1 : 0), "Default/custom decryption route counted correctly");
-            await Screenshot("resource-variant-" + mode);
-            byte[] originalVariant = File.ReadAllBytes(selected);
-            var buffer = Enumerable.Repeat((byte)205, originalVariant.Length + 5).ToArray();
-            int loaded = resource.LoadBinaryFromFileSystem(selected, buffer, 2, originalVariant.Length);
-            Require(loaded == originalVariant.Length && buffer.Skip(2).Take(loaded).SequenceEqual(originalVariant)
-                && buffer.Take(2).Concat(buffer.Skip(2 + loaded)).All(value => value == 205),
-                "Encrypted complete-file read respects target offset and preserves buffer guards");
-            foreach (int offset in new[] { 0, 3, 17, 217, 223 })
-            {
-                byte[] segment = resource.LoadBinarySegmentFromFileSystem(selected, offset, 8);
-                Require(segment.SequenceEqual(originalVariant.Skip(offset).Take(8)), "Encrypted segment source offset " + offset);
-                var target = Enumerable.Repeat((byte)205, 13).ToArray();
-                int read = resource.LoadBinarySegmentFromFileSystem(selected, offset, target, 2, 8);
-                Require(read == 8 && target.Skip(2).Take(read).SequenceEqual(originalVariant.Skip(offset).Take(read))
-                    && target.Take(2).Concat(target.Skip(2 + read)).All(value => value == 205),
-                    "Encrypted segment target guards and source offset " + offset);
-            }
-            var emptyTarget = Enumerable.Repeat((byte)205, 5).ToArray();
-            Require(resource.LoadBinarySegmentFromFileSystem(selected, originalVariant.Length + 10, emptyTarget, 2, 2) == 0
-                && emptyTarget.All(value => value == 205), "Encrypted read beyond end preserves destination");
-            Require(variantCube.GetComponent<Renderer>().sharedMaterial.shader.isSupported, "Variant Cube uses supported URP shader");
-            return;
-        }
-        if (name == "ApplyResourcePack")
-        {
-            var packFixture = ResourceExamplePaths.Fixture;
-            Require(!QGF.Base.EditorResourceMode && resource.ResourceMode == ResourceMode.Updatable,
-                "Pack scene uses Updatable, not Package initialization");
-            Require(Directory.GetFiles(resource.ReadOnlyPath).Length == 0, "Resource pack starts with empty read-only area");
-            await Click(button("prepareButton"), mouse);
-            await Until(() => Field<bool>(example, "prepared"), 10000, "Version list and missing-resource check");
-            Require(resource.UpdateCandidateCount == 3 && !resource.GetResourceGroup().Ready,
-                "Three missing resources before applying the pack");
-            var server = Field<ResourceHttpServer>(example, "server");
-            Require(server.Requests == 1, "Only the remote version list has been downloaded");
-            byte[] original = File.ReadAllBytes(Field<string>(example, "pack"));
-            byte[] damaged = File.ReadAllBytes(Field<string>(example, "damagedPack"));
-            Require(original.Length == damaged.Length && !original.SequenceEqual(damaged), "Damaged copy has same length but different content");
-            await Click(toggle("corruptToggle"), mouse);
-            await Click(button("verifyButton"), mouse);
-            Require(!Field<bool>(example, "verified") && text("stateText").text.Contains("校验失败") && !button("applyButton").interactable,
-                "CRC rejects damaged resource pack and prevents application");
-            await Screenshot("resource-pack-rejected");
-            await Click(toggle("corruptToggle"), mouse);
-            await Click(button("verifyButton"), mouse);
-            Require(Field<bool>(example, "verified") && resource.UpdateCandidateCount == 3,
-                "Verifying the intact pack does not apply or download resources");
-            await Click(button("applyButton"), mouse);
-            await Until(() => Field<bool>(example, "applied"), 10000, "Apply real resource pack");
-            await Until(() => Field<int>(example, "appliedCount") == 3, 2000, "Three application-success events");
-            Require(resource.GetResourceGroup().Ready && resource.UpdateCandidateCount == 0 && resource.ApplyWaitingCount == 0
-                && resource.ApplyingResourcePackPath == null, "Pack completes all resources and retires updater");
-            Require(server.Requests == 1, "Pack application does not issue individual resource HTTP downloads");
-            Require(resource.LoadBinaryFromFileSystem(packFixture.FileSystemAssetName).SequenceEqual(File.ReadAllBytes(packFixture.FileSystemAssetName)),
-                "Applied binary file-system resource matches original");
-            Require(File.ReadAllBytes(Field<string>(example, "pack")).SequenceEqual(original), "Intact source pack remains unchanged");
-            await Click(button("loadButton"), mouse);
-            await Until(() => Field<GameObject>(example, "instance") != null, 6000, "Load Cube after resource pack application");
-            Require(Field<GameObject>(example, "instance").GetComponent<Renderer>().sharedMaterial.shader.isSupported,
-                "Applied Cube material supports current URP");
-            await Screenshot("resource-pack-loaded");
-            return;
-        }
-        if (name == "VerifyCachedResources")
-        {
-            var cacheFixture = ResourceExamplePaths.Fixture;
-            Require(resource.ResourceMode == ResourceMode.Updatable && Directory.GetFiles(resource.ReadOnlyPath).Length == 0
-                && File.Exists(Path.Combine(resource.ReadWritePath, "GameFrameworkList.dat")), "Nonempty writable cache seeded in isolated session");
-            dropdown("damageMode").value = mode;
-            if ((mode % 2 == 1) != toggle("budgetToggle").isOn) await Click(toggle("budgetToggle"), mouse);
-            await Click(button("versionButton"), mouse);
-            await Until(() => Field<bool>(example, "versionReady"), 10000, "Cache example remote version list");
-            await Click(button("verifyButton"), mouse);
-            await Until(() => Field<bool>(example, "verified"), 10000, "Verify nonempty cache entry " + mode);
-            await Until(() => Field<int>(example, "valid") + Field<int>(example, "invalid") == 3, 2000, "All cache verify events");
-            await Screenshot("resource-cache-counters-" + mode);
-            Require(Field<int>(example, "total") == 3 && Field<int>(example, "invalid") == (mode == 0 ? 0 : 1)
-                && Field<int>(example, "valid") == (mode == 0 ? 3 : 2), $"Correct healthy/corrupt resource counters entry {mode}: total={Field<int>(example, "total")}, valid={Field<int>(example, "valid")}, invalid={Field<int>(example, "invalid")}");
-            Require(Field<bool>(example, "verificationPassed") == (mode == 0), "CRC/length verification result entry " + mode);
-            if (mode == 1 || mode == 2)
-                Require(!File.Exists(Path.Combine(resource.ReadWritePath, "example/message.bytes")), "Damaged loose resource removed before checks");
-            await Screenshot("resource-cache-verified-" + mode);
-            await Click(button("checkButton"), mouse);
-            await Until(() => Field<bool>(example, "checkedResources"), 10000, "Check after cache verification");
-            Require(resource.UpdateCandidateCount == (mode == 0 ? 0 : 1) && resource.GetResourceGroup().ReadyCount == (mode == 0 ? 3 : 2),
-                "Only corrupted resource becomes a missing update candidate");
-            if (mode > 0)
-            {
-                await Click(button("repairButton"), mouse);
-                await Until(() => !Field<bool>(example, "busy") && resource.GetResourceGroup().Ready, 10000, "Download replacement after verification");
-            }
-            Require(Field<ResourceHttpServer>(example, "server").Requests == (mode == 0 ? 1 : 2),
-                "Healthy cache avoids resource downloads; corrupted cache downloads only one resource");
-            Require(resource.LoadBinaryFromFileSystem(cacheFixture.FileSystemAssetName).SequenceEqual(File.ReadAllBytes(cacheFixture.FileSystemAssetName)),
-                "Container data matches source after verification/repair");
-            await Click(button("readButton"), mouse);
-            await Until(() => text("resultText").text.Contains("65536"), 5000, "Read repaired or healthy binary contents");
-            Require(text("resultText").text.Contains("00-01-02-03-04-05-06-07")
-                && text("resultText").text.Contains(System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(cacheFixture.DiskAssetName))),
-                "GUI shows verified binary bytes and original UTF-8 message");
-            await Screenshot("resource-cache-ready-" + mode);
-            return;
-        }
-        if (name == "UpdateRemoteResources")
-        {
-            Require(!QGF.Base.EditorResourceMode && resource.ResourceMode == ResourceMode.Updatable, "Uses real Updatable backend");
-            Require(ResourceExamplePaths.Fixture != null && Directory.GetFiles(resource.ReadOnlyPath).Length == 0,
-                "Fresh empty read-only area, not the prebuilt Package");
-            var updateFixture = ResourceExamplePaths.Fixture;
-            dropdown("verifyMode").value = mode;
-            if (mode == 2) await Click(toggle("ignoreVariantToggle"), mouse);
-            await Click(button("versionButton"), mouse);
-            await Until(() => Field<bool>(example, "versionReady"), 10000, "HTTP version list download and CRC");
-            Require(resource.CheckVersionList(updateFixture.ResourceVersion) == CheckVersionListResult.Updated, "Downloaded version is current");
-            await Click(button("checkButton"), mouse);
-            await Until(() => Field<bool>(example, "checkedResources"), 10000, "Resource check entry " + mode);
-            Require(resource.UpdateCandidateCount == 3 && resource.GetResourceGroup().ReadyCount == 0,
-                "Three real resources missing from fresh writable cache");
-            var allGroups = Field<IResourceGroupCollection>(example, "allGroups");
-            Require(!allGroups.Ready && allGroups.ReadyCompressedLength == 0 && allGroups.TotalCompressedLength > 0,
-                "Merged groups start unready with zero completed compressed bytes");
-            await Until(() => text("groupsText").text.Contains("合并 Base + Data：准备中")
-                && text("groupsText").text.Contains($"进度 {allGroups.Progress:P0}"), 2000,
-                "Live merged group preparation status is visible before download");
-            Require(mode == 0 || Field<bool>(example, "verificationPassed"), "Optional local verification entry " + mode);
-            if (mode != 0)
-            {
-                dropdown("groupMode").value = mode == 1 ? 1 : 0;
-                await Click(toggle("failureToggle"), mouse);
-                int before = Field<ResourceHttpServer>(example, "server").Requests;
-                await Click(button("updateButton"), mouse);
-                await Until(() => !Field<bool>(example, "updating"), 20000, "Exhausted retries finish group update");
-                await Until(() => text("transferText").text.Contains("1/1"), 2000, "Final failure event retry counter");
-                Require(text("stateText").text.Contains("更新失败") && resource.UpdateCandidateCount == 3,
-                    "Failed last task returns false and leaves resources available for retry");
-                Require(Field<ResourceHttpServer>(example, "server").Requests - before == (mode == 1 ? 2 : 6),
-                    "One initial attempt and one automatic retry per resource");
-                await Screenshot("resource-update-failure-" + mode);
-                await Click(toggle("failureToggle"), mouse);
-            }
-            else
-            {
-                await Click(button("updateButton"), mouse);
-                await Until(() => QGF.Download.WorkingAgentCount > 0, 3000, "First resource download started");
-                await Click(button("stopButton"), mouse);
-                Require(!Field<bool>(example, "updating") && resource.UpdateWaitingCount == 0,
-                    "Stop clears scheduled group without its completion callback");
-                await Until(() => QGF.Download.WorkingAgentCount == 0, 10000, "In-flight file continues after stopping");
-                Require(resource.GetResourceGroup().ReadyCount > 0 && resource.UpdateCandidateCount > 0,
-                    "Current files finish; unstarted resources remain for the next update");
-            }
-            await Click(button("updateButton"), mouse);
-            await Until(() => !Field<bool>(example, "updating"), 15000, "Resume/retry resource download");
-            Require(resource.GetResourceGroup(mode == 1 ? "Base" : "").Ready && text("stateText").text.Contains("更新完成"),
-                "Selected group ready after real HTTP download");
-            if (mode == 1) Require(!resource.GetResourceGroup("Data").Ready && resource.UpdateCandidateCount == 2,
-                "Base can be used before Data downloads");
-            if (mode == 1)
-            {
-                Require(ReferenceEquals(allGroups, Field<IResourceGroupCollection>(example, "allGroups"))
-                    && !allGroups.Ready && allGroups.ReadyCount == 1
-                    && allGroups.ReadyCompressedLength == resource.GetResourceGroup("Base").ReadyCompressedLength,
-                    "Retained group collection reflects partial Base-only readiness without rebuilding");
-                await Until(() => text("groupsText").text.Contains($"合并 Base + Data：准备中，进度 {allGroups.Progress:P0}"),
-                    2000, "Partial merged progress appears in UI");
-            }
-            await Click(button("loadButton"), mouse);
-            await Until(() => Field<GameObject>(example, "instance") != null, 6000, "Cube loaded from downloaded bundle");
-            Require(Field<GameObject>(example, "instance").GetComponent<Renderer>().sharedMaterial.shader.isSupported,
-                "Downloaded bundle contains supported URP material");
-            await Screenshot("resource-update-loaded-" + mode);
-            if (mode == 1)
-            {
-                dropdown("groupMode").value = 2;
-                await Click(button("updateButton"), mouse);
-                await Until(() => !Field<bool>(example, "updating"), 15000, "Data group download");
-            }
-            Require(resource.GetResourceGroup().Ready && resource.UpdateCandidateCount == 0,
-                "All resources ready; updater is safely retired");
-            Require(allGroups.Ready && allGroups.ReadyCompressedLength == allGroups.TotalCompressedLength && allGroups.Progress == 1,
-                "Merged groups become fully ready after remaining Data resources finish");
-            await Until(() => text("groupsText").text.Contains("合并 Base + Data：已就绪")
-                && text("groupsText").text.Contains("进度 100%"),
-                2000, "Completed merged group status is visible");
-            Require(resource.LoadBinaryFromFileSystem(updateFixture.FileSystemAssetName).SequenceEqual(File.ReadAllBytes(updateFixture.FileSystemAssetName)),
-                "HTTP downloaded binary file system matches original bytes");
-            await Until(() => !button("updateButton").interactable && !button("stopButton").interactable,
-                2000, "Ready groups prevent duplicate update calls");
-            return;
-        }
-        Require(!QGF.Base.EditorResourceMode && resource.ResourceMode == ResourceMode.Package, "Uses real Package backend");
-        Require(ResourceExamplePaths.Fixture != null, "Fixture built for this Unity version and imported asset paths");
-        Require(resource.ReadOnlyPath.StartsWith(ResourceExamplePaths.BuildRoot) && resource.ReadWritePath.StartsWith(ResourceExamplePaths.BuildRoot),
-            "Read-only and write paths isolated under Library before agent creation");
-        await Click(button("initializeButton"), mouse);
-        await Until(() => Field<bool>(example, "initialized"), 10000, "Real version list initialization");
-        Require(resource.AssetCount == 3 && resource.ResourceCount == 3 && !button("initializeButton").interactable,
-            "Version list reports three real resources and prevents double initialization");
-        var fixture = ResourceExamplePaths.Fixture;
         if (name == "LoadResourcePackage")
         {
+            await Click(button("initializeButton"), mouse);
+            await Until(() => Field<bool>(example, "initialized"), 10000, "Package initialized");
             await Click(button("loadButton"), mouse);
-            await Until(() => Field<GameObject>(example, "asset") != null, 6000, "Cube asset loads from Package");
-            var asset = Field<GameObject>(example, "asset");
-            var instance = Field<GameObject>(example, "instance");
-            Require(asset != instance && instance != null && asset.name == "Cube",
-                "Loaded prefab asset and instantiated scene object are distinct");
-            Require(instance.GetComponent<Renderer>().sharedMaterial.shader.isSupported,
-                "Package Cube uses a supported shader");
-            await Screenshot("resource-package-loaded");
+            await Until(() => Field<YooAsset.AssetHandle>(example, "handle") != null, 10000, "Explicit handle acquired");
+            var handle = Field<YooAsset.AssetHandle>(example, "handle");
+            Require(handle.IsValid && handle.AssetObject != Field<GameObject>(example, "instance"), "Asset and scene instance are distinct");
+            await Click(button("initializeButton"), mouse);
+            Require(Field<bool>(example, "initialized") && handle.IsValid, "Destroying a package with an active handle is rejected");
+            await Screenshot("resource-package-handle");
             await Click(button("releaseButton"), mouse);
-            await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "releasing"),
-                4000, "Instance is destroyed before its asset reference is released");
-            Require(Field<GameObject>(example, "instance") == null && button("loadButton").interactable,
-                "Package asset can be loaded again after release");
-            Require(resource.HasAsset(fixture.PrefabAssetName) == HasAssetResult.AssetOnDisk && resource.HasAsset("Assets/DoesNotExist.prefab") == HasAssetResult.NotExist,
-                "HasAsset distinguishes real and missing resources");
+            await Until(() => Field<YooAsset.AssetHandle>(example, "handle") == null, 4000, "Explicit handle released");
+            Require(Field<GameObject>(example, "instance") == null, "Instance destroyed before releasing the handle");
+            await Click(button("initializeButton"), mouse);
+            await Until(() => !Field<bool>(example, "initialized"), 10000, "Package destroyed after release");
+            await Click(button("initializeButton"), mouse);
+            await Until(() => Field<bool>(example, "initialized"), 10000, "Destroyed package can initialize again");
+            return;
         }
-        else if (name == "ReadBinaryResource")
+        if (name == "ReadBinaryResource")
         {
-            byte[] original = File.ReadAllBytes(fixture.FileSystemAssetName), disk = File.ReadAllBytes(fixture.DiskAssetName);
+            await Click(button("initializeButton"), mouse);
+            await Until(() => Field<bool>(example, "initialized"), 10000, "Raw package initialized");
             await Click(button("readButton"), mouse);
-            byte[] segment = Field<byte[]>(example, "result");
-            Require(segment.SequenceEqual(original.Skip(8).Take(16)), "File-system segment starts at the requested source offset");
-            Require(text("bytesText").text.Contains("16 字节"), "Segment length is displayed");
-            Require(resource.GetBinaryLength(fixture.FileSystemAssetName) == original.Length
-                && resource.GetBinaryPath(fixture.FileSystemAssetName, out bool readOnly, out bool fileSystem, out _, out _)
-                && readOnly && fileSystem && resource.GetBinaryPath(fixture.FileSystemAssetName) == null,
-                "File-system binary reports storage metadata without exposing a direct disk path");
-            Require(resource.GetBinaryLength(fixture.DiskAssetName) == disk.Length
-                && resource.GetBinaryPath(fixture.DiskAssetName) != null,
-                "Disk binary reports its length and direct path");
-            Require(resource.HasAsset(fixture.FileSystemAssetName) == HasAssetResult.BinaryOnFileSystem
-                && resource.HasAsset(fixture.DiskAssetName) == HasAssetResult.BinaryOnDisk, "Binary storage kinds reported accurately");
+            await Until(() => Field<byte[]>(example, "result") != null, 10000, "Raw bytes read through QGF");
+            byte[] original = File.ReadAllBytes("Assets/Examples/01_Modules/12_Resource/Common/Art/Archive.bytes");
+            Require(Field<byte[]>(example, "result").SequenceEqual(original.Skip(8).Take(16)), "Exact raw file segment at offset 8");
             await Screenshot("resource-binary");
+            return;
         }
+        if (name != "UpdateRemoteResources")
+        {
+            throw new NotSupportedException("Missing resource example checks: " + name);
+        }
+
+        var server = Field<ResourceHttpServer>(example, "server");
+        Require(server != null, "Local HTTP resource fixture is available");
+        toggle("autoLoadToggle").isOn = false;
+        dropdown("groupMode").value = 1;
+        await Click(button("versionButton"), mouse);
+        await Until(() => Field<YooAsset.ResourcePackage>(example, "package") != null && !Field<bool>(example, "busy"), 15000,
+            "Host package version and manifest initialized");
+        var package = Field<YooAsset.ResourcePackage>(example, "package");
+        Require(package.GetAssetInfos("Base").Length > 0 && package.GetAssetInfos("Data").Length > 0, "Manifest preserves Collector tags");
+        Require(package.GetDownloadSize(ResourceExamplePaths.RemoteCubeAddress) > 0, "Initialization does not download Cube bundles");
+        if (mode == 1)
+        {
+            int previousHttpErrors = expectedHttpErrors.Count;
+            await Click(toggle("failureToggle"), mouse);
+            expectedHttpErrorPrefix = server.Url + "/";
+            try
+            {
+                await Click(button("updateButton"), mouse);
+                await Until(() => !Field<bool>(example, "busy"), 25000, "404 download attempt ends");
+            }
+            finally
+            {
+                expectedHttpErrorPrefix = null;
+            }
+            Require(expectedHttpErrors.Count > previousHttpErrors, "Injected 404 is reported by YooAsset");
+            Require(Field<YooAsset.ResourceDownloaderOperation>(example, "downloader").Status == YooAsset.EOperationStatus.Failed
+                && text("stateText").text.Contains("下载失败"), "404 failure is visible and retry remains available");
+            await Click(toggle("failureToggle"), mouse);
+        }
+        else if (mode == 2)
+        {
+            await Click(button("updateButton"), mouse);
+            Require(!Field<YooAsset.ResourceDownloaderOperation>(example, "downloader").IsDone, "Download is pending before cancellation");
+            await Click(button("stopButton"), mouse);
+            await Until(() => !Field<bool>(example, "busy"), 10000, "Cancelled download completes");
+            Require(Field<bool>(example, "cancelled") && text("stateText").text.Contains("已取消"), "Cancellation is visible and retry remains available");
+        }
+        await Click(button("updateButton"), mouse);
+        await Until(() => !Field<bool>(example, "busy"), 25000, "Base tag download completes");
+        var baseDownload = Field<YooAsset.ResourceDownloaderOperation>(example, "downloader");
+        Require(baseDownload.Status == YooAsset.EOperationStatus.Succeeded && baseDownload.TotalDownloadCount > 0, "Base tag downloads missing files");
+        Require(package.GetDownloadSize(ResourceExamplePaths.RemoteCubeAddress) == 0, "Cube is cached after Base download");
+        Require(package.GetAssetInfos("Data").Any(info => package.GetDownloadSize(info.AssetPath) > 0), "Data tag remains undownloaded");
+        await Click(button("loadButton"), mouse);
+        await Until(() => Field<GameObject>(example, "instance") != null && !Field<bool>(example, "busy"), 10000, "Address loads the downloaded Cube");
+        await Screenshot("resource-host-" + mode);
+        await Click(button("checkButton"), mouse);
+        await Until(() => Field<GameObject>(example, "asset") == null && !Field<bool>(example, "busy"), 10000, "Instance and borrowed asset released");
+        await Click(button("updateButton"), mouse);
+        await Until(() => !Field<bool>(example, "busy"), 10000, "Cached Base download completes");
+        Require(Field<YooAsset.ResourceDownloaderOperation>(example, "downloader").TotalDownloadCount == 0, "Memory cleanup preserves the disk cache");
+        dropdown("groupMode").value = 2;
+        await Click(button("updateButton"), mouse);
+        await Until(() => !Field<bool>(example, "busy"), 25000, "Data tag downloads separately");
+        Require(Field<YooAsset.ResourceDownloaderOperation>(example, "downloader").Status == YooAsset.EOperationStatus.Succeeded,
+            "Data tag succeeds");
+        dropdown("groupMode").value = 0;
+        await Click(button("updateButton"), mouse);
+        await Until(() => !Field<bool>(example, "busy"), 10000, "All-tags cache check completes");
+        Require(Field<YooAsset.ResourceDownloaderOperation>(example, "downloader").TotalDownloadCount == 0, "All tags are cached");
     }
 
-    private static T Field<T>(object instance, string name) => (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(instance);
+    private static T Field<T>(object instance, string name)
+    {
+        return (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(instance);
+    }
 
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {

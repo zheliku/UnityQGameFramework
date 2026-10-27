@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,10 +10,17 @@ namespace UnityQGameFramework.Core
 {
     public static partial class ReferencePool
     {
+        /// <summary>
+        /// 初始化指定类型的引用集合。
+        /// </summary>
         private sealed class ReferenceCollection
         {
             private readonly Queue<IReference> m_References;
 
+            /// <summary>
+            /// 初始化指定类型的引用集合。
+            /// </summary>
+            /// <param name="referenceType">引用对象类型。</param>
             public ReferenceCollection(Type referenceType)
             {
                 m_References = new Queue<IReference>();
@@ -25,20 +32,52 @@ namespace UnityQGameFramework.Core
                 RemoveReferenceCount = 0;
             }
 
+            /// <summary>
+            /// 获取引用对象类型。
+            /// </summary>
             public Type ReferenceType { get; }
 
-            public int UnusedReferenceCount => m_References.Count;
+            /// <summary>
+            /// 获取闲置引用数量。
+            /// </summary>
+            public int UnusedReferenceCount
+            {
+                get
+                {
+                    return m_References.Count;
+                }
+            }
 
+            /// <summary>
+            /// 获取正在使用的引用数量。
+            /// </summary>
             public int UsingReferenceCount { get; private set; }
 
+            /// <summary>
+            /// 获取累计获取引用次数。
+            /// </summary>
             public int AcquireReferenceCount { get; private set; }
 
+            /// <summary>
+            /// 获取累计归还引用次数。
+            /// </summary>
             public int ReleaseReferenceCount { get; private set; }
 
+            /// <summary>
+            /// 获取累计创建引用数量。
+            /// </summary>
             public int AddReferenceCount { get; private set; }
 
+            /// <summary>
+            /// 获取累计移除引用数量。
+            /// </summary>
             public int RemoveReferenceCount { get; private set; }
 
+            /// <summary>
+            /// 获取引用，集合为空时创建新引用。
+            /// </summary>
+            /// <typeparam name="T">引用对象类型。</typeparam>
+            /// <returns>可使用的引用对象。</returns>
             public T Acquire<T>() where T : class, IReference, new()
             {
                 if (typeof(T) != ReferenceType)
@@ -60,6 +99,10 @@ namespace UnityQGameFramework.Core
                 return new T();
             }
 
+            /// <summary>
+            /// 获取引用，集合为空时创建新引用。
+            /// </summary>
+            /// <returns>可使用的引用对象。</returns>
             public IReference Acquire()
             {
                 UsingReferenceCount++;
@@ -76,6 +119,10 @@ namespace UnityQGameFramework.Core
                 return (IReference)Activator.CreateInstance(ReferenceType);
             }
 
+            /// <summary>
+            /// 清理引用并归还到集合。
+            /// </summary>
+            /// <param name="reference">要归还的引用对象。</param>
             public void Release(IReference reference)
             {
                 reference.Clear();
@@ -93,6 +140,11 @@ namespace UnityQGameFramework.Core
                 UsingReferenceCount--;
             }
 
+            /// <summary>
+            /// 向集合预先添加引用对象。
+            /// </summary>
+            /// <typeparam name="T">引用对象类型。</typeparam>
+            /// <param name="count">要创建的引用数量。</param>
             public void Add<T>(int count) where T : class, IReference, new()
             {
                 if (typeof(T) != ReferenceType)
@@ -110,6 +162,10 @@ namespace UnityQGameFramework.Core
                 }
             }
 
+            /// <summary>
+            /// 向集合预先添加引用对象。
+            /// </summary>
+            /// <param name="count">要创建的引用数量。</param>
             public void Add(int count)
             {
                 lock (m_References)
@@ -122,6 +178,10 @@ namespace UnityQGameFramework.Core
                 }
             }
 
+            /// <summary>
+            /// 从集合移除闲置引用。
+            /// </summary>
+            /// <param name="count">要移除的引用数量。</param>
             public void Remove(int count)
             {
                 lock (m_References)
@@ -139,6 +199,9 @@ namespace UnityQGameFramework.Core
                 }
             }
 
+            /// <summary>
+            /// 移除集合中的所有闲置引用。
+            /// </summary>
             public void RemoveAll()
             {
                 lock (m_References)

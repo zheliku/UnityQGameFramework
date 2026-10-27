@@ -39,6 +39,11 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <returns>循环访问数据表的枚举数。</returns>
         public abstract IEnumerator<T> GetEnumerator();
+
+        /// <summary>
+        /// 获取数据表记录的枚举器。
+        /// </summary>
+        /// <returns>按当前表顺序遍历记录的枚举器。</returns>
         protected override IEnumerator GetRowEnumerator()
         {
             return GetEnumerator();
@@ -192,6 +197,11 @@ namespace UnityQGameFramework.Core.DataTable
             Collect(null, results);
         }
 
+        /// <summary>
+        /// 收集满足条件的数据行。
+        /// </summary>
+        /// <param name="condition">数据行筛选条件；为空时收集所有数据行。</param>
+        /// <param name="results">接收数据行的列表，填充前会清空。</param>
         private void Collect(Predicate<T> condition, List<T> results)
         {
             if (results == null)

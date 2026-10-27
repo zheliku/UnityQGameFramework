@@ -88,6 +88,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 连接资源模块并创建配置辅助器。
+        /// </summary>
         private void Start()
         {
             BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
@@ -376,22 +379,42 @@ namespace UnityQGameFramework.Runtime
             m_ConfigManager.RemoveAllConfigs();
         }
 
+        /// <summary>
+        /// 派发配置读取成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataSuccess(object sender, ReadDataSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, LoadConfigSuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 记录配置读取失败并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataFailure(object sender, ReadDataFailureEventArgs e)
         {
             Log.Warning("Load config failure, asset name '{0}', error message '{1}'.", e.DataAssetName, e.ErrorMessage);
             m_EventComponent.Fire(this, LoadConfigFailureEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发配置读取进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataUpdate(object sender, ReadDataUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadConfigUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发配置依赖资源加载事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataDependencyAsset(object sender, ReadDataDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, LoadConfigDependencyAssetEventArgs.Create(e));

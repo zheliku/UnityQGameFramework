@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,12 +9,18 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制场景组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(SceneComponent))]
     internal sealed class SceneComponentInspector : FrameworkInspector
     {
         private SerializedProperty m_EnableLoadSceneUpdateEvent = null;
         private SerializedProperty m_EnableLoadSceneDependencyAssetEvent = null;
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -43,12 +49,20 @@ namespace UnityQGameFramework.Editor
             }
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
             m_EnableLoadSceneUpdateEvent = serializedObject.FindProperty("m_EnableLoadSceneUpdateEvent");
             m_EnableLoadSceneDependencyAssetEvent = serializedObject.FindProperty("m_EnableLoadSceneDependencyAssetEvent");
         }
 
+        /// <summary>
+        /// 生成场景资源名称的显示文本。
+        /// </summary>
+        /// <param name="sceneAssetNames">场景资源名称数组。</param>
+        /// <returns>场景名称列表文本。</returns>
         private string GetSceneNameString(string[] sceneAssetNames)
         {
             if (sceneAssetNames == null || sceneAssetNames.Length <= 0)

@@ -110,6 +110,9 @@ namespace UnityQGameFramework.Runtime
             m_ResourceComponent.UnloadAsset(asset);
         }
 
+        /// <summary>
+        /// 获取配置资源加载所需的资源组件。
+        /// </summary>
         private void Start()
         {
             m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();

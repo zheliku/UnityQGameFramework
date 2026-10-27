@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -16,6 +16,9 @@ namespace UnityQGameFramework.Core.Entity
         {
             private List<IEntity> m_ChildEntities;
 
+            /// <summary>
+            /// 初始化可复用的实体关系记录。
+            /// </summary>
             public EntityInfo()
             {
                 Entity = null;
@@ -24,14 +27,37 @@ namespace UnityQGameFramework.Core.Entity
                 m_ChildEntities = new List<IEntity>();
             }
 
+            /// <summary>
+            /// 获取当前实体。
+            /// </summary>
             public IEntity Entity { get; private set; }
 
+            /// <summary>
+            /// 获取或设置实体生命周期状态。
+            /// </summary>
             public EntityStatus Status { get; set; }
 
+            /// <summary>
+            /// 获取或设置父实体。
+            /// </summary>
             public IEntity ParentEntity { get; set; }
 
-            public int ChildEntityCount => m_ChildEntities.Count;
+            /// <summary>
+            /// 获取当前子实体数量。
+            /// </summary>
+            public int ChildEntityCount
+            {
+                get
+                {
+                    return m_ChildEntities.Count;
+                }
+            }
 
+            /// <summary>
+            /// 从引用池取得记录并绑定实体。
+            /// </summary>
+            /// <param name="entity">要记录的实体。</param>
+            /// <returns>持有指定实体的关系记录。</returns>
             public static EntityInfo Create(IEntity entity)
             {
                 if (entity == null)
@@ -45,6 +71,9 @@ namespace UnityQGameFramework.Core.Entity
                 return entityInfo;
             }
 
+            /// <summary>
+            /// 清除实体、父子关系和状态，供引用池复用。
+            /// </summary>
             public void Clear()
             {
                 Entity = null;
@@ -53,16 +82,28 @@ namespace UnityQGameFramework.Core.Entity
                 m_ChildEntities.Clear();
             }
 
+            /// <summary>
+            /// 获取第一个子实体。
+            /// </summary>
+            /// <returns>第一个子实体；没有子实体时返回空。</returns>
             public IEntity GetChildEntity()
             {
                 return m_ChildEntities.Count > 0 ? m_ChildEntities[0] : null;
             }
 
+            /// <summary>
+            /// 获取全部子实体。
+            /// </summary>
+            /// <returns>当前子实体的数组副本。</returns>
             public IEntity[] GetChildEntities()
             {
                 return m_ChildEntities.ToArray();
             }
 
+            /// <summary>
+            /// 获取全部子实体。
+            /// </summary>
+            /// <param name="results">接收子实体的列表，填充前会清空。</param>
             public void GetChildEntities(List<IEntity> results)
             {
                 if (results == null)
@@ -77,6 +118,10 @@ namespace UnityQGameFramework.Core.Entity
                 }
             }
 
+            /// <summary>
+            /// 登记子实体关系，拒绝重复登记。
+            /// </summary>
+            /// <param name="childEntity">要添加的子实体。</param>
             public void AddChildEntity(IEntity childEntity)
             {
                 if (m_ChildEntities.Contains(childEntity))
@@ -87,6 +132,10 @@ namespace UnityQGameFramework.Core.Entity
                 m_ChildEntities.Add(childEntity);
             }
 
+            /// <summary>
+            /// 移除已登记的子实体关系。
+            /// </summary>
+            /// <param name="childEntity">要移除的子实体。</param>
             public void RemoveChildEntity(IEntity childEntity)
             {
                 if (!m_ChildEntities.Remove(childEntity))

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -24,7 +24,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取变量类型。
         /// </summary>
-        public override Type Type => typeof(T);
+        public override Type Type
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
 
         /// <summary>
         /// 获取或设置变量值。

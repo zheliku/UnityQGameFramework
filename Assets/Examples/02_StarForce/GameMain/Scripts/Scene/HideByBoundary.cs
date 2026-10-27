@@ -8,6 +8,9 @@ using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 隐藏离开可见范围的实体。
+    /// </summary>
     public class HideByBoundary : MonoBehaviour
     {
         private void OnTriggerExit(Collider other)

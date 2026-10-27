@@ -54,7 +54,7 @@ public static class ValidatePointGame
             inputSettings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             inputSettings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
             testMouse = InputSystem.AddDevice<Mouse>();
-            EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath("f99fe5fffa1724e4ab21a8936d44ab7e"));
+            EditorSceneManager.OpenScene("Assets/Examples/00_PointPointPoint/GameMain/Scenes/PointPointPoint.unity");
             await Play(true);
             foreach (var pointer in InputSystem.devices.OfType<UnityEngine.InputSystem.Pointer>().Where(device => device != testMouse && device.enabled).ToArray())
             {
@@ -68,7 +68,7 @@ public static class ValidatePointGame
             gameView.Focus();
             object game = Get(view, "Game");
             Require(GameEntry.GetComponent<BaseComponent>().gameObject.name == "QGF"
-                && GameEntry.GetComponent<BaseComponent>().GetComponent<PointGameResources>() != null, "QGF root and sample resource paths");
+                && (string)Get(game, "FormAsset") == "Assets/Examples/00_PointPointPoint/GameMain/UI/UIForms/PointGameView.prefab", "QGF root and sample resource paths");
             Require(QGF.Procedure.CurrentProcedure is PointGameMenu, "Actual menu procedure");
             Require((int)Get(game, "TargetCount") == 10 && (float)Get(game, "Duration") == 20, "Rules read from TOML");
             QGF.Setting.RemoveAllSettings();

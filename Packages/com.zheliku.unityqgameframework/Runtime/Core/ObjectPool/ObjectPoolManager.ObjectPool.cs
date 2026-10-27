@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -56,12 +56,24 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// <summary>
             /// 获取对象池对象类型。
             /// </summary>
-            public override Type ObjectType => typeof(T);
+            public override Type ObjectType
+            {
+                get
+                {
+                    return typeof(T);
+                }
+            }
 
             /// <summary>
             /// 获取对象池中对象的数量。
             /// </summary>
-            public override int Count => m_ObjectMap.Count;
+            public override int Count
+            {
+                get
+                {
+                    return m_ObjectMap.Count;
+                }
+            }
 
             /// <summary>
             /// 获取对象池中能被释放的对象的数量。
@@ -78,15 +90,27 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// <summary>
             /// 获取是否允许对象被多次获取。
             /// </summary>
-            public override bool AllowMultiSpawn => m_AllowMultiSpawn;
+            public override bool AllowMultiSpawn
+            {
+                get
+                {
+                    return m_AllowMultiSpawn;
+                }
+            }
 
             /// <summary>
             /// 获取或设置对象池自动释放可释放对象的间隔秒数。
             /// </summary>
             public override float AutoReleaseInterval
             {
-                get => m_AutoReleaseInterval;
-                set => m_AutoReleaseInterval = value;
+                get
+                {
+                    return m_AutoReleaseInterval;
+                }
+                set
+                {
+                    m_AutoReleaseInterval = value;
+                }
             }
 
             /// <summary>
@@ -147,8 +171,14 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// </summary>
             public override int Priority
             {
-                get => m_Priority;
-                set => m_Priority = value;
+                get
+                {
+                    return m_Priority;
+                }
+                set
+                {
+                    m_Priority = value;
+                }
             }
 
             /// <summary>
@@ -501,6 +531,11 @@ namespace UnityQGameFramework.Core.ObjectPool
                 return results.ToArray();
             }
 
+            /// <summary>
+            /// 更新对象池的自动释放计时。
+            /// </summary>
+            /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             internal override void Update(float elapseSeconds, float realElapseSeconds)
             {
                 m_AutoReleaseTime += realElapseSeconds;
@@ -512,6 +547,9 @@ namespace UnityQGameFramework.Core.ObjectPool
                 Release();
             }
 
+            /// <summary>
+            /// 释放对象池中的所有对象。
+            /// </summary>
             internal override void Shutdown()
             {
                 foreach (KeyValuePair<object, Object<T>> objectInMap in m_ObjectMap)
@@ -526,6 +564,11 @@ namespace UnityQGameFramework.Core.ObjectPool
                 m_CachedToReleaseObjects.Clear();
             }
 
+            /// <summary>
+            /// 获取目标对象对应的池内登记条目。
+            /// </summary>
+            /// <param name="target">被池管理的实际对象。</param>
+            /// <returns>对应的登记条目；未登记时返回空。</returns>
             private Object<T> GetObject(object target)
             {
                 if (target == null)
@@ -542,6 +585,10 @@ namespace UnityQGameFramework.Core.ObjectPool
                 return null;
             }
 
+            /// <summary>
+            /// 收集当前允许释放的对象。
+            /// </summary>
+            /// <param name="results">接收可释放对象的列表，填充前会清空。</param>
             private void GetCanReleaseObjects(List<T> results)
             {
                 if (results == null)
@@ -562,6 +609,13 @@ namespace UnityQGameFramework.Core.ObjectPool
                 }
             }
 
+            /// <summary>
+            /// 按过期时间和优先级筛选要释放的对象。
+            /// </summary>
+            /// <param name="candidateObjects">候选对象列表；筛选时会移除过期对象并调整顺序。</param>
+            /// <param name="toReleaseCount">期望释放的对象数量；过期对象不受此数量限制。</param>
+            /// <param name="expireTime">过期时间阈值；最后使用时间不晚于此值的对象视为过期。</param>
+            /// <returns>要释放的对象列表；使用内部缓存，下次筛选时会重用。</returns>
             private List<T> DefaultReleaseObjectFilterCallback(List<T> candidateObjects, int toReleaseCount, DateTime expireTime)
             {
                 m_CachedToReleaseObjects.Clear();

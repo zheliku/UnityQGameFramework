@@ -11,12 +11,16 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 620342455f6933f40915a27cbdb5a51e, type: 3}
   m_Name: ResourceSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_DefaultPackageName: QgfExamples.StarForce
-  m_UseEditorSimulation: 1
+  m_EditorCollector: {fileID: 11400000, guid: 92a7d660c7eb44588c0d970e622ba2a2, type: 2}
+  m_SerializationVersion: 3
+  m_CachePathType: 2
+  m_MinUnloadUnusedAssetsInterval: 60
+  m_MaxUnloadUnusedAssetsInterval: 300
   m_Packages:
   - m_Name: QgfExamples.StarForce
-    m_PlayMode: 1
-    m_HostServer: 
-    m_FallbackServer: 
-    m_PackageVersion: 
+    m_Mode: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:

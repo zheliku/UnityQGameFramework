@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -27,7 +27,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取界面实例。
         /// </summary>
-        public object Handle => gameObject;
+        public object Handle
+        {
+            get
+            {
+                return gameObject;
+            }
+        }
 
         /// <summary>
         /// 获取界面所属的界面组。

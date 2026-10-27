@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -7,6 +7,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 按时间窗口统计平均帧率。
+        /// </summary>
         private sealed class FpsCounter
         {
             private float m_UpdateInterval;
@@ -14,6 +17,10 @@ namespace UnityQGameFramework.Runtime
             private float m_Accumulator;
             private float m_TimeLeft;
 
+            /// <summary>
+            /// 初始化帧率计数器。
+            /// </summary>
+            /// <param name="updateInterval">帧率刷新间隔，以秒为单位。</param>
             public FpsCounter(float updateInterval)
             {
                 if (updateInterval <= 0f)
@@ -26,6 +33,9 @@ namespace UnityQGameFramework.Runtime
                 Reset();
             }
 
+            /// <summary>
+            /// 获取或设置帧率刷新间隔，以秒为单位。
+            /// </summary>
             public float UpdateInterval
             {
                 get
@@ -45,8 +55,16 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 获取当前采样区间的平均帧率。
+            /// </summary>
             public float CurrentFps { get; private set; }
 
+            /// <summary>
+            /// 累计帧数并按间隔刷新帧率。
+            /// </summary>
+            /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
                 m_Frames++;
@@ -62,6 +80,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 重置帧率采样计数和计时。
+            /// </summary>
             private void Reset()
             {
                 CurrentFps = 0f;

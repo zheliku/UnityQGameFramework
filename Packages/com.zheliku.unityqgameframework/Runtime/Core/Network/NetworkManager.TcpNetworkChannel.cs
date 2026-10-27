@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -25,8 +25,7 @@ namespace UnityQGameFramework.Core.Network
             /// </summary>
             /// <param name="name">网络频道名称。</param>
             /// <param name="networkChannelHelper">网络频道辅助器。</param>
-            public TcpNetworkChannel(string name, INetworkChannelHelper networkChannelHelper)
-                : base(name, networkChannelHelper)
+            public TcpNetworkChannel(string name, INetworkChannelHelper networkChannelHelper) : base(name, networkChannelHelper)
             {
                 m_ConnectCallback = ConnectCallback;
                 m_SendCallback = SendCallback;
@@ -36,7 +35,13 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取网络服务类型。
             /// </summary>
-            public override ServiceType ServiceType => ServiceType.Tcp;
+            public override ServiceType ServiceType
+            {
+                get
+                {
+                    return ServiceType.Tcp;
+                }
+            }
 
             /// <summary>
             /// 连接到远程主机。
@@ -64,6 +69,10 @@ namespace UnityQGameFramework.Core.Network
                 ConnectAsync(ipAddress, port, userData);
             }
 
+            /// <summary>
+            /// 准备并异步发送消息包数据。
+            /// </summary>
+            /// <returns>是否已开始发送数据。</returns>
             protected override bool ProcessSend()
             {
                 if (base.ProcessSend())
@@ -75,6 +84,12 @@ namespace UnityQGameFramework.Core.Network
                 return false;
             }
 
+            /// <summary>
+            /// 异步连接到远程服务器。
+            /// </summary>
+            /// <param name="ipAddress">服务器 IP 地址。</param>
+            /// <param name="port">服务器端口。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void ConnectAsync(IPAddress ipAddress, int port, object userData)
             {
                 try
@@ -94,6 +109,10 @@ namespace UnityQGameFramework.Core.Network
                 }
             }
 
+            /// <summary>
+            /// 完成异步连接并通知连接结果。
+            /// </summary>
+            /// <param name="ar">异步连接结果。</param>
             private void ConnectCallback(IAsyncResult ar)
             {
                 ConnectState socketUserData = (ConnectState)ar.AsyncState;
@@ -120,14 +139,12 @@ namespace UnityQGameFramework.Core.Network
 
                 m_SentPacketCount = 0;
                 m_ReceivedPacketCount = 0;
-
                 lock (m_SendPacketPool)
                 {
                     m_SendPacketPool.Clear();
                 }
 
                 m_ReceivePacketPool.Clear();
-
                 lock (m_HeartBeatState)
                 {
                     m_HeartBeatState.Reset(true);
@@ -142,6 +159,9 @@ namespace UnityQGameFramework.Core.Network
                 ReceiveAsync();
             }
 
+            /// <summary>
+            /// 继续异步发送缓冲区中的数据。
+            /// </summary>
             private void SendAsync()
             {
                 try
@@ -162,6 +182,10 @@ namespace UnityQGameFramework.Core.Network
                 }
             }
 
+            /// <summary>
+            /// 处理异步发送结果及未发送完的数据。
+            /// </summary>
+            /// <param name="ar">异步发送结果。</param>
             private void SendCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
@@ -200,6 +224,9 @@ namespace UnityQGameFramework.Core.Network
                 m_SendState.Reset();
             }
 
+            /// <summary>
+            /// 继续异步接收消息包头或包体。
+            /// </summary>
             private void ReceiveAsync()
             {
                 try
@@ -220,6 +247,10 @@ namespace UnityQGameFramework.Core.Network
                 }
             }
 
+            /// <summary>
+            /// 处理异步接收结果并推进消息解析。
+            /// </summary>
+            /// <param name="ar">异步接收结果。</param>
             private void ReceiveCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
@@ -260,7 +291,6 @@ namespace UnityQGameFramework.Core.Network
                 }
 
                 m_ReceiveState.Stream.Position = 0L;
-
                 bool processSuccess = false;
                 if (m_ReceiveState.PacketHeader != null)
                 {

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,8 +9,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 提供运行时常用调试操作。
+        /// </summary>
         private sealed class OperationsWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制运行时操作。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Operations</b>");

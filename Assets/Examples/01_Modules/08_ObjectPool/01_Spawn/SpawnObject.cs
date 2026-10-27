@@ -5,14 +5,19 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示借出与归还。
+    /// </summary>
     public sealed class SpawnObject : MonoBehaviour
     {
-        [SerializeField] private GameObject cubePrefab;
-        [SerializeField] private Button spawnButton, returnButton;
-        [SerializeField] private Text stateText;
+        [SerializeField]
+        private GameObject cubePrefab;
+        [SerializeField]
+        private Button spawnButton, returnButton;
+        [SerializeField]
+        private Text stateText;
         private IObjectPool<SpawnObjectItem> pool;
         private SpawnObjectItem borrowed;
-
         private void Start()
         {
             pool = QGF.ObjectPool.CreateSingleSpawnObjectPool<SpawnObjectItem>("Cubes");
@@ -39,7 +44,10 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // 销毁池会执行条目的 Release，最终销毁 Target。
             var manager = GameEntry.GetComponent<ObjectPoolComponent>();
-            if (manager != null && pool != null) manager.DestroyObjectPool(pool);
+            if (manager != null && pool != null)
+            {
+                manager.DestroyObjectPool(pool);
+            }
         }
     }
 }

@@ -1,50 +1,47 @@
 using System;
+using System.IO;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
     /// <summary>
-    /// 通过回调加载一个预制体资产并创建两个实例。
+    /// 异步加载一个预制体资产并创建两个实例。
     /// </summary>
     public sealed class LoadCubePrefab : MonoBehaviour
     {
         [SerializeField] private Text stateText, assetText, instancesText;
         [SerializeField] private Button removeButton, releaseButton;
-        [SerializeField] private string prefabGuid;
         private GameObject asset, first, second;
         private bool releasing;
 
-        private void Start()
+        private async void Start()
         {
             stateText.text = "正在加载预制体";
             removeButton.onClick.AddListener(() => Destroy(first));
             releaseButton.onClick.AddListener(Release);
             var resources = QGF.Resource;
-            // GUID 来自收集清单；LoadAsset 只借用资产，不创建实例。
-            resources.LoadAsset(prefabGuid, typeof(GameObject), new LoadAssetCallbacks(
-                (name, value, duration, userData) =>
-                {
-                    if (this == null)
-                    {
-                        resources.UnloadAsset(value);
-                        return;
-                    }
-                    asset = (GameObject)value;
-                    first = Instantiate(asset, new Vector3(2, -1, 0), Quaternion.Euler(20, 35, 0));
-                    second = Instantiate(asset, new Vector3(4, 1, 0), Quaternion.Euler(20, 35, 0));
-                    stateText.text = "一个资产，两个实例。销毁左边，观察右边是否还在。";
-                },
-                (name, status, message, userData) =>
-                {
-                    if (this != null)
-                    {
-                        stateText.text = "加载失败：" + message;
-                    }
-                }));
+            // 以当前场景目录拼出路径，兼容 Assets/Examples 和 Package Manager 的 Sample 导入目录。
+            string resourceDirectory = Path.GetDirectoryName(Path.GetDirectoryName(gameObject.scene.path));
+            string assetPath = resourceDirectory.Replace('\\', '/') + "/Common/Art/Cube.prefab";
+
+            try
+            {
+                // 异步加载会先确保默认包已初始化；本次借用保留到两个实例都销毁后再归还。
+                asset = await resources.LoadAssetAsync<GameObject>(assetPath, cancellationToken: destroyCancellationToken);
+                first = Instantiate(asset, new Vector3(2, -1, 0), Quaternion.Euler(20, 35, 0));
+                second = Instantiate(asset, new Vector3(4, 1, 0), Quaternion.Euler(20, 35, 0));
+                stateText.text = "一个资产，两个实例。销毁左边，观察右边是否还在。\n路径：" + assetPath;
+            }
+            catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                stateText.text = "加载失败：" + exception.Message;
+            }
         }
 
         private async void Release()
@@ -86,7 +83,14 @@ namespace UnityQGameFramework.Examples.Modules
             var resources = GameEntry.GetComponent<ResourceComponent>();
             if (resources != null && asset != null)
             {
-                resources.UnloadAsset(asset);
+                try
+                {
+                    resources.UnloadAsset(asset);
+                }
+                catch (OperationCanceledException)
+                {
+                    // 框架退出时资源后端可能已经关闭，借用会随资源服务一起清理。
+                }
             }
         }
     }

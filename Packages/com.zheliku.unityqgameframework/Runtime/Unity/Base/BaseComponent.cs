@@ -183,21 +183,26 @@ namespace UnityQGameFramework.Runtime
             Application.lowMemory += OnLowMemory;
         }
 
-        private void Start()
-        {
-        }
-
+        /// <summary>
+        /// 驱动框架各模块更新。
+        /// </summary>
         private void Update()
         {
             FrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
+        /// <summary>
+        /// 取消低内存回调并停止协程。
+        /// </summary>
         private void OnApplicationQuit()
         {
             Application.lowMemory -= OnLowMemory;
             StopAllCoroutines();
         }
 
+        /// <summary>
+        /// 关闭框架并清理组件登记。
+        /// </summary>
         private void OnDestroy()
         {
             Application.lowMemory -= OnLowMemory;
@@ -245,11 +250,17 @@ namespace UnityQGameFramework.Runtime
             GameSpeed = 1f;
         }
 
+        /// <summary>
+        /// 销毁框架根物体。
+        /// </summary>
         internal void Shutdown()
         {
             Destroy(gameObject);
         }
 
+        /// <summary>
+        /// 创建并注册文本辅助器。
+        /// </summary>
         private void InitTextHelper()
         {
             if (string.IsNullOrEmpty(m_TextHelperTypeName))
@@ -274,6 +285,9 @@ namespace UnityQGameFramework.Runtime
             Utility.Text.SetTextHelper(textHelper);
         }
 
+        /// <summary>
+        /// 创建并注册版本辅助器。
+        /// </summary>
         private void InitVersionHelper()
         {
             if (string.IsNullOrEmpty(m_VersionHelperTypeName))
@@ -296,6 +310,9 @@ namespace UnityQGameFramework.Runtime
             UnityQGameFramework.Core.Version.SetVersionHelper(versionHelper);
         }
 
+        /// <summary>
+        /// 创建并注册日志辅助器。
+        /// </summary>
         private void InitLogHelper()
         {
             if (string.IsNullOrEmpty(m_LogHelperTypeName))
@@ -318,6 +335,9 @@ namespace UnityQGameFramework.Runtime
             FrameworkLog.SetLogHelper(logHelper);
         }
 
+        /// <summary>
+        /// 创建并注册压缩辅助器。
+        /// </summary>
         private void InitCompressionHelper()
         {
             if (string.IsNullOrEmpty(m_CompressionHelperTypeName))
@@ -342,6 +362,9 @@ namespace UnityQGameFramework.Runtime
             Utility.Compression.SetCompressionHelper(compressionHelper);
         }
 
+        /// <summary>
+        /// 创建并注册 JSON 辅助器。
+        /// </summary>
         private void InitJsonHelper()
         {
             if (string.IsNullOrEmpty(m_JsonHelperTypeName))
@@ -366,6 +389,9 @@ namespace UnityQGameFramework.Runtime
             Utility.Json.SetJsonHelper(jsonHelper);
         }
 
+        /// <summary>
+        /// 释放闲置池对象并请求卸载未使用资源。
+        /// </summary>
         private void OnLowMemory()
         {
             Log.Info("Low memory reported...");

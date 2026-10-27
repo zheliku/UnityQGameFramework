@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,8 +9,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示定位服务的数据和状态。
+        /// </summary>
         private sealed class InputLocationInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制定位信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Input Location Information</b>");

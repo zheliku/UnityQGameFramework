@@ -32,10 +32,10 @@ public static class GitLubanInstallValidation
             Require(package.source == UnityEditor.PackageManager.PackageSource.Git, "Package did not resolve through UPM Git.");
             result.resolvedPath = package.resolvedPath;
             var profile = LubanSettings.instance.Profile;
-            Require(profile != null && AssetDatabase.GetAssetPath(profile) == LubanSettings.DefaultWorkspaceRoot + "/Editor/LubanProfile.asset", "Fresh install did not initialize its default global Profile.");
-            string source = AssetDatabase.GetAssetPath(profile.SourceFolder);
+            Require(profile != null && AssetDatabase.GetAssetPath(profile) == LubanSettings.DefaultWorkspaceRoot + "/LubanProfile.asset", "Fresh install did not initialize its default global Profile.");
+            string source = LubanGenerator.SourcePath(profile);
             foreach (string file in new[] { "__tables__", "__beans__", "__enums__" })
-                Require(File.Exists(source + "/Datas/" + file + ".xlsx"), "Excel schema template is missing: " + file);
+                Require(File.Exists(source + "/" + file + ".xlsx"), "Excel schema template is missing: " + file);
             Require(!File.Exists(LubanGenerator.DefaultGenerator) && string.IsNullOrEmpty(LubanGenerator.LocalGenerator), "First-generation compiler cache was not clean.");
             result.automaticWorkspace = true;
             Require(EditorApplication.ExecuteMenuItem("QGF/Generate Tables"), "Generate menu could not be invoked.");

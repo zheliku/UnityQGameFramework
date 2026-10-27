@@ -6,6 +6,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示从入口流程开始。
+    /// </summary>
     public sealed class ProcedureEntryExample : MonoBehaviour
     {
         [SerializeField] private Text currentText, elapsedText, enteredText;
@@ -21,8 +24,15 @@ namespace UnityQGameFramework.Examples.Modules
         }
     }
 
+    /// <summary>
+    /// 示例启动流程。
+    /// </summary>
     public sealed class ExampleLaunch01 : ProcedureBase
     {
+        /// <summary>
+        /// 进入当前流程。
+        /// </summary>
+        /// <param name="owner">所属流程状态机。</param>
         protected override void OnEnter(IFsm<IProcedureManager> owner)
         {
             base.OnEnter(owner);

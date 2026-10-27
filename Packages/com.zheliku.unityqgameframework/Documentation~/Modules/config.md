@@ -20,7 +20,7 @@ FeatureEnabled = true
 
 标准 TOML 的嵌套表会映射为点分隔的运行时键：`Player.MaxHp`、`Game.Title`。这不是在 TOML 里引入自定义语法。
 
-将 TOML 加入 `ResourceBuildProfile` 的收集规则，启用包的 `EnableAddressable` 并把地址规则设为 `AddressByFileName`。代码传文件名 `Game`，不传 `Assets/...` 路径或 `.toml` 扩展名。
+将 TOML 加入 YooAsset Collector 的收集规则，启用包的 `EnableAddressable` 并把地址规则设为 `AddressByFileName`。代码传文件名 `Game`，不传 `Assets/...` 路径或 `.toml` 扩展名。
 
 ## 加载完成后再读取
 

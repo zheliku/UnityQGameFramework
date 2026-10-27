@@ -33,9 +33,9 @@ ProcedureMain
 
 ## 表与资源
 
-配置工作区位于示例的 `UnityQGameFramework/Config`：`Editor/LubanProfile.asset` 决定生成参数，`Source/Datas` 保存 Excel，`Generated` 和 `Data` 保存产物。在 `QGF > Settings` 选择 StarForce Profile，修改 Excel 后执行 `QGF > Generate Tables`。
+配置工作区位于示例的 `UnityQGameFramework/Config`：`LubanProfile.asset` 决定生成参数，`Source` 保存 Excel，`Generated` 和 `Data` 保存产物。在 `QGF > Settings` 选择 StarForce Profile，修改 Excel 后执行 `QGF > Generate Tables`。
 
-Launcher 的 ResourceComponent 引用 StarForce 自己的 ResourceSettings，编辑器通过对应的 YooAsset Profile 运行模拟包。构建 Windows Player 时运行 `QGF > Examples > 02 StarForce > Build Windows Player`；构建产物会包含所需资源包。
+Launcher 的 ResourceComponent 引用 StarForce 自己的 ResourceSettings，编辑器通过引用的 YooAsset Collector 运行模拟包。构建 Player 时先在 YooAsset Builder 构建并复制完整内置资源，再在 Unity Build Profiles 选择 Launcher 构建应用。`Play Mode`使用 ResourceSettings 中的对应选项。
 
 源码位于仓库的 `Assets/Examples/02_StarForce`，UPM 样本位于 `Samples~/02_StarForce`。资源来源和许可见 [THIRD-PARTY.md](../Samples~/02_StarForce/THIRD-PARTY.md)。
 

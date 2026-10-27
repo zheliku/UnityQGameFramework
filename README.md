@@ -20,7 +20,15 @@ https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.un
 
 游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
 
+资源示例使用 YooAsset 原生 `BundleCollectorSetting` 和 `BundleBuilder` 窗口；QGF 只提供 Sample 配置切换和 ResourceComponent 关联，不修改 YooAsset 源码。Luban 运行库只保留必要源码，编译器按需下载到 `Library`。
+
+## 运行示例
+
+导入 Sample 后等待 Unity 编译完成，再打开对应场景点击 Play。示例默认使用各自的 YooAsset Editor Simulation，普通运行无需手动构建 AssetBundle，也无需在 YooAsset 收集器窗口点击 `Fix` 或 `Save`；修改收集规则后才需要保存，路径失效时再使用 Fix。资源构建和 Player 构建请按各 Sample 的 README 操作。
+
 ## 开发
+
+数据表不需要手动 Initialize：场景 QGF 的 DataTableComponent 指定生成的 `Catalog.asset` 后，在普通业务 `Start` 或启动流程中调用一次 `LoadDataTables<Tables>()`，成功后用 `GetDataTable<TbItem>()` 查询。全局 Luban Profile 只决定编辑器生成哪份表，Catalog 才决定运行时数据，二者不是两份缓存。配置关系和同步/异步完整步骤见[模块示例 README](Assets/Examples/01_Modules/README.md#datatable-从哪里开始)。
 
 ```text
 Assets/Examples/00_PointPointPoint/       点点点
@@ -57,3 +65,4 @@ python Tools/Documentation/check_docs.py
 基于 [UnityGameFramework](https://github.com/EllanJiang/UnityGameFramework) 和 [GameFramework](https://github.com/EllanJiang/GameFramework)。配置流程参考 GodotGameFramework，架构设计与示例参考 [QFramework](https://github.com/liangxiegame/QFramework)。
 
 源码采用 [MIT](Packages/com.zheliku.unityqgameframework/LICENSE.md)，第三方内容见 [许可声明](Packages/com.zheliku.unityqgameframework/Third%20Party%20Notices.md)。
+资源配置只有一个保存来源：`ResourceSettings.asset`。ResourceComponent 仅引用它；Collector 资产由 YooAsset 官方窗口管理。运行模式、服务器和缓存设置在 ResourceSettings Inspector 修改，避免在组件、窗口和多个 SO 中重复保存。

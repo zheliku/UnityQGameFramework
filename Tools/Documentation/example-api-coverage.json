@@ -1,7 +1,11 @@
 {
   "status": "API/document index; representative examples, not complete overload demonstrations",
-  "verification": "当前公开接口与文档位置索引；示例只保留代表性调用。运行结果见 ExamplesAlignment/module-behavior.json。",
-  "evidence": [],
+  "verification": "当前接口与示例位置索引；参数重载以代表性调用展示。运行验证见 SampleWorkflow/result.json，接口位置检查不代替行为验证。",
+  "evidence": [
+    "Artifacts~/Luban/UnifiedApi/Consumer/Artifacts~/SampleWorkflow/result.json",
+    "Artifacts~/YooAssetMigration/Bundled2022/Artifacts~/qgf-resource-backend.json",
+    "Artifacts~/YooAssetMigration/Bundled6000/Artifacts~/qgf-resource-backend.json"
+  ],
   "types": [
     {
       "type": "UnityQGameFramework.Runtime.ConfigComponent",
@@ -198,26 +202,26 @@
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetNode(System.String)",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/01_Path",
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetNode(System.String, UnityQGameFramework.Core.DataNode.IDataNode)",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/01_Path",
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetOrAddNode(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetOrAddNode(System.String, UnityQGameFramework.Core.DataNode.IDataNode)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
@@ -235,7 +239,7 @@
         {
           "signature": "Void Clear()",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
@@ -283,7 +287,7 @@
         {
           "name": "Root",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         }
       ],
@@ -295,19 +299,19 @@
         {
           "signature": "Boolean HasChild(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Boolean HasChild(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "System.String ToDataString()",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
@@ -322,74 +326,74 @@
           "signature": "T GetData[T]()",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/01_Path",
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetChild(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetChild(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode GetOrAddChild(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.DataNode.IDataNode[] GetAllChild()",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.Variable GetData()",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/01_Path",
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Void Clear()",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Void GetAllChild(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataNode.IDataNode])",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Void RemoveChild(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Void RemoveChild(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Void SetData(UnityQGameFramework.Core.Variable)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "signature": "Void SetData[T](T)",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         }
       ],
@@ -397,21 +401,21 @@
         {
           "name": "ChildCount",
           "examples": [
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "name": "FullName",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/01_Path",
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
           "name": "Name",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/01_Path",
-            "Assets/Examples/01_Modules/03_DataNode/04_Children"
+            "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
         },
         {
@@ -1394,14 +1398,14 @@
         {
           "signature": "Void SetLocked(System.Object, Boolean)",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ],
           "verification": "条目与 Target 参数在现有 uGUI 示例内切换；原生鼠标操作验证实例、锁定、优先级及释放结果。证据见 Artifacts~/PoolArgumentExamples/audit.json。"
         },
         {
           "signature": "Void SetLocked(T, Boolean)",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ]
         },
         {
@@ -1531,7 +1535,7 @@
         {
           "name": "Name",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ],
           "classification": "direct example query",
           "compiledEvidence": {
@@ -2365,7 +2369,7 @@
         {
           "signature": "UnityQGameFramework.Core.ObjectPool.IObjectPool`1[T] CreateSingleSpawnObjectPool[T](System.String, Single, Int32, Single, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ],
           "note": "经 ObjectPoolComponent 转发；示例没有直接调用 Core 管理器。"
         },
@@ -3341,7 +3345,7 @@
         {
           "name": "Name",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ]
         },
         {
@@ -3404,7 +3408,7 @@
         {
           "name": "Name",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ]
         },
         {
@@ -3433,7 +3437,7 @@
         {
           "signature": "UnityQGameFramework.Core.ObjectPool.ObjectInfo[] GetAllObjectInfos()",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ]
         },
         {
@@ -4505,7 +4509,7 @@
         {
           "signature": "UnityQGameFramework.Core.ObjectPool.IObjectPool`1[T] CreateSingleSpawnObjectPool[T](System.String, Single, Int32, Single, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/08_ObjectPool/04_Policy"
+            "Assets/Examples/01_Modules/08_ObjectPool/03_Policy"
           ]
         },
         {
@@ -6732,7 +6736,7 @@
         {
           "name": "Helper",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
@@ -6747,7 +6751,7 @@
           "name": "Length",
           "examples": [
             "Assets/Examples/01_Modules/15_Sound/01_OneShot",
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
@@ -6761,25 +6765,25 @@
         {
           "name": "MaxDistance",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
           "name": "Mute",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "name": "MuteInSoundGroup",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "name": "PanStereo",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
@@ -6802,7 +6806,7 @@
           "name": "SerialId",
           "examples": [
             "Assets/Examples/01_Modules/15_Sound/01_OneShot",
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
@@ -6835,7 +6839,7 @@
         {
           "name": "SpatialBlend",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
@@ -6849,13 +6853,13 @@
         {
           "name": "Volume",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "name": "VolumeInSoundGroup",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         }
       ],
@@ -6868,13 +6872,13 @@
         {
           "signature": "Void StopAllLoadedSounds()",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "signature": "Void StopAllLoadedSounds(Single)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         }
       ],
@@ -6917,7 +6921,7 @@
         {
           "name": "Mute",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
@@ -6986,7 +6990,7 @@
         {
           "name": "Volume",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         }
       ],
@@ -7000,20 +7004,20 @@
           "signature": "Boolean AddSoundGroup(System.String, Boolean, Boolean, Single, Int32)",
           "examples": [
             "Assets/Examples/01_Modules/15_Sound/01_OneShot",
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "signature": "Boolean AddSoundGroup(System.String, Int32)",
           "examples": [
             "Assets/Examples/01_Modules/15_Sound/01_OneShot",
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "signature": "Boolean HasSoundGroup(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
@@ -7061,13 +7065,13 @@
         {
           "signature": "Int32 PlaySound(System.String, System.String, Int32, UnityQGameFramework.Core.Sound.PlaySoundParams, UnityEngine.Vector3)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
           "signature": "Int32 PlaySound(System.String, System.String, Int32, UnityQGameFramework.Core.Sound.PlaySoundParams, UnityEngine.Vector3, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
@@ -7095,7 +7099,7 @@
         {
           "signature": "Int32 PlaySound(System.String, System.String, UnityEngine.Vector3)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/05_Spatial"
+            "Assets/Examples/01_Modules/15_Sound/03_Spatial"
           ]
         },
         {
@@ -7123,7 +7127,7 @@
         {
           "signature": "UnityQGameFramework.Core.Sound.ISoundGroup GetSoundGroup(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
@@ -7185,13 +7189,13 @@
         {
           "signature": "Void StopAllLoadedSounds()",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
           "signature": "Void StopAllLoadedSounds(Single)",
           "examples": [
-            "Assets/Examples/01_Modules/15_Sound/03_GroupVolume"
+            "Assets/Examples/01_Modules/15_Sound/02_GroupVolume"
           ]
         },
         {
@@ -7276,11 +7280,45 @@
           ]
         },
         {
-          "signature": "System.String GetSceneName(System.String)",
+          "signature": "Cysharp.Threading.Tasks.UniTask LoadSceneAsync(System.String, Int32, System.Threading.CancellationToken)",
           "examples": [
-            "Assets/Examples/01_Modules/16_Scene/01_LoadRoom",
             "Assets/Examples/01_Modules/16_Scene/02_SwitchRooms"
-          ]
+          ],
+          "documents": [
+            "Documentation~/Modules/scene.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask LoadSceneAsync(System.String, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/16_Scene/02_SwitchRooms"
+          ],
+          "documents": [
+            "Documentation~/Modules/scene.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask UnloadSceneAsync(System.String, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/16_Scene/02_SwitchRooms"
+          ],
+          "documents": [
+            "Documentation~/Modules/scene.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "System.String GetSceneName(System.String)",
+          "documents": [
+            "Documentation~/Modules/scene.md"
+          ],
+          "classification": "name-utility",
+          "reason": "按资源路径提取名称的辅助方法；场景示例通过清单 GUID 定位并显示业务名称。"
         },
         {
           "signature": "System.String[] GetLoadedSceneAssetNames()",
@@ -7410,7 +7448,7 @@
           "signature": "UnityQGameFramework.Core.FileSystem.IFileSystem CreateFileSystem(System.String, UnityQGameFramework.Core.FileSystem.FileSystemAccess, Int32, Int32)",
           "examples": [
             "Assets/Examples/01_Modules/17_FileSystem/01_WriteRead",
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
@@ -7441,7 +7479,7 @@
           "signature": "Void DestroyFileSystem(UnityQGameFramework.Core.FileSystem.IFileSystem, Boolean)",
           "examples": [
             "Assets/Examples/01_Modules/17_FileSystem/01_WriteRead",
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
@@ -7540,13 +7578,13 @@
         {
           "signature": "Byte[] ReadFileSegment(System.String, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Byte[] ReadFileSegment(System.String, Int32, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
@@ -7576,49 +7614,49 @@
         {
           "signature": "Int32 ReadFileSegment(System.String, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, Byte[], Int32, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, Int32, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, Int32, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, Int32, Byte[], Int32, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, Int32, System.IO.Stream, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
           "signature": "Int32 ReadFileSegment(System.String, System.IO.Stream, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/17_FileSystem/04_Segments"
+            "Assets/Examples/01_Modules/17_FileSystem/02_Segments"
           ]
         },
         {
@@ -7689,7 +7727,7 @@
         {
           "signature": "Boolean RemoveWebRequest(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
@@ -7701,49 +7739,49 @@
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], Int32, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], System.String, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], System.String, Int32, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, Byte[], System.String, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
@@ -7791,49 +7829,49 @@
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, Int32, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, System.String, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, System.String, Int32, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
           "signature": "Int32 AddWebRequest(System.String, UnityEngine.WWWForm, System.String, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/04_Post"
+            "Assets/Examples/01_Modules/18_WebRequest/03_Post"
           ]
         },
         {
@@ -7847,19 +7885,19 @@
         {
           "signature": "Int32 RemoveWebRequests(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.TaskInfo GetWebRequestInfo(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
           "signature": "UnityQGameFramework.Core.TaskInfo[] GetAllWebRequestInfos()",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
@@ -7873,13 +7911,13 @@
         {
           "signature": "Void GetAllWebRequestInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
           "signature": "Void GetAllWebRequestInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         }
       ],
@@ -7887,7 +7925,7 @@
         {
           "name": "FreeAgentCount",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
@@ -7901,19 +7939,19 @@
         {
           "name": "TotalAgentCount",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
           "name": "WaitingTaskCount",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
           "name": "WorkingAgentCount",
           "examples": [
-            "Assets/Examples/01_Modules/18_WebRequest/03_Cancel"
+            "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         }
       ],
@@ -9917,136 +9955,199 @@
       "methods": [
         {
           "signature": "Boolean DestroyDataTable(System.Type, System.String)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Boolean DestroyDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Boolean DestroyDataTable[T](System.String)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Boolean HasDataTable(System.Type, System.String)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Boolean HasDataTable[T](System.String)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
-          "signature": "Int32 LoadDataTables[T](System.String, System.Func`2[System.Func`2[System.String,UnityQGameFramework.Luban.ByteBuf],T], System.Object, Int32)",
+          "signature": "Boolean LoadDataTables[T](System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
-          ]
+            "Assets/Examples/01_Modules/11_DataTable/01_LoadTables",
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
+          ],
+          "documents": [
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask LoadDataTablesAsync[T](System.String, System.Object, Int32, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/02_StarForce/GameMain/Scripts/Procedure"
+          ],
+          "documents": [
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Int32 LoadDataTables[T](System.String, System.Object, Int32)",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/01_LoadTables",
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
+          ],
+          "documents": [
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "T GetDataTable[T](System.String)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "documents": [
-            "Documentation~/Modules/README.md"
-          ]
-        },
-        {
-          "signature": "T LoadDataTables[T](System.Func`2[System.Func`2[System.String,UnityQGameFramework.Luban.ByteBuf],T], System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
-          ]
+            "Assets/Examples/01_Modules/11_DataTable/03_QueryRows",
+            "Assets/Examples/01_Modules/11_DataTable/06_TableModes"
+          ],
+          "documents": [
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "UnityQGameFramework.Core.DataTable.DataTableBase GetDataTable(System.Type, System.String)",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/03_QueryRows",
+            "Assets/Examples/01_Modules/11_DataTable/06_TableModes"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "UnityQGameFramework.Core.DataTable.DataTableBase[] GetAllDataTables()",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void CancelLoadDataTables()",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
-          ]
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
+          ],
+          "documents": [
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void GetAllDataTables(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void RegisterDataTables(System.Collections.Generic.IEnumerable`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
+          ],
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void UnloadDataTables()",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
-          ]
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
+          ],
+          "documents": [
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         }
       ],
       "properties": [
         {
           "name": "Catalog",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
+            "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
           ]
         },
         {
           "name": "Count",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
-            "Documentation~/Modules/README.md"
-          ]
+            "Documentation~/Modules/data-table.md"
+          ],
+          "classification": "runtime-diagnostic",
+          "reason": "数据表数量用于运行时诊断；登记和移除行为由具名表示例验证。"
         },
         {
           "name": "IsLoaded",
-          "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "documents": [
-            "Documentation~/Modules/README.md"
+          "examples": [
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
           ]
         },
         {
           "name": "IsLoading",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
           ]
         }
       ],
@@ -10066,7 +10167,7 @@
         {
           "signature": "T GetDataRow(System.Predicate`1[T])",
           "examples": [
-            "Assets/Examples/01_Modules/11_DataTable/02_QueryRows"
+            "Assets/Examples/01_Modules/11_DataTable/03_QueryRows"
           ]
         },
         {
@@ -10408,7 +10509,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog"
+            "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog"
           ]
         },
         {
@@ -10532,9 +10633,11 @@
       "methods": [
         {
           "signature": "Boolean GetBinaryPath(System.String, Boolean ByRef, Boolean ByRef, System.String ByRef, System.String ByRef)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Boolean HasResourceGroup(System.String)",
@@ -10562,21 +10665,125 @@
         },
         {
           "signature": "Byte[] LoadBinarySegmentFromFileSystem(System.String, Int32)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Byte[] LoadBinarySegmentFromFileSystem(System.String, Int32, Int32)",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask ClearCacheAsync(System.String, System.String, System.Object, System.Threading.CancellationToken)",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "documented-api",
+          "reason": "磁盘缓存清理由资源生命周期文档说明，并由资源后端集成检查验证。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask DestroyPackageAsync(System.String, System.Threading.CancellationToken)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask DownloadResourcesAsync(YooAsset.ResourceDownloaderOperation, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask UnloadUnusedAssetsAsync(System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask`1[System.Byte[]] LoadBinaryAsync(System.String, System.String, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/04_Binary"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask`1[T] LoadAssetAsync[T](System.String, System.String, Int32, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask`1[YooAsset.AssetHandle] LoadAssetHandleAsync[T](System.String, System.String, Int32, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask`1[YooAsset.ResourcePackage] InitializePackageAsync(System.String, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Cysharp.Threading.Tasks.UniTask`1[YooAsset.ResourcePackage] InitializePackageAsync(System.String, YooAsset.InitializePackageOptions, System.String, System.Threading.CancellationToken)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Int32 GetBinaryLength(System.String)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Int32 LoadBinaryFromFileSystem(System.String, Byte[])",
@@ -10604,51 +10811,67 @@
         },
         {
           "signature": "Int32 LoadBinarySegmentFromFileSystem(System.String, Byte[])",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Int32 LoadBinarySegmentFromFileSystem(System.String, Byte[], Int32)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Int32 LoadBinarySegmentFromFileSystem(System.String, Byte[], Int32, Int32)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Int32 LoadBinarySegmentFromFileSystem(System.String, Int32, Byte[])",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Int32 LoadBinarySegmentFromFileSystem(System.String, Int32, Byte[], Int32)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "Int32 LoadBinarySegmentFromFileSystem(System.String, Int32, Byte[], Int32, Int32)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "synchronous-compatibility",
+          "reason": "同步重载读取默认包；二进制示例展示异步读取后的片段提取。"
         },
         {
           "signature": "System.String GetBinaryPath(System.String)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "UnityQGameFramework.Core.Resource.CheckVersionListResult CheckVersionList(Int32)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "UnityQGameFramework.Core.Resource.HasAssetResult HasAsset(System.String)",
@@ -10716,15 +10939,19 @@
         },
         {
           "signature": "Void CheckResources(Boolean, UnityQGameFramework.Core.Resource.CheckResourcesCompleteCallback)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void CheckResources(UnityQGameFramework.Core.Resource.CheckResourcesCompleteCallback)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void ForceUnloadUnusedAssets(Boolean)",
@@ -10752,57 +10979,99 @@
         },
         {
           "signature": "Void InitResources(UnityQGameFramework.Core.Resource.InitResourcesCompleteCallback)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void LoadAsset(System.String, Int32, UnityQGameFramework.Core.Resource.LoadAssetCallbacks)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, Int32, UnityQGameFramework.Core.Resource.LoadAssetCallbacks, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, System.Type, Int32, UnityQGameFramework.Core.Resource.LoadAssetCallbacks)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, System.Type, Int32, UnityQGameFramework.Core.Resource.LoadAssetCallbacks, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, System.Type, UnityQGameFramework.Core.Resource.LoadAssetCallbacks)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, System.Type, UnityQGameFramework.Core.Resource.LoadAssetCallbacks, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, UnityQGameFramework.Core.Resource.LoadAssetCallbacks)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadAsset(System.String, UnityQGameFramework.Core.Resource.LoadAssetCallbacks, System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void LoadBinary(System.String, UnityQGameFramework.Core.Resource.LoadBinaryCallbacks)",
@@ -10847,15 +11116,35 @@
         },
         {
           "signature": "Void StopUpdateResources()",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void UnloadAsset(System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
+        },
+        {
+          "signature": "Void UnloadAsset(System.Object, System.String)",
+          "examples": [
+            "Assets/Examples/01_Modules/12_Resource/01_LoadPrefab",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
           "signature": "Void UnloadUnusedAssets(Boolean)",
@@ -10867,33 +11156,54 @@
         },
         {
           "signature": "Void UpdateResources(System.String, UnityQGameFramework.Core.Resource.UpdateResourcesCompleteCallback)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void UpdateResources(UnityQGameFramework.Core.Resource.UpdateResourcesCompleteCallback)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void UpdateVersionList(Int32, Int32, Int32, Int32, UnityQGameFramework.Core.Resource.UpdateVersionListCallbacks)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void VerifyResources(Int32, UnityQGameFramework.Core.Resource.VerifyResourcesCompleteCallback)",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "signature": "Void VerifyResources(UnityQGameFramework.Core.Resource.VerifyResourcesCompleteCallback)",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
+        },
+        {
+          "signature": "YooAsset.ResourceDownloaderOperation CreateResourceDownloader(YooAsset.ResourceDownloaderOptions, System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
+          ],
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "representative-overload",
+          "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         }
       ],
       "properties": [
@@ -10939,9 +11249,11 @@
         },
         {
           "name": "AssetCount",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "runtime-diagnostic",
+          "reason": "兼容查询和运行时诊断；具体包信息通过 ResourceSettings 与 ResourcePackage 查看。"
         },
         {
           "name": "AssetExpireTime",
@@ -10966,6 +11278,14 @@
           "documents": [
             "Documentation~/Modules/README.md"
           ]
+        },
+        {
+          "name": "EditorPackageBuilder",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "configuration",
+          "reason": "资源配置与编辑器构建注册入口，由组件 Inspector 和 Package 编辑器初始化使用。"
         },
         {
           "name": "GenerateReadWriteVersionListLength",
@@ -11105,9 +11425,11 @@
         },
         {
           "name": "ResourceCount",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "name": "ResourceExpireTime",
@@ -11127,9 +11449,11 @@
         },
         {
           "name": "ResourceMode",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "runtime-diagnostic",
+          "reason": "兼容查询和运行时诊断；具体包信息通过 ResourceSettings 与 ResourcePackage 查看。"
         },
         {
           "name": "ResourcePackVersionListSerializer",
@@ -11148,6 +11472,14 @@
           ]
         },
         {
+          "name": "Settings",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "configuration",
+          "reason": "资源配置与编辑器构建注册入口，由组件 Inspector 和 Package 编辑器初始化使用。"
+        },
+        {
           "name": "UpdatableVersionListSerializer",
           "classification": "documented-api",
           "documents": [
@@ -11157,27 +11489,35 @@
         },
         {
           "name": "UpdateCandidateCount",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "name": "UpdatePrefixUri",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "name": "UpdateRetryCount",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "name": "UpdateWaitingCount",
-          "examples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
-          ]
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ],
+          "classification": "legacy-resource-api",
+          "reason": "旧 UGF 资源链路或兼容入口；YooAsset 的初始化、更新和统计使用资源文档中的包与下载器接口。"
         },
         {
           "name": "UpdateWaitingWhilePlayingCount",
@@ -11247,8 +11587,8 @@
           "name": "Ready",
           "classification": "direct example query",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package",
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ],
           "reason": "已在组状态界面直接读取；Package 与远程更新分别展示就绪状态和压缩长度。",
           "contractEvidence": {
@@ -11265,8 +11605,8 @@
           "name": "ReadyCompressedLength",
           "classification": "direct example query",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package",
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ],
           "reason": "已在组状态界面直接读取；Package 与远程更新分别展示就绪状态和压缩长度。",
           "contractEvidence": {
@@ -11297,8 +11637,8 @@
           "name": "TotalCompressedLength",
           "classification": "direct example query",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package",
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ],
           "reason": "已在组状态界面直接读取；Package 与远程更新分别展示就绪状态和压缩长度。",
           "contractEvidence": {
@@ -11370,8 +11710,8 @@
           "name": "Ready",
           "classification": "direct example query",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package",
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ],
           "reason": "已在组状态界面直接读取；Package 与远程更新分别展示就绪状态和压缩长度。",
           "contractEvidence": {
@@ -11386,8 +11726,8 @@
           "name": "ReadyCompressedLength",
           "classification": "direct example query",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package",
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ],
           "reason": "已在组状态界面直接读取；Package 与远程更新分别展示就绪状态和压缩长度。",
           "contractEvidence": {
@@ -11418,8 +11758,8 @@
           "name": "TotalCompressedLength",
           "classification": "direct example query",
           "examples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package",
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/03_Package",
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ],
           "reason": "已在组状态界面直接读取；Package 与远程更新分别展示就绪状态和压缩长度。",
           "contractEvidence": {
@@ -11485,7 +11825,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
+            "Assets/Examples/01_Modules/12_Resource/04_Binary"
           ]
         },
         {
@@ -11651,7 +11991,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
+            "Assets/Examples/01_Modules/12_Resource/04_Binary"
           ]
         },
         {
@@ -11686,7 +12026,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
+            "Assets/Examples/01_Modules/12_Resource/04_Binary"
           ]
         },
         {
@@ -11998,7 +12338,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
+            "Assets/Examples/01_Modules/12_Resource/04_Binary"
           ]
         },
         {
@@ -12033,7 +12373,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/03_Binary"
+            "Assets/Examples/01_Modules/12_Resource/04_Binary"
           ]
         },
         {
@@ -12068,7 +12408,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -12404,7 +12744,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -12503,7 +12843,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
           ]
         },
         {
@@ -12668,7 +13008,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
           ]
         },
         {
@@ -13331,7 +13671,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -13366,7 +13706,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
           ]
         },
         {
@@ -13471,7 +13811,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -13506,7 +13846,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -13541,7 +13881,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -13589,7 +13929,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         }
       ],
@@ -13826,7 +14166,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
           ]
         },
         {
@@ -14651,7 +14991,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
           ]
         },
         {
@@ -14770,7 +15110,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/02_Package"
+            "Assets/Examples/01_Modules/12_Resource/03_Package"
           ]
         },
         {
@@ -15010,7 +15350,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -15069,7 +15409,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -15128,7 +15468,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -15161,7 +15501,7 @@
             ]
           },
           "relatedExamples": [
-            "Assets/Examples/01_Modules/12_Resource/04_Update"
+            "Assets/Examples/01_Modules/12_Resource/05_Update"
           ]
         },
         {
@@ -15390,22 +15730,6 @@
       "properties": [
         {
           "name": "EditorLanguage",
-          "classification": "documented-api",
-          "documents": [
-            "Documentation~/Modules/README.md"
-          ],
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
-        },
-        {
-          "name": "EditorResourceHelper",
-          "classification": "documented-api",
-          "documents": [
-            "Documentation~/Modules/README.md"
-          ],
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
-        },
-        {
-          "name": "EditorResourceMode",
           "classification": "documented-api",
           "documents": [
             "Documentation~/Modules/README.md"
@@ -15980,7 +16304,7 @@
         {
           "signature": "System.Object ToObject(System.Type, System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/03_Json"
+            "Assets/Examples/01_Modules/01_Base/02_Json"
           ],
           "documents": [
             "Packages/com.zheliku.unityqgameframework/Documentation~/Modules/base-utility.md"
@@ -15990,7 +16314,7 @@
         {
           "signature": "System.String ToJson(System.Object)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/03_Json"
+            "Assets/Examples/01_Modules/01_Base/02_Json"
           ],
           "documents": [
             "Packages/com.zheliku.unityqgameframework/Documentation~/Modules/base-utility.md"
@@ -16000,7 +16324,7 @@
         {
           "signature": "T ToObject[T](System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/03_Json"
+            "Assets/Examples/01_Modules/01_Base/02_Json"
           ],
           "documents": [
             "Packages/com.zheliku.unityqgameframework/Documentation~/Modules/base-utility.md"
@@ -26244,84 +26568,84 @@
         {
           "signature": "Byte[] GetBytes(Boolean)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(Char)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(Double)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(Int16)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(Int64)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(Single)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(System.String, System.Text.Encoding)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(UInt16)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(UInt32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Byte[] GetBytes(UInt64)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
@@ -26376,42 +26700,42 @@
         {
           "signature": "Int32 GetBytes(System.String, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetBytes(System.String, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetBytes(System.String, System.Text.Encoding, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetBytes(System.String, System.Text.Encoding, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetInt32(Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetInt32(Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
@@ -26562,140 +26886,140 @@
         {
           "signature": "Void GetBytes(Boolean, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Boolean, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Char, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Char, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Double, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Double, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Int16, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Int16, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Int32, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Int32, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Int64, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Int64, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Single, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(Single, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(UInt16, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(UInt16, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(UInt32, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(UInt32, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(UInt64, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void GetBytes(UInt64, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/07_ByteConversion"
+            "Assets/Examples/01_Modules/01_Base/05_ByteConversion"
           ],
           "classification": "direct example invocation"
         }
@@ -26781,21 +27105,21 @@
         {
           "signature": "Boolean RemoveEmptyDirectory(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/06_TextAndPaths"
+            "Assets/Examples/01_Modules/01_Base/04_TextAndPaths"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "System.String GetRegularPath(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/06_TextAndPaths"
+            "Assets/Examples/01_Modules/01_Base/04_TextAndPaths"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "System.String GetRemotePath(System.String)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/06_TextAndPaths"
+            "Assets/Examples/01_Modules/01_Base/04_TextAndPaths"
           ],
           "classification": "direct example invocation"
         }
@@ -26809,7 +27133,7 @@
         {
           "signature": "System.String Format[T](System.String, T)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/06_TextAndPaths"
+            "Assets/Examples/01_Modules/01_Base/04_TextAndPaths"
           ],
           "classification": "direct example invocation"
         },
@@ -26972,14 +27296,14 @@
         {
           "signature": "System.String Format[T1,T2,T3](System.String, T1, T2, T3)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/06_TextAndPaths"
+            "Assets/Examples/01_Modules/01_Base/04_TextAndPaths"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "System.String Format[T1,T2](System.String, T1, T2)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/06_TextAndPaths"
+            "Assets/Examples/01_Modules/01_Base/04_TextAndPaths"
           ],
           "classification": "direct example invocation"
         },
@@ -27194,49 +27518,49 @@
         {
           "signature": "Byte[] StructureToBytes[T](T)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "T BytesToStructure[T](Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "T BytesToStructure[T](Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void EnsureCachedHGlobalSize(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void FreeCachedHGlobal()",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void StructureToBytes[T](T, Byte[])",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Void StructureToBytes[T](T, Byte[], Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example invocation"
         }
@@ -27245,7 +27569,7 @@
         {
           "name": "CachedHGlobalSize",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/12_StructureBytes"
+            "Assets/Examples/01_Modules/01_Base/07_StructureBytes"
           ],
           "classification": "direct example query"
         }
@@ -27266,21 +27590,21 @@
         {
           "signature": "Int32 GetRandom()",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/10_Random"
+            "Assets/Examples/01_Modules/01_Base/06_Random"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetRandom(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/10_Random"
+            "Assets/Examples/01_Modules/01_Base/06_Random"
           ],
           "classification": "direct example invocation"
         },
         {
           "signature": "Int32 GetRandom(Int32, Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/10_Random"
+            "Assets/Examples/01_Modules/01_Base/06_Random"
           ],
           "classification": "direct example invocation"
         },
@@ -27295,7 +27619,7 @@
         {
           "signature": "Void SetSeed(Int32)",
           "examples": [
-            "Assets/Examples/01_Modules/01_Base/10_Random"
+            "Assets/Examples/01_Modules/01_Base/06_Random"
           ],
           "classification": "direct example invocation"
         }

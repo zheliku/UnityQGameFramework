@@ -115,6 +115,9 @@ namespace UnityQGameFramework.Runtime
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
+        /// <summary>
+        /// 创建声音辅助器、声音组及音频监听器。
+        /// </summary>
         private void Start()
         {
             BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
@@ -164,6 +167,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 取消场景事件订阅。
+        /// </summary>
         private void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -583,6 +589,11 @@ namespace UnityQGameFramework.Runtime
             return true;
         }
 
+        /// <summary>
+        /// 设置声音的实体绑定或位置并派发播放成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnPlaySoundSuccess(object sender, UnityQGameFramework.Core.Sound.PlaySoundSuccessEventArgs e)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
@@ -602,6 +613,11 @@ namespace UnityQGameFramework.Runtime
             m_EventComponent.Fire(this, PlaySoundSuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 归还播放请求数据并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnPlaySoundFailure(object sender, UnityQGameFramework.Core.Sound.PlaySoundFailureEventArgs e)
         {
             string logMessage = Utility.Text.Format("Play sound failure, asset name '{0}', sound group name '{1}', error code '{2}', error message '{3}'.", e.SoundAssetName, e.SoundGroupName, e.ErrorCode, e.ErrorMessage);
@@ -617,46 +633,88 @@ namespace UnityQGameFramework.Runtime
             m_EventComponent.Fire(this, PlaySoundFailureEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发声音资源加载进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnPlaySoundUpdate(object sender, UnityQGameFramework.Core.Sound.PlaySoundUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, PlaySoundUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发声音依赖资源加载事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnPlaySoundDependencyAsset(object sender, UnityQGameFramework.Core.Sound.PlaySoundDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, PlaySoundDependencyAssetEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 场景加载完成后刷新音频监听器。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnLoadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.LoadSceneSuccessEventArgs e)
         {
             RefreshAudioListener();
         }
 
+        /// <summary>
+        /// 场景加载失败后刷新音频监听器。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnLoadSceneFailure(object sender, UnityQGameFramework.Core.Scene.LoadSceneFailureEventArgs e)
         {
             RefreshAudioListener();
         }
 
+        /// <summary>
+        /// 场景卸载完成后刷新音频监听器。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnUnloadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.UnloadSceneSuccessEventArgs e)
         {
             RefreshAudioListener();
         }
 
+        /// <summary>
+        /// 场景卸载失败后刷新音频监听器。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnUnloadSceneFailure(object sender, UnityQGameFramework.Core.Scene.UnloadSceneFailureEventArgs e)
         {
             RefreshAudioListener();
         }
 
+        /// <summary>
+        /// Unity 场景加载后刷新音频监听器。
+        /// </summary>
+        /// <param name="scene">已加载的场景。</param>
+        /// <param name="loadSceneMode">场景加载方式。</param>
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             RefreshAudioListener();
         }
 
+        /// <summary>
+        /// Unity 场景卸载后刷新音频监听器。
+        /// </summary>
+        /// <param name="scene">已卸载的场景。</param>
         private void OnSceneUnloaded(Scene scene)
         {
             RefreshAudioListener();
         }
 
+        /// <summary>
+        /// 禁用场景内多余监听器并恢复框架监听器。
+        /// </summary>
         private void RefreshAudioListener()
         {
             m_AudioListener.enabled = FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length <= 1;

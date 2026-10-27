@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -579,6 +579,9 @@ namespace UnityQGameFramework.Runtime
             return s_CachedStringBuilder.ToString();
         }
 
+        /// <summary>
+        /// 重置文本构建缓存，过大时重新创建。
+        /// </summary>
         private static void CheckCachedStringBuilder()
         {
             if (s_CachedStringBuilder == null)

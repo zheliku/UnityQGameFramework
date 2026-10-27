@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -44,7 +44,13 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取文件信息是否有效。
         /// </summary>
-        public bool IsValid => !string.IsNullOrEmpty(Name) && Offset >= 0L && Length >= 0;
+        public bool IsValid
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Name) && Offset >= 0L && Length >= 0;
+            }
+        }
 
         /// <summary>
         /// 获取文件名称。

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -58,12 +58,24 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取实体数量。
         /// </summary>
-        public int EntityCount => m_EntityInfos.Count;
+        public int EntityCount
+        {
+            get
+            {
+                return m_EntityInfos.Count;
+            }
+        }
 
         /// <summary>
         /// 获取实体组数量。
         /// </summary>
-        public int EntityGroupCount => m_EntityGroups.Count;
+        public int EntityGroupCount
+        {
+            get
+            {
+                return m_EntityGroups.Count;
+            }
+        }
 
         /// <summary>
         /// 显示实体成功事件。
@@ -1133,7 +1145,7 @@ namespace UnityQGameFramework.Core.Entity
         /// 获取实体信息。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
-        /// <returns>实体信息。</returns>
+        /// <returns>实体信息；实体未登记时返回空。</returns>
         private EntityInfo GetEntityInfo(int entityId)
         {
             EntityInfo entityInfo = null;
@@ -1145,6 +1157,16 @@ namespace UnityQGameFramework.Core.Entity
             return null;
         }
 
+        /// <summary>
+        /// 初始化并登记实体，调用显示回调后派发成功事件。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="entityAssetName">实体预制体的资源地址。</param>
+        /// <param name="entityGroup">实体所属的组。</param>
+        /// <param name="entityInstance">对象池实际管理的实体实例。</param>
+        /// <param name="isNewInstance">是否是首次创建的实例。</param>
+        /// <param name="duration">资源加载耗时，以秒为单位。</param>
+        /// <param name="userData">显示实体时传入的数据。</param>
         private void InternalShowEntity(int entityId, string entityAssetName, EntityGroup entityGroup, object entityInstance, bool isNewInstance, float duration, object userData)
         {
             try
@@ -1186,6 +1208,11 @@ namespace UnityQGameFramework.Core.Entity
             }
         }
 
+        /// <summary>
+        /// 隐藏子实体并解除附加关系，将当前实体排队回收。
+        /// </summary>
+        /// <param name="entityInfo">当前登记的实体信息。</param>
+        /// <param name="userData">隐藏实体时传入的数据。</param>
         private void InternalHideEntity(EntityInfo entityInfo, object userData)
         {
             while (entityInfo.ChildEntityCount > 0)
@@ -1227,6 +1254,13 @@ namespace UnityQGameFramework.Core.Entity
             m_RecycleQueue.Enqueue(entityInfo);
         }
 
+        /// <summary>
+        /// 加载成功后登记实例并显示；已取消的请求直接归还资产。
+        /// </summary>
+        /// <param name="entityAssetName">实体预制体的资源地址。</param>
+        /// <param name="entityAsset">保持借用的实体预制体资产。</param>
+        /// <param name="duration">资源加载耗时，以秒为单位。</param>
+        /// <param name="userData">实体显示请求信息。</param>
         private void LoadAssetSuccessCallback(string entityAssetName, object entityAsset, float duration, object userData)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
@@ -1251,6 +1285,13 @@ namespace UnityQGameFramework.Core.Entity
             ReferencePool.Release(showEntityInfo);
         }
 
+        /// <summary>
+        /// 结束加载登记并派发实体显示失败事件。
+        /// </summary>
+        /// <param name="entityAssetName">实体预制体的资源地址。</param>
+        /// <param name="status">资源加载失败状态。</param>
+        /// <param name="errorMessage">资源加载失败原因。</param>
+        /// <param name="userData">实体显示请求信息。</param>
         private void LoadAssetFailureCallback(string entityAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
@@ -1278,6 +1319,12 @@ namespace UnityQGameFramework.Core.Entity
             throw new FrameworkException(appendErrorMessage);
         }
 
+        /// <summary>
+        /// 将资源加载进度转为实体显示进度事件。
+        /// </summary>
+        /// <param name="entityAssetName">实体预制体的资源地址。</param>
+        /// <param name="progress">资源加载进度。</param>
+        /// <param name="userData">实体显示请求信息。</param>
         private void LoadAssetUpdateCallback(string entityAssetName, float progress, object userData)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
@@ -1294,6 +1341,14 @@ namespace UnityQGameFramework.Core.Entity
             }
         }
 
+        /// <summary>
+        /// 将依赖资源加载进度转为实体依赖事件。
+        /// </summary>
+        /// <param name="entityAssetName">实体预制体的资源地址。</param>
+        /// <param name="dependencyAssetName">已加载依赖资源的地址。</param>
+        /// <param name="loadedCount">已加载的依赖数量。</param>
+        /// <param name="totalCount">依赖资源总数。</param>
+        /// <param name="userData">实体显示请求信息。</param>
         private void LoadAssetDependencyAssetCallback(string entityAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;

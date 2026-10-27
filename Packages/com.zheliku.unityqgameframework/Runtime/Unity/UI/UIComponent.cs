@@ -180,6 +180,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 连接资源和对象池模块，创建界面辅助器及界面组。
+        /// </summary>
         private void Start()
         {
             BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
@@ -690,11 +693,21 @@ namespace UnityQGameFramework.Runtime
             m_UIManager.SetUIFormInstancePriority(uiForm.gameObject, priority);
         }
 
+        /// <summary>
+        /// 派发界面打开成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnOpenUIFormSuccess(object sender, UnityQGameFramework.Core.UI.OpenUIFormSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, OpenUIFormSuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 记录界面加载错误并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnOpenUIFormFailure(object sender, UnityQGameFramework.Core.UI.OpenUIFormFailureEventArgs e)
         {
             Log.Warning("Open UI form failure, asset name '{0}', UI group name '{1}', pause covered UI form '{2}', error message '{3}'.", e.UIFormAssetName, e.UIGroupName, e.PauseCoveredUIForm, e.ErrorMessage);
@@ -704,16 +717,31 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 派发界面资源加载进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnOpenUIFormUpdate(object sender, UnityQGameFramework.Core.UI.OpenUIFormUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, OpenUIFormUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发界面依赖资源加载事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnOpenUIFormDependencyAsset(object sender, UnityQGameFramework.Core.UI.OpenUIFormDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, OpenUIFormDependencyAssetEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发界面关闭完成事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnCloseUIFormComplete(object sender, UnityQGameFramework.Core.UI.CloseUIFormCompleteEventArgs e)
         {
             m_EventComponent.Fire(this, CloseUIFormCompleteEventArgs.Create(e));

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,8 +9,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示陀螺仪传感器数据。
+        /// </summary>
         private sealed class InputGyroscopeInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制陀螺仪信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Input Gyroscope Information</b>");

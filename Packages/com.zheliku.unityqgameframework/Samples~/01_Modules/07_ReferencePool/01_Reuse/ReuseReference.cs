@@ -4,13 +4,17 @@ using UnityQGameFramework.Core;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示借出、归还、再借出。
+    /// </summary>
     public sealed class ReuseReference : MonoBehaviour
     {
-        [SerializeField] private Text heldText, previousText, poolText;
-        [SerializeField] private Button acquireButton, releaseButton;
+        [SerializeField]
+        private Text heldText, previousText, poolText;
+        [SerializeField]
+        private Button acquireButton, releaseButton;
         private Cargo held;
         private int previousId;
-
         private void Start()
         {
             // Acquire 优先复用空闲引用；没有空闲对象时才创建。
@@ -30,22 +34,45 @@ namespace UnityQGameFramework.Examples.Modules
             previousText.text = previousId == 0 ? "尚未归还过" : $"上次归还：#{previousId}";
             poolText.text = "空闲：0    借出：0";
             foreach (var info in ReferencePool.GetAllReferencePoolInfos())
-                if (info.Type == typeof(Cargo)) poolText.text = $"空闲：{info.UnusedReferenceCount}    借出：{info.UsingReferenceCount}";
+            {
+                if (info.Type == typeof(Cargo))
+                {
+                    poolText.text = $"空闲：{info.UnusedReferenceCount}    借出：{info.UsingReferenceCount}";
+                }
+            }
+
             acquireButton.interactable = held == null;
             releaseButton.interactable = held != null;
         }
 
+        /// <summary>
+        /// 可被引用池复用的货物记录。
+        /// </summary>
         public sealed class Cargo : IReference
         {
             // Cargo 是池中复用的对象，Id 用于识别实例。
             private static int nextId;
+
+            /// <summary>
+            /// 获取当前标识。
+            /// </summary>
             public int Id { get; } = ++nextId;
-            public void Clear() { }
+
+            /// <summary>
+            /// 重置数据，供引用池复用。
+            /// </summary>
+            public void Clear()
+            {
+            }
         }
 
         private void OnDestroy()
         {
-            if (held != null) ReferencePool.Release(held);
+            if (held != null)
+            {
+                ReferencePool.Release(held);
+            }
+
             ReferencePool.RemoveAll<Cargo>();
         }
     }

@@ -66,39 +66,13 @@ public static class BuildExampleScenes
                     var modules = configuration["frameworkModules"].Values<string>().ToArray();
                     foreach (Transform child in sceneFramework.transform.Cast<Transform>().ToArray())
                         if (!modules.Contains(child.name)) UnityEngine.Object.DestroyImmediate(child.gameObject);
-                    if ((bool?)configuration["editorResource"] == false)
-                        UnityEngine.Object.DestroyImmediate(sceneFramework.GetComponent<EditorResourceComponent>());
-                    if ((string)layouts[type.Name]["resourceMode"] != null)
-                    {
-                        UnityEngine.Object.DestroyImmediate(sceneFramework.GetComponent<EditorResourceComponent>());
-                        var baseSettings = new SerializedObject(sceneFramework.GetComponent<BaseComponent>());
-                        baseSettings.FindProperty("m_EditorResourceMode").boolValue = false;
-                        baseSettings.ApplyModifiedPropertiesWithoutUndo();
-                        var resourceSettings = new SerializedObject(sceneFramework.GetComponentInChildren<ResourceComponent>());
-                        resourceSettings.FindProperty("m_ResourceMode").intValue = (int)Enum.Parse<UnityQGameFramework.Core.Resource.ResourceMode>((string)layouts[type.Name]["resourceMode"]);
-                        resourceSettings.ApplyModifiedPropertiesWithoutUndo();
-                        sceneFramework.GetComponentInChildren<ResourceComponent>().enabled = (bool?)layouts[type.Name]["deferResourceStart"] != true;
-                        var paths = new SerializedObject(new GameObject("Resource Example Paths").AddComponent<ResourceExamplePaths>());
-                        paths.FindProperty("emptyReadOnly").boolValue = (string)layouts[type.Name]["resourceMode"] != "Package";
-                        paths.FindProperty("seedCache").boolValue = (bool?)layouts[type.Name]["seedCache"] ?? false;
-                        paths.FindProperty("variantPackage").boolValue = (bool?)layouts[type.Name]["variantPackage"] ?? false;
-                        paths.ApplyModifiedPropertiesWithoutUndo();
-                    }
+                    // 资源模块随 frameworkModules 保留或移除；运行模式来自 Sample 的 ResourceSettings。
                     if ((int?)layouts[type.Name]["downloadAgentCount"] > 0)
                     {
                         var download = new SerializedObject(sceneFramework.GetComponentInChildren<DownloadComponent>());
                         download.FindProperty("m_DownloadAgentHelperCount").intValue = (int)layouts[type.Name]["downloadAgentCount"];
                         download.ApplyModifiedPropertiesWithoutUndo();
                     }
-                }
-                if ((float?)layouts[type.Name]["loadDelaySeconds"] > 0)
-                {
-                    // Keep simulated loading local to this example's framework instance.
-                    var editorResources = new SerializedObject(sceneFramework.GetComponent<EditorResourceComponent>());
-                    float delay = (float)layouts[type.Name]["loadDelaySeconds"];
-                    editorResources.FindProperty("m_MinLoadAssetRandomDelaySeconds").floatValue = delay;
-                    editorResources.FindProperty("m_MaxLoadAssetRandomDelaySeconds").floatValue = delay;
-                    editorResources.ApplyModifiedPropertiesWithoutUndo();
                 }
                 if ((bool?)layouts[type.Name]["entitySound"] == true)
                 {

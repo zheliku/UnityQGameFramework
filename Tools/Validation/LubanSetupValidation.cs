@@ -28,10 +28,10 @@ public static class LubanSetupValidation
             var settings = LubanSettings.instance;
             var initial = settings.Profile;
             Require(initial != null, "First installation did not initialize a global Profile.");
-            Require(AssetDatabase.GetAssetPath(initial) == LubanSettings.DefaultWorkspaceRoot + "/Editor/LubanProfile.asset", "Unexpected initial Profile path.");
-            string source = AssetDatabase.GetAssetPath(initial.SourceFolder);
-            byte[] workbook = File.ReadAllBytes(source + "/Datas/Item.xlsx");
-            Require(File.Exists(source + "/luban.conf"), "Starter schema is missing.");
+            Require(AssetDatabase.GetAssetPath(initial) == LubanSettings.DefaultWorkspaceRoot + "/LubanProfile.asset", "Unexpected initial Profile path.");
+            string source = LubanGenerator.SourcePath(initial);
+            byte[] workbook = File.ReadAllBytes(source + "/Item.xlsx");
+            Require(File.Exists(LubanSettings.DefaultWorkspaceRoot + "/luban.conf"), "Starter schema is missing.");
             Require(Directory.GetFiles(AssetDatabase.GetAssetPath(initial.CodeFolder), "*.cs").Length == 0, "Installation unexpectedly generated business code.");
             Require(!File.Exists(LubanGenerator.DefaultGenerator), "Installation unexpectedly downloaded the compiler.");
             result.automaticWorkspace = true;
@@ -42,10 +42,10 @@ public static class LubanSetupValidation
             settings.WorkspaceRoot = custom;
             LubanMenu.CreateWorkspace();
             var created = settings.Profile;
-            Require(created != initial && AssetDatabase.GetAssetPath(created) == custom + "/Editor/LubanProfile.asset", "Custom workspace was not applied globally.");
+            Require(created != initial && AssetDatabase.GetAssetPath(created) == custom + "/LubanProfile.asset", "Custom workspace was not applied globally.");
             string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(created));
             Require(string.IsNullOrEmpty(AssetDatabase.MoveAsset(custom, moved)), "Cannot move the workspace.");
-            Require(settings.Profile == created && AssetDatabase.GetAssetPath(settings.Profile.SourceFolder) == moved + "/Source", "Folder references did not follow the move.");
+            Require(settings.Profile == created && LubanGenerator.SourcePath(settings.Profile) == moved + "/Source", "Folder references did not follow the move.");
             Require(File.ReadAllText("ProjectSettings/UnityQGameFrameworkSettings.asset").Contains(guid), "Global Profile GUID was not persisted.");
             result.customDirectoryAndMoves = true;
 
@@ -53,7 +53,7 @@ public static class LubanSetupValidation
             settings.WorkspaceRoot = LubanSettings.DefaultWorkspaceRoot;
             Require(AssetDatabase.DeleteAsset(moved), "Cannot remove temporary workspace.");
             Require(LubanWorkspace.EnsureInitialized() == initial, "Repeated initialization changed the active Profile.");
-            Require(Convert.ToBase64String(workbook) == Convert.ToBase64String(File.ReadAllBytes(source + "/Datas/Item.xlsx")), "Existing source data changed.");
+            Require(Convert.ToBase64String(workbook) == Convert.ToBase64String(File.ReadAllBytes(source + "/Item.xlsx")), "Existing source data changed.");
             bool rejected = false;
             try { settings.WorkspaceRoot = "Assets/../../OutsideAssets"; }
             catch (ArgumentException) { rejected = true; }

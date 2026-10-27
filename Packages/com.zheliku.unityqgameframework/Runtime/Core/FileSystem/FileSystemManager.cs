@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,7 +15,6 @@ namespace UnityQGameFramework.Core.FileSystem
     internal sealed class FileSystemManager : FrameworkModule, IFileSystemManager
     {
         private readonly Dictionary<string, FileSystem> m_FileSystems;
-
         private IFileSystemHelper m_FileSystemHelper;
 
         /// <summary>
@@ -31,12 +30,24 @@ namespace UnityQGameFramework.Core.FileSystem
         /// 获取游戏框架模块优先级。
         /// </summary>
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        internal override int Priority => 4;
+        internal override int Priority
+        {
+            get
+            {
+                return 4;
+            }
+        }
 
         /// <summary>
         /// 获取文件系统数量。
         /// </summary>
-        public int Count => m_FileSystems.Count;
+        public int Count
+        {
+            get
+            {
+                return m_FileSystems.Count;
+            }
+        }
 
         /// <summary>
         /// 文件系统管理器轮询。
@@ -225,7 +236,6 @@ namespace UnityQGameFramework.Core.FileSystem
             string fullPath = fileSystem.FullPath;
             ((FileSystem)fileSystem).Shutdown();
             m_FileSystems.Remove(fullPath);
-
             if (deletePhysicalFile && File.Exists(fullPath))
             {
                 File.Delete(fullPath);

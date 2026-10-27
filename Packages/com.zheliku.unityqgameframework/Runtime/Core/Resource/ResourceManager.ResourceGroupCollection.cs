@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -87,12 +87,24 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源组集合是否准备完毕。
             /// </summary>
-            public bool Ready => ReadyCount >= TotalCount;
+            public bool Ready
+            {
+                get
+                {
+                    return ReadyCount >= TotalCount;
+                }
+            }
 
             /// <summary>
             /// 获取资源组集合包含资源数量。
             /// </summary>
-            public int TotalCount => m_ResourceNames.Count;
+            public int TotalCount
+            {
+                get
+                {
+                    return m_ResourceNames.Count;
+                }
+            }
 
             /// <summary>
             /// 获取资源组集合中已准备完成资源数量。
@@ -170,7 +182,13 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源组集合的完成进度。
             /// </summary>
-            public float Progress => TotalLength > 0L ? (float)ReadyLength / TotalLength : 1f;
+            public float Progress
+            {
+                get
+                {
+                    return TotalLength > 0L ? (float)ReadyLength / TotalLength : 1f;
+                }
+            }
 
             /// <summary>
             /// 获取资源组集合包含的资源组列表。

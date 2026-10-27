@@ -29,7 +29,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取文件系统数量。
         /// </summary>
-        public int Count => m_FileSystemManager.Count;
+        public int Count
+        {
+            get
+            {
+                return m_FileSystemManager.Count;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -58,10 +64,6 @@ namespace UnityQGameFramework.Runtime
             transform.localScale = Vector3.one;
 
             m_FileSystemManager.SetFileSystemHelper(fileSystemHelper);
-        }
-
-        private void Start()
-        {
         }
 
         /// <summary>

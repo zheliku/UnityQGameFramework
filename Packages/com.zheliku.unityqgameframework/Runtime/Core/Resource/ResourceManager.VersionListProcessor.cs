@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -23,7 +23,14 @@ namespace UnityQGameFramework.Core.Resource
             private int m_VersionListCompressedLength;
             private int m_VersionListCompressedHashCode;
 
+            /// <summary>
+            /// 版本资源列表更新成功回调。
+            /// </summary>
             public FrameworkAction<string, string> VersionListUpdateSuccess;
+
+            /// <summary>
+            /// 版本资源列表更新失败回调。
+            /// </summary>
             public FrameworkAction<string, string> VersionListUpdateFailure;
 
             /// <summary>
@@ -147,6 +154,11 @@ namespace UnityQGameFramework.Core.Resource
                 m_DownloadManager.AddDownload(localVersionListFilePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.UpdatePrefixUri, latestVersionListFullNameWithCrc32)), this);
             }
 
+            /// <summary>
+            /// 校验并解压下载的版本资源列表。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
             {
                 VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
@@ -224,6 +236,11 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 通知版本资源列表下载失败。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
             {
                 VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;

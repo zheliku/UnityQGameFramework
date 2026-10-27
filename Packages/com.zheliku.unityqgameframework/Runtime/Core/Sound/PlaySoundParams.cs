@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -84,6 +84,9 @@ namespace UnityQGameFramework.Core.Sound
         /// </summary>
         public float DopplerLevel { get; set; }
 
+        /// <summary>
+        /// 获取播放参数是否已由声音模块持有。
+        /// </summary>
         internal bool Referenced { get; private set; }
 
         /// <summary>

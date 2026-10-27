@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,8 +10,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示已加载场景与场景切换状态。
+        /// </summary>
         private sealed class SceneInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制场景信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Scene Information</b>");

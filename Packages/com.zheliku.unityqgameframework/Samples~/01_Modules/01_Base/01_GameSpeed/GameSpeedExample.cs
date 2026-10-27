@@ -4,12 +4,16 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示时间倍率。
+    /// </summary>
     public sealed class GameSpeedExample : MonoBehaviour
     {
-        [SerializeField] private Slider speedSlider;
-        [SerializeField] private Text speedValueText, gameTimeText, realTimeText;
+        [SerializeField]
+        private Slider speedSlider;
+        [SerializeField]
+        private Text speedValueText, gameTimeText, realTimeText;
         private float originalSpeed, gameSeconds, realSeconds;
-
         private void Start()
         {
             originalSpeed = QGF.Base.GameSpeed;
@@ -30,7 +34,10 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnDestroy()
         {
             var framework = GameEntry.GetComponent<BaseComponent>();
-            if (framework != null) framework.GameSpeed = originalSpeed;
+            if (framework != null)
+            {
+                framework.GameSpeed = originalSpeed;
+            }
         }
     }
 }

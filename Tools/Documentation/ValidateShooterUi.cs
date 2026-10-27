@@ -34,7 +34,7 @@ public static class ValidateShooterUi
             if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert) errors.Add(text + "\n" + stack);
         };
         Application.logMessageReceived += capture;
-        string scene = AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb");
+        string scene = "Assets/Examples/02_StarForce/StarForce Launcher.unity";
         string root = Path.GetDirectoryName(scene).Replace('\\', '/');
         bool moved = root.Contains("02_StarForce");
         try
@@ -125,8 +125,8 @@ public static class ValidateShooterUi
 
     public static object SelectProfile()
     {
-        string root = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb")).Replace('\\', '/');
-        var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/UnityQGameFramework/Config/Editor/LubanProfile.asset");
+        string root = Path.GetDirectoryName(scene).Replace('\\', '/');
+        var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/UnityQGameFramework/Config/LubanProfile.asset");
         if (profile == null) throw new Exception("Sample profile missing");
         LubanSettings.instance.Profile = profile;
         return new { selected = AssetDatabase.GetAssetPath(LubanSettings.instance.Profile) };

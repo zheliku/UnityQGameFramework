@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -31,12 +31,24 @@ namespace UnityQGameFramework.Core.Config
         /// <summary>
         /// 获取全局配置项数量。
         /// </summary>
-        public int Count => m_ConfigDatas.Count;
+        public int Count
+        {
+            get
+            {
+                return m_ConfigDatas.Count;
+            }
+        }
 
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        public int CachedBytesSize => DataProvider<IConfigManager>.CachedBytesSize;
+        public int CachedBytesSize
+        {
+            get
+            {
+                return DataProvider<IConfigManager>.CachedBytesSize;
+            }
+        }
 
         /// <summary>
         /// 读取全局配置成功事件。
@@ -436,6 +448,7 @@ namespace UnityQGameFramework.Core.Config
         /// 移除指定全局配置项。
         /// </summary>
         /// <param name="configName">要移除全局配置项的名称。</param>
+        /// <returns>是否成功移除配置项。</returns>
         public bool RemoveConfig(string configName)
         {
             if (!HasConfig(configName))
@@ -454,6 +467,11 @@ namespace UnityQGameFramework.Core.Config
             m_ConfigDatas.Clear();
         }
 
+        /// <summary>
+        /// 获取全局配置值。
+        /// </summary>
+        /// <param name="configName">全局配置项名称。</param>
+        /// <returns>全局配置值；配置项不存在时返回空。</returns>
         private ConfigData? GetConfigData(string configName)
         {
             if (string.IsNullOrEmpty(configName))

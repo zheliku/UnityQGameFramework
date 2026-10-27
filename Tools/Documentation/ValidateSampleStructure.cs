@@ -23,7 +23,7 @@ public static class ValidateSampleStructure
         {
             throw new InvalidOperationException("Use the isolated Consumer in Edit Mode.");
         }
-        const string path = "Assets/Examples/01_Modules/11_DataTable/Common/Config/Editor/LubanProfile.asset";
+        const string path = "Assets/Examples/01_Modules/UnityQGameFramework/Config/LubanProfile.asset";
         var profile = AssetDatabase.LoadAssetAtPath<UnityQGameFramework.Editor.LubanProfile>(path);
         await UnityQGameFramework.Editor.LubanGenerator.GenerateAsync(profile);
         return new { generated = true, profile = path };

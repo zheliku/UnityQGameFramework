@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -39,6 +39,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 return m_Language;
             }
+
             set
             {
                 if (value == Language.Unspecified)
@@ -69,12 +70,24 @@ namespace UnityQGameFramework.Core.Localization
         /// <summary>
         /// 获取当前字典的文本条目数量。
         /// </summary>
-        public int DictionaryCount => m_Dictionary.Count;
+        public int DictionaryCount
+        {
+            get
+            {
+                return m_Dictionary.Count;
+            }
+        }
 
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        public int CachedBytesSize => DataProvider<ILocalizationManager>.CachedBytesSize;
+        public int CachedBytesSize
+        {
+            get
+            {
+                return DataProvider<ILocalizationManager>.CachedBytesSize;
+            }
+        }
 
         /// <summary>
         /// 读取字典成功事件。
@@ -85,6 +98,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 m_DataProvider.ReadDataSuccess += value;
             }
+
             remove
             {
                 m_DataProvider.ReadDataSuccess -= value;
@@ -100,6 +114,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 m_DataProvider.ReadDataFailure += value;
             }
+
             remove
             {
                 m_DataProvider.ReadDataFailure -= value;
@@ -115,6 +130,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 m_DataProvider.ReadDataUpdate += value;
             }
+
             remove
             {
                 m_DataProvider.ReadDataUpdate -= value;
@@ -130,6 +146,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 m_DataProvider.ReadDataDependencyAsset += value;
             }
+
             remove
             {
                 m_DataProvider.ReadDataDependencyAsset -= value;

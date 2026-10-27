@@ -4,6 +4,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示解析与查询配置。
+    /// </summary>
     public sealed class ReadConfigValues : MonoBehaviour
     {
         [SerializeField] private TextAsset config;

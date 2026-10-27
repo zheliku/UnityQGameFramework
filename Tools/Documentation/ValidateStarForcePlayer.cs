@@ -9,15 +9,20 @@ using Newtonsoft.Json.Linq;
 using StarForce.Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityQGameFramework.Runtime;
+using YooAsset;
 
 public static class ValidateStarForcePlayer
 {
     public static async Task<object> Run()
     {
         if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
+        string resourceSettingsPath = Path.GetDirectoryName(BuildStarForce.GetScenePath()).Replace('\\', '/')
+            + "/UnityQGameFramework/Resource/ResourceSettings.asset";
+        byte[] resourceSettingsBytes = File.ReadAllBytes(resourceSettingsPath);
         var watched = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .Select(name => "ProjectSettings/" + name + ".asset")
-            .Concat(new[] { AssetDatabase.GUIDToAssetPath(BuildStarForce.SceneGuid) }).ToDictionary(path => path, Hash);
+            .Concat(new[] { BuildStarForce.GetScenePath() }).ToDictionary(path => path, Hash);
         var streaming = Tree("Assets/StreamingAssets");
         var memory = new[] { "PlayerSettings", "GraphicsSettings", "QualitySettings" }.ToDictionary(name => name,
             name => EditorJsonUtility.ToJson(Unsupported.GetSerializedAssetInterfaceSingleton(name)));
@@ -37,6 +42,11 @@ public static class ValidateStarForcePlayer
         string language = "Unspecified";
         try
         {
+            // Player 使用同一项 Play Mode；这里显式选择离线模式，不由框架按环境替换。
+            var resourceSettings = new SerializedObject(AssetDatabase.LoadAssetAtPath<ResourceSettings>(resourceSettingsPath));
+            resourceSettings.FindProperty("m_Packages").GetArrayElementAtIndex(0).FindPropertyRelative("m_Mode").intValue = (int)EPlayMode.OfflinePlayMode;
+            resourceSettings.ApplyModifiedPropertiesWithoutUndo();
+            AssetDatabase.SaveAssets();
             Application.logMessageReceived += capture;
             try { BuildStarForce.BuildPlayer(player); }
             finally { Application.logMessageReceived -= capture; }
@@ -72,6 +82,8 @@ public static class ValidateStarForcePlayer
         }
         finally
         {
+            File.WriteAllBytes(resourceSettingsPath, resourceSettingsBytes);
+            AssetDatabase.ImportAsset(resourceSettingsPath, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
             if (save != null) File.WriteAllBytes(savePath, save);
             else if (File.Exists(savePath)) File.Delete(savePath);
         }

@@ -5,6 +5,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示切换语言。
+    /// </summary>
     public sealed class SwitchLanguage : MonoBehaviour
     {
         [SerializeField] private TextAsset dictionary;

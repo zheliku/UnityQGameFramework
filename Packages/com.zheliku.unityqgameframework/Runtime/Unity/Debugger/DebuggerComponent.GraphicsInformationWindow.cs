@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,8 +10,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示图形设备及渲染能力。
+        /// </summary>
         private sealed class GraphicsInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制图形设备信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Graphics Information</b>");
@@ -91,6 +97,11 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 格式化着色器模型等级。
+            /// </summary>
+            /// <param name="shaderLevel">Unity 着色器等级。</param>
+            /// <returns>着色器模型的显示文本。</returns>
             private string GetShaderLevelString(int shaderLevel)
             {
                 return Utility.Text.Format("Shader Model {0}.{1}", shaderLevel / 10, shaderLevel % 10);

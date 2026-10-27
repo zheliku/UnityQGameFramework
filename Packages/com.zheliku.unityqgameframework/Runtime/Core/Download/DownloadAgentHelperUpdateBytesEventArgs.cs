@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -76,6 +76,7 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取下载的数据流。
         /// </summary>
+        /// <returns>下载使用的原始字节数组，有效范围由 Offset 和 Length 指定。</returns>
         public byte[] GetBytes()
         {
             return m_Bytes;

@@ -8,13 +8,29 @@ namespace UnityQGameFramework.Runtime
     /// 资源配置。
     /// </summary>
     [CreateAssetMenu(menuName = "QGF/Resource Settings", fileName = "ResourceSettings")]
-    public sealed class ResourceSettings : ScriptableObject
+    public sealed class ResourceSettings : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField]
         private string m_DefaultPackageName = "DefaultPackage";
 
+        [SerializeField, HideInInspector]
+        private int m_SerializationVersion;
+
         [SerializeField]
-        private bool m_UseEditorSimulation = true;
+        private ReadWritePathType m_CachePathType = ReadWritePathType.PersistentData;
+
+        [SerializeField]
+        private float m_MinUnloadUnusedAssetsInterval = 60f;
+
+        [SerializeField]
+        private float m_MaxUnloadUnusedAssetsInterval = 300f;
+
+#if UNITY_EDITOR
+        // 仅编辑器使用；Player 不包含收集配置及其引用。
+        [SerializeField]
+        [HideInInspector]
+        private UnityEngine.Object m_EditorCollector;
+#endif
 
         [SerializeField]
         private List<ResourcePackageSettings> m_Packages = new List<ResourcePackageSettings>
@@ -34,14 +50,86 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取是否在编辑器中使用模拟模式。
+        /// 获取下载资源缓存的位置。
         /// </summary>
-        public bool UseEditorSimulation
+        public ReadWritePathType CachePathType
         {
             get
             {
-                return m_UseEditorSimulation;
+                return m_CachePathType;
             }
+        }
+
+        /// <summary>
+        /// 获取预约清理未使用资源的最短等待秒数。
+        /// </summary>
+        public float MinUnloadUnusedAssetsInterval
+        {
+            get
+            {
+                return m_MinUnloadUnusedAssetsInterval;
+            }
+        }
+
+        /// <summary>
+        /// 获取自动清理未使用资源的最长间隔秒数。
+        /// </summary>
+        public float MaxUnloadUnusedAssetsInterval
+        {
+            get
+            {
+                return m_MaxUnloadUnusedAssetsInterval;
+            }
+        }
+
+        /// <summary>
+        /// 获取当前平台的资源缓存根目录。
+        /// </summary>
+        /// <returns>持久化目录或临时缓存目录。</returns>
+        public string GetCacheRoot()
+        {
+            return m_CachePathType == ReadWritePathType.TemporaryCache ? Application.temporaryCachePath : Application.persistentDataPath;
+        }
+
+        /// <summary>
+        /// 序列化前升级旧版资源包运行模式配置。
+        /// </summary>
+        public void OnBeforeSerialize()
+        {
+            UpgradePlayModes();
+        }
+
+        /// <summary>
+        /// 反序列化后升级旧版资源包运行模式配置。
+        /// </summary>
+        public void OnAfterDeserialize()
+        {
+            UpgradePlayModes();
+        }
+
+        /// <summary>
+        /// 将旧配置迁移为各资源包的单一运行模式。
+        /// </summary>
+        private void UpgradePlayModes()
+        {
+            if (m_SerializationVersion >= 3)
+            {
+                return;
+            }
+            foreach (ResourcePackageSettings package in m_Packages)
+            {
+                package?.UpgradePlayMode(m_SerializationVersion);
+            }
+            m_SerializationVersion = 3;
+        }
+
+        /// <summary>
+        /// 保证清理间隔有效且最长间隔不小于最短间隔。
+        /// </summary>
+        private void OnValidate()
+        {
+            m_MinUnloadUnusedAssetsInterval = Mathf.Max(0f, m_MinUnloadUnusedAssetsInterval);
+            m_MaxUnloadUnusedAssetsInterval = Mathf.Max(m_MinUnloadUnusedAssetsInterval, m_MaxUnloadUnusedAssetsInterval);
         }
 
         /// <summary>

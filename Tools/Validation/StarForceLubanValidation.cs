@@ -89,19 +89,19 @@ public static class StarForceLubanValidation
         StarForce.GameEntry.Event.Subscribe(LoadDataTableFailureEventArgs.EventId, failure);
         try
         {
-            component.LoadDataTables<StarForce.Tables>(path, loader => new StarForce.Tables(loader), component);
+            component.LoadDataTables<StarForce.Tables>(path, component);
             component.CancelLoadDataTables();
             for (int i = 0; i < 10; ++i) { EditorApplication.Step(); await Task.Delay(30); }
             Require(component.Count == 0 && successes == 0 && failures == 0, "Cancelled request must not publish or emit events.");
-            component.LoadDataTables<StarForce.Tables>(path, loader => new StarForce.Tables(loader), component);
+            component.LoadDataTables<StarForce.Tables>(path, component);
             for (int i = 0; i < 100 && (component.IsLoading || successes == 0); ++i) { EditorApplication.Step(); await Task.Delay(30); }
             Require(!component.IsLoading && successes == 1 && component.Count == 11, "Resource catalog loading and success event.");
             component.UnloadDataTables();
-            component.LoadDataTables<StarForce.Tables>(path, loader => throw new InvalidDataException("Expected validation failure"), component);
+            component.LoadDataTables<FailingTableLoader>(path, component);
             for (int i = 0; i < 100 && (component.IsLoading || failures == 0); ++i) { EditorApplication.Step(); await Task.Delay(30); }
             Require(!component.IsLoading && failures == 1 && component.Count == 0, "Load failure must not publish partial tables.");
             // Restore the complete table set for the running sample.
-            component.LoadDataTables(loader => new StarForce.Tables(loader));
+            component.LoadDataTables<StarForce.Tables>();
         }
         finally
         {
@@ -113,6 +113,33 @@ public static class StarForceLubanValidation
         Directory.CreateDirectory("Artifacts~/Luban");
         File.WriteAllText("Artifacts~/Luban/runtime-validation.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;
+    }
+
+    /// <summary>
+    /// 模拟解析失败的数据表加载器。
+    /// </summary>
+    public sealed class FailingTableLoader : IDataTableLoader
+    {
+        /// <summary>
+        /// 获取生成代码的结构版本。
+        /// </summary>
+        public string SchemaHash
+        {
+            get
+            {
+                return ((IDataTableLoader)new StarForce.Tables()).SchemaHash;
+            }
+        }
+
+        /// <summary>
+        /// 抛出预期的解析异常。
+        /// </summary>
+        /// <param name="loader">数据文件加载方法。</param>
+        /// <returns>本检查始终抛出异常。</returns>
+        public IReadOnlyList<DataTableBase> Load(Func<string, ByteBuf> loader)
+        {
+            throw new InvalidDataException("Expected validation failure");
+        }
     }
 
     private static int CompareOriginalTables(DataTableComponent tables)

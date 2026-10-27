@@ -24,7 +24,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取网络频道数量。
         /// </summary>
-        public int NetworkChannelCount => m_NetworkManager.NetworkChannelCount;
+        public int NetworkChannelCount
+        {
+            get
+            {
+                return m_NetworkManager.NetworkChannelCount;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -47,6 +53,9 @@ namespace UnityQGameFramework.Runtime
             m_NetworkManager.NetworkCustomError += OnNetworkCustomError;
         }
 
+        /// <summary>
+        /// 获取网络事件转发所需的事件组件。
+        /// </summary>
         private void Start()
         {
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
@@ -117,26 +126,51 @@ namespace UnityQGameFramework.Runtime
             return m_NetworkManager.DestroyNetworkChannel(name);
         }
 
+        /// <summary>
+        /// 派发网络连接成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnNetworkConnected(object sender, UnityQGameFramework.Core.Network.NetworkConnectedEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkConnectedEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发网络关闭事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnNetworkClosed(object sender, UnityQGameFramework.Core.Network.NetworkClosedEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkClosedEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发网络心跳丢失事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnNetworkMissHeartBeat(object sender, UnityQGameFramework.Core.Network.NetworkMissHeartBeatEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkMissHeartBeatEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发网络错误事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnNetworkError(object sender, UnityQGameFramework.Core.Network.NetworkErrorEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkErrorEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发网络自定义错误事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnNetworkCustomError(object sender, UnityQGameFramework.Core.Network.NetworkCustomErrorEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkCustomErrorEventArgs.Create(e));

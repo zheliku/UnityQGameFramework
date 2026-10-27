@@ -14,6 +14,9 @@ namespace StarForce
     /// </summary>
     public class UGuiGroupHelper : UIGroupHelperBase
     {
+        /// <summary>
+        /// 界面深度换算为 Canvas 排序值的倍率。
+        /// </summary>
         public const int DepthFactor = 10000;
 
         private int m_Depth = 0;

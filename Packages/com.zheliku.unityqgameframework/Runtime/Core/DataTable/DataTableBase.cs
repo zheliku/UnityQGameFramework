@@ -63,7 +63,16 @@ namespace UnityQGameFramework.Core.DataTable
             get;
         }
 
+        /// <summary>
+        /// 获取数据表记录的枚举器。
+        /// </summary>
+        /// <returns>按当前表顺序遍历记录的枚举器。</returns>
         protected abstract IEnumerator GetRowEnumerator();
+
+        /// <summary>
+        /// 获取数据表的行枚举器。
+        /// </summary>
+        /// <returns>用于遍历数据行的枚举器。</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetRowEnumerator();

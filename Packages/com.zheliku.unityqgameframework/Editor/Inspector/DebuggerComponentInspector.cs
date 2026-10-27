@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,6 +9,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制调试器组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(DebuggerComponent))]
     internal sealed class DebuggerComponentInspector : FrameworkInspector
     {
@@ -17,6 +20,9 @@ namespace UnityQGameFramework.Editor
         private SerializedProperty m_ShowFullWindow = null;
         private SerializedProperty m_ConsoleWindow = null;
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -55,6 +61,9 @@ namespace UnityQGameFramework.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
             m_Skin = serializedObject.FindProperty("m_Skin");

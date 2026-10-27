@@ -12,6 +12,12 @@ namespace UnityQGameFramework.Runtime
 {
     internal sealed partial class YooAssetResourceBackend
     {
+        /// <summary>
+        /// 获取指定资源包中已加载场景的实际名称。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资产定位地址。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <returns>实际场景名称；未加载时返回空。</returns>
         internal string GetLoadedSceneName(string sceneAssetName, string packageName)
         {
             if (!m_Packages.TryGetValue(GetPackageName(packageName), out PackageInfo package)
@@ -54,6 +60,15 @@ namespace UnityQGameFramework.Runtime
             UnloadSceneCallbackAsync(sceneAssetName, callbacks, userData).Forget();
         }
 
+        /// <summary>
+        /// 加载并登记场景，失败或取消时回收本次场景句柄。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资产定位地址。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <param name="priority">加载优先级。</param>
+        /// <param name="progress">加载进度回调。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>等待场景加载完成的异步任务。</returns>
         internal async UniTask LoadSceneAsync(string sceneAssetName, string packageName, int priority, Action<float> progress, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -132,6 +147,13 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 卸载已登记的场景并移除场景借用。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资产定位地址。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>等待场景卸载完成的异步任务。</returns>
         internal async UniTask UnloadSceneAsync(string sceneAssetName, string packageName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -160,6 +182,14 @@ namespace UnityQGameFramework.Runtime
             cancellationToken.ThrowIfCancellationRequested();
         }
 
+        /// <summary>
+        /// 将场景加载结果转发给回调接口。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资产定位地址。</param>
+        /// <param name="priority">加载优先级。</param>
+        /// <param name="callbacks">场景操作回调。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>完成场景加载通知的异步任务。</returns>
         private async UniTask LoadSceneCallbackAsync(string sceneAssetName, int priority, LoadSceneCallbacks callbacks, object userData)
         {
             float startTime = Time.realtimeSinceStartup;
@@ -183,6 +213,13 @@ namespace UnityQGameFramework.Runtime
             callbacks.LoadSceneSuccessCallback(sceneAssetName, Time.realtimeSinceStartup - startTime, userData);
         }
 
+        /// <summary>
+        /// 将场景卸载结果转发给回调接口。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资产定位地址。</param>
+        /// <param name="callbacks">场景操作回调。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>完成场景卸载通知的异步任务。</returns>
         private async UniTask UnloadSceneCallbackAsync(string sceneAssetName, UnloadSceneCallbacks callbacks, object userData)
         {
             try
@@ -204,6 +241,12 @@ namespace UnityQGameFramework.Runtime
             callbacks.UnloadSceneSuccessCallback(sceneAssetName, userData);
         }
 
+        /// <summary>
+        /// 查询场景资产并检查其是否有效。
+        /// </summary>
+        /// <param name="package">要查询的资源包。</param>
+        /// <param name="sceneAssetName">场景资产定位地址。</param>
+        /// <returns>有效的场景资产信息；无效时抛出异常。</returns>
         private static AssetInfo GetSceneAssetInfo(ResourcePackage package, string sceneAssetName)
         {
             if (Guid.TryParseExact(sceneAssetName, "N", out _))
@@ -218,8 +261,19 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         private sealed class SceneInfo
         {
+            /// <summary>
+            /// 本次加载持有的场景句柄。
+            /// </summary>
             internal SceneHandle Handle;
+
+            /// <summary>
+            /// 场景是否已完成加载。
+            /// </summary>
             internal bool Loaded;
+
+            /// <summary>
+            /// 场景是否正在卸载。
+            /// </summary>
             internal bool Unloading;
         }
     }

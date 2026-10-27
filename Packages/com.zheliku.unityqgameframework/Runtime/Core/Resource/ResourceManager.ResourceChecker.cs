@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -25,7 +25,14 @@ namespace UnityQGameFramework.Core.Resource
             private bool m_ReadOnlyVersionListReady;
             private bool m_ReadWriteVersionListReady;
 
+            /// <summary>
+            /// 发现待更新资源的回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, LoadType, int, int, int, int> ResourceNeedUpdate;
+
+            /// <summary>
+            /// 资源检查完成回调。
+            /// </summary>
             public FrameworkAction<int, int, int, long, long> ResourceCheckComplete;
 
             /// <summary>
@@ -83,26 +90,59 @@ namespace UnityQGameFramework.Core.Resource
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.ReadWritePath, LocalVersionListFileName)), new LoadBytesCallbacks(OnLoadReadWriteVersionListSuccess, OnLoadReadWriteVersionListFailure), null);
             }
 
+            /// <summary>
+            /// 缓存资源对应的文件系统名称。
+            /// </summary>
+            /// <param name="resourceName">资源名称。</param>
+            /// <param name="fileSystemName">文件系统名称。</param>
             private void SetCachedFileSystemName(ResourceName resourceName, string fileSystemName)
             {
                 GetOrAddCheckInfo(resourceName).SetCachedFileSystemName(fileSystemName);
             }
 
+            /// <summary>
+            /// 登记远端版本信息。
+            /// </summary>
+            /// <param name="resourceName">资源名称。</param>
+            /// <param name="loadType">资源加载方式。</param>
+            /// <param name="length">资源字节数。</param>
+            /// <param name="hashCode">资源 CRC32 校验值。</param>
+            /// <param name="compressedLength">压缩后的资源字节数。</param>
+            /// <param name="compressedHashCode">压缩后的资源 CRC32 校验值。</param>
             private void SetVersionInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode)
             {
                 GetOrAddCheckInfo(resourceName).SetVersionInfo(loadType, length, hashCode, compressedLength, compressedHashCode);
             }
 
+            /// <summary>
+            /// 登记只读目录中的资源版本信息。
+            /// </summary>
+            /// <param name="resourceName">资源名称。</param>
+            /// <param name="loadType">资源加载方式。</param>
+            /// <param name="length">资源字节数。</param>
+            /// <param name="hashCode">资源 CRC32 校验值。</param>
             private void SetReadOnlyInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode)
             {
                 GetOrAddCheckInfo(resourceName).SetReadOnlyInfo(loadType, length, hashCode);
             }
 
+            /// <summary>
+            /// 登记读写目录中的资源版本信息。
+            /// </summary>
+            /// <param name="resourceName">资源名称。</param>
+            /// <param name="loadType">资源加载方式。</param>
+            /// <param name="length">资源字节数。</param>
+            /// <param name="hashCode">资源 CRC32 校验值。</param>
             private void SetReadWriteInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode)
             {
                 GetOrAddCheckInfo(resourceName).SetReadWriteInfo(loadType, length, hashCode);
             }
 
+            /// <summary>
+            /// 获取资源检查记录，不存在时创建。
+            /// </summary>
+            /// <param name="resourceName">资源名称。</param>
+            /// <returns>指定资源的检查记录。</returns>
             private CheckInfo GetOrAddCheckInfo(ResourceName resourceName)
             {
                 CheckInfo checkInfo = null;
@@ -117,6 +157,9 @@ namespace UnityQGameFramework.Core.Resource
                 return checkInfo;
             }
 
+            /// <summary>
+            /// 更新资源检查状态并整理可用资源。
+            /// </summary>
             private void RefreshCheckInfoStatus()
             {
                 if (!m_UpdatableVersionListReady || !m_ReadOnlyVersionListReady || !m_ReadWriteVersionListReady)
@@ -224,6 +267,9 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 移除不再包含资源的文件系统。
+            /// </summary>
             private void RemoveEmptyFileSystems()
             {
                 List<string> removedFileSystemNames = null;
@@ -250,6 +296,13 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 解析可更新版本列表并推进资源检查。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="bytes">读取的文件数据。</param>
+            /// <param name="duration">读取耗时，以秒为单位。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadUpdatableVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 if (m_UpdatableVersionListReady)
@@ -358,11 +411,24 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 处理可更新版本列表读取失败。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="errorMessage">文件读取错误信息。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadUpdatableVersionListFailure(string fileUri, string errorMessage, object userData)
             {
                 throw new FrameworkException(Utility.Text.Format("Updatable version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
             }
 
+            /// <summary>
+            /// 解析只读目录版本列表并推进资源检查。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="bytes">读取的文件数据。</param>
+            /// <param name="duration">读取耗时，以秒为单位。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadReadOnlyVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 if (m_ReadOnlyVersionListReady)
@@ -420,6 +486,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 处理只读目录版本列表读取失败。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="errorMessage">文件读取错误信息。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadReadOnlyVersionListFailure(string fileUri, string errorMessage, object userData)
             {
                 if (m_ReadOnlyVersionListReady)
@@ -431,6 +503,13 @@ namespace UnityQGameFramework.Core.Resource
                 RefreshCheckInfoStatus();
             }
 
+            /// <summary>
+            /// 解析读写目录版本列表并推进资源检查。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="bytes">读取的文件数据。</param>
+            /// <param name="duration">读取耗时，以秒为单位。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadReadWriteVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 if (m_ReadWriteVersionListReady)
@@ -488,6 +567,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 处理读写目录版本列表读取失败。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="errorMessage">文件读取错误信息。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadReadWriteVersionListFailure(string fileUri, string errorMessage, object userData)
             {
                 if (m_ReadWriteVersionListReady)

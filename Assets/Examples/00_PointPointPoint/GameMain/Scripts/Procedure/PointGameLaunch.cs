@@ -20,6 +20,10 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         private object request;
         private CancellationTokenSource cancellation;
 
+        /// <summary>
+        /// 进入当前流程。
+        /// </summary>
+        /// <param name="owner">所属流程状态机。</param>
         protected override void OnEnter(IFsm<IProcedureManager> owner)
         {
             base.OnEnter(owner);
@@ -86,6 +90,12 @@ namespace UnityQGameFramework.Examples.PointPointPoint
             }
         }
 
+        /// <summary>
+        /// 更新当前流程。
+        /// </summary>
+        /// <param name="owner">所属流程状态机。</param>
+        /// <param name="elapsed">逻辑时间间隔，以秒为单位。</param>
+        /// <param name="realElapsed">真实时间间隔，以秒为单位。</param>
         protected override void OnUpdate(IFsm<IProcedureManager> owner, float elapsed, float realElapsed)
         {
             base.OnUpdate(owner, elapsed, realElapsed);
@@ -105,6 +115,11 @@ namespace UnityQGameFramework.Examples.PointPointPoint
             ChangeState<PointGameMenu>(owner);
         }
 
+        /// <summary>
+        /// 离开当前流程并清理订阅。
+        /// </summary>
+        /// <param name="owner">所属流程状态机。</param>
+        /// <param name="shutdown">是否因框架关闭而离开。</param>
         protected override void OnLeave(IFsm<IProcedureManager> owner, bool shutdown)
         {
             request = null;

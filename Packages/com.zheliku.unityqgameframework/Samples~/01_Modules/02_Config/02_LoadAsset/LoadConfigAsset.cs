@@ -16,7 +16,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField] private Text contextText;
         [SerializeField] private Text cacheText;
         [SerializeField] private Button reserveButton, freeButton;
-        [SerializeField] private string configAssetGuid;
+        private const string ConfigAddress = "Config_Asset_Level";
 
         private void Start()
         {
@@ -32,8 +32,8 @@ namespace UnityQGameFramework.Examples.Modules
                 QGF.Config.RemoveConfig("Level.Name");
                 stateText.text = "读取中";
                 loadButton.interactable = false;
-                // 使用稳定的资产 GUID 定位 TOML，移动文件夹后也不必改运行时代码。
-                QGF.Config.ReadData(configAssetGuid, this);
+                // 字符串地址来自 YooAsset 的“分组名_文件名”规则；Config 负责解析 TOML。
+                QGF.Config.ReadData(ConfigAddress, this);
             });
         }
 
@@ -45,7 +45,7 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnLoaded(object sender, GameEventArgs args)
         {
             var e = (LoadConfigSuccessEventArgs)args;
-            if (e.ConfigAssetName != configAssetGuid)
+            if (e.ConfigAssetName != ConfigAddress)
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnFailed(object sender, GameEventArgs args)
         {
             var e = (LoadConfigFailureEventArgs)args;
-            if (e.ConfigAssetName != configAssetGuid)
+            if (e.ConfigAssetName != ConfigAddress)
             {
                 return;
             }

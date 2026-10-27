@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,6 +10,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class EntityComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 实体组的序列化配置。
+        /// </summary>
         [Serializable]
         private sealed class EntityGroup
         {
@@ -28,15 +31,60 @@ namespace UnityQGameFramework.Runtime
             [SerializeField]
             private int m_InstancePriority = 0;
 
-            public string Name => m_Name;
+            /// <summary>
+            /// 获取实体组名称。
+            /// </summary>
+            public string Name
+            {
+                get
+                {
+                    return m_Name;
+                }
+            }
 
-            public float InstanceAutoReleaseInterval => m_InstanceAutoReleaseInterval;
+            /// <summary>
+            /// 获取实例池自动释放间隔，以秒为单位。
+            /// </summary>
+            public float InstanceAutoReleaseInterval
+            {
+                get
+                {
+                    return m_InstanceAutoReleaseInterval;
+                }
+            }
 
-            public int InstanceCapacity => m_InstanceCapacity;
+            /// <summary>
+            /// 获取实例池容量。
+            /// </summary>
+            public int InstanceCapacity
+            {
+                get
+                {
+                    return m_InstanceCapacity;
+                }
+            }
 
-            public float InstanceExpireTime => m_InstanceExpireTime;
+            /// <summary>
+            /// 获取闲置实例过期时间，以秒为单位。
+            /// </summary>
+            public float InstanceExpireTime
+            {
+                get
+                {
+                    return m_InstanceExpireTime;
+                }
+            }
 
-            public int InstancePriority => m_InstancePriority;
+            /// <summary>
+            /// 获取实例池优先级。
+            /// </summary>
+            public int InstancePriority
+            {
+                get
+                {
+                    return m_InstancePriority;
+                }
+            }
         }
     }
 }

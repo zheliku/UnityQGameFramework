@@ -168,17 +168,17 @@ namespace DocumentationVerification
                 files.DestroyFileSystem(container, false);
                 checks.Add("FileSystem container write/close/reopen/read");
 
-                var tables = new UnityQGameFramework.Config.Tables(name => new ByteBuf(
+                var tables = ((UnityQGameFramework.Runtime.IDataTableLoader)new UnityQGameFramework.Config.Tables()).Load(name => new ByteBuf(
                     File.ReadAllBytes("Artifacts~/Documentation/ItemFixture/Data/" + name + ".bytes")));
                 var dataTables = FrameworkEntry.GetModule<IDataTableManager>();
-                dataTables.RegisterDataTables(tables.DataTables);
-                var view = dataTables.GetDataTable<UnityQGameFramework.Config.DRItem>();
+                dataTables.RegisterDataTables(tables);
+                var view = dataTables.GetDataTable<UnityQGameFramework.Config.TbItem>();
                 Require(view.Count == 3 && view.GetDataRow(1).Price == 20
                     && view.GetDataRow(1).Name == "回复药" && !view.GetDataRow(1).IsFree, "Excel example data");
                 Require(view.GetDataRows(row => row.Price <= 20).Length == 2
                     && view.GetDataRows((a, b) => a.Price.CompareTo(b.Price))[0].Id == 3, "Table filtering/sorting");
-                Require(ReferenceEquals(view.GetDataRow(1), tables.TbItem.GetOrDefault(1)), "Shared row identity");
-                Require(view.GetDataRow(999) == null && tables.TbItem.GetOrDefault(999) == null, "Missing row semantics");
+                Require(ReferenceEquals(view.GetDataRow(1), view.DataMap[1]), "Shared row identity");
+                Require(view.GetDataRow(999) == null && view.GetOrDefault(999) == null, "Missing row semantics");
                 checks.Add("Official Excel generation; Price partial; native/view identity, filters and sorting");
 
                 var networkHelper = (INetworkChannelHelper)Activator.CreateInstance(Example("TextChannelHelper"));

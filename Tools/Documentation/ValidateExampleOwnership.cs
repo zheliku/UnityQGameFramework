@@ -109,14 +109,34 @@ public static class ValidateExampleOwnership
 
     private static async Task CheckUI(string name, int mode, MonoBehaviour owner)
     {
-        string asset = AssetDatabase.GUIDToAssetPath(Field<string>(owner, "windowGuid"));
         const string group = "Example";
         QGF.UI.AddUIGroup(group);
-        int outside = QGF.UI.OpenUIForm(asset, group, "外部窗口");
+        // 使用另一份预制体，避免外部窗口把被测资产预热成同步加载。
+        string outsideAsset = name == "OpenWindowExample" ? "UI_Cover_Window" : "UI_OpenWindow_Window";
+        int outside = QGF.UI.OpenUIForm(outsideAsset, group, "外部窗口");
         await Until(() => QGF.UI.HasUIForm(outside), "Unrelated window loaded");
-        SetLoadDelay(mode == 1 ? 2 : 0);
-        owner.enabled = true;
-        await Until(() => Field<bool>(owner, "ready"), "Controller initialized");
+        if (mode == 1)
+        {
+            // 同一调用栈内发出请求并销毁控制器，不靠加载耗时捕捉中间状态。
+            // 保持组件禁用，防止 Unity 再自动调用一次 Start。
+            owner.GetType().GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(owner, null);
+        }
+        else
+        {
+            owner.enabled = true;
+            if (name == "OpenWindowExample")
+            {
+                await Until(() => Field<Text>(owner, "stateText").text == "窗口已关闭", "Controller initialized");
+            }
+            else
+            {
+                await Until(() => Field<bool>(owner, "ready"), "Controller initialized");
+            }
+        }
+        if (name == "OpenWindowExample")
+        {
+            Field<Button>(owner, "openButton").onClick.Invoke();
+        }
         string[] keys = name == "CoverWindowExample" ? new[] { "bottom", "top" } : new[] { "serialId" };
         if (name == "CoverWindowExample" && mode == 0)
         {
@@ -133,7 +153,14 @@ public static class ValidateExampleOwnership
             Field<Button>(owner, "reopenButton").onClick.Invoke();
             Require(Field<bool>(owner, "changing") && !QGF.UI.HasUIForm(ids[0]), "Reopen idle wait started");
         }
-        UnityEngine.Object.Destroy(owner.gameObject);
+        if (mode == 1)
+        {
+            UnityEngine.Object.DestroyImmediate(owner.gameObject);
+        }
+        else
+        {
+            UnityEngine.Object.Destroy(owner.gameObject);
+        }
         await Task.Delay(mode == 2 ? 2800 : mode == 1 ? 2300 : 150);
         Require(ids.All(id => !QGF.UI.HasUIForm(id) && !QGF.UI.IsLoadingUIForm(id)), "Owned loaded and pending windows removed");
         Require(QGF.UI.GetAllLoadedUIForms().Length == 1 && QGF.UI.HasUIForm(outside), "Unrelated window preserved with no late reopen");
@@ -142,50 +169,40 @@ public static class ValidateExampleOwnership
     private static async Task CheckScene(string name, int mode, MonoBehaviour owner, JObject layouts)
     {
         string outsideController = name == "LoadRoomExample" ? "SwitchRoomsExample" : "LoadRoomExample";
-        string outsideScene = ScenePath(layouts, outsideController);
-        // 从保存的场景读取另一个房间的 GUID；不在运行中打开另一个示例入口。
-        string field = outsideController == "LoadRoomExample" ? "roomGuid" : "orangeRoomGuid";
-        string guid = Regex.Match(File.ReadAllText(outsideScene), @"\b" + field + @": (\w+)").Groups[1].Value;
-        string outside = AssetDatabase.GUIDToAssetPath(guid);
+        // 使用另一个场景示例的 YooAsset 地址，不在运行中打开另一个示例入口。
+        string outside = outsideController == "LoadRoomExample" ? "Scene_LoadRoom_BlueRoom" : "Scene_SwitchRooms_OrangeRoom";
         QGF.Scene.LoadScene(outside);
         await Until(() => QGF.Scene.SceneIsLoaded(outside), "Unrelated room loaded");
-        string[] owned = name == "LoadRoomExample" ? new[] { AssetDatabase.GUIDToAssetPath(Field<string>(owner, "roomGuid")) }
-            : new[] { AssetDatabase.GUIDToAssetPath(Field<string>(owner, "blueRoomGuid")), AssetDatabase.GUIDToAssetPath(Field<string>(owner, "orangeRoomGuid")) };
-        bool caughtPending = false;
-        EditorApplication.CallbackFunction destroyPending = () =>
+        string[] owned = name == "LoadRoomExample" ? new[] { "Scene_LoadRoom_BlueRoom" }
+            : new[] { "Scene_SwitchRooms_BlueRoom", "Scene_SwitchRooms_OrangeRoom" };
+        // 在禁用的控制器上直接启动请求，以固定销毁时机；不依赖示例私有的就绪标记。
+        owner.GetType().GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(owner, null);
+        if (mode == 1)
         {
-            if (mode == 1 && owner != null && owned.Any(path => QGF.Scene.SceneIsLoading(path)))
-            {
-                caughtPending = true;
-                UnityEngine.Object.DestroyImmediate(owner.gameObject);
-            }
-        };
-        EditorApplication.update += destroyPending;
-        try
-        {
-            owner.enabled = true;
             if (name == "LoadRoomExample")
             {
-                await Until(() => Field<bool>(owner, "ready"), "Controller initialized");
                 Field<Button>(owner, "loadButton").onClick.Invoke();
-                if (mode == 1) destroyPending();
             }
-            if (mode == 1) await Until(() => caughtPending, "Controller destroyed during actual scene loading");
-            else
-            {
-                await Until(() => QGF.Scene.SceneIsLoaded(owned[0]) && (name != "SwitchRoomsExample" || !Field<bool>(owner, "changing")), "Owned rooms loaded");
-                if (mode == 2)
-                {
-                    Field<Button>(owner, "switchButton").onClick.Invoke();
-                    Require(QGF.Scene.SceneIsUnloading(owned[0]), "Destroy during old-room unload");
-                }
-                UnityEngine.Object.Destroy(owner.gameObject);
-            }
-            await Until(() => owned.All(path => !QGF.Scene.SceneIsLoaded(path) && !QGF.Scene.SceneIsLoading(path) && !QGF.Scene.SceneIsUnloading(path)), "Owned loaded and pending rooms removed");
-            await Task.Delay(250);
-            Require(QGF.Scene.SceneIsLoaded(outside) && QGF.Scene.GetLoadedSceneAssetNames().Length == 1, "Unrelated room preserved");
+            Require(owned.Any(path => QGF.Scene.SceneIsLoading(path)), "Owned room request is pending before destruction");
+            UnityEngine.Object.DestroyImmediate(owner.gameObject);
         }
-        finally { EditorApplication.update -= destroyPending; }
+        else
+        {
+            if (name == "LoadRoomExample")
+            {
+                Field<Button>(owner, "loadButton").onClick.Invoke();
+            }
+            await Until(() => QGF.Scene.SceneIsLoaded(owned[0]) && (name != "SwitchRoomsExample" || !Field<bool>(owner, "changing")), "Owned rooms loaded");
+            if (mode == 2)
+            {
+                Field<Button>(owner, "switchButton").onClick.Invoke();
+                Require(QGF.Scene.SceneIsUnloading(owned[0]), "Destroy during old-room unload");
+            }
+            UnityEngine.Object.Destroy(owner.gameObject);
+        }
+        await Until(() => owned.All(path => !QGF.Scene.SceneIsLoaded(path) && !QGF.Scene.SceneIsLoading(path) && !QGF.Scene.SceneIsUnloading(path)), "Owned loaded and pending rooms removed");
+        await Task.Delay(250);
+        Require(QGF.Scene.SceneIsLoaded(outside) && QGF.Scene.GetLoadedSceneAssetNames().Length == 1, "Unrelated room preserved");
     }
 
     private static string ScenePath(JObject layouts, string name)
@@ -200,15 +217,6 @@ public static class ValidateExampleOwnership
         string root = Path.GetDirectoryName(assembly).Replace('\\', '/');
         string script = root + source.Substring(prefix.Length);
         return script.Substring(0, script.Length - 3) + ".unity";
-    }
-
-    private static void SetLoadDelay(float seconds)
-    {
-        var resource = UnityEngine.Object.FindFirstObjectByType<EditorResourceComponent>();
-        var data = new SerializedObject(resource);
-        data.FindProperty("m_MinLoadAssetRandomDelaySeconds").floatValue = seconds;
-        data.FindProperty("m_MaxLoadAssetRandomDelaySeconds").floatValue = seconds;
-        data.ApplyModifiedPropertiesWithoutUndo();
     }
 
     private static T Field<T>(object instance, string name) => (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(instance);

@@ -15,6 +15,10 @@ namespace StarForce
     /// </summary>
     public class ProcedureLaunch : ProcedureBase
     {
+        /// <summary>
+        /// 进入状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -33,6 +37,12 @@ namespace StarForce
             GameEntry.BuiltinData.InitDefaultDictionary();
         }
 
+        /// <summary>
+        /// 更新当前流程。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);

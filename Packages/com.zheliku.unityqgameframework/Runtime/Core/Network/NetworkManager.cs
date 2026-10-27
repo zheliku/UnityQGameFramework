@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,7 +15,6 @@ namespace UnityQGameFramework.Core.Network
     internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
     {
         private readonly Dictionary<string, NetworkChannelBase> m_NetworkChannels;
-
         private EventHandler<NetworkConnectedEventArgs> m_NetworkConnectedEventHandler;
         private EventHandler<NetworkClosedEventArgs> m_NetworkClosedEventHandler;
         private EventHandler<NetworkMissHeartBeatEventArgs> m_NetworkMissHeartBeatEventHandler;
@@ -38,7 +37,13 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取网络频道数量。
         /// </summary>
-        public int NetworkChannelCount => m_NetworkChannels.Count;
+        public int NetworkChannelCount
+        {
+            get
+            {
+                return m_NetworkChannels.Count;
+            }
+        }
 
         /// <summary>
         /// 网络连接成功事件。
@@ -49,6 +54,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 m_NetworkConnectedEventHandler += value;
             }
+
             remove
             {
                 m_NetworkConnectedEventHandler -= value;
@@ -64,6 +70,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 m_NetworkClosedEventHandler += value;
             }
+
             remove
             {
                 m_NetworkClosedEventHandler -= value;
@@ -79,6 +86,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 m_NetworkMissHeartBeatEventHandler += value;
             }
+
             remove
             {
                 m_NetworkMissHeartBeatEventHandler -= value;
@@ -94,6 +102,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 m_NetworkErrorEventHandler += value;
             }
+
             remove
             {
                 m_NetworkErrorEventHandler -= value;
@@ -109,6 +118,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 m_NetworkCustomErrorEventHandler += value;
             }
+
             remove
             {
                 m_NetworkCustomErrorEventHandler -= value;
@@ -237,11 +247,9 @@ namespace UnityQGameFramework.Core.Network
                 case ServiceType.Tcp:
                     networkChannel = new TcpNetworkChannel(name, networkChannelHelper);
                     break;
-
                 case ServiceType.TcpWithSyncReceive:
                     networkChannel = new TcpWithSyncReceiveNetworkChannel(name, networkChannelHelper);
                     break;
-
                 default:
                     throw new FrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType));
             }
@@ -277,6 +285,11 @@ namespace UnityQGameFramework.Core.Network
             return false;
         }
 
+        /// <summary>
+        /// 派发网络连接成功事件。
+        /// </summary>
+        /// <param name="networkChannel">触发事件的网络频道。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void OnNetworkChannelConnected(NetworkChannelBase networkChannel, object userData)
         {
             if (m_NetworkConnectedEventHandler != null)
@@ -290,6 +303,10 @@ namespace UnityQGameFramework.Core.Network
             }
         }
 
+        /// <summary>
+        /// 派发网络连接关闭事件。
+        /// </summary>
+        /// <param name="networkChannel">触发事件的网络频道。</param>
         private void OnNetworkChannelClosed(NetworkChannelBase networkChannel)
         {
             if (m_NetworkClosedEventHandler != null)
@@ -303,6 +320,11 @@ namespace UnityQGameFramework.Core.Network
             }
         }
 
+        /// <summary>
+        /// 派发网络心跳丢失事件。
+        /// </summary>
+        /// <param name="networkChannel">触发事件的网络频道。</param>
+        /// <param name="missHeartBeatCount">连续丢失心跳次数。</param>
         private void OnNetworkChannelMissHeartBeat(NetworkChannelBase networkChannel, int missHeartBeatCount)
         {
             if (m_NetworkMissHeartBeatEventHandler != null)
@@ -316,6 +338,13 @@ namespace UnityQGameFramework.Core.Network
             }
         }
 
+        /// <summary>
+        /// 派发网络错误事件。
+        /// </summary>
+        /// <param name="networkChannel">触发事件的网络频道。</param>
+        /// <param name="errorCode">网络错误码。</param>
+        /// <param name="socketErrorCode">套接字错误码。</param>
+        /// <param name="errorMessage">网络错误信息。</param>
         private void OnNetworkChannelError(NetworkChannelBase networkChannel, NetworkErrorCode errorCode, SocketError socketErrorCode, string errorMessage)
         {
             if (m_NetworkErrorEventHandler != null)
@@ -329,6 +358,11 @@ namespace UnityQGameFramework.Core.Network
             }
         }
 
+        /// <summary>
+        /// 派发网络自定义错误事件。
+        /// </summary>
+        /// <param name="networkChannel">触发事件的网络频道。</param>
+        /// <param name="customErrorData">自定义错误数据。</param>
         private void OnNetworkChannelCustomError(NetworkChannelBase networkChannel, object customErrorData)
         {
             if (m_NetworkCustomErrorEventHandler != null)

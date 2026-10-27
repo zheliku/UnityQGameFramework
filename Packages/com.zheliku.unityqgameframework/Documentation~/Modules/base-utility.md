@@ -121,9 +121,15 @@ Text Helper 实现一至十六个参数的 `Format`，默认 `DefaultTextHelper`
 
 Compression Helper 实现四个方法：字节数组范围和输入流各一组 Compress / Decompress，均把结果写入输出流并返回 bool。Utility.Compression 再提供数组、范围、流及直接返回数组的重载。`09_Compression` 的六种模式经过这些入口调用默认 GZip 实现。更换算法时，资源构建端和运行端需要使用相同格式，已有压缩数据也要匹配。
 
-业务与示例统一使用 `UnityQGameFramework.Runtime.Log`，常规信息用 `Log.Info`，警告用 `Log.Warning`，错误或捕获异常用 `Log.Error`。这套日志结构继承自 UGF：`Runtime.Log → Core.FrameworkLog → ILogHelper`，Base 初始化时安装辅助器，默认实现再输出到 Unity Console。Core 内部使用 FrameworkLog，避免依赖 Unity；编辑器初始化和独立工具在 Base 启动前可以直接使用 UnityEngine.Debug。
+业务与示例统一使用 `UnityQGameFramework.Runtime.Log`，常规信息用 `Log.Info`，警告用 `Log.Warning`，错误或捕获异常用 `Log.Error`。这套日志结构继承自 UGF：`Runtime.Log → Core.FrameworkLog → ILogHelper`，Base 初始化时安装辅助器，默认实现再输出到 Unity Console。Core 和编辑器构建菜单使用同一个 FrameworkLog；编辑器加载时会先安装默认辅助器，菜单不依赖场景中的 BaseComponent。
 
-`Log.Error(exception)` 将异常对象交给辅助器，默认实现通过 Debug.LogException 保留异常类型、堆栈和 Console 定位。传 exception.Message 只会记录文本。Fatal 默认抛出 FrameworkException；记录捕获的异常使用 Error。
+编辑器输出格式为 `[QGF] ● INFO | Player.Start Player.cs:42 | 消息`，时间使用 Unity Console 自带的显示，不再重复添加。等级标记适配深浅主题，四个等级使用不同的高亮色；调用位置和正文沿用 Console 的文字颜色，选中行时也能读清。选中日志后，可在详情中点击文件名跳到调用 `Log.Info` 等 QGF 日志方法的位置。源码位置依赖调试符号，没有符号时只显示调用方法。
+
+格式化仅在 QGF 的 DefaultLogHelper 内执行，不替换 Unity 的全局日志处理器；原生 `Debug.Log` 和未接入 QGF 的第三方日志保持原样。调用位置通过当前调用栈取得，跳过 Runtime.Log、FrameworkLog 和默认辅助器，文件链接由 Unity Console 原生处理。
+
+Player 输出纯文本，例如 `[QGF] 12:34:56.789 | INFO | 消息`，保留时间以便查看日志文件。
+
+`Log.Error(exception)` 直接交给 Unity 记录原异常，保留类型、抛出位置和 InnerException。传 exception.Message 只会记录文本。Fatal 默认抛出 FrameworkException；记录捕获的异常使用 Error。
 
 日志宏由 `QGF > Logging` 菜单管理。选择 `Info` 开启信息及以上级别，`All` 开启全部，`Off` 关闭全部；这些操作会修改当前项目的编译宏。Log 方法使用 Conditional，未启用对应宏时调用和参数求值都会在编译时移除；不要把必须执行的状态变更放进日志参数表达式里。框架安装与 Sample 导入不会替宿主开启日志。
 

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -48,7 +48,13 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取自定义释放检查标记。
         /// </summary>
-        public virtual bool CustomCanReleaseFlag => true;
+        public virtual bool CustomCanReleaseFlag
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         /// <summary>
         /// 获取对象上次使用时间。

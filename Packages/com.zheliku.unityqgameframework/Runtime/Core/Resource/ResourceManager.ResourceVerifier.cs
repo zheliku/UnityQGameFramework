@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -27,9 +27,24 @@ namespace UnityQGameFramework.Core.Resource
             private int m_VerifyResourceIndex;
             private bool m_FailureFlag;
 
+            /// <summary>
+            /// 资源校验开始回调。
+            /// </summary>
             public FrameworkAction<int, long> ResourceVerifyStart;
+
+            /// <summary>
+            /// 单个资源校验成功回调。
+            /// </summary>
             public FrameworkAction<ResourceName, int> ResourceVerifySuccess;
+
+            /// <summary>
+            /// 单个资源校验失败回调。
+            /// </summary>
             public FrameworkAction<ResourceName> ResourceVerifyFailure;
+
+            /// <summary>
+            /// 资源校验完成回调。
+            /// </summary>
             public FrameworkAction<bool> ResourceVerifyComplete;
 
             /// <summary>
@@ -142,6 +157,11 @@ namespace UnityQGameFramework.Core.Resource
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.ReadWritePath, LocalVersionListFileName)), new LoadBytesCallbacks(OnLoadReadWriteVersionListSuccess, OnLoadReadWriteVersionListFailure), null);
             }
 
+            /// <summary>
+            /// 校验资源长度及校验值，移除无效文件。
+            /// </summary>
+            /// <param name="verifyInfo">待校验的资源记录。</param>
+            /// <returns>资源文件是否有效。</returns>
             private bool VerifyResource(VerifyInfo verifyInfo)
             {
                 if (verifyInfo.UseFileSystem)
@@ -236,6 +256,9 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 将校验通过的资源写入读写版本列表。
+            /// </summary>
             private void GenerateReadWriteVersionList()
             {
                 string readWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.ReadWritePath, LocalVersionListFileName));
@@ -315,6 +338,13 @@ namespace UnityQGameFramework.Core.Resource
                 File.Move(readWriteVersionListTempFileName, readWriteVersionListFileName);
             }
 
+            /// <summary>
+            /// 解析读写版本列表并准备资源校验。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="bytes">读取的文件数据。</param>
+            /// <param name="duration">读取耗时，以秒为单位。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadReadWriteVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 MemoryStream memoryStream = null;
@@ -375,6 +405,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 处理读写版本列表读取失败。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="errorMessage">文件读取错误信息。</param>
+            /// <param name="userData">用户自定义数据。</param>
             private void OnLoadReadWriteVersionListFailure(string fileUri, string errorMessage, object userData)
             {
                 if (ResourceVerifyComplete != null)

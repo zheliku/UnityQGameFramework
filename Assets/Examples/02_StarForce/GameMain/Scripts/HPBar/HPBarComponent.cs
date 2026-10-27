@@ -10,21 +10,20 @@ using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 借用对象池血条并跟随实体。
+    /// </summary>
     public class HPBarComponent : FrameworkComponent
     {
         [SerializeField]
         private HPBarItem m_HPBarItemTemplate = null;
-
         [SerializeField]
         private Transform m_HPBarInstanceRoot = null;
-
         [SerializeField]
         private int m_InstancePoolCapacity = 16;
-
         private IObjectPool<HPBarItemObject> m_HPBarItemObjectPool = null;
         private readonly List<HPBarItem> m_ActiveHPBarItems = new List<HPBarItem>();
         private Canvas m_CachedCanvas = null;
-
         private void Start()
         {
             if (m_HPBarInstanceRoot == null || m_HPBarItemTemplate == null)
@@ -61,9 +60,19 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 显示实体血条并播放生命值变化动画。
+        /// </summary>
+        /// <param name="entity">要操作的实体。</param>
+        /// <param name="fromHPRatio">变化前的生命值比例。</param>
+        /// <param name="toHPRatio">变化后的生命值比例。</param>
         public void ShowHPBar(Entity entity, float fromHPRatio, float toHPRatio)
         {
-            if (!enabled || m_HPBarItemObjectPool == null) return;
+            if (!enabled || m_HPBarItemObjectPool == null)
+            {
+                return;
+            }
+
             if (entity == null)
             {
                 Log.Warning("Entity is invalid.");

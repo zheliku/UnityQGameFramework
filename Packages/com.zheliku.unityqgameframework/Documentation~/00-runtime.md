@@ -144,7 +144,7 @@ Event.Fire 将参数入队，Event.Update 轮询队列并派发。FireNow 在调
 1. 游戏调用 `UIComponent.OpenUIForm`，传入完整资源路径、分组和 userData；界面预制体上挂有自己的 UIFormLogic。
 2. UIManager 分配界面序列号，先检查实例池能否复用该资源的对象。
 3. 需要新实例时，UIManager 向 Resource 请求预制体。
-4. 编辑器通过 ResourceSettings 对应的 ResourceBuildProfile 加载 YooAsset 模拟包；Player 使用同一配置中的 Offline 或 Host 包设置。
+4. 编辑器通过 ResourceSettings 引用的 YooAsset Collector 加载 YooAsset 模拟包；Player 使用同一配置中的 Offline 或 Host 包设置。
 5. 资源成功返回后，UIFormHelper 创建预制体实例，UIForm 取得预制体上已有的 UIFormLogic 并初始化。
 6. UIManager 将界面加入 UIGroup，处理深度、暂停和覆盖关系，调用 OnOpen。
 7. UIComponent 将成功或失败转换为 EventComponent 的事件。业务根据 userData 判断结果是否属于自己。
@@ -183,7 +183,7 @@ ProcedureMain
 
 这里的多个“完成”不是同一件事。场景加载完成不等于玩家实体已经显示；进入主流程不等于 UI 已打开。每个异步入口都要等待自己的完成通知。
 
-Player 使用 ResourceSettings 中的 Offline 或 Host 配置，并按游戏流程初始化资源包、检查版本或下载资源。不要把编辑器模拟包的试玩当成 Player 资源链路已经通过。
+Player 使用 ResourceSettings 中每个包的`Play Mode`。QGF 直接创建 YooAsset 原生的 EditorSimulate、Offline、Host 和 Web 初始化选项；需要接入自定义文件系统时实现 `IResourcePackageInitializer`，返回 YooAsset 的 `CustomPlayModeOptions` 或其他官方选项。不要把编辑器模拟包的试玩当成 Player 资源链路已经通过。
 
 ## 7. Config、DataTable、Setting 和 DataNode 有什么区别
 

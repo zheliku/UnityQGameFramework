@@ -16,39 +16,35 @@ using UnityQGameFramework.Runtime;
 namespace UnityQGameFramework.Config
 {
 /// <summary>
-/// 数据表集合。
+/// 数据表加载器。
 /// </summary>
-public partial class Tables : LubanTableSet
+public partial class Tables : IDataTableLoader
 {
     /// <summary>
     /// 获取 TbItem 数据表。
     /// </summary>
-    public TbItem TbItem {get; }
+    internal TbItem TbItem { get; private set; }
 
     /// <summary>
     /// 获取生成代码的结构版本。
     /// </summary>
-    public override string SchemaHash
+    string IDataTableLoader.SchemaHash
     {
         get
         {
-            return "fc109f728eaa451acc8c83f7f57cfde1cc4660648d653bd9fc78bcfa97301259";
+            return "d63142ff93b036ed9607bf96ed5cb6a7bcbdb21ab08bffcdd6d84126108e4d50";
         }
     }
     /// <summary>
-    /// 获取所有数据表。
-    /// </summary>
-    public override System.Collections.Generic.IReadOnlyList<DataTableBase> DataTables { get; }
-
-    /// <summary>
-    /// 初始化数据表集合，加载数据并解析表间引用。
+    /// 加载数据表并解析表间引用。
     /// </summary>
     /// <param name="loader">读取指定数据文件的加载方法。</param>
-    public Tables(System.Func<string, ByteBuf> loader)
+    /// <returns>已完成解析的数据表。</returns>
+    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.Load(System.Func<string, ByteBuf> loader)
     {
         TbItem = new TbItem(loader("tbitem"));
         ResolveRef();
-        DataTables = System.Array.AsReadOnly(new DataTableBase[]
+        return System.Array.AsReadOnly(new DataTableBase[]
         {
             TbItem,
         });

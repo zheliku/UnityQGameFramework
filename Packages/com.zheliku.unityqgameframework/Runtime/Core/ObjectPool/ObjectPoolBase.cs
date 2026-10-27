@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -37,7 +37,13 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象池完整名称。
         /// </summary>
-        public string FullName => new TypeNamePair(ObjectType, Name).ToString();
+        public string FullName
+        {
+            get
+            {
+                return new TypeNamePair(ObjectType, Name).ToString();
+            }
+        }
 
         /// <summary>
         /// 获取对象池对象类型。
@@ -101,8 +107,16 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <returns>所有对象信息。</returns>
         public abstract ObjectInfo[] GetAllObjectInfos();
 
+        /// <summary>
+        /// 更新对象池的自动释放计时。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal abstract void Update(float elapseSeconds, float realElapseSeconds);
 
+        /// <summary>
+        /// 释放对象池中的所有对象。
+        /// </summary>
         internal abstract void Shutdown();
     }
 }

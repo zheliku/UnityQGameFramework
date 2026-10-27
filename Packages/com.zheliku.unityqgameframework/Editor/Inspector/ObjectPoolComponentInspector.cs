@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -15,11 +15,17 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制对象池组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(ObjectPoolComponent))]
     internal sealed class ObjectPoolComponentInspector : FrameworkInspector
     {
         private readonly HashSet<string> m_OpenedItems = new HashSet<string>();
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -46,10 +52,17 @@ namespace UnityQGameFramework.Editor
             Repaint();
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
         }
 
+        /// <summary>
+        /// 绘制对象池容量和对象统计。
+        /// </summary>
+        /// <param name="objectPool">要显示的对象池。</param>
         private void DrawObjectPool(ObjectPoolBase objectPool)
         {
             bool lastState = m_OpenedItems.Contains(objectPool.FullName);

@@ -29,6 +29,10 @@ namespace StarForce
         private bool m_FailureDialogOpen;
         private CancellationTokenSource m_Cancellation;
 
+        /// <summary>
+        /// 进入状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -47,6 +51,11 @@ namespace StarForce
             PreloadResources();
         }
 
+        /// <summary>
+        /// 离开状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="isShutdown">是否是关闭状态机时触发。</param>
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             GameEntry.Event.Unsubscribe(LoadConfigSuccessEventArgs.EventId, OnLoadConfigSuccess);
@@ -67,6 +76,12 @@ namespace StarForce
             base.OnLeave(procedureOwner, isShutdown);
         }
 
+        /// <summary>
+        /// 更新当前流程。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
@@ -88,7 +103,7 @@ namespace StarForce
             // Config 读取游戏参数 TOML，成功后可用 GetInt 等接口按键取值。
             LoadConfig("DefaultConfig");
 
-            // Catalog 引用生成的 bytes；Tables 负责反序列化并注册 QGF 只读表视图。
+            // Catalog 引用生成的 bytes；Tables 负责反序列化并登记生成表。
             // Catalog 走资源包加载，解析完成后归还资产，再通知表集已就绪。
             LoadDataTableAsync().Forget();
 
@@ -113,9 +128,8 @@ namespace StarForce
             try
             {
                 // 任务成功表示整个 Catalog 已解析并登记；取消不会登记迟到的表集。
-                await GameEntry.DataTable.LoadDataTablesAsync(
+                await GameEntry.DataTable.LoadDataTablesAsync<Tables>(
                     DataTableCatalogAddress,
-                    loader => new Tables(loader),
                     this,
                     cancellationToken: cancellationToken);
                 cancellationToken.ThrowIfCancellationRequested();

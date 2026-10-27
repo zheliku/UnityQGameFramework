@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -11,10 +11,17 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示网络通道和连接状态。
+        /// </summary>
         private sealed class NetworkInformationWindow : ScrollableDebuggerWindowBase
         {
             private NetworkComponent m_NetworkComponent = null;
 
+            /// <summary>
+            /// 获取网络组件。
+            /// </summary>
+            /// <param name="args">窗口初始化参数。</param>
             public override void Initialize(params object[] args)
             {
                 m_NetworkComponent = GameEntry.GetComponent<NetworkComponent>();
@@ -25,6 +32,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制网络频道信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Network Information</b>");
@@ -40,6 +50,10 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制网络频道收发及心跳状态。
+            /// </summary>
+            /// <param name="networkChannel">要显示的网络频道。</param>
             private void DrawNetworkChannel(INetworkChannel networkChannel)
             {
                 GUILayout.Label(Utility.Text.Format("<b>Network Channel: {0} ({1})</b>", networkChannel.Name, networkChannel.Connected ? "Connected" : "Disconnected"));

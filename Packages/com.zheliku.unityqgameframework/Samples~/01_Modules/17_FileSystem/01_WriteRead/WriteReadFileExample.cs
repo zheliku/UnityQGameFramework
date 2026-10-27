@@ -7,15 +7,20 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示写入与读取容器。
+    /// </summary>
     public sealed class WriteReadFileExample : MonoBehaviour
     {
-        [SerializeField] private InputField contentInput;
-        [SerializeField] private Button writeButton, readButton;
-        [SerializeField] private Text resultText;
+        [SerializeField]
+        private InputField contentInput;
+        [SerializeField]
+        private Button writeButton, readButton;
+        [SerializeField]
+        private Text resultText;
         private IFileSystem container;
         private string path;
         private const string FileName = "player/name.txt";
-
         private void Start()
         {
             path = Path.Combine(Application.persistentDataPath, "QgfExamples", "FileSystem01", "example.dat");
@@ -42,7 +47,10 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnDestroy()
         {
             var files = GameEntry.GetComponent<FileSystemComponent>();
-            if (files != null && container != null) files.DestroyFileSystem(container, true);
+            if (files != null && container != null)
+            {
+                files.DestroyFileSystem(container, true);
+            }
         }
     }
 }

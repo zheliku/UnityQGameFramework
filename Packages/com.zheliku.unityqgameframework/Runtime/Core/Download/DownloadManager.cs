@@ -41,36 +41,72 @@ namespace UnityQGameFramework.Core.Download
         /// 获取游戏框架模块优先级。
         /// </summary>
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        internal override int Priority => 5;
+        internal override int Priority
+        {
+            get
+            {
+                return 5;
+            }
+        }
 
         /// <summary>
         /// 获取或设置任务池是否暂停调度。已经发出的 HTTP 请求仍可能继续接收数据。
         /// </summary>
         public bool Paused
         {
-            get => m_TaskPool.Paused;
-            set => m_TaskPool.Paused = value;
+            get
+            {
+                return m_TaskPool.Paused;
+            }
+            set
+            {
+                m_TaskPool.Paused = value;
+            }
         }
 
         /// <summary>
         /// 获取下载代理总数量。
         /// </summary>
-        public int TotalAgentCount => m_TaskPool.TotalAgentCount;
+        public int TotalAgentCount
+        {
+            get
+            {
+                return m_TaskPool.TotalAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用下载代理数量。
         /// </summary>
-        public int FreeAgentCount => m_TaskPool.FreeAgentCount;
+        public int FreeAgentCount
+        {
+            get
+            {
+                return m_TaskPool.FreeAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取工作中下载代理数量。
         /// </summary>
-        public int WorkingAgentCount => m_TaskPool.WorkingAgentCount;
+        public int WorkingAgentCount
+        {
+            get
+            {
+                return m_TaskPool.WorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取等待下载任务数量。
         /// </summary>
-        public int WaitingTaskCount => m_TaskPool.WaitingTaskCount;
+        public int WaitingTaskCount
+        {
+            get
+            {
+                return m_TaskPool.WaitingTaskCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置刷新文件流的字节阈值。入队时保存到任务。
@@ -85,7 +121,13 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取所有下载任务的汇总速度，以字节每秒为单位。
         /// </summary>
-        public float CurrentSpeed => m_DownloadCounter.CurrentSpeed;
+        public float CurrentSpeed
+        {
+            get
+            {
+                return m_DownloadCounter.CurrentSpeed;
+            }
+        }
 
         /// <summary>
         /// 下载开始事件。
@@ -376,6 +418,10 @@ namespace UnityQGameFramework.Core.Download
             return m_TaskPool.RemoveAllTasks();
         }
 
+        /// <summary>
+        /// 派发下载开始事件。
+        /// </summary>
+        /// <param name="sender">下载任务代理。</param>
         private void OnDownloadAgentStart(DownloadAgent sender)
         {
             if (m_DownloadStartEventHandler != null)
@@ -386,6 +432,11 @@ namespace UnityQGameFramework.Core.Download
             }
         }
 
+        /// <summary>
+        /// 记录下载增量并派发进度事件。
+        /// </summary>
+        /// <param name="sender">下载任务代理。</param>
+        /// <param name="deltaLength">本次新增下载字节数。</param>
         private void OnDownloadAgentUpdate(DownloadAgent sender, int deltaLength)
         {
             m_DownloadCounter.RecordDeltaLength(deltaLength);
@@ -397,6 +448,11 @@ namespace UnityQGameFramework.Core.Download
             }
         }
 
+        /// <summary>
+        /// 派发下载成功事件。
+        /// </summary>
+        /// <param name="sender">下载任务代理。</param>
+        /// <param name="length">下载文件的总字节数。</param>
         private void OnDownloadAgentSuccess(DownloadAgent sender, long length)
         {
             if (m_DownloadSuccessEventHandler != null)
@@ -407,6 +463,11 @@ namespace UnityQGameFramework.Core.Download
             }
         }
 
+        /// <summary>
+        /// 派发下载失败事件。
+        /// </summary>
+        /// <param name="sender">下载任务代理。</param>
+        /// <param name="errorMessage">下载错误信息。</param>
         private void OnDownloadAgentFailure(DownloadAgent sender, string errorMessage)
         {
             if (m_DownloadFailureEventHandler != null)

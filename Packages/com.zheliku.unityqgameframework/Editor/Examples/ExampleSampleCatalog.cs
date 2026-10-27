@@ -1,17 +1,39 @@
 namespace UnityQGameFramework.Editor
 {
     // 第一个 GUID 保留旧版 Framework prefab 锚点；第二个是模块程序集锚点。
+    /// <summary>
+    /// 记录示例导入与卸载所需的资源标识。
+    /// </summary>
     internal static class ExampleSampleCatalog
     {
+        /// <summary>
+        /// 旧模块示例程序集的资产标识。
+        /// </summary>
         internal const string LegacyAssemblyGuid = "c1267f68364fa7f42927a4906957275c";
+
+        /// <summary>
+        /// 模块示例说明文件的资产标识。
+        /// </summary>
         internal const string ModulesReadmeGuid = "cb9c8b026fa34ec0b0669df5f42f9ad6";
+
+        /// <summary>
+        /// 点点点示例程序集的资产标识。
+        /// </summary>
         internal const string PointAssemblyGuid = "57bf2c65eab596540b0dddc0f6926f32";
+
+        /// <summary>
+        /// 各模块示例程序集的资产标识。
+        /// </summary>
         internal static readonly string[] GroupAssemblyGuids =
         {
             "26a4a9304f1b571a97885965a89aaed1", // 当前模块示例根目录。
             "4570994c42b45dacaf2f2b87567597e9", // 旧版基础示例，保留卸载识别。
             "9b65e720872b5001b41335f95c015d16", // 旧版进阶示例，保留卸载识别。
         };
+
+        /// <summary>
+        /// 模块示例名称及用于定位目录的资产标识。
+        /// </summary>
         internal static readonly string[][] Modules =
         {
             new[] { "Base", "922138476a5f4e989d722ca4769a2c2b", "451fb7eed1a048a39d433c5f2e2a84f9" },

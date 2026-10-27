@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -40,22 +40,46 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取有限状态机持有者类型。
         /// </summary>
-        public override Type OwnerType => typeof(T);
+        public override Type OwnerType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
 
         /// <summary>
         /// 获取有限状态机中状态的数量。
         /// </summary>
-        public override int FsmStateCount => m_States.Count;
+        public override int FsmStateCount
+        {
+            get
+            {
+                return m_States.Count;
+            }
+        }
 
         /// <summary>
         /// 获取有限状态机是否正在运行。
         /// </summary>
-        public override bool IsRunning => CurrentState != null;
+        public override bool IsRunning
+        {
+            get
+            {
+                return CurrentState != null;
+            }
+        }
 
         /// <summary>
         /// 获取有限状态机是否被销毁。
         /// </summary>
-        public override bool IsDestroyed => m_IsDestroyed;
+        public override bool IsDestroyed
+        {
+            get
+            {
+                return m_IsDestroyed;
+            }
+        }
 
         /// <summary>
         /// 获取当前有限状态机状态。
@@ -65,12 +89,24 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取当前有限状态机状态名称。
         /// </summary>
-        public override string CurrentStateName => CurrentState != null ? CurrentState.GetType().FullName : null;
+        public override string CurrentStateName
+        {
+            get
+            {
+                return CurrentState != null ? CurrentState.GetType().FullName : null;
+            }
+        }
 
         /// <summary>
         /// 获取当前有限状态机状态持续时间。
         /// </summary>
-        public override float CurrentStateTime => m_CurrentStateTime;
+        public override float CurrentStateTime
+        {
+            get
+            {
+                return m_CurrentStateTime;
+            }
+        }
 
         /// <summary>
         /// 创建有限状态机。
@@ -176,7 +212,6 @@ namespace UnityQGameFramework.Core.Fsm
             Name = null;
             Owner = null;
             m_States.Clear();
-
             if (m_Datas != null)
             {
                 foreach (KeyValuePair<string, Variable> data in m_Datas)
@@ -201,7 +236,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// 开始有限状态机。
         /// </summary>
         /// <typeparam name="TState">要开始的有限状态机状态类型。</typeparam>
-        public void Start<TState>() where TState : FsmState<T>
+        public void Start<TState>()
+            where TState : FsmState<T>
         {
             if (IsRunning)
             {
@@ -256,7 +292,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// </summary>
         /// <typeparam name="TState">要检查的有限状态机状态类型。</typeparam>
         /// <returns>是否存在有限状态机状态。</returns>
-        public bool HasState<TState>() where TState : FsmState<T>
+        public bool HasState<TState>()
+            where TState : FsmState<T>
         {
             return m_States.ContainsKey(typeof(TState));
         }
@@ -286,7 +323,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// </summary>
         /// <typeparam name="TState">要获取的有限状态机状态类型。</typeparam>
         /// <returns>要获取的有限状态机状态。</returns>
-        public TState GetState<TState>() where TState : FsmState<T>
+        public TState GetState<TState>()
+            where TState : FsmState<T>
         {
             FsmState<T> state = null;
             if (m_States.TryGetValue(typeof(TState), out state))
@@ -383,7 +421,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// <typeparam name="TData">要获取的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>要获取的有限状态机数据。</returns>
-        public TData GetData<TData>(string name) where TData : Variable
+        public TData GetData<TData>(string name)
+            where TData : Variable
         {
             return (TData)GetData(name);
         }
@@ -420,7 +459,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// <typeparam name="TData">要设置的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>
-        public void SetData<TData>(string name, TData data) where TData : Variable
+        public void SetData<TData>(string name, TData data)
+            where TData : Variable
         {
             SetData(name, (Variable)data);
         }
@@ -505,7 +545,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// 切换当前有限状态机状态。
         /// </summary>
         /// <typeparam name="TState">要切换到的有限状态机状态类型。</typeparam>
-        internal void ChangeState<TState>() where TState : FsmState<T>
+        internal void ChangeState<TState>()
+            where TState : FsmState<T>
         {
             ChangeState(typeof(TState));
         }

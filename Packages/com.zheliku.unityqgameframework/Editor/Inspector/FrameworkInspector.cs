@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -45,6 +45,11 @@ namespace UnityQGameFramework.Editor
         {
         }
 
+        /// <summary>
+        /// 检查目标是否允许按场景实例编辑。
+        /// </summary>
+        /// <param name="obj">要检查的目标。</param>
+        /// <returns>目标不为空且不是普通预制体资产时返回真。</returns>
         protected bool IsPrefabInHierarchy(UnityEngine.Object obj)
         {
             if (obj == null)

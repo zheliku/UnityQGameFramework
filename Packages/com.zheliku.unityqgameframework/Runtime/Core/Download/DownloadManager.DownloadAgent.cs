@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -20,9 +20,24 @@ namespace UnityQGameFramework.Core.Download
             private int m_WaitFlushSize;
             private bool m_Disposed;
 
+            /// <summary>
+            /// 下载开始回调。
+            /// </summary>
             public FrameworkAction<DownloadAgent> DownloadAgentStart;
+
+            /// <summary>
+            /// 下载字节增量回调。
+            /// </summary>
             public FrameworkAction<DownloadAgent, int> DownloadAgentUpdate;
+
+            /// <summary>
+            /// 下载成功回调。
+            /// </summary>
             public FrameworkAction<DownloadAgent, long> DownloadAgentSuccess;
+
+            /// <summary>
+            /// 下载失败回调。
+            /// </summary>
             public FrameworkAction<DownloadAgent, string> DownloadAgentFailure;
 
             /// <summary>
@@ -75,7 +90,13 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 获取当前的大小。
             /// </summary>
-            public long CurrentLength => StartLength + DownloadedLength;
+            public long CurrentLength
+            {
+                get
+                {
+                    return StartLength + DownloadedLength;
+                }
+            }
 
             /// <summary>
             /// 获取已经存盘的大小。
@@ -241,6 +262,11 @@ namespace UnityQGameFramework.Core.Download
                 m_Disposed = true;
             }
 
+            /// <summary>
+            /// 将接收到的字节写入下载文件。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadAgentHelperUpdateBytes(object sender, DownloadAgentHelperUpdateBytesEventArgs e)
             {
                 WaitTime = 0f;
@@ -264,6 +290,11 @@ namespace UnityQGameFramework.Core.Download
                 }
             }
 
+            /// <summary>
+            /// 更新已下载长度。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadAgentHelperUpdateLength(object sender, DownloadAgentHelperUpdateLengthEventArgs e)
             {
                 WaitTime = 0f;
@@ -274,6 +305,11 @@ namespace UnityQGameFramework.Core.Download
                 }
             }
 
+            /// <summary>
+            /// 完成文件写入并通知下载结果。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadAgentHelperComplete(object sender, DownloadAgentHelperCompleteEventArgs e)
             {
                 WaitTime = 0f;
@@ -304,6 +340,11 @@ namespace UnityQGameFramework.Core.Download
                 Task.Done = true;
             }
 
+            /// <summary>
+            /// 关闭下载文件并通知下载失败。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadAgentHelperError(object sender, DownloadAgentHelperErrorEventArgs e)
             {
                 m_Helper.Reset();

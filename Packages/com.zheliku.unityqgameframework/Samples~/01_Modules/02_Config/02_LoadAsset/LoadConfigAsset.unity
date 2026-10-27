@@ -293,7 +293,6 @@ MonoBehaviour:
   cacheText: {fileID: 395432961}
   reserveButton: {fileID: 410845253}
   freeButton: {fileID: 428916096}
-  configAssetGuid: 534a4ddb17415c2fa2d99e3668d48ee9
 --- !u!4 &107649091
 Transform:
   m_ObjectHideFlags: 0

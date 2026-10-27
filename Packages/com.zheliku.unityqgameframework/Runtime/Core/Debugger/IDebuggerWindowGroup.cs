@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -28,6 +28,7 @@ namespace UnityQGameFramework.Core.Debugger
         /// <summary>
         /// 获取调试组的调试器窗口名称集合。
         /// </summary>
+        /// <returns>当前组内全部调试窗口名称。</returns>
         string[] GetDebuggerWindowNames();
 
         /// <summary>

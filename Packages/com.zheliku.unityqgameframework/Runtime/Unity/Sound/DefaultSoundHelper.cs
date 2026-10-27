@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -21,6 +21,9 @@ namespace UnityQGameFramework.Runtime
             m_ResourceComponent.UnloadAsset(soundAsset);
         }
 
+        /// <summary>
+        /// 获取声音资源释放所需的资源组件。
+        /// </summary>
         private void Start()
         {
             m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -11,6 +11,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制基础组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(BaseComponent))]
     internal sealed class BaseComponentInspector : FrameworkInspector
     {
@@ -40,6 +43,9 @@ namespace UnityQGameFramework.Editor
         private string[] m_JsonHelperTypeNames = null;
         private int m_JsonHelperTypeNameIndex = 0;
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -161,6 +167,9 @@ namespace UnityQGameFramework.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// 脚本重新编译后刷新可用类型。
+        /// </summary>
         protected override void OnCompileComplete()
         {
             base.OnCompileComplete();
@@ -168,6 +177,9 @@ namespace UnityQGameFramework.Editor
             RefreshTypeNames();
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
             m_EditorLanguage = serializedObject.FindProperty("m_EditorLanguage");
@@ -184,6 +196,9 @@ namespace UnityQGameFramework.Editor
             RefreshTypeNames();
         }
 
+        /// <summary>
+        /// 刷新可用辅助器或流程类型名称。
+        /// </summary>
         private void RefreshTypeNames()
         {
             List<string> textHelperTypeNames = new List<string>
@@ -279,6 +294,11 @@ namespace UnityQGameFramework.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// 将下拉框索引转换为游戏速度。
+        /// </summary>
+        /// <param name="selectedGameSpeed">游戏速度选项索引。</param>
+        /// <returns>对应的游戏速度。</returns>
         private float GetGameSpeed(int selectedGameSpeed)
         {
             if (selectedGameSpeed < 0)
@@ -294,6 +314,11 @@ namespace UnityQGameFramework.Editor
             return GameSpeed[selectedGameSpeed];
         }
 
+        /// <summary>
+        /// 将游戏速度转换为下拉框索引。
+        /// </summary>
+        /// <param name="gameSpeed">游戏速度。</param>
+        /// <returns>对应的游戏速度选项索引。</returns>
         private int GetSelectedGameSpeed(float gameSpeed)
         {
             for (int i = 0; i < GameSpeed.Length; i++)

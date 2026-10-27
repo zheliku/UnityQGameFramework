@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -58,15 +58,27 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取界面组数量。
         /// </summary>
-        public int UIGroupCount => m_UIGroups.Count;
+        public int UIGroupCount
+        {
+            get
+            {
+                return m_UIGroups.Count;
+            }
+        }
 
         /// <summary>
         /// 获取或设置界面实例对象池自动释放可释放对象的间隔秒数。
         /// </summary>
         public float InstanceAutoReleaseInterval
         {
-            get => m_InstancePool.AutoReleaseInterval;
-            set => m_InstancePool.AutoReleaseInterval = value;
+            get
+            {
+                return m_InstancePool.AutoReleaseInterval;
+            }
+            set
+            {
+                m_InstancePool.AutoReleaseInterval = value;
+            }
         }
 
         /// <summary>
@@ -74,8 +86,14 @@ namespace UnityQGameFramework.Core.UI
         /// </summary>
         public int InstanceCapacity
         {
-            get => m_InstancePool.Capacity;
-            set => m_InstancePool.Capacity = value;
+            get
+            {
+                return m_InstancePool.Capacity;
+            }
+            set
+            {
+                m_InstancePool.Capacity = value;
+            }
         }
 
         /// <summary>
@@ -83,8 +101,14 @@ namespace UnityQGameFramework.Core.UI
         /// </summary>
         public float InstanceExpireTime
         {
-            get => m_InstancePool.ExpireTime;
-            set => m_InstancePool.ExpireTime = value;
+            get
+            {
+                return m_InstancePool.ExpireTime;
+            }
+            set
+            {
+                m_InstancePool.ExpireTime = value;
+            }
         }
 
         /// <summary>
@@ -92,8 +116,14 @@ namespace UnityQGameFramework.Core.UI
         /// </summary>
         public int InstancePriority
         {
-            get => m_InstancePool.Priority;
-            set => m_InstancePool.Priority = value;
+            get
+            {
+                return m_InstancePool.Priority;
+            }
+            set
+            {
+                m_InstancePool.Priority = value;
+            }
         }
 
         /// <summary>
@@ -905,6 +935,17 @@ namespace UnityQGameFramework.Core.UI
             m_InstancePool.SetPriority(uiFormInstance, priority);
         }
 
+        /// <summary>
+        /// 初始化或复用界面实例并加入界面组。
+        /// </summary>
+        /// <param name="serialId">界面序列编号。</param>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroup">目标界面组。</param>
+        /// <param name="uiFormInstance">界面实例。</param>
+        /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+        /// <param name="isNewInstance">是否为新建的界面实例。</param>
+        /// <param name="duration">资源加载耗时，以秒为单位。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void InternalOpenUIForm(int serialId, string uiFormAssetName, UIGroup uiGroup, object uiFormInstance, bool pauseCoveredUIForm, bool isNewInstance, float duration, object userData)
         {
             try
@@ -941,6 +982,13 @@ namespace UnityQGameFramework.Core.UI
             }
         }
 
+        /// <summary>
+        /// 处理界面资源加载结果并继续打开界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiFormAsset">加载完成的界面资源。</param>
+        /// <param name="duration">加载耗时，以秒为单位。</param>
+        /// <param name="userData">界面打开请求信息。</param>
         private void LoadAssetSuccessCallback(string uiFormAssetName, object uiFormAsset, float duration, object userData)
         {
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
@@ -965,6 +1013,13 @@ namespace UnityQGameFramework.Core.UI
             ReferencePool.Release(openUIFormInfo);
         }
 
+        /// <summary>
+        /// 清理界面加载登记并派发失败事件。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="status">加载失败状态。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">界面打开请求信息。</param>
         private void LoadAssetFailureCallback(string uiFormAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
@@ -992,6 +1047,12 @@ namespace UnityQGameFramework.Core.UI
             throw new FrameworkException(appendErrorMessage);
         }
 
+        /// <summary>
+        /// 派发界面资源加载进度事件。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="progress">加载进度。</param>
+        /// <param name="userData">界面打开请求信息。</param>
         private void LoadAssetUpdateCallback(string uiFormAssetName, float progress, object userData)
         {
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
@@ -1008,6 +1069,14 @@ namespace UnityQGameFramework.Core.UI
             }
         }
 
+        /// <summary>
+        /// 派发界面依赖资源加载事件。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="dependencyAssetName">依赖资源名称。</param>
+        /// <param name="loadedCount">已加载依赖数量。</param>
+        /// <param name="totalCount">依赖资源总数量。</param>
+        /// <param name="userData">界面打开请求信息。</param>
         private void LoadAssetDependencyAssetCallback(string uiFormAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;

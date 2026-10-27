@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -14,6 +14,9 @@ namespace UnityQGameFramework.Core
         /// </summary>
         public static class Encryption
         {
+            /// <summary>
+            /// 快速加密处理的前缀字节数。
+            /// </summary>
             internal const int QuickEncryptLength = 220;
 
             /// <summary>
@@ -24,7 +27,11 @@ namespace UnityQGameFramework.Core
             /// <returns>异或后的二进制流。</returns>
             public static byte[] GetQuickXorBytes(byte[] bytes, byte[] code)
             {
-                if (bytes == null) return null;
+                if (bytes == null)
+                {
+                    return null;
+                }
+
                 return GetXorBytes(bytes, 0, Math.Min(QuickEncryptLength, bytes.Length), code);
             }
 
@@ -35,7 +42,11 @@ namespace UnityQGameFramework.Core
             /// <param name="code">异或二进制流。</param>
             public static void GetQuickSelfXorBytes(byte[] bytes, byte[] code)
             {
-                if (bytes == null) return;
+                if (bytes == null)
+                {
+                    return;
+                }
+
                 GetSelfXorBytes(bytes, 0, Math.Min(QuickEncryptLength, bytes.Length), code);
             }
 
@@ -86,7 +97,11 @@ namespace UnityQGameFramework.Core
                 }
 
                 int bytesLength = bytes.Length;
-                if (length < 0) length = bytesLength - startIndex;
+                if (length < 0)
+                {
+                    length = bytesLength - startIndex;
+                }
+
                 byte[] results = new byte[bytesLength];
                 Array.Copy(bytes, 0, results, 0, bytesLength);
                 GetSelfXorBytes(results, startIndex, length, code);

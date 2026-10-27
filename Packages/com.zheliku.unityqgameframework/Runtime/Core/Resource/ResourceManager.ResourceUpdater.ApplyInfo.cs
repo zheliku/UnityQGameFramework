@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -50,7 +50,13 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源是否使用文件系统。
                 /// </summary>
-                public bool UseFileSystem => !string.IsNullOrEmpty(FileSystemName);
+                public bool UseFileSystem
+                {
+                    get
+                    {
+                        return !string.IsNullOrEmpty(FileSystemName);
+                    }
+                }
 
                 /// <summary>
                 /// 获取资源所在的文件系统名称。

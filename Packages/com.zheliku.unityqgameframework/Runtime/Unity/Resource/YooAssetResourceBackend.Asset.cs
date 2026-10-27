@@ -60,6 +60,11 @@ namespace UnityQGameFramework.Runtime
             UnloadAsset(asset, null);
         }
 
+        /// <summary>
+        /// 归还指定资源包中的一次隐式资产借用。
+        /// </summary>
+        /// <param name="asset">要归还的资产。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
         internal void UnloadAsset(object asset, string packageName)
         {
             ThrowIfShutdown();
@@ -83,11 +88,32 @@ namespace UnityQGameFramework.Runtime
             throw new FrameworkException("The asset has no outstanding borrow in this resource package.");
         }
 
+        /// <summary>
+        /// 初始化资源包并加载资产，失败或取消时释放本次句柄。
+        /// </summary>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="assetType">要加载的 Unity 资产类型。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <param name="priority">加载优先级。</param>
+        /// <param name="implicitBorrow">是否登记为可通过资产对象归还的借用。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>加载成功的资产句柄；显式借用由调用方释放。</returns>
         internal UniTask<AssetHandle> LoadAssetAsync(string assetName, Type assetType, string packageName, int priority, bool implicitBorrow, CancellationToken cancellationToken)
         {
             return LoadAssetAsync(assetName, assetType, packageName, priority, implicitBorrow, null, cancellationToken);
         }
 
+        /// <summary>
+        /// 初始化资源包并加载资产，失败或取消时释放本次句柄。
+        /// </summary>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="assetType">要加载的 Unity 资产类型。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <param name="priority">加载优先级。</param>
+        /// <param name="implicitBorrow">是否登记为可通过资产对象归还的借用。</param>
+        /// <param name="progress">加载进度回调。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>加载成功的资产句柄；显式借用由调用方释放。</returns>
         private async UniTask<AssetHandle> LoadAssetAsync(string assetName, Type assetType, string packageName, int priority, bool implicitBorrow, Action<float> progress, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -143,6 +169,15 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 将资产异步加载结果转发给回调接口。
+        /// </summary>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="assetType">要加载的 Unity 资产类型。</param>
+        /// <param name="priority">加载优先级。</param>
+        /// <param name="callbacks">加载结果及进度回调。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>完成回调通知的异步任务。</returns>
         private async UniTask LoadAssetCallbackAsync(string assetName, Type assetType, int priority, LoadAssetCallbacks callbacks, object userData)
         {
             float startTime = Time.realtimeSinceStartup;
@@ -183,6 +218,13 @@ namespace UnityQGameFramework.Runtime
             LoadBinaryCallbackAsync(assetName, callbacks, userData).Forget();
         }
 
+        /// <summary>
+        /// 读取二进制内容并在完成后释放资产句柄。
+        /// </summary>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="packageName">资源包名称；为空时使用默认资源包。</param>
+        /// <param name="cancellationToken">取消异步操作的令牌。</param>
+        /// <returns>拥有独立生命周期的二进制数据。</returns>
         internal async UniTask<byte[]> LoadBinaryAsync(string assetName, string packageName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -265,6 +307,13 @@ namespace UnityQGameFramework.Runtime
             return count;
         }
 
+        /// <summary>
+        /// 将二进制读取结果转发给回调接口。
+        /// </summary>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="callbacks">加载结果及进度回调。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>完成回调通知的异步任务。</returns>
         private async UniTask LoadBinaryCallbackAsync(string assetName, LoadBinaryCallbacks callbacks, object userData)
         {
             float startTime = Time.realtimeSinceStartup;
@@ -288,6 +337,11 @@ namespace UnityQGameFramework.Runtime
             callbacks.LoadBinarySuccessCallback(assetName, bytes, Time.realtimeSinceStartup - startTime, userData);
         }
 
+        /// <summary>
+        /// 从文本资产或原始文件资产读取字节。
+        /// </summary>
+        /// <param name="asset">TextAsset 或 RawFileObject 资产。</param>
+        /// <returns>读取的字节数组。</returns>
         private static byte[] GetBytes(UnityEngine.Object asset)
         {
             if (asset is RawFileObject rawFile)
@@ -301,12 +355,24 @@ namespace UnityQGameFramework.Runtime
             throw new FrameworkException("Binary assets must be TextAsset or RawFileObject.");
         }
 
+        /// <summary>
+        /// 判断资源包是否使用原始文件构建。
+        /// </summary>
+        /// <param name="package">要查询的资源包。</param>
+        /// <returns>资源包是否使用原始文件或其模拟构建类型。</returns>
         private static bool IsRawPackage(ResourcePackage package)
         {
             int type = package.GetPackageDetails().BuildBundleType;
             return type == (int)EBundleType.RawBundle || type == (int)EBundleType.VirtualRawBundle;
         }
 
+        /// <summary>
+        /// 按定位地址或 GUID 查询资产信息。
+        /// </summary>
+        /// <param name="package">要查询的资源包。</param>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="assetType">要加载的 Unity 资产类型。</param>
+        /// <returns>YooAsset 资产信息。</returns>
         private static YooAsset.AssetInfo GetAssetInfo(ResourcePackage package, string assetName, Type assetType)
         {
             if (Guid.TryParseExact(assetName, "N", out _))
@@ -321,9 +387,21 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         private sealed class AssetBorrow
         {
+            /// <summary>
+            /// 本次借用持有的资产句柄。
+            /// </summary>
             internal readonly AssetHandle Handle;
+
+            /// <summary>
+            /// 是否允许按资产对象归还本次借用。
+            /// </summary>
             internal readonly bool Implicit;
 
+            /// <summary>
+            /// 登记一次资产借用及其归还方式。
+            /// </summary>
+            /// <param name="handle">本次加载持有的资产句柄。</param>
+            /// <param name="implicitBorrow">是否登记为可通过资产对象归还的借用。</param>
             internal AssetBorrow(AssetHandle handle, bool implicitBorrow)
             {
                 Handle = handle;

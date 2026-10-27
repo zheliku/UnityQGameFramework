@@ -10,11 +10,21 @@ using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 按配置表播放声音并保存音量设置。
+    /// </summary>
     public static class SoundExtension
     {
         private const float FadeVolumeDuration = 1f;
         private static int? s_MusicSerialId = null;
 
+        /// <summary>
+        /// 按配置播放音乐并替换上一首音乐。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="musicId">音乐配置编号。</param>
+        /// <param name="userData">业务自定义数据。</param>
+        /// <returns>播放序号，配置不存在时返回空。</returns>
         public static int? PlayMusic(this SoundComponent soundComponent, int musicId, object userData = null)
         {
             soundComponent.StopMusic();
@@ -45,6 +55,10 @@ namespace StarForce
             return s_MusicSerialId;
         }
 
+        /// <summary>
+        /// 淡出并停止当前音乐。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
         public static void StopMusic(this SoundComponent soundComponent)
         {
             if (!s_MusicSerialId.HasValue)
@@ -56,6 +70,14 @@ namespace StarForce
             s_MusicSerialId = null;
         }
 
+        /// <summary>
+        /// 按配置播放音效。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="soundId">音效配置编号。</param>
+        /// <param name="bindingEntity">跟随的实体，为空时不绑定。</param>
+        /// <param name="userData">业务自定义数据。</param>
+        /// <returns>播放序号，配置不存在时返回空。</returns>
         public static int? PlaySound(this SoundComponent soundComponent, int soundId, Entity bindingEntity = null, object userData = null)
         {
             // 数据行提供优先级、循环、音量和空间混合参数。
@@ -82,6 +104,13 @@ namespace StarForce
                 userData);
         }
 
+        /// <summary>
+        /// 按配置播放二维界面声音。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="uiSoundId">界面声音配置编号。</param>
+        /// <param name="userData">业务自定义数据。</param>
+        /// <returns>播放序号，配置不存在时返回空。</returns>
         public static int? PlayUISound(this SoundComponent soundComponent, int uiSoundId, object userData = null)
         {
             // UI 声音使用独立组，始终按 2D 声音播放。
@@ -106,6 +135,12 @@ namespace StarForce
                 userData);
         }
 
+        /// <summary>
+        /// 查询声音组是否静音。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <returns>声音组静音或不可用时返回真。</returns>
         public static bool IsMuted(this SoundComponent soundComponent, string soundGroupName)
         {
             if (string.IsNullOrEmpty(soundGroupName))
@@ -124,6 +159,12 @@ namespace StarForce
             return soundGroup.Mute;
         }
 
+        /// <summary>
+        /// 修改声音组静音状态并保存。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="mute">是否静音。</param>
         public static void Mute(this SoundComponent soundComponent, string soundGroupName, bool mute)
         {
             if (string.IsNullOrEmpty(soundGroupName))
@@ -146,6 +187,12 @@ namespace StarForce
             GameEntry.Setting.Save();
         }
 
+        /// <summary>
+        /// 获取声音组音量。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <returns>声音组音量，范围为 0 到 1。</returns>
         public static float GetVolume(this SoundComponent soundComponent, string soundGroupName)
         {
             if (string.IsNullOrEmpty(soundGroupName))
@@ -164,6 +211,12 @@ namespace StarForce
             return soundGroup.Volume;
         }
 
+        /// <summary>
+        /// 修改声音组音量并保存。
+        /// </summary>
+        /// <param name="soundComponent">声音组件。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="volume">音量，范围为 0 到 1。</param>
         public static void SetVolume(this SoundComponent soundComponent, string soundGroupName, float volume)
         {
             if (string.IsNullOrEmpty(soundGroupName))

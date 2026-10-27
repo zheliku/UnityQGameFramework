@@ -246,7 +246,7 @@ public static class ExampleConsumerValidation
             && Hash(copy + "/" + item.Key) == item.Value);
         state.settingsUnchanged = state.settings.All(item => Hash(item.Key) == item.Value);
         state.profileReset = !state.profileSelected || AssetDatabase.GetAssetPath(LubanSettings.instance.Profile)
-            == "Assets/UnityQGameFramework/Config/Editor/LubanProfile.asset";
+            == "Assets/UnityQGameFramework/Config/LubanProfile.asset";
         Require(state.removed && state.backupExact && state.settingsUnchanged, "Uninstall/backup/settings invariants");
         Require(state.profileReset, "Removing the selected profile must restore the default workspace");
         Require(Directory.Exists("Assets/UnityQGameFramework/Config"), "Default workspace preserved");

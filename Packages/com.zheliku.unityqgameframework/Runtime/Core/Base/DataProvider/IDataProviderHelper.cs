@@ -8,6 +8,7 @@ namespace UnityQGameFramework.Core
     /// <summary>
     /// 数据提供者辅助器接口。
     /// </summary>
+    /// <typeparam name="T">数据提供者持有者的类型。</typeparam>
     public interface IDataProviderHelper<T>
     {
         /// <summary>

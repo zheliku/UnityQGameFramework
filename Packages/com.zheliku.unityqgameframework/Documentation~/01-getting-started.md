@@ -26,17 +26,15 @@ Packages/UnityQGameFramework
 
 ```text
 Assets/UnityQGameFramework/Config/
+  LubanProfile.asset
   Source/
     luban.conf
-    Datas/
-      __tables__.xlsx
-      __beans__.xlsx
-      __enums__.xlsx
-      Item.xlsx
+    __tables__.xlsx
+    __beans__.xlsx
+    __enums__.xlsx
+    Item.xlsx
   Generated/
   Data/
-  Extensions/
-  Editor/LubanProfile.asset
 ```
 
 这时 `Generated` 和 `Data` 可以为空。自动初始化只准备文件和 Profile，不会下载工具或生成游戏代码。`__beans__`、`__enums__` 初始只有标题，这是留给复用结构与枚举的空模板。
@@ -97,7 +95,7 @@ git lfs pull
 打开 `QGF > Settings`，确认 Profile 指向：
 
 ```text
-Assets/UnityQGameFramework/Config/Editor/LubanProfile.asset
+Assets/UnityQGameFramework/Config/LubanProfile.asset
 ```
 
 执行 `QGF > Generate Tables`，快捷键为 Ctrl/Cmd + Shift + G。
@@ -124,7 +122,7 @@ namespace MyGame
             base.OnEnter(owner);
 
             var dataTable = QGF.DataTable;
-            dataTable.LoadDataTables(loader => new Tables(loader));
+            dataTable.LoadDataTables<Tables>();
 
             // Inspector 引用模式同步解析；加载失败时不会注册部分表。
             if (!dataTable.HasDataTable<TbItem>()) return;
@@ -241,6 +239,6 @@ Alchemy 的序列化扩展还需要 Unity.Serialization；只使用 Inspector �
 
 **出现两个 DRItem 或 Tables。** 检查是否把同一套生成代码复制到了另一个 Assets 目录。同一命名空间下的相同类型只能保留一份；第二套独立配置要使用不同命名空间。
 
-**示例找不到 Menu 场景或资源。** 确认完整导入 Sample，并从 Launcher 启动。保留文件夹 `.meta`；资源路径通过目录 GUID 定位，不依赖固定的 Assets/Samples 路径。
+**示例找不到 Menu 场景或资源。** 确认完整导入 Sample，并从 Launcher 启动。保留文件夹 `.meta`；资源路径通过 Launcher 目录或 YooAsset 地址定位，不依赖固定的 Assets/Samples 路径。
 
 继续阅读 [用 Luban 制作与读取配置表](02-data-tables.md)，从 Item 表开始增加字段和查询。

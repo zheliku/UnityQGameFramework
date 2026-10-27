@@ -5,47 +5,118 @@ using UnityEngine;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 创建和维护项目中的 Luban 配置目录。
+    /// </summary>
     public static class LubanWorkspace
     {
+        /// <summary>
+        /// 在编辑器就绪后安排 Luban 工作区初始化。
+        /// </summary>
         [InitializeOnLoadMethod]
         private static void ScheduleInitialization()
         {
-            if (!AssetDatabase.IsAssetImportWorkerProcess()) EditorApplication.update += InitializeWhenReady;
+            if (!AssetDatabase.IsAssetImportWorkerProcess())
+            {
+                EditorApplication.update += InitializeWhenReady;
+            }
         }
 
+        /// <summary>
+        /// 在 AssetDatabase 和脚本编译完成后初始化工作区。
+        /// </summary>
         private static void InitializeWhenReady()
         {
             if (EditorApplication.isCompiling || EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode || BuildPipeline.isBuildingPlayer)
+            {
                 return;
+            }
+
             EditorApplication.update -= InitializeWhenReady;
-            try { EnsureInitialized(); }
-            catch (Exception exception) { Debug.LogWarning("QGF Luban 初始化未完成：" + exception.Message); }
+            // 多个 Sample 可以各自拥有 Profile。没有全局选择时等待用户在 QGF Settings 指定，启动阶段不输出警告。
+            LubanSettings settings = LubanSettings.instance;
+            if ((settings.HasProfile && settings.Profile == null) || HasMultipleProfilesWithoutSelection())
+            {
+                return;
+            }
+
+            try
+            {
+                EnsureInitialized();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning("QGF Luban 初始化未完成：" + exception.Message);
+            }
         }
 
+        /// <summary>
+        /// 检查是否存在多个未选择的 Luban profile。
+        /// </summary>
+        /// <returns>是否需要用户明确选择全局 profile。</returns>
+        private static bool HasMultipleProfilesWithoutSelection()
+        {
+            LubanSettings settings = LubanSettings.instance;
+            if (settings.HasProfile)
+            {
+                return false;
+            }
+
+            string legacyKey = "QGF.Luban.Profile." + Application.dataPath;
+            string previous = AssetDatabase.GUIDToAssetPath(EditorPrefs.GetString(legacyKey, string.Empty));
+            if (!string.IsNullOrEmpty(previous) && AssetDatabase.LoadAssetAtPath<LubanProfile>(previous) != null)
+            {
+                return false;
+            }
+
+            LubanProfile workspaceProfile = FindProfile(settings.WorkspaceRoot);
+            if (workspaceProfile != null)
+            {
+                return false;
+            }
+
+            return AssetDatabase.FindAssets("t:LubanProfile", new[] { "Assets" }).Length > 1;
+        }
+
+        /// <summary>
+        /// 获取全局 Profile，首次使用时创建默认配置目录。
+        /// </summary>
+        /// <returns>当前全局 Profile。</returns>
         public static LubanProfile EnsureInitialized()
         {
             var settings = LubanSettings.instance;
             if (settings.HasProfile)
             {
-                if (settings.Profile == null) throw new InvalidOperationException("全局 Profile 已丢失，请在 QGF > Settings 中重新指定。");
+                if (settings.Profile == null)
+                {
+                    throw new InvalidOperationException("全局 Profile 已丢失，请在 QGF > Settings 中重新指定。");
+                }
+
                 RepairStarterSchemas(settings.Profile);
                 TrackExistingWorkspace(settings.Profile);
                 return settings.Profile;
             }
 
-            // Migrate the former per-machine choice once, without changing its target.
+            // 保留旧版项目已选定的全局 Profile。
             string legacyKey = "QGF.Luban.Profile." + Application.dataPath;
             string previous = AssetDatabase.GUIDToAssetPath(EditorPrefs.GetString(legacyKey, string.Empty));
             var profile = string.IsNullOrEmpty(previous) ? null : AssetDatabase.LoadAssetAtPath<LubanProfile>(previous);
-            if (profile == null) profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(settings.WorkspaceRoot + "/Editor/LubanProfile.asset");
+            if (profile == null)
+            {
+                profile = FindProfile(settings.WorkspaceRoot);
+            }
+
             if (profile == null)
             {
                 string[] guids = AssetDatabase.FindAssets("t:LubanProfile", new[] { "Assets" });
-                if (guids.Length > 1) throw new InvalidOperationException("存在多个 Profile，请在 QGF 项目设置中指定全局 Profile。");
-                profile = guids.Length == 1
-                    ? AssetDatabase.LoadAssetAtPath<LubanProfile>(AssetDatabase.GUIDToAssetPath(guids[0]))
-                    : Create(settings.WorkspaceRoot);
+                if (guids.Length > 1)
+                {
+                    throw new InvalidOperationException("存在多个 Profile，请在 QGF 项目设置中指定全局 Profile。");
+                }
+
+                profile = guids.Length == 1 ? AssetDatabase.LoadAssetAtPath<LubanProfile>(AssetDatabase.GUIDToAssetPath(guids[0])) : Create(settings.WorkspaceRoot);
             }
+
             settings.Profile = profile;
             EditorPrefs.DeleteKey(legacyKey);
             RepairStarterSchemas(profile);
@@ -53,91 +124,204 @@ namespace UnityQGameFramework.Editor
             return profile;
         }
 
-        // Only the unmodified Item starter can be repaired from bundled templates.
-        // A missing business schema cannot be reconstructed without its original definitions.
+        /// <summary>
+        /// 补齐未改动的初始配置中缺失的 Excel 表定义。
+        /// </summary>
+        /// <param name="profile">生成配置。</param>
         public static void RepairStarterSchemas(LubanProfile profile)
         {
-            string source = AssetDatabase.GetAssetPath(profile.SourceFolder);
+            string source = LubanGenerator.SourcePath(profile);
             string template = Path.Combine(LubanGenerator.PackageRoot, "Editor/Luban/Starter~");
-            string conf = Path.Combine(source, "luban.conf");
-            string datas = Path.Combine(source, "Datas");
-            if (string.IsNullOrEmpty(source) || !File.Exists(conf) || !Directory.Exists(datas)) return;
-            if (File.ReadAllText(conf).Replace("\r\n", "\n").Trim() != File.ReadAllText(Path.Combine(template, "luban.conf")).Replace("\r\n", "\n").Trim()) return;
+            string conf = LubanGenerator.ConfigurationPath(profile);
+            string datas = source;
+            if (string.IsNullOrEmpty(source) || !File.Exists(conf) || !Directory.Exists(datas))
+            {
+                return;
+            }
+
+            if (NormalizeStarterConfiguration(File.ReadAllText(conf)) != NormalizeStarterConfiguration(File.ReadAllText(Path.Combine(template, "luban.conf"))))
+            {
+                return;
+            }
+
             foreach (string file in Directory.GetFiles(datas, "*.xlsx", SearchOption.AllDirectories))
             {
                 string name = Path.GetFileName(file);
-                if (name != "Item.xlsx" && name != "__tables__.xlsx" && name != "__beans__.xlsx" && name != "__enums__.xlsx") return;
+                if (name != "Item.xlsx" && name != "__tables__.xlsx" && name != "__beans__.xlsx" && name != "__enums__.xlsx")
+                {
+                    return;
+                }
             }
-            if (!File.Exists(Path.Combine(datas, "Item.xlsx"))) return;
+
+            if (!File.Exists(Path.Combine(datas, "Item.xlsx")))
+            {
+                return;
+            }
+
             bool repaired = false;
-            foreach (string name in new[] { "__tables__.xlsx", "__beans__.xlsx", "__enums__.xlsx" })
+            foreach (string name in new[]
+            {
+                "__tables__.xlsx",
+                "__beans__.xlsx",
+                "__enums__.xlsx"
+            }
+
+            )
             {
                 string path = Path.Combine(datas, name);
-                if (File.Exists(path)) continue;
-                File.Copy(Path.Combine(template, "Datas", name), path);
+                if (File.Exists(path))
+                {
+                    continue;
+                }
+
+                File.Copy(Path.Combine(template, "Source", name), path);
                 repaired = true;
             }
-            if (repaired) AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+            if (repaired)
+            {
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            }
         }
 
+        /// <summary>
+        /// 规范化 starter 配置文本。
+        /// </summary>
+        /// <param name="text">初始 Luban 配置的 JSON 文本。</param>
+        /// <returns>规范化后的配置文本。</returns>
+        private static string NormalizeStarterConfiguration(string text)
+        {
+            return text.Replace("Source/", string.Empty).Replace("Datas/", string.Empty).Replace("\"dataDir\": \"Source\"", "\"dataDir\": \".\"").Replace("\"dataDir\": \"Datas\"", "\"dataDir\": \".\"").Replace("\r\n", "\n").Trim();
+        }
+
+        /// <summary>
+        /// 记录已有 Luban 工作区。
+        /// </summary>
+        /// <param name="profile">已有的 Luban 生成配置。</param>
         private static void TrackExistingWorkspace(LubanProfile profile)
         {
             string path = AssetDatabase.GetAssetPath(profile);
-            if (!path.EndsWith("/Editor/LubanProfile.asset", StringComparison.Ordinal)) return;
-            string root = path.Substring(0, path.Length - "/Editor/LubanProfile.asset".Length);
-            if (!root.StartsWith("Assets/", StringComparison.Ordinal)) return;
-            if (AssetDatabase.GetAssetPath(profile.SourceFolder) == root + "/Source" &&
-                AssetDatabase.GetAssetPath(profile.CodeFolder) == root + "/Generated" &&
-                AssetDatabase.GetAssetPath(profile.DataFolder) == root + "/Data") QgfProjectAssets.TrackWorkspace(root);
+            if (!path.EndsWith("/LubanProfile.asset", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            string root = Path.GetDirectoryName(path).Replace('\\', '/');
+            if (root.EndsWith("/Editor", StringComparison.Ordinal))
+            {
+                root = root.Substring(0, root.Length - "/Editor".Length);
+            }
+
+            if (!root.StartsWith("Assets/", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            if (LubanGenerator.SourcePath(profile) == root + "/Source" && AssetDatabase.GetAssetPath(profile.CodeFolder) == root + "/Generated" && AssetDatabase.GetAssetPath(profile.DataFolder) == root + "/Data")
+            {
+                QgfProjectAssets.TrackWorkspace(root);
+            }
         }
 
+        /// <summary>
+        /// 查找指定根目录下的 Luban profile。
+        /// </summary>
+        /// <param name="root">Luban 工作区根目录。</param>
+        /// <returns>找到的 Luban profile；不存在时返回空。</returns>
+        internal static LubanProfile FindProfile(string root)
+        {
+            return AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/LubanProfile.asset") ?? AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/Editor/LubanProfile.asset");
+        }
+
+        /// <summary>
+        /// 检查配置目录是否位于 Assets 内。
+        /// </summary>
+        /// <param name="root">配置目录。</param>
+        /// <returns>规范化后的项目相对路径。</returns>
         public static string ValidateRoot(string root)
         {
-            if (string.IsNullOrWhiteSpace(root)) throw new ArgumentException("工作区目录不能为空。");
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                throw new ArgumentException("工作区目录不能为空。");
+            }
+
             root = root.Replace('\\', '/').TrimEnd('/');
-            if (!root.StartsWith("Assets/", StringComparison.Ordinal)) throw new ArgumentException("工作区必须位于 Assets 内。");
+            if (!root.StartsWith("Assets/", StringComparison.Ordinal))
+            {
+                throw new ArgumentException("工作区必须位于 Assets 内。");
+            }
+
             foreach (string segment in root.Split('/'))
-                if (string.IsNullOrWhiteSpace(segment) || segment == "." || segment == "..") throw new ArgumentException("工作区目录不能包含空目录段、. 或 ..。");
+            {
+                if (string.IsNullOrWhiteSpace(segment) || segment == "." || segment == "..")
+                {
+                    throw new ArgumentException("工作区目录不能包含空目录段、. 或 ..。");
+                }
+            }
+
             string assets = Path.GetFullPath(Application.dataPath) + Path.DirectorySeparatorChar;
-            if (!Path.GetFullPath(root).StartsWith(assets, StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("工作区必须位于 Assets 内。");
+            if (!Path.GetFullPath(root).StartsWith(assets, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("工作区必须位于 Assets 内。");
+            }
+
             return root;
         }
 
+        /// <summary>
+        /// 创建初始表格和生成配置。
+        /// </summary>
+        /// <param name="root">配置根目录。</param>
+        /// <returns>新建的生成配置。</returns>
         public static LubanProfile Create(string root = LubanSettings.DefaultWorkspaceRoot)
         {
             root = ValidateRoot(root);
-            if (Directory.Exists(root)) throw new IOException("工作区目录已存在，请指定已有 Profile 或选择新的目录：" + root);
+            if (Directory.Exists(root))
+            {
+                throw new IOException("工作区目录已存在，请指定已有 Profile 或选择新的目录：" + root);
+            }
+
             EnsureFolder(root + "/Source");
             EnsureFolder(root + "/Generated");
             EnsureFolder(root + "/Data");
-            EnsureFolder(root + "/Extensions");
-            EnsureFolder(root + "/Editor");
             string template = Path.Combine(LubanGenerator.PackageRoot, "Editor/Luban/Starter~");
             foreach (string file in Directory.GetFiles(template, "*", SearchOption.AllDirectories))
             {
                 string relative = file.Substring(template.Length + 1);
-                string destination = Path.Combine(root, "Source", relative);
+                string destination = Path.Combine(root, relative);
                 Directory.CreateDirectory(Path.GetDirectoryName(destination));
                 File.Copy(file, destination);
             }
+
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             var profile = ScriptableObject.CreateInstance<LubanProfile>();
-            profile.SourceFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(root + "/Source");
+            profile.ConfigurationFile = AssetDatabase.LoadAssetAtPath<DefaultAsset>(root + "/luban.conf");
             profile.CodeFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(root + "/Generated");
             profile.DataFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(root + "/Data");
-            AssetDatabase.CreateAsset(profile, root + "/Editor/LubanProfile.asset");
+            AssetDatabase.CreateAsset(profile, root + "/LubanProfile.asset");
             AssetDatabase.SaveAssets();
             QgfProjectAssets.TrackWorkspace(root);
             return profile;
         }
 
+        /// <summary>
+        /// 创建不存在的项目目录。
+        /// </summary>
+        /// <param name="path">项目相对路径。</param>
         public static void EnsureFolder(string path)
         {
-            if (AssetDatabase.IsValidFolder(path)) return;
+            if (AssetDatabase.IsValidFolder(path))
+            {
+                return;
+            }
+
             ValidateRoot(path);
             string parent = Path.GetDirectoryName(path).Replace('\\', '/');
             EnsureFolder(parent);
-            if (string.IsNullOrEmpty(AssetDatabase.CreateFolder(parent, Path.GetFileName(path)))) throw new IOException("无法创建目录：" + path);
+            if (string.IsNullOrEmpty(AssetDatabase.CreateFolder(parent, Path.GetFileName(path))))
+            {
+                throw new IOException("无法创建目录：" + path);
+            }
         }
     }
 }

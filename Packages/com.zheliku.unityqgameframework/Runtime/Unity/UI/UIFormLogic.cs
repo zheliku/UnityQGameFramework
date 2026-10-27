@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -25,8 +25,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public string Name
         {
-            get => gameObject.name;
-            set => gameObject.name = value;
+            get
+            {
+                return gameObject.name;
+            }
+            set
+            {
+                gameObject.name = value;
+            }
         }
 
         /// <summary>

@@ -4,6 +4,39 @@
 
 ### Added
 
+- ResourceSettings 使用英文 Inspector 和 YooAsset 原生 EPlayMode；每包只保留一个 Play Mode，编辑器与 Player 统一读取。旧双字段配置保留原 Player 模式，示例默认模拟，构建应用前明确选择离线或联机等模式。
+- 指定 Collector 后同步原生窗口、包列表和默认包；原生 Save 后同步包增删并保留同名包的运行参数。
+- YooAsset 原生 Builder 增加 Batch Build，多选或全选包后使用每个包的原生设置依次构建，首包复制目录与原生单包构建一致；保留刷新后的构建结果。
+- 资源入门示例直接 await LoadAssetAsync，文档以 UniTask 和资产归还为主要流程；旧 UGF 兼容成员保留签名并从常用代码提示隐藏。
+- 资源模式补充 Custom 初始化扩展，直接返回 YooAsset 官方初始化选项；缓存和有效的 UGF 清理间隔统一放到资源配置的高级选项。
+- 移除运行面板中的 Windows 专用 Player 构建区和不生效的旧加载代理配置；首包与应用构建使用 YooAsset、Unity 原生面板。
+- 自有框架和示例补齐中文 XML 文档、参数与返回值，表达式主体和紧凑代码块统一为 UGF 写法；增加基于 Roslyn 的代码规范检查，覆盖内部类型中的公开成员、内部方法、运算符和条件编译分支。
+- 统一 Luban 表加载器与 QGF DataTable 入口；生成的 `Tables` 实现 `IDataTableLoader`，业务统一通过 `GetDataTable<TbXxx>()` 查询。
+- 模块 DataTable 示例增加官方 Excel schema 的字符串键、复合索引、单例表、无主键列表、跨表引用和具名表登记示例。
+- 增加 `QGF > Resource > Packages` 入口，复用 YooAsset 原生收集与构建窗口，并支持在 Project 中选择 Collector 资产切换 Sample 配置。
+- 资源构建改为读取 YooAsset 原生 Builder 的管线、压缩、首包复制、缓存和加密选项；离线 Player 仅对当前构建临时覆盖首包复制方式。
+- 移除重复的 ResourceBuildProfile 配置；每个 Sample 只保留运行配置和官方 Collector，收集与构建统一使用 YooAsset 窗口，组件 Inspector 保留运行设置及快捷入口。
+- Luban 的 Profile 和 luban.conf 放在 Config 根目录；Profile 直接引用配置文件，源表目录由 dataDir 指定，保留 Source、Generated、Data，不再预建空目录。
+- 点点点和 StarForce Sample 移除专用 Editor 打包脚本；应用构建使用 Unity 原生面板，DataTable Inspector 可直接展开编辑 Profile。
+- 资源示例分别展示路径和 YooAsset 地址定位；关闭扩展名别名，避免同目录资源产生重复位置警告。
+- QGF 编辑器日志显示调用方法及可点击的文件行号；四个等级使用更明亮的深浅主题色，正文沿用 Console 原生颜色，不再重复输出时间。Player 保留纯文本时间，异常直接保留原类型和堆栈。
+
+### Fixed
+
+- 移除 QGF 对 YooAsset Collector 的自定义 Inspector，恢复原生配置字段显示；保留双击打开官方收集窗口的入口。
+- YooAsset 原生收集与构建窗口的背景按 Unity 深浅主题适配，修复浅色主题下深底深字和黑色边框。
+- DataTable Inspector 区分生成 Profile 与运行时 Catalog，补充示例和 README 的初始化时序、加载方式及数据清单说明。
+- 修复资源后端在退出和销毁包时把 YooAsset 正常终止任务记录为运行时警告的问题。
+- 资源更新示例的构建入口移到 `UpdateRemoteResources` Inspector，并使用 `UNITY_EDITOR` 条件编译。
+- 修复模块示例编号、表目录序号和发布 Sample 同步后的场景绑定。
+- 补齐模块示例的实际行为检查，覆盖数据节点、事件、流程、所有权、复用、下载、网络、声音和调试器生命周期。
+- 多个 Sample 各自拥有 Luban Profile 时，编辑器启动等待 QGF Settings 的全局选择，不再输出误导性的初始化警告。
+- 修复资源示例在框架退出后清理资产借用时重复访问已关闭资源服务的问题。
+
+### Validation
+
+- Unity 2022.3、6.0、6.3 的 YooAsset、Luban、TOML、取消和重试集成检查通过；Unity 6.3 的 62 个模块场景、点点点和 StarForce 启动检查通过。
+
 - 内置 YooAsset 3.0.6 源码、许可证和版本锁定；增加资源配置、构建 Profile、模拟构建与 Player 资源包构建入口。
 - 增加 UniTask 资源等待与取消处理；旧 Resource 模块的整体迁移尚在进行。
 - ResourceComponent 可指定 ResourceSettings，接入 YooAsset 资产借用、原生文件与场景加载；增加异步加载、独立句柄、包初始化和安全销毁入口。
@@ -21,7 +54,7 @@
 
 ### Changed
 
-- 模块示例合并为一个 `01_Modules` Sample，保留 59 个核心场景，移除重复的 API 演示；点点点和 StarForce 仍为独立 Sample。
+- 模块示例合并为一个 `01_Modules` Sample，保留 62 个核心场景，移除重复的 API 演示；点点点和 StarForce 仍为独立 Sample。
 - `Assets/Examples` 和 `Samples~` 统一为 `00_PointPointPoint`、`01_Modules`、`02_StarForce`。从 Assets 原样复制发布，不再筛选场景或转换 GUID、程序集和命名空间。
 - 模块示例共用一个运行时程序集和一份 QGF prefab；更新场景引用、Luban Profile、资源构建路径与维护工具。
 - 示例 JSON 输入框恢复可编辑，序列化与反序列化按钮分别写入和读取当前输入内容。
@@ -51,7 +84,7 @@
 - 模块示例继续按真实任务整理：移除 API 重载选择器和重复的启动等待；对象池保留具名工厂和回收策略，Luban 保留条件筛选与排序示例。
 - 资源包加载、Luban 异步加载、二进制片段、请求队列、下载优先级和声音组均收敛为清晰操作路径；模块程序集自动引用 UniTask。
 - 配置与语言字典的异步读取示例固定使用带 UserData 的入口，移除只用于切换重载的下拉框，保留语言切换与失败恢复。
-- 明确框架组件的启动顺序，使默认顺序的业务 Start 可以直接调用模块。同步 LoadDataTables 返回生成的表集合，组件新增 RegisterDataTables 入口。
+- 明确框架组件的启动顺序，使默认顺序的业务 Start 可以直接调用模块。同步 LoadDataTables 返回是否成功，生成表统一从 DataTable 查询，组件保留 RegisterDataTables 入口。
 - 更新 Sample 分组、卸载根目录识别与打包检查，补充 Luban 生成流程及两种查询入口的适用范围。
 - 精简模块文档的重复说明，补充 DataNode 和 StarForce 主流程的调用注释，修正 StarForce 的菜单与战斗场景加载说明。
 

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -18,12 +18,10 @@ namespace UnityQGameFramework.Runtime
     {
         private const int CachedBytesLength = 0x1000;
         private readonly byte[] m_CachedBytes = new byte[CachedBytesLength];
-
         private UnityWebRequest m_UnityWebRequest = null;
         private bool m_Disposed = false;
         private long m_RangeStart = -1;
         private string m_ResponseError;
-
         private EventHandler<DownloadAgentHelperUpdateBytesEventArgs> m_DownloadAgentHelperUpdateBytesEventHandler = null;
         private EventHandler<DownloadAgentHelperUpdateLengthEventArgs> m_DownloadAgentHelperUpdateLengthEventHandler = null;
         private EventHandler<DownloadAgentHelperCompleteEventArgs> m_DownloadAgentHelperCompleteEventHandler = null;
@@ -38,6 +36,7 @@ namespace UnityQGameFramework.Runtime
             {
                 m_DownloadAgentHelperUpdateBytesEventHandler += value;
             }
+
             remove
             {
                 m_DownloadAgentHelperUpdateBytesEventHandler -= value;
@@ -53,6 +52,7 @@ namespace UnityQGameFramework.Runtime
             {
                 m_DownloadAgentHelperUpdateLengthEventHandler += value;
             }
+
             remove
             {
                 m_DownloadAgentHelperUpdateLengthEventHandler -= value;
@@ -68,6 +68,7 @@ namespace UnityQGameFramework.Runtime
             {
                 m_DownloadAgentHelperCompleteEventHandler += value;
             }
+
             remove
             {
                 m_DownloadAgentHelperCompleteEventHandler -= value;
@@ -83,6 +84,7 @@ namespace UnityQGameFramework.Runtime
             {
                 m_DownloadAgentHelperErrorEventHandler += value;
             }
+
             remove
             {
                 m_DownloadAgentHelperErrorEventHandler -= value;
@@ -204,20 +206,33 @@ namespace UnityQGameFramework.Runtime
         }
 
         // 在把响应正文交给文件流之前检查，避免把完整文件或 HTTP 错误页追加到临时文件。
+        /// <summary>
+        /// 检查响应状态及断点续传范围。
+        /// </summary>
+        /// <returns>是否可以接收当前响应数据。</returns>
         private bool ValidateResponse()
         {
             long code = m_UnityWebRequest.responseCode;
-            if (code >= 400) m_ResponseError = "HTTP " + code;
+            if (code >= 400)
+            {
+                m_ResponseError = "HTTP " + code;
+            }
             else if (m_RangeStart >= 0)
             {
                 string range = m_UnityWebRequest.GetResponseHeader("Content-Range");
                 string prefix = "bytes " + m_RangeStart + "-";
                 if (code != 206 || range == null || !range.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
                     m_ResponseError = "Server did not return the requested byte range.";
+                }
             }
+
             return m_ResponseError == null;
         }
 
+        /// <summary>
+        /// 检查下载进度和完成状态。
+        /// </summary>
         private void Update()
         {
             if (m_UnityWebRequest == null)

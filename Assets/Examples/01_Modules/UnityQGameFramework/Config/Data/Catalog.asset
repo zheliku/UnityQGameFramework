@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154542dc7ab2408b82a2f89dd8596656, type: 3}
+  m_Name: Catalog
+  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.LubanDataTableCatalog
+  m_SchemaHash: 52a098a613f33c14a3a88687f69819fb8d52cb64d9a033d51de2e87dcfc80baf
+  m_GeneratorVersion: 5.1.0
+  m_Entries:
+  - Name: tbitem
+    Data: {fileID: 4900000, guid: fbe0eeedbc81546d949d144fe13c504b, type: 3}
+  - Name: tbitemalias
+    Data: {fileID: 4900000, guid: b6a2b941a4fc1f743866d3914f8ef47b, type: 3}
+  - Name: tbitemindex
+    Data: {fileID: 4900000, guid: fc8f4071888e89942ba4a4aa2b191711, type: 3}
+  - Name: tbmessage
+    Data: {fileID: 4900000, guid: 63367b82e0974a64381637ba995facfe, type: 3}
+  - Name: tbrules
+    Data: {fileID: 4900000, guid: 79349e162b4351245a4bbb91cba0b7fe, type: 3}
+  - Name: tbstage
+    Data: {fileID: 4900000, guid: 370222d5a57bc2949a783255e231d21a, type: 3}

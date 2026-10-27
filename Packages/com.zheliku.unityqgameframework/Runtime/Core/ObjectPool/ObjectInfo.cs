@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -61,7 +61,13 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象是否正在使用。
         /// </summary>
-        public bool IsInUse => SpawnCount > 0;
+        public bool IsInUse
+        {
+            get
+            {
+                return SpawnCount > 0;
+            }
+        }
 
         /// <summary>
         /// 获取对象的获取计数。

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -25,6 +25,9 @@ namespace UnityQGameFramework.Runtime
         private readonly AndroidJavaObject m_FileStream;
         private readonly IntPtr m_FileStreamRawObject;
 
+        /// <summary>
+        /// 缓存 Android 资源管理器和流读取接口。
+        /// </summary>
         static AndroidFileSystemStream()
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -113,7 +116,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取文件系统流长度。
         /// </summary>
-        protected override long Length => InternalAvailable();
+        protected override long Length
+        {
+            get
+            {
+                return InternalAvailable();
+            }
+        }
 
         /// <summary>
         /// 设置文件系统流长度。
@@ -215,26 +224,48 @@ namespace UnityQGameFramework.Runtime
             m_FileStream.Dispose();
         }
 
+        /// <summary>
+        /// 打开 Android 内置资源流。
+        /// </summary>
+        /// <param name="fileName">相对内置资源目录的文件名称。</param>
+        /// <returns>打开的 Java 输入流。</returns>
         private AndroidJavaObject InternalOpen(string fileName)
         {
             return s_AssetManager.Call<AndroidJavaObject>("open", fileName);
         }
 
+        /// <summary>
+        /// 获取当前流无需阻塞即可读取的字节数。
+        /// </summary>
+        /// <returns>可读取字节数。</returns>
         private int InternalAvailable()
         {
             return m_FileStream.Call<int>("available");
         }
 
+        /// <summary>
+        /// 关闭 Android 输入流。
+        /// </summary>
         private void InternalClose()
         {
             m_FileStream.Call("close");
         }
 
+        /// <summary>
+        /// 从 Android 输入流读取数据。
+        /// </summary>
+        /// <returns>读取的字节；到达流末尾时返回 -1。</returns>
         private int InternalRead()
         {
             return m_FileStream.Call<int>("read");
         }
 
+        /// <summary>
+        /// 从 Android 输入流读取数据。
+        /// </summary>
+        /// <param name="length">最多读取的字节数。</param>
+        /// <param name="result">输出读取缓冲区。</param>
+        /// <returns>实际写入输出缓冲区的字节数。</returns>
         private int InternalRead(int length, out sbyte[] result)
         {
             IntPtr resultPtr = AndroidJNI.NewSByteArray(length);
@@ -260,11 +291,19 @@ namespace UnityQGameFramework.Runtime
             return offset;
         }
 
+        /// <summary>
+        /// 将 Android 输入流重置到标记位置。
+        /// </summary>
         private void InternalReset()
         {
             m_FileStream.Call("reset");
         }
 
+        /// <summary>
+        /// 跳过输入流中的指定字节数。
+        /// </summary>
+        /// <param name="offset">希望跳过的字节数。</param>
+        /// <returns>实际跳过的字节数。</returns>
         private long InternalSkip(long offset)
         {
             return m_FileStream.Call<long>("skip", offset);

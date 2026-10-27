@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -35,7 +35,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取链表范围是否有效。
         /// </summary>
-        public bool IsValid => First != null && Terminal != null && First != Terminal;
+        public bool IsValid
+        {
+            get
+            {
+                return First != null && Terminal != null && First != Terminal;
+            }
+        }
 
         /// <summary>
         /// 获取链表范围的开始结点。
@@ -123,6 +129,10 @@ namespace UnityQGameFramework.Core
             private readonly FrameworkLinkedListRange<T> m_FrameworkLinkedListRange;
             private LinkedListNode<T> m_Current;
 
+            /// <summary>
+            /// 初始化链表范围枚举器。
+            /// </summary>
+            /// <param name="range">要遍历的链表范围。</param>
             internal Enumerator(FrameworkLinkedListRange<T> range)
             {
                 if (!range.IsValid)
@@ -136,14 +146,20 @@ namespace UnityQGameFramework.Core
             }
 
             /// <summary>
-            /// 获取当前结点。
+            /// 获取枚举器当前位置的元素。
             /// </summary>
             public T Current { get; private set; }
 
             /// <summary>
-            /// 获取当前的枚举数。
+            /// 获取枚举器当前位置的元素。
             /// </summary>
-            object IEnumerator.Current => Current;
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return Current;
+                }
+            }
 
             /// <summary>
             /// 清理枚举数。
@@ -153,9 +169,9 @@ namespace UnityQGameFramework.Core
             }
 
             /// <summary>
-            /// 获取下一个结点。
+            /// 将枚举器移到下一个元素。
             /// </summary>
-            /// <returns>返回下一个结点。</returns>
+            /// <returns>成功移到下一个元素时返回真；已到集合末尾时返回假。</returns>
             public bool MoveNext()
             {
                 if (m_Current == null || m_Current == m_FrameworkLinkedListRange.Terminal)

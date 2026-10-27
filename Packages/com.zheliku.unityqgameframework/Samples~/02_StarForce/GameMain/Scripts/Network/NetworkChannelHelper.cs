@@ -16,6 +16,9 @@ using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 连接网络通道与游戏消息协议。
+    /// </summary>
     public class NetworkChannelHelper : INetworkChannelHelper
     {
         private readonly Dictionary<int, Type> m_ServerToClientPacketTypes = new Dictionary<int, Type>();
@@ -25,7 +28,13 @@ namespace StarForce
         /// <summary>
         /// 获取消息包头长度。
         /// </summary>
-        public int PacketHeaderLength => sizeof(int);
+        public int PacketHeaderLength
+        {
+            get
+            {
+                return sizeof(int);
+            }
+        }
 
         /// <summary>
         /// 初始化网络频道辅助器。

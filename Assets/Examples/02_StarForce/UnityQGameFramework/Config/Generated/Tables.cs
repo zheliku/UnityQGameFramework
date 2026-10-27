@@ -16,75 +16,71 @@ using UnityQGameFramework.Runtime;
 namespace StarForce
 {
 /// <summary>
-/// 数据表集合。
+/// 数据表加载器。
 /// </summary>
-public partial class Tables : LubanTableSet
+public partial class Tables : IDataTableLoader
 {
     /// <summary>
     /// Aircraft
     /// </summary>
-    public TbAircraft TbAircraft {get; }
+    internal TbAircraft TbAircraft { get; private set; }
     /// <summary>
     /// Armor
     /// </summary>
-    public TbArmor TbArmor {get; }
+    internal TbArmor TbArmor { get; private set; }
     /// <summary>
     /// Asteroid
     /// </summary>
-    public TbAsteroid TbAsteroid {get; }
+    internal TbAsteroid TbAsteroid { get; private set; }
     /// <summary>
     /// Entity
     /// </summary>
-    public TbEntity TbEntity {get; }
+    internal TbEntity TbEntity { get; private set; }
     /// <summary>
     /// Music
     /// </summary>
-    public TbMusic TbMusic {get; }
+    internal TbMusic TbMusic { get; private set; }
     /// <summary>
     /// Scene
     /// </summary>
-    public TbScene TbScene {get; }
+    internal TbScene TbScene { get; private set; }
     /// <summary>
     /// Sound
     /// </summary>
-    public TbSound TbSound {get; }
+    internal TbSound TbSound { get; private set; }
     /// <summary>
     /// Thruster
     /// </summary>
-    public TbThruster TbThruster {get; }
+    internal TbThruster TbThruster { get; private set; }
     /// <summary>
     /// UIForm
     /// </summary>
-    public TbUIForm TbUIForm {get; }
+    internal TbUIForm TbUIForm { get; private set; }
     /// <summary>
     /// UISound
     /// </summary>
-    public TbUISound TbUISound {get; }
+    internal TbUISound TbUISound { get; private set; }
     /// <summary>
     /// Weapon
     /// </summary>
-    public TbWeapon TbWeapon {get; }
+    internal TbWeapon TbWeapon { get; private set; }
 
     /// <summary>
     /// 获取生成代码的结构版本。
     /// </summary>
-    public override string SchemaHash
+    string IDataTableLoader.SchemaHash
     {
         get
         {
-            return "0eb51945c098ff8ed04de369d944331c4f115f53e879199ce68741f1bacf57a7";
+            return "b2dd1904381f946eed9e4febd5d144fe15aaf89e6a6ff616204353a33b8ed8cb";
         }
     }
     /// <summary>
-    /// 获取所有数据表。
-    /// </summary>
-    public override System.Collections.Generic.IReadOnlyList<DataTableBase> DataTables { get; }
-
-    /// <summary>
-    /// 初始化数据表集合，加载数据并解析表间引用。
+    /// 加载数据表并解析表间引用。
     /// </summary>
     /// <param name="loader">读取指定数据文件的加载方法。</param>
-    public Tables(System.Func<string, ByteBuf> loader)
+    /// <returns>已完成解析的数据表。</returns>
+    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.Load(System.Func<string, ByteBuf> loader)
     {
         TbAircraft = new TbAircraft(loader("tbaircraft"));
         TbArmor = new TbArmor(loader("tbarmor"));
@@ -98,7 +94,7 @@ public partial class Tables : LubanTableSet
         TbUISound = new TbUISound(loader("tbuisound"));
         TbWeapon = new TbWeapon(loader("tbweapon"));
         ResolveRef();
-        DataTables = System.Array.AsReadOnly(new DataTableBase[]
+        return System.Array.AsReadOnly(new DataTableBase[]
         {
             TbAircraft,
             TbArmor,

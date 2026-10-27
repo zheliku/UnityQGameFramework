@@ -30,7 +30,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取游戏配置项数量。
         /// </summary>
-        public int Count => m_SettingManager.Count;
+        public int Count
+        {
+            get
+            {
+                return m_SettingManager.Count;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -61,6 +67,9 @@ namespace UnityQGameFramework.Runtime
             m_SettingManager.SetSettingHelper(settingHelper);
         }
 
+        /// <summary>
+        /// 加载本地设置。
+        /// </summary>
         private void Start()
         {
             if (!m_SettingManager.Load())

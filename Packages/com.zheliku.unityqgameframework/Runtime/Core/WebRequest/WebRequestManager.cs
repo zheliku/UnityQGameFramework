@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -33,22 +33,46 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <summary>
         /// 获取 Web 请求代理总数量。
         /// </summary>
-        public int TotalAgentCount => m_TaskPool.TotalAgentCount;
+        public int TotalAgentCount
+        {
+            get
+            {
+                return m_TaskPool.TotalAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用 Web 请求代理数量。
         /// </summary>
-        public int FreeAgentCount => m_TaskPool.FreeAgentCount;
+        public int FreeAgentCount
+        {
+            get
+            {
+                return m_TaskPool.FreeAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取工作中 Web 请求代理数量。
         /// </summary>
-        public int WorkingAgentCount => m_TaskPool.WorkingAgentCount;
+        public int WorkingAgentCount
+        {
+            get
+            {
+                return m_TaskPool.WorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取等待 Web 请求数量。
         /// </summary>
-        public int WaitingTaskCount => m_TaskPool.WaitingTaskCount;
+        public int WaitingTaskCount
+        {
+            get
+            {
+                return m_TaskPool.WaitingTaskCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置 Web 请求超时时长，以秒为单位。
@@ -413,6 +437,10 @@ namespace UnityQGameFramework.Core.WebRequest
             return m_TaskPool.RemoveAllTasks();
         }
 
+        /// <summary>
+        /// 派发 Web 请求开始事件。
+        /// </summary>
+        /// <param name="sender">Web 请求代理。</param>
         private void OnWebRequestAgentStart(WebRequestAgent sender)
         {
             if (m_WebRequestStartEventHandler != null)
@@ -423,6 +451,11 @@ namespace UnityQGameFramework.Core.WebRequest
             }
         }
 
+        /// <summary>
+        /// 派发 Web 请求成功事件。
+        /// </summary>
+        /// <param name="sender">Web 请求代理。</param>
+        /// <param name="webResponseBytes">服务器响应数据。</param>
         private void OnWebRequestAgentSuccess(WebRequestAgent sender, byte[] webResponseBytes)
         {
             if (m_WebRequestSuccessEventHandler != null)
@@ -433,6 +466,11 @@ namespace UnityQGameFramework.Core.WebRequest
             }
         }
 
+        /// <summary>
+        /// 派发 Web 请求失败事件。
+        /// </summary>
+        /// <param name="sender">Web 请求代理。</param>
+        /// <param name="errorMessage">请求错误信息。</param>
         private void OnWebRequestAgentFailure(WebRequestAgent sender, string errorMessage)
         {
             if (m_WebRequestFailureEventHandler != null)

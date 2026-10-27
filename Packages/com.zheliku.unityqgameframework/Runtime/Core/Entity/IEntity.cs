@@ -73,16 +73,16 @@ namespace UnityQGameFramework.Core.Entity
         void OnDetached(IEntity childEntity, object userData);
 
         /// <summary>
-        /// 实体附加子实体。
+        /// 实体附加到父实体。
         /// </summary>
-        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentEntity">要附加到的父实体。</param>
         /// <param name="userData">用户自定义数据。</param>
         void OnAttachTo(IEntity parentEntity, object userData);
 
         /// <summary>
-        /// 实体解除子实体。
+        /// 实体从父实体解除。
         /// </summary>
-        /// <param name="parentEntity">被解除的父实体。</param>
+        /// <param name="parentEntity">原先附加到的父实体。</param>
         /// <param name="userData">用户自定义数据。</param>
         void OnDetachFrom(IEntity parentEntity, object userData);
 

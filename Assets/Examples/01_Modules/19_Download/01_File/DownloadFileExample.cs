@@ -8,18 +8,21 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
-    /// <summary>将 HTTP 内容保存到磁盘，再读取正式文件。</summary>
+    /// <summary>
+    /// 将 HTTP 内容保存到磁盘，再读取正式文件。
+    /// </summary>
     public sealed class DownloadFileExample : MonoBehaviour
     {
-        [SerializeField] private Button downloadButton, clearButton;
-        [SerializeField] private Text stateText, pathText, contentText;
-        [SerializeField] private TextAsset payload;
-
+        [SerializeField]
+        private Button downloadButton, clearButton;
+        [SerializeField]
+        private Text stateText, pathText, contentText;
+        [SerializeField]
+        private TextAsset payload;
         private DownloadHttpServer server;
         private string path;
         private int serial;
         private string state = "尚未下载";
-
         private void Start()
         {
             server = new DownloadHttpServer(payload.bytes);
@@ -30,12 +33,21 @@ namespace UnityQGameFramework.Examples.Modules
             QGF.Event.Subscribe(DownloadSuccessEventArgs.EventId, OnEvent);
             QGF.Event.Subscribe(DownloadFailureEventArgs.EventId, OnEvent);
             downloadButton.onClick.AddListener(Download);
-            clearButton.onClick.AddListener(() => { DeleteFiles(); state = "已清理"; contentText.text = ""; });
+            clearButton.onClick.AddListener(() =>
+            {
+                DeleteFiles();
+                state = "已清理";
+                contentText.text = "";
+            });
         }
 
         private void Download()
         {
-            if (serial != 0 || server == null) return;
+            if (serial != 0 || server == null)
+            {
+                return;
+            }
+
             DeleteFiles();
             string uri = server.Url("/payload");
             // 返回任务序号；结果事件用它确认本次请求。
@@ -53,8 +65,14 @@ namespace UnityQGameFramework.Examples.Modules
                 contentText.text = File.ReadAllText(path).Trim(); // 成功时临时文件已转为正式文件。
             }
             else if (args is DownloadFailureEventArgs failure && failure.SerialId == serial)
+            {
                 state = "失败：" + failure.ErrorMessage;
-            else return;
+            }
+            else
+            {
+                return;
+            }
+
             serial = 0;
         }
 
@@ -69,24 +87,46 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void DeleteFiles()
         {
-            if (path == null) return;
-            if (File.Exists(path)) File.Delete(path);
-            if (File.Exists(path + ".download")) File.Delete(path + ".download");
+            if (path == null)
+            {
+                return;
+            }
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            if (File.Exists(path + ".download"))
+            {
+                File.Delete(path + ".download");
+            }
         }
 
         private void OnDestroy()
         {
             var download = GameEntry.GetComponent<DownloadComponent>();
-            if (download != null && serial != 0) download.RemoveDownload(serial);
+            if (download != null && serial != 0)
+            {
+                download.RemoveDownload(serial);
+            }
+
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(DownloadSuccessEventArgs.EventId, OnEvent)) events.Unsubscribe(DownloadSuccessEventArgs.EventId, OnEvent);
-                if (events.Check(DownloadFailureEventArgs.EventId, OnEvent)) events.Unsubscribe(DownloadFailureEventArgs.EventId, OnEvent);
+                if (events.Check(DownloadSuccessEventArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(DownloadSuccessEventArgs.EventId, OnEvent);
+                }
+
+                if (events.Check(DownloadFailureEventArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(DownloadFailureEventArgs.EventId, OnEvent);
+                }
             }
+
             server?.Dispose();
             DeleteFiles(); // 清理正式文件和临时文件。
-
         }
     }
 }

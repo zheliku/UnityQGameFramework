@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -36,22 +36,46 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取任务代理总数量。
         /// </summary>
-        public int TotalAgentCount => FreeAgentCount + WorkingAgentCount;
+        public int TotalAgentCount
+        {
+            get
+            {
+                return FreeAgentCount + WorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用任务代理数量。
         /// </summary>
-        public int FreeAgentCount => m_FreeAgents.Count;
+        public int FreeAgentCount
+        {
+            get
+            {
+                return m_FreeAgents.Count;
+            }
+        }
 
         /// <summary>
         /// 获取工作中任务代理数量。
         /// </summary>
-        public int WorkingAgentCount => m_WorkingAgents.Count;
+        public int WorkingAgentCount
+        {
+            get
+            {
+                return m_WorkingAgents.Count;
+            }
+        }
 
         /// <summary>
         /// 获取等待任务数量。
         /// </summary>
-        public int WaitingTaskCount => m_WaitingTasks.Count;
+        public int WaitingTaskCount
+        {
+            get
+            {
+                return m_WaitingTasks.Count;
+            }
+        }
 
         /// <summary>
         /// 任务池轮询。
@@ -351,6 +375,11 @@ namespace UnityQGameFramework.Core
             return count;
         }
 
+        /// <summary>
+        /// 更新正在运行的任务，回收已完成的任务代理。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         private void ProcessRunningTasks(float elapseSeconds, float realElapseSeconds)
         {
             LinkedListNode<ITaskAgent<T>> current = m_WorkingAgents.First;
@@ -373,6 +402,11 @@ namespace UnityQGameFramework.Core
             }
         }
 
+        /// <summary>
+        /// 为等待任务分配空闲任务代理。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         private void ProcessWaitingTasks(float elapseSeconds, float realElapseSeconds)
         {
             LinkedListNode<T> current = m_WaitingTasks.First;

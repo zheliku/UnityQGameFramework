@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,6 +10,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制实体组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(EntityComponent))]
     internal sealed class EntityComponentInspector : FrameworkInspector
     {
@@ -21,6 +24,9 @@ namespace UnityQGameFramework.Editor
         private HelperInfo<EntityHelperBase> m_EntityHelperInfo = new HelperInfo<EntityHelperBase>("Entity");
         private HelperInfo<EntityGroupHelperBase> m_EntityGroupHelperInfo = new HelperInfo<EntityGroupHelperBase>("EntityGroup");
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -56,6 +62,9 @@ namespace UnityQGameFramework.Editor
             Repaint();
         }
 
+        /// <summary>
+        /// 脚本重新编译后刷新可用类型。
+        /// </summary>
         protected override void OnCompileComplete()
         {
             base.OnCompileComplete();
@@ -63,6 +72,9 @@ namespace UnityQGameFramework.Editor
             RefreshTypeNames();
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
             m_EnableShowEntityUpdateEvent = serializedObject.FindProperty("m_EnableShowEntityUpdateEvent");
@@ -76,6 +88,9 @@ namespace UnityQGameFramework.Editor
             RefreshTypeNames();
         }
 
+        /// <summary>
+        /// 刷新可用辅助器或流程类型名称。
+        /// </summary>
         private void RefreshTypeNames()
         {
             m_EntityHelperInfo.Refresh();

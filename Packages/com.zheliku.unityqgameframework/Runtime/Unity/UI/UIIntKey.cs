@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -20,8 +20,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int Key
         {
-            get => m_Key;
-            set => m_Key = value;
+            get
+            {
+                return m_Key;
+            }
+            set
+            {
+                m_Key = value;
+            }
         }
     }
 }

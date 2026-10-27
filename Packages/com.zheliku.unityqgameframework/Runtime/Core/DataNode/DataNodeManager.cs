@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -29,7 +29,13 @@ namespace UnityQGameFramework.Core.DataNode
         /// <summary>
         /// 获取根数据结点。
         /// </summary>
-        public IDataNode Root => m_Root;
+        public IDataNode Root
+        {
+            get
+            {
+                return m_Root;
+            }
+        }
 
         /// <summary>
         /// 数据结点管理器轮询。

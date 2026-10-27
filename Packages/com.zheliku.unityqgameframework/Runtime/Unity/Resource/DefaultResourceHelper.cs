@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -83,10 +83,13 @@ namespace UnityQGameFramework.Runtime
             */
         }
 
-        private void Start()
-        {
-        }
-
+        /// <summary>
+        /// 通过 UnityWebRequest 读取文件字节并通知结果。
+        /// </summary>
+        /// <param name="fileUri">文件地址。</param>
+        /// <param name="loadBytesCallbacks">文件读取回调。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>执行文件读取的协程。</returns>
         private IEnumerator LoadBytesCo(string fileUri, LoadBytesCallbacks loadBytesCallbacks, object userData)
         {
             bool isError = false;
@@ -113,6 +116,13 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 异步卸载场景并通知结果。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资产名称。</param>
+        /// <param name="unloadSceneCallbacks">场景卸载回调。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>执行场景卸载的协程。</returns>
         private IEnumerator UnloadSceneCo(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData)
         {
             AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(SceneComponent.GetSceneName(sceneAssetName));

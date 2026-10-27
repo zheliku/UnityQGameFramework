@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -19,7 +19,6 @@ namespace UnityQGameFramework.Core.Resource
         private sealed partial class ResourceLoader
         {
             private const int CachedHashBytesLength = 4;
-
             private readonly ResourceManager m_ResourceManager;
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
             private readonly Dictionary<object, int> m_AssetDependencyCount;
@@ -52,30 +51,61 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取加载资源代理总数量。
             /// </summary>
-            public int TotalAgentCount => m_TaskPool.TotalAgentCount;
+            public int TotalAgentCount
+            {
+                get
+                {
+                    return m_TaskPool.TotalAgentCount;
+                }
+            }
 
             /// <summary>
             /// 获取可用加载资源代理数量。
             /// </summary>
-            public int FreeAgentCount => m_TaskPool.FreeAgentCount;
+            public int FreeAgentCount
+            {
+                get
+                {
+                    return m_TaskPool.FreeAgentCount;
+                }
+            }
 
             /// <summary>
             /// 获取工作中加载资源代理数量。
             /// </summary>
-            public int WorkingAgentCount => m_TaskPool.WorkingAgentCount;
+            public int WorkingAgentCount
+            {
+                get
+                {
+                    return m_TaskPool.WorkingAgentCount;
+                }
+            }
 
             /// <summary>
             /// 获取等待加载资源任务数量。
             /// </summary>
-            public int WaitingTaskCount => m_TaskPool.WaitingTaskCount;
+            public int WaitingTaskCount
+            {
+                get
+                {
+                    return m_TaskPool.WaitingTaskCount;
+                }
+            }
 
             /// <summary>
             /// 获取或设置资源对象池自动释放可释放对象的间隔秒数。
             /// </summary>
             public float AssetAutoReleaseInterval
             {
-                get => m_AssetPool.AutoReleaseInterval;
-                set => m_AssetPool.AutoReleaseInterval = value;
+                get
+                {
+                    return m_AssetPool.AutoReleaseInterval;
+                }
+
+                set
+                {
+                    m_AssetPool.AutoReleaseInterval = value;
+                }
             }
 
             /// <summary>
@@ -83,8 +113,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public int AssetCapacity
             {
-                get => m_AssetPool.Capacity;
-                set => m_AssetPool.Capacity = value;
+                get
+                {
+                    return m_AssetPool.Capacity;
+                }
+
+                set
+                {
+                    m_AssetPool.Capacity = value;
+                }
             }
 
             /// <summary>
@@ -92,8 +129,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public float AssetExpireTime
             {
-                get => m_AssetPool.ExpireTime;
-                set => m_AssetPool.ExpireTime = value;
+                get
+                {
+                    return m_AssetPool.ExpireTime;
+                }
+
+                set
+                {
+                    m_AssetPool.ExpireTime = value;
+                }
             }
 
             /// <summary>
@@ -101,8 +145,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public int AssetPriority
             {
-                get => m_AssetPool.Priority;
-                set => m_AssetPool.Priority = value;
+                get
+                {
+                    return m_AssetPool.Priority;
+                }
+
+                set
+                {
+                    m_AssetPool.Priority = value;
+                }
             }
 
             /// <summary>
@@ -110,8 +161,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public float ResourceAutoReleaseInterval
             {
-                get => m_ResourcePool.AutoReleaseInterval;
-                set => m_ResourcePool.AutoReleaseInterval = value;
+                get
+                {
+                    return m_ResourcePool.AutoReleaseInterval;
+                }
+
+                set
+                {
+                    m_ResourcePool.AutoReleaseInterval = value;
+                }
             }
 
             /// <summary>
@@ -119,8 +177,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public int ResourceCapacity
             {
-                get => m_ResourcePool.Capacity;
-                set => m_ResourcePool.Capacity = value;
+                get
+                {
+                    return m_ResourcePool.Capacity;
+                }
+
+                set
+                {
+                    m_ResourcePool.Capacity = value;
+                }
             }
 
             /// <summary>
@@ -128,8 +193,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public float ResourceExpireTime
             {
-                get => m_ResourcePool.ExpireTime;
-                set => m_ResourcePool.ExpireTime = value;
+                get
+                {
+                    return m_ResourcePool.ExpireTime;
+                }
+
+                set
+                {
+                    m_ResourcePool.ExpireTime = value;
+                }
             }
 
             /// <summary>
@@ -137,8 +209,15 @@ namespace UnityQGameFramework.Core.Resource
             /// </summary>
             public int ResourcePriority
             {
-                get => m_ResourcePool.Priority;
-                set => m_ResourcePool.Priority = value;
+                get
+                {
+                    return m_ResourcePool.Priority;
+                }
+
+                set
+                {
+                    m_ResourcePool.Priority = value;
+                }
             }
 
             /// <summary>
@@ -422,7 +501,6 @@ namespace UnityQGameFramework.Core.Resource
                 storageInFileSystem = false;
                 relativePath = null;
                 fileName = null;
-
                 ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
                 if (resourceInfo == null)
                 {
@@ -727,6 +805,14 @@ namespace UnityQGameFramework.Core.Resource
                 m_TaskPool.GetAllTaskInfos(results);
             }
 
+            /// <summary>
+            /// 递归创建依赖资产加载任务。
+            /// </summary>
+            /// <param name="assetName">资产名称。</param>
+            /// <param name="priority">加载优先级。</param>
+            /// <param name="mainTask">等待该依赖资产的主任务。</param>
+            /// <param name="userData">用户自定义数据。</param>
+            /// <returns>是否成功提交依赖资产加载任务。</returns>
             private bool LoadDependencyAsset(string assetName, int priority, LoadResourceTaskBase mainTask, object userData)
             {
                 if (mainTask == null)
@@ -764,6 +850,11 @@ namespace UnityQGameFramework.Core.Resource
                 return true;
             }
 
+            /// <summary>
+            /// 根据资产名称查找资源记录。
+            /// </summary>
+            /// <param name="assetName">资产名称。</param>
+            /// <returns>对应的资源记录；未找到时返回空。</returns>
             private ResourceInfo GetResourceInfo(string assetName)
             {
                 if (string.IsNullOrEmpty(assetName))
@@ -780,11 +871,17 @@ namespace UnityQGameFramework.Core.Resource
                 return m_ResourceManager.GetResourceInfo(assetInfo.ResourceName);
             }
 
+            /// <summary>
+            /// 检查资产记录及资源可用状态。
+            /// </summary>
+            /// <param name="assetName">资产名称。</param>
+            /// <param name="resourceInfo">输出资产所属的资源记录。</param>
+            /// <param name="dependencyAssetNames">输出资产依赖名称数组。</param>
+            /// <returns>资产是否已就绪或允许边玩边更新。</returns>
             private bool CheckAsset(string assetName, out ResourceInfo resourceInfo, out string[] dependencyAssetNames)
             {
                 resourceInfo = null;
                 dependencyAssetNames = null;
-
                 if (string.IsNullOrEmpty(assetName))
                 {
                     return false;
@@ -806,6 +903,20 @@ namespace UnityQGameFramework.Core.Resource
                 return m_ResourceManager.ResourceMode == ResourceMode.UpdatableWhilePlaying ? true : resourceInfo.Ready;
             }
 
+            /// <summary>
+            /// 按资源加载方式解密资源数据。
+            /// </summary>
+            /// <param name="bytes">需要解密的缓冲区。</param>
+            /// <param name="startIndex">缓冲区内的起始索引。</param>
+            /// <param name="count">要处理的字节数。</param>
+            /// <param name="name">资源名称。</param>
+            /// <param name="variant">资源变体。</param>
+            /// <param name="extension">资源扩展名。</param>
+            /// <param name="storageInReadOnly">资源是否来自只读目录。</param>
+            /// <param name="fileSystem">资源所在的文件系统名称。</param>
+            /// <param name="loadType">资源加载方式。</param>
+            /// <param name="length">资源总字节数。</param>
+            /// <param name="hashCode">资源 CRC32 校验值。</param>
             private void DefaultDecryptResourceCallback(byte[] bytes, int startIndex, int count, string name, string variant, string extension, bool storageInReadOnly, string fileSystem, byte loadType, int length, int hashCode)
             {
                 switch ((LoadType)loadType)
@@ -814,21 +925,31 @@ namespace UnityQGameFramework.Core.Resource
                     case LoadType.LoadFromBinaryAndQuickDecrypt:
                         XorResourceBytes(bytes, startIndex, count, 0, true, hashCode);
                         break;
-
                     case LoadType.LoadFromMemoryAndDecrypt:
                     case LoadType.LoadFromBinaryAndDecrypt:
                         XorResourceBytes(bytes, startIndex, count, 0, false, hashCode);
                         break;
-
                     default:
                         throw new FrameworkException("Not supported load type when decrypt resource.");
                 }
-
             }
 
+            /// <summary>
+            /// 按原始资源偏移解密二进制数据段。
+            /// </summary>
+            /// <param name="assetName">资产名称。</param>
+            /// <param name="resourceInfo">资源记录。</param>
+            /// <param name="offset">该段在原始资源中的字节偏移。</param>
+            /// <param name="buffer">待解密的数据缓冲区。</param>
+            /// <param name="startIndex">缓冲区内的起始索引。</param>
+            /// <param name="count">要处理的字节数。</param>
             private void DecryptBinarySegment(string assetName, ResourceInfo resourceInfo, int offset, byte[] buffer, int startIndex, int count)
             {
-                if (count == 0) return;
+                if (count == 0)
+                {
+                    return;
+                }
+
                 if (m_ResourceManager.m_DecryptResourceCallback != null)
                 {
                     // 自定义回调只描述完整资源，没有源偏移参数。先还原完整资源，再取得请求片段。
@@ -836,18 +957,39 @@ namespace UnityQGameFramework.Core.Resource
                     Array.Copy(bytes, offset, buffer, startIndex, count);
                     return;
                 }
+
                 XorResourceBytes(buffer, startIndex, count, offset, resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt, resourceInfo.HashCode);
             }
 
+            /// <summary>
+            /// 使用资源校验值对指定数据段进行异或处理。
+            /// </summary>
+            /// <param name="bytes">需要解密的缓冲区。</param>
+            /// <param name="startIndex">缓冲区内的起始索引。</param>
+            /// <param name="count">要处理的字节数。</param>
+            /// <param name="offset">该段在原始资源中的字节偏移。</param>
+            /// <param name="quick">是否仅处理快速加密区段。</param>
+            /// <param name="hashCode">资源 CRC32 校验值。</param>
             private void XorResourceBytes(byte[] bytes, int startIndex, int count, int offset, bool quick, int hashCode)
             {
                 Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                 // 密钥相位跟随资源内的偏移，与目标缓冲区的写入位置无关。
                 int length = quick ? Math.Min(count, Math.Max(0, Utility.Encryption.QuickEncryptLength - offset)) : count;
-                for (int i = 0; i < length; i++) bytes[startIndex + i] ^= m_CachedHashBytes[(offset + i) % CachedHashBytesLength];
+                for (int i = 0; i < length; i++)
+                {
+                    bytes[startIndex + i] ^= m_CachedHashBytes[(offset + i) % CachedHashBytesLength];
+                }
+
                 Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
             }
 
+            /// <summary>
+            /// 处理二进制读取结果并调用成功回调。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="bytes">读取的文件数据。</param>
+            /// <param name="duration">读取耗时，以秒为单位。</param>
+            /// <param name="userData">二进制资源加载请求信息。</param>
             private void OnLoadBinarySuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 LoadBinaryInfo loadBinaryInfo = (LoadBinaryInfo)userData;
@@ -867,6 +1009,12 @@ namespace UnityQGameFramework.Core.Resource
                 ReferencePool.Release(loadBinaryInfo);
             }
 
+            /// <summary>
+            /// 通知二进制读取失败。
+            /// </summary>
+            /// <param name="fileUri">读取的文件地址。</param>
+            /// <param name="errorMessage">文件读取错误信息。</param>
+            /// <param name="userData">二进制资源加载请求信息。</param>
             private void OnLoadBinaryFailure(string fileUri, string errorMessage, object userData)
             {
                 LoadBinaryInfo loadBinaryInfo = (LoadBinaryInfo)userData;

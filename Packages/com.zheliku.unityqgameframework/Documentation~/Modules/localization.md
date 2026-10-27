@@ -83,7 +83,7 @@ namespace QgfDocs
 
 ## 从资产读取
 
-将 TOML 保存为 `Assets/MyGame/Localization/Default.toml`，加入 ResourceBuildProfile 的收集规则，并设置 `EnableAddressable` 与 `AddressByFileName`。在预加载流程里调用：
+将 TOML 保存为 `Assets/MyGame/Localization/Default.toml`，加入 YooAsset Collector 的收集规则，并设置 `EnableAddressable` 与 `AddressByFileName`。在预加载流程里调用：
 
 ```csharp
 // 方法内片段：先订阅成功和失败事件，再发起读取。

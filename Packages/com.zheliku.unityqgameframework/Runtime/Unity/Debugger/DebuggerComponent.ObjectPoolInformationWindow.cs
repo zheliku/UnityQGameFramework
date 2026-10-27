@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -11,10 +11,17 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示对象池容量、借用数量和回收状态。
+        /// </summary>
         private sealed class ObjectPoolInformationWindow : ScrollableDebuggerWindowBase
         {
             private ObjectPoolComponent m_ObjectPoolComponent = null;
 
+            /// <summary>
+            /// 获取对象池组件。
+            /// </summary>
+            /// <param name="args">窗口初始化参数。</param>
             public override void Initialize(params object[] args)
             {
                 m_ObjectPoolComponent = GameEntry.GetComponent<ObjectPoolComponent>();
@@ -25,6 +32,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制对象池信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Object Pool Information</b>");
@@ -40,6 +50,10 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制对象池统计及池中对象状态。
+            /// </summary>
+            /// <param name="objectPool">要显示的对象池。</param>
             private void DrawObjectPool(ObjectPoolBase objectPool)
             {
                 GUILayout.Label(Utility.Text.Format("<b>Object Pool: {0}</b>", objectPool.FullName));

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -26,8 +26,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public string Name
         {
-            get => gameObject.name;
-            set => gameObject.name = value;
+            get
+            {
+                return gameObject.name;
+            }
+            set
+            {
+                gameObject.name = value;
+            }
         }
 
         /// <summary>
@@ -116,7 +122,7 @@ namespace UnityQGameFramework.Runtime
         /// 实体附加子实体。
         /// </summary>
         /// <param name="childEntity">附加的子实体。</param>
-        /// <param name="parentTransform">被附加父实体的位置。</param>
+        /// <param name="parentTransform">子实体要挂接的父变换。</param>
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnAttached(EntityLogic childEntity, Transform parentTransform, object userData)
         {
@@ -132,10 +138,10 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 实体附加子实体。
+        /// 实体附加到父实体。
         /// </summary>
-        /// <param name="parentEntity">被附加的父实体。</param>
-        /// <param name="parentTransform">被附加父实体的位置。</param>
+        /// <param name="parentEntity">要附加到的父实体。</param>
+        /// <param name="parentTransform">子实体要挂接的父变换。</param>
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnAttachTo(EntityLogic parentEntity, Transform parentTransform, object userData)
         {
@@ -143,9 +149,9 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 实体解除子实体。
+        /// 实体从父实体解除。
         /// </summary>
-        /// <param name="parentEntity">被解除的父实体。</param>
+        /// <param name="parentEntity">原先附加到的父实体。</param>
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnDetachFrom(EntityLogic parentEntity, object userData)
         {

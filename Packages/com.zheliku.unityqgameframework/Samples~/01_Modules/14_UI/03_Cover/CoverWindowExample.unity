@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1585b1b524d55086adb5605e3542d10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityQGameFramework.Examples.Modules::UnityQGameFramework.Examples.Modules.CoverWindowExample
-  windowGuid: 0673f138ec075e4a89e59924aaa87f52
   pauseToggle: {fileID: 1969973046}
   contextToggle: {fileID: 1992442904}
   openButton: {fileID: 330777157}

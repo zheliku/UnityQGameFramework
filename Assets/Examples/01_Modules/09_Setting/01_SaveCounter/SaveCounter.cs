@@ -4,6 +4,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示保存计数。
+    /// </summary>
     public sealed class SaveCounter : MonoBehaviour
     {
         [SerializeField] private Button saveButton, resetButton;

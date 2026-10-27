@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
+using YooAsset;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -12,11 +14,14 @@ namespace UnityQGameFramework.Runtime
         [SerializeField]
         private string m_Name = "DefaultPackage";
 
-        [SerializeField]
-        private ResourcePlayMode m_PlayMode = ResourcePlayMode.Offline;
+        [SerializeField, FormerlySerializedAs("m_RuntimePlayMode")]
+        private EPlayMode m_Mode = EPlayMode.EditorSimulateMode;
+
+        [SerializeField, HideInInspector, FormerlySerializedAs("m_PlayMode")]
+        private int m_LegacyPlayMode = -1;
 
         [SerializeField]
-        [Tooltip("联机模式是否读取 StreamingAssets 中的首包；纯远端资源包请关闭。")]
+        [Tooltip("Include StreamingAssets in HostPlayMode. Disable for a remote-only package.")]
         private bool m_UseBuiltinFiles = true;
 
         [SerializeField]
@@ -27,6 +32,9 @@ namespace UnityQGameFramework.Runtime
 
         [SerializeField]
         private string m_PackageVersion;
+
+        [SerializeField]
+        private string m_InitializerTypeName;
 
         /// <summary>
         /// 获取资源包名称。
@@ -40,14 +48,38 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取发行时的资源运行模式。
+        /// 获取资源包使用的 YooAsset 运行模式。
         /// </summary>
-        public ResourcePlayMode PlayMode
+        public EPlayMode PlayMode
         {
             get
             {
-                return m_PlayMode;
+                return m_Mode;
             }
+        }
+
+        /// <summary>
+        /// 获取自定义初始化扩展的完整类型名。
+        /// </summary>
+        public string InitializerTypeName
+        {
+            get
+            {
+                return m_InitializerTypeName;
+            }
+        }
+
+        /// <summary>
+        /// 将旧版模式编号迁移为单一运行模式，保留原 Player 模式。
+        /// </summary>
+        /// <param name="serializationVersion">原配置的序列化版本。</param>
+        internal void UpgradePlayMode(int serializationVersion)
+        {
+            if (serializationVersion < 2 && m_LegacyPlayMode >= 0)
+            {
+                m_Mode = (EPlayMode)(m_LegacyPlayMode + 1);
+            }
+            m_LegacyPlayMode = -1;
         }
 
         /// <summary>

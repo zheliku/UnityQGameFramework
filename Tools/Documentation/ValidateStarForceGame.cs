@@ -58,7 +58,7 @@ public static class ValidateStarForceGame
             input.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             input.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
             mouse = InputSystem.AddDevice<Mouse>();
-            EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb"));
+            EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");
             await Play(true);
             // 自动化在后台驱动 Game 视图，不能沿用示例的失焦停帧设置。
             Application.runInBackground = true;

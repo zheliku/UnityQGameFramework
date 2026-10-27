@@ -5,6 +5,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示路径与相对节点。
+    /// </summary>
     public sealed class NodePaths : MonoBehaviour
     {
         [SerializeField] private Button relativeButton, absoluteButton;

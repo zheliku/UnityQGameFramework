@@ -5,22 +5,43 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示保存与读取对象。
+    /// </summary>
     public sealed class SaveSettingObject : MonoBehaviour
     {
-        [SerializeField] private InputField nameInput;
-        [SerializeField] private Slider levelSlider;
-        [SerializeField] private Button saveButton, readButton, removeButton;
-        [SerializeField] private Text stateText, resultText;
+        [SerializeField]
+        private InputField nameInput;
+        [SerializeField]
+        private Slider levelSlider;
+        [SerializeField]
+        private Button saveButton, readButton, removeButton;
+        [SerializeField]
+        private Text stateText, resultText;
         private const string Key = "Pilot";
-        private readonly Pilot fallback = new Pilot { Name = "新飞行员", Level = 1 };
+        private readonly Pilot fallback = new Pilot
+        {
+            Name = "新飞行员",
+            Level = 1
+        };
         private Pilot loaded;
         private bool ready;
 
+        /// <summary>
+        /// 需要保存的飞行员数据。
+        /// </summary>
         [Serializable]
         public sealed class Pilot
         {
             // 默认 JSON Helper 保存字段；GetObject 会从保存的 JSON 重建对象。
+            /// <summary>
+            /// 名称。
+            /// </summary>
             public string Name;
+
+            /// <summary>
+            /// 等级。
+            /// </summary>
             public int Level;
         }
 
@@ -29,7 +50,11 @@ namespace UnityQGameFramework.Examples.Modules
             levelSlider.wholeNumbers = true;
             saveButton.onClick.AddListener(() =>
             {
-                var pilot = new Pilot { Name = nameInput.text, Level = (int)levelSlider.value };
+                var pilot = new Pilot
+                {
+                    Name = nameInput.text,
+                    Level = (int)levelSlider.value
+                };
                 // 默认 JSON Helper 序列化字段；设置中保存序列化结果。
                 QGF.Setting.SetObject<Pilot>(Key, pilot);
                 QGF.Setting.Save();
@@ -53,7 +78,11 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            if (!ready) return;
+            if (!ready)
+            {
+                return;
+            }
+
             bool exists = QGF.Setting.HasSetting(Key);
             readButton.interactable = true;
             removeButton.interactable = exists;

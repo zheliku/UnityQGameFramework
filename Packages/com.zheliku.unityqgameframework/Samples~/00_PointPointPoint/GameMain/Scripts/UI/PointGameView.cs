@@ -5,6 +5,9 @@ using UnityQGameFramework.Runtime;
 namespace UnityQGameFramework.Examples.PointPointPoint
 {
     // QGF.UI 负责加载界面预制体和回收实例。
+    /// <summary>
+    /// 显示本局状态并上报点击事件。
+    /// </summary>
     public sealed class PointGameView : UIFormLogic
     {
         [SerializeField] private GameObject menu, play, result;
@@ -13,6 +16,10 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         [SerializeField] private RectTransform board, target;
         internal PointGameData Game { get; private set; }
 
+        /// <summary>
+        /// 初始化实例。
+        /// </summary>
+        /// <param name="userData">用户自定义数据。</param>
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -25,6 +32,10 @@ namespace UnityQGameFramework.Examples.PointPointPoint
             targetButton.onClick.AddListener(() => QGF.Event.Fire(this, PointGameClick.Create(true)));
         }
 
+        /// <summary>
+        /// 打开界面并接收业务数据。
+        /// </summary>
+        /// <param name="userData">打开界面时传入的游戏数据。</param>
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
@@ -33,6 +44,11 @@ namespace UnityQGameFramework.Examples.PointPointPoint
             Render();
         }
 
+        /// <summary>
+        /// 更新界面状态。
+        /// </summary>
+        /// <param name="elapsed">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapsed">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(float elapsed, float realElapsed)
         {
             base.OnUpdate(elapsed, realElapsed);

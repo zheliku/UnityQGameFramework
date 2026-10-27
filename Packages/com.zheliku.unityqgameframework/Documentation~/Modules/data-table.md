@@ -4,13 +4,17 @@ QGF 直接登记 Luban 生成的表对象。场景中的 DataTableComponent、Pr
 
 ## 加载和查询
 
+不需要手动 `Initialize`。DataTableComponent 在 `Awake` 取得管理器，在 `Start` 连接 Event 和 Resource；框架组件的执行顺序早于普通业务脚本，所以通常在业务 `Start` 或后续启动流程中加载。不要在 `Awake`/`OnEnable` 发起加载；运行时新建框架时也要先让组件完成 `Start`。
+
 将生成的 Catalog 指定给 DataTableComponent，在启动流程中加载一次：
 
 ```csharp
-using UnityQGameFramework.Examples.TableData;
+using UnityQGameFramework.Examples.Modules.TableData;
 
-var tables = QGF.DataTable.LoadDataTables(loader => new Tables(loader));
-if (tables == null) return;
+if (!QGF.DataTable.LoadDataTables<Tables>())
+{
+    return;
+}
 
 // 泛型参数是表类型，返回的就是生成的 TbItem。
 var items = QGF.DataTable.GetDataTable<TbItem>();
@@ -18,6 +22,16 @@ var item = items.GetDataRow(1);
 ```
 
 表构造、跨表引用解析和结构版本校验全部完成后，组件才登记整组表。普通查询不触发文件读取；运行时不读取 Excel，也不运行 Luban 编译器。
+
+`Tables` 是生成的加载器，实现 `IDataTableLoader`，仅在加载时构造。它不作为业务数据入口返回或保存；加载后统一用 `QGF.DataTable.GetDataTable<TbXxx>()`。生成的 `TbXxx` 直接继承 QGF 的 `DataTable<T>`，没有额外的表视图或 Luban 查询管理器。
+
+Catalog 是 QGF 生成的 ScriptableObject，不是 Luban 自带的功能。它保存文件名、bytes 资产引用和结构版本，方便 Unity 跟随目录移动、收集资源依赖并校验代码与数据。生成 C# 只包含类型和解析逻辑，具体记录仍保存在 bytes 中。
+
+Catalog 是运行时数据清单，不是缓存。`LubanProfile` 只供编辑器生成，`QGF > Settings` 的全局 Profile 指定生成菜单的目标；DataTableComponent 的 Catalog 指定同步加载的数据。切换全局 Profile 不会更换组件的 Catalog。两者应配合同一套生成代码使用，结构版本不一致时加载会失败。
+
+同步加载只需要 DataTable、Event 和组件上的 Catalog；不需要先初始化 YooAsset 包。`GetDataTable` 不会触发加载，只有 `LoadDataTables` 成功后才能查询。实际项目由启动流程加载完毕后进入业务流程，避免依赖多个普通脚本 `Start` 的先后顺序。可直接运行的完整说明见 [模块 Sample README](../../Samples~/01_Modules/README.md#datatable-从哪里开始)。
+
+本地 GGF 的 `ConfigSystem.Tables` 看起来能直接读取，是因为属性首次访问时会调用 `Load()`，内部仍然构造 `Tables` 并读取 bytes。QGF 在启动流程显式加载，便于处理资源包异步下载、失败和取消；后续查询不需要重复加载。
 
 ## 键与表模式
 
@@ -31,6 +45,8 @@ var item = items.GetDataRow(1);
 | 跨表引用 | 直接读取生成的引用属性 |
 
 所有表统一使用 `GetDataTable<TbXxx>()`。`DataMap`、`DataList`、生成索引与 QGF 公共查询都在同一个表对象上，记录不复制。one 表字段与元数据重名时用 `Data` 访问，例如 `rules.Data.Count`；`rules.Count` 始终表示行数。
+
+[表模式示例](../../Samples~/01_Modules/11_DataTable/06_TableModes/TableModesExample.cs) 使用官方 Excel schema 展示上述用法。`__tables__.xlsx` 显式登记每张表，`DataTableModes.xlsx` 保存别名、关卡、规则和提示。`TbItemIndex` 复用 `Item.xlsx` 的行结构，并增加 Name、Price 两个独立索引；它是在 schema 中声明的另一张表，不是额外的查询管理器。
 
 `GetDataRow(key)` 缺键时返回 default：class 为 null，struct 为默认值。Luban 原生 `Get`、`GetOrDefault` 和索引器保留各自的行为。
 
@@ -46,16 +62,21 @@ var sorted = items.GetDataRows(row => row.Price <= 100,
 
 同一行结构可用于多张表，每张表用自己的 Tb 类型登记。手动构造同一种表的额外实例时可传入 name，查询使用 `GetDataTable<TbXxx>(name)`。
 
+表类型在运行时才能确定时，可使用 `HasDataTable(Type, name)`、`GetDataTable(Type, name)` 和 `DestroyDataTable(Type, name)`。`GetAllDataTables()` 返回数组；带 List 参数的重载先清空再填充传入的列表，适合重复刷新工具面板。
+
 ## 异步加载和卸载
 
 资源加载仍由 Resource 负责。先订阅 `LoadDataTableSuccessEventArgs` 和 `LoadDataTableFailureEventArgs`，再调用：
 
 ```csharp
-int requestId = QGF.DataTable.LoadDataTables(
-    catalogAssetName, loader => new Tables(loader), this);
+int requestId = QGF.DataTable.LoadDataTables<Tables>(catalogAssetName, this);
 ```
 
 这个重载返回请求序号，结果通过 Event 通知。`CancelLoadDataTables()` 使在途请求失效，迟到回调会释放资产，不发布表和结果事件。
+
+带 `catalogAssetName` 的重载按资源地址读取 Catalog，不使用组件上的 Catalog；调用返回时不能立即假定表已就绪。它需要 ResourceComponent 的资源配置和 YooAsset 收集规则，资源模块会在加载时初始化对应包。
+
+使用 UniTask 时可等待 `QGF.DataTable.LoadDataTablesAsync<Tables>(catalogAssetName, cancellationToken: token)`；完成后仍通过 `GetDataTable<TbXxx>()` 查询。失败抛出异常，取消抛出 `OperationCanceledException`。
 
 `IsLoading` 表示正在加载，`IsLoaded` 表示整组表已发布，`Count` 包括所有已登记的 map、list、one 表。`UnloadDataTables()` 取消在途请求并移除该组表的登记；业务保存的旧表和记录引用应在切换配置时更新。
 
@@ -69,7 +90,7 @@ Luban 表不是这个模型：一次加载先读取 Catalog，再按 Catalog 读
 
 因此当前不新增 `LubanTableProvider : IDataProvider<T>`。`DataTableComponent` 就是 Luban 的加载与发布边界；`TbXxx` 是运行时表对象。Config、Localization 和 DataTable 仍然通过各自清晰的组件接口协作，不共享不匹配的解析抽象。
 
-将来接入 Addressables、远程热更或自定义文件系统时，再抽取窄接口 `ILubanTableSource`，只提供 Catalog 和 bytes 的读取；表构造、引用解析、版本校验、登记和卸载仍由 DataTableComponent 统一完成。这样不会改变现有调用，也不会复制 `IDataProvider` 的整套文本解析 API。
+Catalog 的资源加载使用 QGF.Resource 的 YooAsset 后端；编辑器模拟、离线和远程模式共用同一套表解析与登记流程。
 
 ## 生成与迁移
 

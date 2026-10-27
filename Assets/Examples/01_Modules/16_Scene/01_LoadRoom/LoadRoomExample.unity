@@ -816,7 +816,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7519f3f3ced650e69a0ca09359e6e097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityQGameFramework.Examples.Modules::UnityQGameFramework.Examples.Modules.LoadRoomExample
-  roomLocation: 93388ec7f6445a969170f89e89f46b88
   loadButton: {fileID: 32128421}
   unloadButton: {fileID: 1090648582}
   stateText: {fileID: 410845253}

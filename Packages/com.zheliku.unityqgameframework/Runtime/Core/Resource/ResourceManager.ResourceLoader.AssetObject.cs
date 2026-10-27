@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -22,6 +22,9 @@ namespace UnityQGameFramework.Core.Resource
                 private IResourceHelper m_ResourceHelper;
                 private ResourceLoader m_ResourceLoader;
 
+                /// <summary>
+                /// 初始化资产的池内登记条目。
+                /// </summary>
                 public AssetObject()
                 {
                     m_DependencyAssets = new List<object>();
@@ -30,6 +33,9 @@ namespace UnityQGameFramework.Core.Resource
                     m_ResourceLoader = null;
                 }
 
+                /// <summary>
+                /// 获取资产是否未被其他资产依赖且允许释放。
+                /// </summary>
                 public override bool CustomCanReleaseFlag
                 {
                     get
@@ -40,6 +46,16 @@ namespace UnityQGameFramework.Core.Resource
                     }
                 }
 
+                /// <summary>
+                /// 从引用池获取资产登记条目。
+                /// </summary>
+                /// <param name="name">资产名称。</param>
+                /// <param name="target">被池管理的实际资产对象。</param>
+                /// <param name="dependencyAssets">该资产引用的依赖资产列表。</param>
+                /// <param name="resource">资产所属的资源对象。</param>
+                /// <param name="resourceHelper">资源辅助器。</param>
+                /// <param name="resourceLoader">资源加载器。</param>
+                /// <returns>资产的池内登记条目。</returns>
                 public static AssetObject Create(string name, object target, List<object> dependencyAssets, object resource, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
                 {
                     if (dependencyAssets == null)
@@ -85,6 +101,9 @@ namespace UnityQGameFramework.Core.Resource
                     return assetObject;
                 }
 
+                /// <summary>
+                /// 清理资产登记数据。
+                /// </summary>
                 public override void Clear()
                 {
                     base.Clear();
@@ -94,6 +113,9 @@ namespace UnityQGameFramework.Core.Resource
                     m_ResourceLoader = null;
                 }
 
+                /// <summary>
+                /// 归还当前资产借用的依赖资产。
+                /// </summary>
                 protected internal override void OnUnspawn()
                 {
                     base.OnUnspawn();
@@ -103,6 +125,10 @@ namespace UnityQGameFramework.Core.Resource
                     }
                 }
 
+                /// <summary>
+                /// 释放资产对象并更新依赖引用计数。
+                /// </summary>
+                /// <param name="isShutdown">是否正在关闭框架。</param>
                 protected internal override void Release(bool isShutdown)
                 {
                     if (!isShutdown)

@@ -1,6 +1,6 @@
 # Scene：加载场景与等待完成
 
-Scene 通过资源模块加载和卸载游戏场景，并记录各场景的当前状态。业务传入 ResourceBuildProfile 中配置的 YooAsset 地址或资产 GUID。
+Scene 通过资源模块加载和卸载游戏场景，并记录各场景的当前状态。业务传入 YooAsset Collector 中配置的 YooAsset 地址或资产 GUID。
 
 [Scene 示例](../../Samples~/01_Modules/16_Scene/) 带有独立房间，可操作加载与卸载和切换房间。下图是切换到橙色房间后的结果。
 
@@ -8,7 +8,7 @@ Scene 通过资源模块加载和卸载游戏场景，并记录各场景的当�
 
 ## 准备一个目标场景
 
-创建并保存 `Assets/MyGame/Scenes/Room.unity`，放一个能辨认的物体。将场景加入 ResourceBuildProfile 的收集规则，启用 `EnableAddressable` 并使用 `AddressByFileName`；Launcher 保留框架根节点和已配置的 ResourceComponent。
+创建并保存 `Assets/MyGame/Scenes/Room.unity`，放一个能辨认的物体。将场景加入 YooAsset Collector 的收集规则，启用 `EnableAddressable` 并使用 `AddressByFileName`；Launcher 保留框架根节点和已配置的 ResourceComponent。
 
 下面完整流程加载 Room，并在成功时打印路径：
 
@@ -64,7 +64,7 @@ namespace QgfDocs
 
 ## 编辑器与 Player 的资源准备
 
-编辑器和 Player 都通过 ResourceComponent 使用 YooAsset。编辑器模拟模式根据对应 ResourceSettings 查找 ResourceBuildProfile；Player 使用 Offline 或 Host 包加载构建后的场景资源。不要直接从 Room 点击 Play 来绕过 Launcher 的初始化。
+编辑器和 Player 都通过 ResourceComponent 使用 YooAsset。编辑器模拟模式根据ResourceSettings 引用的 Collector 生成模拟清单；Player 使用 Offline 或 Host 包加载构建后的场景资源。不要直接从 Room 点击 Play 来绕过 Launcher 的初始化。
 
 ## 查询状态，避免重复请求
 

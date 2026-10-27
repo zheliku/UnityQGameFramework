@@ -38,10 +38,10 @@
     ]
   },
   "JsonUtilityExample": {
-    "script": "Assets/Examples/01_Modules/01_Base/03_Json/JsonUtilityExample.cs",
+    "script": "Assets/Examples/01_Modules/01_Base/02_Json/JsonUtilityExample.cs",
     "controls": [
       {
-        "text": "03  JSON 对象",
+        "text": "02  JSON 对象",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
@@ -90,10 +90,10 @@
     ]
   },
   "LoggingExample": {
-    "script": "Assets/Examples/01_Modules/01_Base/05_Logging/LoggingExample.cs",
+    "script": "Assets/Examples/01_Modules/01_Base/03_Logging/LoggingExample.cs",
     "controls": [
       {
-        "text": "05  日志级别",
+        "text": "03  日志级别",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
@@ -250,10 +250,10 @@
     ]
   },
   "ManageNodeChildren": {
-    "script": "Assets/Examples/01_Modules/03_DataNode/04_Children/ManageNodeChildren.cs",
+    "script": "Assets/Examples/01_Modules/03_DataNode/02_Children/ManageNodeChildren.cs",
     "controls": [
       {
-        "text": "04  管理子节点",
+        "text": "02  管理子节点",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
@@ -656,11 +656,11 @@
     ]
   },
   "ReferenceOwnership": {
-    "script": "Assets/Examples/01_Modules/07_ReferencePool/03_Ownership/ReferenceOwnership.cs",
+    "script": "Assets/Examples/01_Modules/07_ReferencePool/02_Ownership/ReferenceOwnership.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "03  谁负责归还变量",
+        "text": "02  谁负责归还变量",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -857,12 +857,12 @@
     "dictionaryGuid": "5f39b12837a55954b57e36c5f456d153"
   },
   "LoadCatalogExample": {
-    "script": "Assets/Examples/01_Modules/11_DataTable/01_LoadCatalog/LoadCatalogExample.cs",
+    "script": "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog/LoadCatalogExample.cs",
     "catalogGuid": "b60d82a09e25580ca731c520aef667d6",
     "controls": [
       {
         "type": "Text",
-        "text": "01  异步加载 Luban 表",
+        "text": "02  异步加载 Luban 表",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -904,12 +904,12 @@
     "loadDelaySeconds": 2
   },
   "QueryRowsExample": {
-    "script": "Assets/Examples/01_Modules/11_DataTable/02_QueryRows/QueryRowsExample.cs",
+    "script": "Assets/Examples/01_Modules/11_DataTable/03_QueryRows/QueryRowsExample.cs",
     "catalogGuid": "b60d82a09e25580ca731c520aef667d6",
     "controls": [
       {
         "type": "Text",
-        "text": "02  按 Id 查询",
+        "text": "03  按 Id 查询",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -967,8 +967,7 @@
         "text": "销毁剩余实例并归还资产",
         "objectName": "Button_Release"
       }
-    ],
-    "prefabGuid": "51d003874f9f553f84bccd96d341285c"
+    ]
   },
   "ShowCubeEntity": {
     "script": "Assets/Examples/01_Modules/13_Entity/01_ShowHide/ShowCubeEntity.cs",
@@ -1209,11 +1208,11 @@
     ]
   },
   "SoundGroupVolumeExample": {
-    "script": "Assets/Examples/01_Modules/15_Sound/03_GroupVolume/SoundGroupVolumeExample.cs",
+    "script": "Assets/Examples/01_Modules/15_Sound/02_GroupVolume/SoundGroupVolumeExample.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "03  声音组与单声道音量",
+        "text": "02  声音组与单声道音量",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -1415,11 +1414,11 @@
     ]
   },
   "CancelWebRequestExample": {
-    "script": "Assets/Examples/01_Modules/18_WebRequest/03_Cancel/CancelWebRequestExample.cs",
+    "script": "Assets/Examples/01_Modules/18_WebRequest/02_Cancel/CancelWebRequestExample.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "03  取消排队中的请求",
+        "text": "02  取消排队中的请求",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -1756,12 +1755,12 @@
     ]
   },
   "SpatialSoundExample": {
-    "script": "Assets/Examples/01_Modules/15_Sound/05_Spatial/SpatialSoundExample.cs",
+    "script": "Assets/Examples/01_Modules/15_Sound/03_Spatial/SpatialSoundExample.cs",
     "spatialSound": true,
     "controls": [
       {
         "type": "Text",
-        "text": "05  空间声音",
+        "text": "03  空间声音",
         "objectName": "Text_Title",
         "title": true
       },
@@ -1851,11 +1850,11 @@
     ]
   },
   "ReadFileSegments": {
-    "script": "Assets/Examples/01_Modules/17_FileSystem/04_Segments/ReadFileSegments.cs",
+    "script": "Assets/Examples/01_Modules/17_FileSystem/02_Segments/ReadFileSegments.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "04  读取文件片段",
+        "text": "02  读取文件片段",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -1976,11 +1975,11 @@
     ]
   },
   "ObjectPoolPolicy": {
-    "script": "Assets/Examples/01_Modules/08_ObjectPool/04_Policy/ObjectPoolPolicy.cs",
+    "script": "Assets/Examples/01_Modules/08_ObjectPool/03_Policy/ObjectPoolPolicy.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "04  锁定对象，控制回收",
+        "text": "03  锁定对象，控制回收",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2022,12 +2021,12 @@
     "cameraX": 1.5
   },
   "PostWebRequest": {
-    "script": "Assets/Examples/01_Modules/18_WebRequest/04_Post/PostWebRequest.cs",
+    "script": "Assets/Examples/01_Modules/18_WebRequest/03_Post/PostWebRequest.cs",
     "fullWidthPanel": true,
     "controls": [
       {
         "type": "Text",
-        "text": "04  POST 表单",
+        "text": "03  POST 表单",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2199,11 +2198,11 @@
     ]
   },
   "LoadResourcePackage": {
-    "script": "Assets/Examples/01_Modules/12_Resource/02_Package/LoadResourcePackage.cs",
+    "script": "Assets/Examples/01_Modules/12_Resource/03_Package/LoadResourcePackage.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "02  资源包与显式句柄",
+        "text": "03  资源包与显式句柄",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2244,11 +2243,11 @@
     "fullWidthPanel": true
   },
   "ReadBinaryResource": {
-    "script": "Assets/Examples/01_Modules/12_Resource/03_Binary/ReadBinaryResource.cs",
+    "script": "Assets/Examples/01_Modules/12_Resource/04_Binary/ReadBinaryResource.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "03  原生文件与独立字节数据",
+        "text": "04  原生文件与独立字节数据",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2288,14 +2287,14 @@
     "fullWidthPanel": true
   },
   "UpdateRemoteResources": {
-    "script": "Assets/Examples/01_Modules/12_Resource/04_Update/UpdateRemoteResources.cs",
+    "script": "Assets/Examples/01_Modules/12_Resource/05_Update/UpdateRemoteResources.cs",
     "downloadAgentCount": 1,
     "fullWidthPanel": true,
     "controls": [
       {
         "type": "Text",
         "objectName": "Text_Title",
-        "text": "04  HTTP 资源更新",
+        "text": "05  HTTP 资源更新",
         "title": true
       },
       {
@@ -2388,11 +2387,11 @@
     ]
   },
   "TextAndPaths": {
-    "script": "Assets/Examples/01_Modules/01_Base/06_TextAndPaths/TextAndPaths.cs",
+    "script": "Assets/Examples/01_Modules/01_Base/04_TextAndPaths/TextAndPaths.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "06  文本与路径",
+        "text": "04  文本与路径",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2448,11 +2447,11 @@
     ]
   },
   "ConvertBytes": {
-    "script": "Assets/Examples/01_Modules/01_Base/07_ByteConversion/ConvertBytes.cs",
+    "script": "Assets/Examples/01_Modules/01_Base/05_ByteConversion/ConvertBytes.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "07  字节转换与偏移",
+        "text": "05  字节转换与偏移",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2482,11 +2481,11 @@
     ]
   },
   "DrawRandom": {
-    "script": "Assets/Examples/01_Modules/01_Base/10_Random/DrawRandom.cs",
+    "script": "Assets/Examples/01_Modules/01_Base/06_Random/DrawRandom.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "10  可复现随机数",
+        "text": "06  可复现随机数",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2541,11 +2540,11 @@
     ]
   },
   "ConvertStructure": {
-    "script": "Assets/Examples/01_Modules/01_Base/12_StructureBytes/ConvertStructure.cs",
+    "script": "Assets/Examples/01_Modules/01_Base/07_StructureBytes/ConvertStructure.cs",
     "controls": [
       {
         "type": "Text",
-        "text": "12  结构体与字节",
+        "text": "07  结构体与字节",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2597,12 +2596,12 @@
     ]
   },
   "LoadLubanTablesExample": {
-    "script": "Assets/Examples/01_Modules/11_DataTable/00_LoadTables/LoadLubanTablesExample.cs",
+    "script": "Assets/Examples/01_Modules/11_DataTable/01_LoadTables/LoadLubanTablesExample.cs",
     "catalogGuid": "b60d82a09e25580ca731c520aef667d6",
     "controls": [
       {
         "type": "Text",
-        "text": "00  加载 Luban 表",
+        "text": "01  加载 Luban 表",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2619,12 +2618,12 @@
     ]
   },
   "FilterRowsExample": {
-    "script": "Assets/Examples/01_Modules/11_DataTable/05_FilterRows/FilterRowsExample.cs",
+    "script": "Assets/Examples/01_Modules/11_DataTable/04_FilterRows/FilterRowsExample.cs",
     "catalogGuid": "b60d82a09e25580ca731c520aef667d6",
     "controls": [
       {
         "type": "Text",
-        "text": "05  条件筛选与排序",
+        "text": "04  条件筛选与排序",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2640,6 +2639,139 @@
         "type": "Text",
         "field": "rowsText",
         "objectName": "Text_RowsText"
+      }
+    ]
+  },
+  "TableRegistryExample": {
+    "script": "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry/TableRegistryExample.cs",
+    "catalogGuid": "b60d82a09e25580ca731c520aef667d6",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "05  具名表与登记管理",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "按表类型和名称区分实例；移除 Preview 不影响默认表。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Button",
+        "field": "m_RegisterButton",
+        "text": "登记 Preview",
+        "objectName": "Button_Register"
+      },
+      {
+        "type": "Button",
+        "field": "m_RemoveButton",
+        "text": "移除 Preview",
+        "objectName": "Button_Remove"
+      },
+      {
+        "type": "Button",
+        "field": "m_ListButton",
+        "text": "列出数据表",
+        "objectName": "Button_List"
+      },
+      {
+        "type": "Text",
+        "field": "m_StateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "m_TablesText",
+        "objectName": "Text_Tables"
+      }
+    ]
+  },
+  "TableModesExample": {
+    "script": "Assets/Examples/01_Modules/11_DataTable/06_TableModes/TableModesExample.cs",
+    "catalogGuid": "b60d82a09e25580ca731c520aef667d6",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "06  表模式、索引与引用",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Text",
+        "text": "所有表都从 QGF.DataTable 获取；键和表模式由 Excel 定义。",
+        "objectName": "Text_Description"
+      },
+      {
+        "type": "Button",
+        "field": "m_AliasesButton",
+        "text": "字符串与引用",
+        "objectName": "Button_Aliases"
+      },
+      {
+        "type": "Button",
+        "field": "m_IndexesButton",
+        "text": "索引查询",
+        "objectName": "Button_Indexes"
+      },
+      {
+        "type": "Button",
+        "field": "m_ModesButton",
+        "text": "单例与列表",
+        "objectName": "Button_Modes"
+      },
+      {
+        "type": "Text",
+        "field": "m_StateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Text",
+        "field": "m_DetailsText",
+        "objectName": "Text_Details"
+      }
+    ]
+  },
+  "LoadAddressRules": {
+    "script": "Assets/Examples/01_Modules/12_Resource/02_AddressRules/LoadAddressRules.cs",
+    "controls": [
+      {
+        "type": "Text",
+        "text": "02  寻址规则与字符串地址",
+        "title": true,
+        "objectName": "Text_Title"
+      },
+      {
+        "type": "Dropdown",
+        "field": "ruleDropdown",
+        "options": [
+          "文件名 → Cube",
+          "目录与文件名 → Art_Cube",
+          "分组与文件名 → Demo_Cube"
+        ],
+        "objectName": "Dropdown_Rule"
+      },
+      {
+        "type": "Text",
+        "field": "ruleText",
+        "objectName": "Text_Rule"
+      },
+      {
+        "type": "Text",
+        "field": "stateText",
+        "objectName": "Text_State"
+      },
+      {
+        "type": "Button",
+        "field": "loadButton",
+        "text": "按地址加载 Cube",
+        "objectName": "Button_Load"
+      },
+      {
+        "type": "Button",
+        "field": "releaseButton",
+        "text": "销毁实例并归还资产",
+        "objectName": "Button_Release"
       }
     ]
   }

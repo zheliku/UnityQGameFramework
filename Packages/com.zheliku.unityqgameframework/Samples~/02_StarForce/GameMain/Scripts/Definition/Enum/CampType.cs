@@ -10,6 +10,9 @@ namespace StarForce
     /// </summary>
     public enum CampType : byte
     {
+        /// <summary>
+        /// 未知阵营。
+        /// </summary>
         Unknown = 0,
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -11,10 +11,17 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示运行环境与设备信息。
+        /// </summary>
         private sealed class EnvironmentInformationWindow : ScrollableDebuggerWindowBase
         {
             private ResourceComponent m_ResourceComponent = null;
 
+            /// <summary>
+            /// 获取运行环境组件。
+            /// </summary>
+            /// <param name="args">窗口初始化参数。</param>
             public override void Initialize(params object[] args)
             {
                 m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();
@@ -25,6 +32,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制运行环境信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Environment Information</b>");

@@ -20,7 +20,7 @@ public static class LubanFailureValidation
         try
         {
             var profile = LubanWorkspace.Create(Root);
-            string conf = Root + "/Source/luban.conf";
+            string conf = Root + "/luban.conf";
             File.WriteAllText(conf, File.ReadAllText(conf).Replace("UnityQGameFramework.Config", "QgfProductionValidation"));
             string code = Root + "/Generated/DRItem.cs";
             string data = Root + "/Data/tbitem.bytes";

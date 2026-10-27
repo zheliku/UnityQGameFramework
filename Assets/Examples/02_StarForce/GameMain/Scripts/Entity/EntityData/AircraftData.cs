@@ -10,6 +10,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 飞机及其推进器、武器和装甲数据。
+    /// </summary>
     [Serializable]
     public abstract class AircraftData : TargetableObjectData
     {
@@ -34,6 +37,12 @@ namespace StarForce
         [SerializeField]
         private int m_DeadSoundId = 0;
 
+        /// <summary>
+        /// 飞机及其推进器、武器和装甲数据。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="typeId">配置表中的实体类型编号。</param>
+        /// <param name="camp">实体阵营。</param>
         public AircraftData(int entityId, int typeId, CampType camp)
             : base(entityId, typeId, camp)
         {
@@ -65,32 +74,80 @@ namespace StarForce
         /// <summary>
         /// 最大生命。
         /// </summary>
-        public override int MaxHP => m_MaxHP;
+        public override int MaxHP
+        {
+            get
+            {
+                return m_MaxHP;
+            }
+        }
 
         /// <summary>
         /// 防御。
         /// </summary>
-        public int Defense => m_Defense;
+        public int Defense
+        {
+            get
+            {
+                return m_Defense;
+            }
+        }
 
         /// <summary>
         /// 速度。
         /// </summary>
-        public float Speed => m_ThrusterData.Speed;
+        public float Speed
+        {
+            get
+            {
+                return m_ThrusterData.Speed;
+            }
+        }
 
-        public int DeadEffectId => m_DeadEffectId;
+        /// <summary>
+        /// 获取死亡特效配置编号。
+        /// </summary>
+        public int DeadEffectId
+        {
+            get
+            {
+                return m_DeadEffectId;
+            }
+        }
 
-        public int DeadSoundId => m_DeadSoundId;
+        /// <summary>
+        /// 获取死亡声音配置编号。
+        /// </summary>
+        public int DeadSoundId
+        {
+            get
+            {
+                return m_DeadSoundId;
+            }
+        }
 
+        /// <summary>
+        /// 获取当前推进器数据。
+        /// </summary>
+        /// <returns>当前推进器数据。</returns>
         public ThrusterData GetThrusterData()
         {
             return m_ThrusterData;
         }
 
+        /// <summary>
+        /// 获取全部已附加武器数据。
+        /// </summary>
+        /// <returns>内部武器数据列表；通过附加和移除方法维护。</returns>
         public List<WeaponData> GetAllWeaponDatas()
         {
             return m_WeaponDatas;
         }
 
+        /// <summary>
+        /// 添加武器数据。
+        /// </summary>
+        /// <param name="weaponData">要附加的武器数据。</param>
         public void AttachWeaponData(WeaponData weaponData)
         {
             if (weaponData == null)
@@ -106,6 +163,10 @@ namespace StarForce
             m_WeaponDatas.Add(weaponData);
         }
 
+        /// <summary>
+        /// 移除武器数据。
+        /// </summary>
+        /// <param name="weaponData">要移除的武器数据。</param>
         public void DetachWeaponData(WeaponData weaponData)
         {
             if (weaponData == null)
@@ -116,11 +177,19 @@ namespace StarForce
             m_WeaponDatas.Remove(weaponData);
         }
 
+        /// <summary>
+        /// 获取全部已附加装甲数据。
+        /// </summary>
+        /// <returns>内部装甲数据列表；通过附加和移除方法维护，以更新属性。</returns>
         public List<ArmorData> GetAllArmorDatas()
         {
             return m_ArmorDatas;
         }
 
+        /// <summary>
+        /// 添加装甲数据。
+        /// </summary>
+        /// <param name="armorData">要附加的装甲数据。</param>
         public void AttachArmorData(ArmorData armorData)
         {
             if (armorData == null)
@@ -137,6 +206,10 @@ namespace StarForce
             RefreshData();
         }
 
+        /// <summary>
+        /// 移除装甲数据。
+        /// </summary>
+        /// <param name="armorData">要移除的装甲数据。</param>
         public void DetachArmorData(ArmorData armorData)
         {
             if (armorData == null)

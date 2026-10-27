@@ -22,7 +22,7 @@ namespace UnityQGameFramework.Runtime
         private ResourceComponent m_ResourceComponent;
         private EventComponent m_EventComponent;
         private int m_LoadSerial;
-        private LubanTableSet m_LoadedTables;
+        private IReadOnlyList<DataTableBase> m_LoadedTables;
         private LoadRequest m_LoadRequest;
 
         [SerializeField] private LubanDataTableCatalog m_LubanCatalog;
@@ -65,12 +65,18 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 初始化数据表管理器并注册组件。
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
             m_DataTableManager = FrameworkEntry.GetModule<IDataTableManager>();
         }
 
+        /// <summary>
+        /// 获取数据表加载所需的资源和事件组件。
+        /// </summary>
         private void Start()
         {
             m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();
@@ -80,16 +86,11 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 从 Inspector 引用同步构造并发布表，结果通知通过 Event 队列分发。
         /// </summary>
-        /// <typeparam name="T">数据表的类型。</typeparam>
-        /// <param name="factory">数据表集合的构造方法。</param>
+        /// <typeparam name="T">生成的数据表加载器类型。</typeparam>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>已加载的数据表集合，解析失败时返回 null。</returns>
-        public T LoadDataTables<T>(Func<Func<string, ByteBuf>, T> factory, object userData = null) where T : LubanTableSet
+        /// <returns>是否成功加载数据表。</returns>
+        public bool LoadDataTables<T>(object userData = null) where T : IDataTableLoader, new()
         {
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }
             if (m_LubanCatalog == null)
             {
                 throw new InvalidOperationException("Assign a Luban catalog on the DataTable component.");
@@ -106,25 +107,35 @@ namespace UnityQGameFramework.Runtime
             {
                 throw new InvalidOperationException("Unload the current table set before loading another one.");
             }
-            T tables;
             try
             {
-                tables = PublishTables(m_LubanCatalog, factory);
+                PublishTables<T>(m_LubanCatalog);
             }
             catch (Exception exception)
             {
                 Fail(m_LubanCatalog.name, exception.Message, userData);
-                return null;
+                return false;
             }
             m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(m_LubanCatalog.name, 0f, userData));
-            return tables;
+            return true;
         }
 
-        private T PublishTables<T>(LubanDataTableCatalog catalog, Func<Func<string, ByteBuf>, T> factory, LoadRequest request = null) where T : LubanTableSet
+        /// <summary>
+        /// 构造并校验整组数据表，成功后统一替换登记。
+        /// </summary>
+        /// <typeparam name="T">Luban 生成的数据表加载器类型。</typeparam>
+        /// <param name="catalog">生成的数据表目录及二进制数据。</param>
+        /// <param name="request">当前异步加载请求；直接加载时可为空。</param>
+        private void PublishTables<T>(LubanDataTableCatalog catalog, LoadRequest request = null) where T : IDataTableLoader, new()
         {
+            IDataTableLoader tableLoader = new T();
+            if (tableLoader.SchemaHash != catalog.SchemaHash)
+            {
+                throw new InvalidOperationException("Luban schema and generated C# do not match. Regenerate the configuration.");
+            }
             Dictionary<string, TextAsset> assets = catalog.GetAssets();
             var buffers = new List<ByteBuf>();
-            T tables = factory(file =>
+            IReadOnlyList<DataTableBase> tables = tableLoader.Load(file =>
             {
                 if (!assets.TryGetValue(file, out TextAsset bytes))
                 {
@@ -134,9 +145,9 @@ namespace UnityQGameFramework.Runtime
                 buffers.Add(buffer);
                 return buffer;
             });
-            if (tables == null || tables.SchemaHash != catalog.SchemaHash)
+            if (tables == null)
             {
-                throw new InvalidOperationException("Luban schema and generated C# do not match. Regenerate the configuration.");
+                throw new InvalidOperationException("The data-table loader returned no tables.");
             }
             foreach (ByteBuf buffer in buffers)
             {
@@ -153,9 +164,8 @@ namespace UnityQGameFramework.Runtime
                     throw new OperationCanceledException("The data-table request was cancelled.");
                 }
             }
-            m_DataTableManager.RegisterDataTables(tables.DataTables);
+            m_DataTableManager.RegisterDataTables(tables);
             m_LoadedTables = tables;
-            return tables;
         }
 
         /// <summary>
@@ -170,41 +180,38 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 异步加载 Catalog，解析 Luban 引用后发布整组表。
         /// </summary>
-        /// <typeparam name="T">数据表的类型。</typeparam>
+        /// <typeparam name="T">生成的数据表加载器类型。</typeparam>
         /// <param name="catalogAssetName">数据表目录资源名称。</param>
-        /// <param name="factory">数据表集合的构造方法。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <param name="priority">加载资源的优先级。</param>
         /// <returns>本次加载请求的序号。</returns>
-        public int LoadDataTables<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
-            object userData = null, int priority = 0) where T : LubanTableSet
+        public int LoadDataTables<T>(string catalogAssetName, object userData = null, int priority = 0) where T : IDataTableLoader, new()
         {
-            return LoadDataTables(catalogAssetName, factory, userData, priority, new LoadRequest());
+            return LoadDataTables<T>(catalogAssetName, userData, priority, new LoadRequest());
         }
 
         /// <summary>
         /// 异步加载并登记 Luban 数据表。
         /// </summary>
-        /// <typeparam name="T">数据表集合的类型。</typeparam>
+        /// <typeparam name="T">生成的数据表加载器类型。</typeparam>
         /// <param name="catalogAssetName">数据表目录资源名称。</param>
-        /// <param name="factory">数据表集合的构造方法。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <param name="priority">加载资源的优先级。</param>
         /// <param name="cancellationToken">取消标记，取消后不登记本次加载的表。</param>
-        /// <returns>已加载的数据表集合。</returns>
-        public async UniTask<T> LoadDataTablesAsync<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
-            object userData = null, int priority = 0, CancellationToken cancellationToken = default) where T : LubanTableSet
+        /// <returns>数据表加载任务。</returns>
+        public async UniTask LoadDataTablesAsync<T>(string catalogAssetName, object userData = null,
+            int priority = 0, CancellationToken cancellationToken = default) where T : IDataTableLoader, new()
         {
             cancellationToken.ThrowIfCancellationRequested();
             var request = new LoadRequest
             {
                 CancellationToken = cancellationToken,
-                Completion = new UniTaskCompletionSource<LubanTableSet>()
+                Completion = new UniTaskCompletionSource()
             };
-            int serial = LoadDataTables(catalogAssetName, factory, userData, priority, request);
+            int serial = LoadDataTables<T>(catalogAssetName, userData, priority, request);
             try
             {
-                return (T)await ResourceOperation.WithCancellation(request.Completion.Task, cancellationToken);
+                await ResourceOperation.WithCancellation(request.Completion.Task, cancellationToken);
             }
             catch (OperationCanceledException)
             {
@@ -217,16 +224,20 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
-        private int LoadDataTables<T>(string catalogAssetName, Func<Func<string, ByteBuf>, T> factory,
-            object userData, int priority, LoadRequest request) where T : LubanTableSet
+        /// <summary>
+        /// 加载数据表目录，完成后发布整组数据表。
+        /// </summary>
+        /// <typeparam name="T">Luban 生成的数据表加载器类型。</typeparam>
+        /// <param name="catalogAssetName">数据表目录的资源地址。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="priority">资源加载优先级。</param>
+        /// <param name="request">当前异步加载请求。</param>
+        /// <returns>用于识别本次加载的序列编号。</returns>
+        private int LoadDataTables<T>(string catalogAssetName, object userData, int priority, LoadRequest request) where T : IDataTableLoader, new()
         {
             if (string.IsNullOrWhiteSpace(catalogAssetName))
             {
                 throw new ArgumentException("Catalog asset name is required.", nameof(catalogAssetName));
-            }
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
             }
             if (m_ResourceComponent == null || m_EventComponent == null)
             {
@@ -249,7 +260,6 @@ namespace UnityQGameFramework.Runtime
                 resource.LoadAsset(catalogAssetName, typeof(LubanDataTableCatalog), priority, new LoadAssetCallbacks(
                 (assetName, asset, duration, context) =>
                 {
-                    T tables = null;
                     Exception error = null;
                     try
                     {
@@ -263,7 +273,7 @@ namespace UnityQGameFramework.Runtime
                         {
                             throw new InvalidOperationException("The asset is not a Luban data-table catalog.");
                         }
-                        tables = PublishTables(catalog, factory, request);
+                        PublishTables<T>(catalog, request);
                     }
                     catch (Exception exception)
                     {
@@ -290,7 +300,7 @@ namespace UnityQGameFramework.Runtime
                         IsLoading = false;
                         m_LoadRequest = null;
                         m_EventComponent.Fire(this, LoadDataTableSuccessEventArgs.Create(assetName, duration, userData));
-                        request.Completion?.TrySetResult(tables);
+                        request.Completion?.TrySetResult();
                     }
                 },
                 (assetName, status, error, context) =>
@@ -339,7 +349,7 @@ namespace UnityQGameFramework.Runtime
             {
                 return;
             }
-            foreach (DataTableBase table in m_LoadedTables.DataTables)
+            foreach (DataTableBase table in m_LoadedTables)
             {
                 if (ReferenceEquals(m_DataTableManager.GetDataTable(table.Type, table.Name), table))
                 {
@@ -349,11 +359,20 @@ namespace UnityQGameFramework.Runtime
             m_LoadedTables = null;
         }
 
+        /// <summary>
+        /// 取消未完成请求并卸载当前数据表。
+        /// </summary>
         private void OnDestroy()
         {
             UnloadDataTables();
         }
 
+        /// <summary>
+        /// 结束数据表加载请求并通知失败。
+        /// </summary>
+        /// <param name="assetName">数据表目录资源名称。</param>
+        /// <param name="error">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void Fail(string assetName, string error, object userData)
         {
             IsLoading = false;
@@ -369,8 +388,15 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         private sealed class LoadRequest
         {
+            /// <summary>
+            /// 本次表集加载的取消令牌。
+            /// </summary>
             internal CancellationToken CancellationToken;
-            internal UniTaskCompletionSource<LubanTableSet> Completion;
+
+            /// <summary>
+            /// 向异步调用方通知表集加载结果。
+            /// </summary>
+            internal UniTaskCompletionSource Completion;
         }
 
         /// <summary>

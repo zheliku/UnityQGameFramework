@@ -9,6 +9,9 @@ using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Cor
 
 namespace StarForce
 {
+    /// <summary>
+    /// 管理当前游戏实例并处理返回菜单。
+    /// </summary>
     public class ProcedureMain : ProcedureBase
     {
         private const float GameOverDelayedSeconds = 2f;
@@ -18,11 +21,18 @@ namespace StarForce
         private bool m_GotoMenu = false;
         private float m_GotoMenuDelaySeconds = 0f;
 
+        /// <summary>
+        /// 提出返回菜单请求。
+        /// </summary>
         public void GotoMenu()
         {
             m_GotoMenu = true;
         }
 
+        /// <summary>
+        /// 初始化实例。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
             base.OnInit(procedureOwner);
@@ -31,6 +41,10 @@ namespace StarForce
             m_Games.Add(GameMode.Survival, new SurvivalGame());
         }
 
+        /// <summary>
+        /// 状态销毁时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnDestroy(ProcedureOwner procedureOwner)
         {
             base.OnDestroy(procedureOwner);
@@ -38,6 +52,10 @@ namespace StarForce
             m_Games.Clear();
         }
 
+        /// <summary>
+        /// 进入状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -49,6 +67,11 @@ namespace StarForce
             m_CurrentGame.Initialize();
         }
 
+        /// <summary>
+        /// 离开状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="isShutdown">是否是关闭状态机时触发。</param>
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             if (m_CurrentGame != null)
@@ -61,6 +84,12 @@ namespace StarForce
             base.OnLeave(procedureOwner, isShutdown);
         }
 
+        /// <summary>
+        /// 更新当前流程。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);

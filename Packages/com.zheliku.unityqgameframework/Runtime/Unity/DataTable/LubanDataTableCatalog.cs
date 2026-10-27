@@ -9,6 +9,9 @@ namespace UnityQGameFramework.Runtime
     /// </summary>
     public sealed class LubanDataTableCatalog : ScriptableObject
     {
+        /// <summary>
+        /// 一份生成数据文件的名称与资产引用。
+        /// </summary>
         [Serializable]
         /// <summary>
         /// 数据文件条目。
@@ -19,6 +22,7 @@ namespace UnityQGameFramework.Runtime
             /// 数据文件名称。
             /// </summary>
             public string Name;
+
             /// <summary>
             /// 数据文件资源。
             /// </summary>
@@ -39,6 +43,7 @@ namespace UnityQGameFramework.Runtime
                 return m_SchemaHash;
             }
         }
+
         /// <summary>
         /// 获取数据生成器版本。
         /// </summary>
@@ -49,6 +54,7 @@ namespace UnityQGameFramework.Runtime
                 return m_GeneratorVersion;
             }
         }
+
         /// <summary>
         /// 获取数据文件条目。
         /// </summary>

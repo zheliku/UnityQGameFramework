@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -17,14 +17,13 @@ namespace UnityQGameFramework.Core.FileSystem
     {
         private const int ClusterSize = 1024 * 4;
         private const int CachedBytesLength = 0x1000;
-
-        private static readonly string[] EmptyStringArray = new string[] { };
+        private static readonly string[] EmptyStringArray = new string[]
+        {
+        };
         private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
-
         private static readonly int HeaderDataSize = Marshal.SizeOf(typeof(HeaderData));
         private static readonly int BlockDataSize = Marshal.SizeOf(typeof(BlockData));
         private static readonly int StringDataSize = Marshal.SizeOf(typeof(StringData));
-
         private readonly FileSystemStream m_Stream;
         private readonly Dictionary<string, int> m_FileDatas;
         private readonly List<BlockData> m_BlockDatas;
@@ -32,7 +31,6 @@ namespace UnityQGameFramework.Core.FileSystem
         private readonly SortedDictionary<int, StringData> m_StringDatas;
         private readonly Queue<int> m_FreeStringIndexes;
         private readonly Queue<StringData> m_FreeStringDatas;
-
         private HeaderData m_HeaderData;
         private int m_BlockDataOffset;
         private int m_StringDataOffset;
@@ -70,12 +68,10 @@ namespace UnityQGameFramework.Core.FileSystem
             m_StringDatas = new SortedDictionary<int, StringData>();
             m_FreeStringIndexes = new Queue<int>();
             m_FreeStringDatas = new Queue<StringData>();
-
             m_HeaderData = default(HeaderData);
             m_BlockDataOffset = 0;
             m_StringDataOffset = 0;
             m_FileDataOffset = 0;
-
             Utility.Marshal.EnsureCachedHGlobalSize(CachedBytesLength);
         }
 
@@ -92,12 +88,24 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取文件数量。
         /// </summary>
-        public int FileCount => m_FileDatas.Count;
+        public int FileCount
+        {
+            get
+            {
+                return m_FileDatas.Count;
+            }
+        }
 
         /// <summary>
         /// 获取最大文件数量。
         /// </summary>
-        public int MaxFileCount => m_HeaderData.MaxFileCount;
+        public int MaxFileCount
+        {
+            get
+            {
+                return m_HeaderData.MaxFileCount;
+            }
+        }
 
         /// <summary>
         /// 创建文件系统。
@@ -129,7 +137,6 @@ namespace UnityQGameFramework.Core.FileSystem
             fileSystem.m_HeaderData = new HeaderData(maxFileCount, maxBlockCount);
             CalcOffsets(fileSystem);
             Utility.Marshal.StructureToBytes(fileSystem.m_HeaderData, HeaderDataSize, s_CachedBytes);
-
             try
             {
                 stream.Write(s_CachedBytes, 0, HeaderDataSize);
@@ -153,7 +160,6 @@ namespace UnityQGameFramework.Core.FileSystem
         public static FileSystem Load(string fullPath, FileSystemAccess access, FileSystemStream stream)
         {
             FileSystem fileSystem = new FileSystem(fullPath, access, stream);
-
             stream.Read(s_CachedBytes, 0, HeaderDataSize);
             fileSystem.m_HeaderData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, s_CachedBytes);
             if (!fileSystem.m_HeaderData.IsValid)
@@ -162,7 +168,6 @@ namespace UnityQGameFramework.Core.FileSystem
             }
 
             CalcOffsets(fileSystem);
-
             if (fileSystem.m_BlockDatas.Capacity < fileSystem.m_HeaderData.BlockCount)
             {
                 fileSystem.m_BlockDatas.Capacity = fileSystem.m_HeaderData.BlockCount;
@@ -210,14 +215,12 @@ namespace UnityQGameFramework.Core.FileSystem
         public void Shutdown()
         {
             m_Stream.Close();
-
             m_FileDatas.Clear();
             m_BlockDatas.Clear();
             m_FreeBlockIndexes.Clear();
             m_StringDatas.Clear();
             m_FreeStringIndexes.Clear();
             m_FreeStringDatas.Clear();
-
             m_BlockDataOffset = 0;
             m_StringDataOffset = 0;
             m_FileDataOffset = 0;
@@ -1050,7 +1053,6 @@ namespace UnityQGameFramework.Core.FileSystem
             }
 
             m_FileDatas.Remove(name);
-
             BlockData blockData = m_BlockDatas[blockIndex];
             int stringIndex = blockData.StringIndex;
             StringData stringData = m_StringDatas[stringIndex].Clear();
@@ -1058,7 +1060,6 @@ namespace UnityQGameFramework.Core.FileSystem
             m_FreeStringDatas.Enqueue(stringData);
             m_StringDatas.Remove(stringIndex);
             WriteStringData(stringIndex, stringData);
-
             blockData = blockData.Free();
             m_BlockDatas[blockIndex] = blockData;
             if (!TryCombineFreeBlocks(blockIndex))
@@ -1071,6 +1072,14 @@ namespace UnityQGameFramework.Core.FileSystem
             return true;
         }
 
+        /// <summary>
+        /// 更新写入文件的块记录并回收旧块。
+        /// </summary>
+        /// <param name="name">文件名称。</param>
+        /// <param name="hasFile">是否覆盖已有文件。</param>
+        /// <param name="oldBlockIndex">原文件的块索引。</param>
+        /// <param name="blockIndex">新数据的块索引。</param>
+        /// <param name="length">文件数据长度，以字节为单位。</param>
         private void ProcessWriteFile(string name, bool hasFile, int oldBlockIndex, int blockIndex, int length)
         {
             BlockData blockData = m_BlockDatas[blockIndex];
@@ -1080,7 +1089,6 @@ namespace UnityQGameFramework.Core.FileSystem
                 blockData = new BlockData(oldBlockData.StringIndex, blockData.ClusterIndex, length);
                 m_BlockDatas[blockIndex] = blockData;
                 WriteBlockData(blockIndex);
-
                 oldBlockData = oldBlockData.Free();
                 m_BlockDatas[oldBlockIndex] = oldBlockData;
                 if (!TryCombineFreeBlocks(oldBlockIndex))
@@ -1107,6 +1115,11 @@ namespace UnityQGameFramework.Core.FileSystem
             }
         }
 
+        /// <summary>
+        /// 尝试合并相邻空闲块。
+        /// </summary>
+        /// <param name="freeBlockIndex">待合并的空闲块索引。</param>
+        /// <returns>是否发生了空闲块合并。</returns>
         private bool TryCombineFreeBlocks(int freeBlockIndex)
         {
             BlockData freeBlockData = m_BlockDatas[freeBlockIndex];
@@ -1172,6 +1185,10 @@ namespace UnityQGameFramework.Core.FileSystem
             return true;
         }
 
+        /// <summary>
+        /// 取得空块记录，必要时追加记录。
+        /// </summary>
+        /// <returns>空块索引；已达到记录上限时返回 -1。</returns>
         private int GetEmptyBlockIndex()
         {
             FrameworkLinkedListRange<int> lengthRange = default(FrameworkLinkedListRange<int>);
@@ -1193,6 +1210,11 @@ namespace UnityQGameFramework.Core.FileSystem
             return -1;
         }
 
+        /// <summary>
+        /// 为指定长度的数据分配块。
+        /// </summary>
+        /// <param name="length">需要的字节数。</param>
+        /// <returns>分配的块索引；分配失败时返回 -1。</returns>
         private int AllocBlock(int length)
         {
             if (length <= 0)
@@ -1201,7 +1223,6 @@ namespace UnityQGameFramework.Core.FileSystem
             }
 
             length = (int)GetUpBoundClusterOffset(length);
-
             int lengthFound = -1;
             FrameworkLinkedListRange<int> lengthRange = default(FrameworkLinkedListRange<int>);
             foreach (KeyValuePair<int, FrameworkLinkedListRange<int>> i in m_FreeBlockIndexes)
@@ -1234,7 +1255,6 @@ namespace UnityQGameFramework.Core.FileSystem
                     BlockData blockData = m_BlockDatas[blockIndex];
                     m_BlockDatas[blockIndex] = new BlockData(blockData.ClusterIndex, length);
                     WriteBlockData(blockIndex);
-
                     int deltaLength = lengthFound - length;
                     int anotherBlockIndex = GetEmptyBlockIndex();
                     m_BlockDatas[anotherBlockIndex] = new BlockData(blockData.ClusterIndex + GetUpBoundClusterCount(length), deltaLength);
@@ -1268,11 +1288,15 @@ namespace UnityQGameFramework.Core.FileSystem
             }
         }
 
+        /// <summary>
+        /// 分配并写入文件名字符串。
+        /// </summary>
+        /// <param name="value">文件名字符串。</param>
+        /// <returns>分配的字符串索引。</returns>
         private int AllocString(string value)
         {
             int stringIndex = -1;
             StringData stringData = default(StringData);
-
             if (m_FreeStringIndexes.Count > 0)
             {
                 stringIndex = m_FreeStringIndexes.Dequeue();
@@ -1299,6 +1323,9 @@ namespace UnityQGameFramework.Core.FileSystem
             return stringIndex;
         }
 
+        /// <summary>
+        /// 将文件系统头数据写入流。
+        /// </summary>
         private void WriteHeaderData()
         {
             m_HeaderData = m_HeaderData.SetBlockCount(m_BlockDatas.Count);
@@ -1307,6 +1334,10 @@ namespace UnityQGameFramework.Core.FileSystem
             m_Stream.Write(s_CachedBytes, 0, HeaderDataSize);
         }
 
+        /// <summary>
+        /// 将块记录写入流。
+        /// </summary>
+        /// <param name="blockIndex">块记录索引。</param>
         private void WriteBlockData(int blockIndex)
         {
             Utility.Marshal.StructureToBytes(m_BlockDatas[blockIndex], BlockDataSize, s_CachedBytes);
@@ -1314,6 +1345,11 @@ namespace UnityQGameFramework.Core.FileSystem
             m_Stream.Write(s_CachedBytes, 0, BlockDataSize);
         }
 
+        /// <summary>
+        /// 从流中读取字符串记录。
+        /// </summary>
+        /// <param name="stringIndex">字符串记录索引。</param>
+        /// <returns>读取的字符串记录。</returns>
         private StringData ReadStringData(int stringIndex)
         {
             m_Stream.Position = m_StringDataOffset + StringDataSize * stringIndex;
@@ -1321,6 +1357,11 @@ namespace UnityQGameFramework.Core.FileSystem
             return Utility.Marshal.BytesToStructure<StringData>(StringDataSize, s_CachedBytes);
         }
 
+        /// <summary>
+        /// 将字符串记录写入流。
+        /// </summary>
+        /// <param name="stringIndex">字符串记录索引。</param>
+        /// <param name="stringData">要写入的字符串记录。</param>
         private void WriteStringData(int stringIndex, StringData stringData)
         {
             Utility.Marshal.StructureToBytes(stringData, StringDataSize, s_CachedBytes);
@@ -1328,6 +1369,10 @@ namespace UnityQGameFramework.Core.FileSystem
             m_Stream.Write(s_CachedBytes, 0, StringDataSize);
         }
 
+        /// <summary>
+        /// 计算文件系统各数据区域的起始偏移。
+        /// </summary>
+        /// <param name="fileSystem">要计算偏移的文件系统。</param>
         private static void CalcOffsets(FileSystem fileSystem)
         {
             fileSystem.m_BlockDataOffset = HeaderDataSize;
@@ -1335,16 +1380,31 @@ namespace UnityQGameFramework.Core.FileSystem
             fileSystem.m_FileDataOffset = (int)GetUpBoundClusterOffset(fileSystem.m_StringDataOffset + StringDataSize * fileSystem.m_HeaderData.MaxFileCount);
         }
 
+        /// <summary>
+        /// 将字节偏移向上对齐到簇边界。
+        /// </summary>
+        /// <param name="offset">字节偏移。</param>
+        /// <returns>对齐后的字节偏移。</returns>
         private static long GetUpBoundClusterOffset(long offset)
         {
             return (offset - 1L + ClusterSize) / ClusterSize * ClusterSize;
         }
 
+        /// <summary>
+        /// 计算容纳指定长度数据所需的簇数量。
+        /// </summary>
+        /// <param name="length">数据字节数。</param>
+        /// <returns>所需的簇数量。</returns>
         private static int GetUpBoundClusterCount(long length)
         {
             return (int)((length - 1L + ClusterSize) / ClusterSize);
         }
 
+        /// <summary>
+        /// 计算簇对应的字节偏移。
+        /// </summary>
+        /// <param name="clusterIndex">簇索引。</param>
+        /// <returns>该簇的起始字节偏移。</returns>
         private static long GetClusterOffset(int clusterIndex)
         {
             return (long)ClusterSize * clusterIndex;

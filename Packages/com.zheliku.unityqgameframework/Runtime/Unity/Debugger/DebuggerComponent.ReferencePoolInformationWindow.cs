@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -12,6 +12,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示引用池的使用与回收情况。
+        /// </summary>
         private sealed class ReferencePoolInformationWindow : ScrollableDebuggerWindowBase
         {
             private readonly Dictionary<string, List<ReferencePoolInfo>> m_ReferencePoolInfos = new Dictionary<string, List<ReferencePoolInfo>>(StringComparer.Ordinal);
@@ -19,10 +22,17 @@ namespace UnityQGameFramework.Runtime
             private readonly Comparison<ReferencePoolInfo> m_FullClassNameComparer = FullClassNameComparer;
             private bool m_ShowFullClassName = false;
 
+            /// <summary>
+            /// 准备引用池排序委托。
+            /// </summary>
+            /// <param name="args">窗口初始化参数。</param>
             public override void Initialize(params object[] args)
             {
             }
 
+            /// <summary>
+            /// 绘制引用池信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Reference Pool Information</b>");
@@ -83,6 +93,10 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制单个类型的引用池统计。
+            /// </summary>
+            /// <param name="referencePoolInfo">引用池统计信息。</param>
             private void DrawReferencePoolInfo(ReferencePoolInfo referencePoolInfo)
             {
                 GUILayout.BeginHorizontal();
@@ -98,11 +112,23 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndHorizontal();
             }
 
+            /// <summary>
+            /// 按类型简名比较引用池记录。
+            /// </summary>
+            /// <param name="a">第一条引用池记录。</param>
+            /// <param name="b">第二条引用池记录。</param>
+            /// <returns>表示类型名称排序关系的有符号整数。</returns>
             private static int NormalClassNameComparer(ReferencePoolInfo a, ReferencePoolInfo b)
             {
                 return a.Type.Name.CompareTo(b.Type.Name);
             }
 
+            /// <summary>
+            /// 按类型全名比较引用池记录。
+            /// </summary>
+            /// <param name="a">第一条引用池记录。</param>
+            /// <param name="b">第二条引用池记录。</param>
+            /// <returns>表示类型名称排序关系的有符号整数。</returns>
             private static int FullClassNameComparer(ReferencePoolInfo a, ReferencePoolInfo b)
             {
                 return a.Type.FullName.CompareTo(b.Type.FullName);

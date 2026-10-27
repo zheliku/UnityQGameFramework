@@ -169,6 +169,9 @@ namespace UnityQGameFramework.Runtime
             m_ResourceComponent.UnloadAsset(dictionaryAsset);
         }
 
+        /// <summary>
+        /// 获取本地化资源加载所需的资源组件。
+        /// </summary>
         private void Start()
         {
             m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();

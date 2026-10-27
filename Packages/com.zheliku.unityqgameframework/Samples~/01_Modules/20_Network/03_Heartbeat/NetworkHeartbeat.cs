@@ -12,21 +12,25 @@ using MissedHeartbeatArgs = UnityQGameFramework.Runtime.NetworkMissHeartBeatEven
 
 namespace UnityQGameFramework.Examples.Modules
 {
-    /// <summary>心跳发送、响应和丢失计数，以及按丢失次数关闭连接。</summary>
+    /// <summary>
+    /// 心跳发送、响应和丢失计数，以及按丢失次数关闭连接。
+    /// </summary>
     public sealed class NetworkHeartbeat : MonoBehaviour
     {
-        [SerializeField] private Button connectButton;
-        [SerializeField] private Slider intervalSlider, timerSlider;
-        [SerializeField] private Toggle replyToggle;
-        [SerializeField] private Text stateText, counterText;
+        [SerializeField]
+        private Button connectButton;
+        [SerializeField]
+        private Slider intervalSlider, timerSlider;
+        [SerializeField]
+        private Toggle replyToggle;
+        [SerializeField]
+        private Text stateText, counterText;
         private NetworkTextProtocol protocol;
         private bool connecting;
         private int misses;
-
         private NetworkEchoServer server;
         private INetworkChannel channel;
         private string state = "尚未连接";
-
         private void Start()
         {
             server = new NetworkEchoServer();
@@ -38,19 +42,26 @@ namespace UnityQGameFramework.Examples.Modules
             connectButton.onClick.AddListener(Connect);
             intervalSlider.onValueChanged.AddListener(value =>
             {
-                if (channel != null) channel.HeartBeatInterval = value;
+                if (channel != null)
+                {
+                    channel.HeartBeatInterval = value;
+                }
             });
             replyToggle.onValueChanged.AddListener(value => server.ReplyHeartBeats = value);
         }
 
         private void Connect()
         {
-            if (channel != null) channel.Close();
+            if (channel != null)
+            {
+                channel.Close();
+            }
             else
             {
                 protocol = new NetworkTextProtocol();
                 channel = QGF.Network.CreateNetworkChannel("Example.Heartbeat", ServiceType.Tcp, protocol);
             }
+
             channel.HeartBeatInterval = intervalSlider.value;
             channel.ResetHeartBeatElapseSecondsWhenReceivePacket = true;
             misses = 0;
@@ -77,7 +88,10 @@ namespace UnityQGameFramework.Examples.Modules
                     state = "业务已关闭失去响应的连接";
                 }
             }
-            else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel)) connecting = false;
+            else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
+            {
+                connecting = false;
+            }
             else if (args is ErrorArgs error && ReferenceEquals(error.NetworkChannel, channel))
             {
                 connecting = false;
@@ -94,11 +108,10 @@ namespace UnityQGameFramework.Examples.Modules
                 connectButton.interactable = server != null;
                 return;
             }
+
             timerSlider.value = channel.HeartBeatInterval > 0 ? channel.HeartBeatElapseSeconds / channel.HeartBeatInterval : 0;
             string connection = channel.Connected ? "已连接" : "已断开";
-            counterText.text = $"间隔 {channel.HeartBeatInterval:F2} 秒 · 已等 {channel.HeartBeatElapseSeconds:F2} 秒\n"
-                + $"协议发送 {protocol.HeartBeatsSent} · 收到响应 {protocol.HeartBeatsReceived}\n"
-                + $"当前丢失计数 {channel.MissHeartBeatCount} · 最近通知 {misses}\n连接：{connection}";
+            counterText.text = $"间隔 {channel.HeartBeatInterval:F2} 秒 · 已等 {channel.HeartBeatElapseSeconds:F2} 秒\n" + $"协议发送 {protocol.HeartBeatsSent} · 收到响应 {protocol.HeartBeatsReceived}\n" + $"当前丢失计数 {channel.MissHeartBeatCount} · 最近通知 {misses}\n连接：{connection}";
             connectButton.interactable = !connecting && !channel.Connected;
         }
 
@@ -107,14 +120,33 @@ namespace UnityQGameFramework.Examples.Modules
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(ConnectedArgs.EventId, OnEvent)) events.Unsubscribe(ConnectedArgs.EventId, OnEvent);
-                if (events.Check(ClosedArgs.EventId, OnEvent)) events.Unsubscribe(ClosedArgs.EventId, OnEvent);
-                if (events.Check(ErrorArgs.EventId, OnEvent)) events.Unsubscribe(ErrorArgs.EventId, OnEvent);
+                if (events.Check(ConnectedArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(ConnectedArgs.EventId, OnEvent);
+                }
+
+                if (events.Check(ClosedArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(ClosedArgs.EventId, OnEvent);
+                }
+
+                if (events.Check(ErrorArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(ErrorArgs.EventId, OnEvent);
+                }
+
                 if (events.Check(MissedHeartbeatArgs.EventId, OnEvent))
+                {
                     events.Unsubscribe(MissedHeartbeatArgs.EventId, OnEvent);
+                }
             }
+
             var network = GameEntry.GetComponent<NetworkComponent>();
-            if (network != null) network.DestroyNetworkChannel("Example.Heartbeat");
+            if (network != null)
+            {
+                network.DestroyNetworkChannel("Example.Heartbeat");
+            }
+
             server?.Dispose();
         }
     }

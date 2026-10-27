@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -58,6 +58,9 @@ namespace UnityQGameFramework.Runtime
             Destroy((Object)entityInstance);
         }
 
+        /// <summary>
+        /// 获取实体资源释放所需的资源组件。
+        /// </summary>
         private void Start()
         {
             m_ResourceComponent = GameEntry.GetComponent<ResourceComponent>();

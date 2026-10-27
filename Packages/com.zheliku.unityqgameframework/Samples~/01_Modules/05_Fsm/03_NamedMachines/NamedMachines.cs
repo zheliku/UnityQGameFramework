@@ -5,12 +5,16 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示用名称管理多台状态机。
+    /// </summary>
     public sealed class NamedMachines : MonoBehaviour
     {
-        [SerializeField] private Text leftText, rightText, machinesText, resultText;
-        [SerializeField] private Button destroyButton, recreateButton;
+        [SerializeField]
+        private Text leftText, rightText, machinesText, resultText;
+        [SerializeField]
+        private Button destroyButton, recreateButton;
         private IFsm<NamedMachines> left, right;
-
         private void Start()
         {
             // 同一 owner 可以通过名称持有多台状态机。
@@ -43,14 +47,30 @@ namespace UnityQGameFramework.Examples.Modules
             recreateButton.interactable = !hasLeft;
         }
 
-        private sealed class Idle : FsmState<NamedMachines> { }
+        /// <summary>
+        /// 保持空闲的状态。
+        /// </summary>
+        private sealed class Idle : FsmState<NamedMachines>
+        {
+        }
 
         private void OnDestroy()
         {
             var manager = GameEntry.GetComponent<FsmComponent>();
-            if (manager == null) return;
-            if (left != null && !left.IsDestroyed) manager.DestroyFsm(left);
-            if (right != null && !right.IsDestroyed) manager.DestroyFsm(right);
+            if (manager == null)
+            {
+                return;
+            }
+
+            if (left != null && !left.IsDestroyed)
+            {
+                manager.DestroyFsm(left);
+            }
+
+            if (right != null && !right.IsDestroyed)
+            {
+                manager.DestroyFsm(right);
+            }
         }
     }
 }

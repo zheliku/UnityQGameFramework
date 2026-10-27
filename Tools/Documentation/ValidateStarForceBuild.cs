@@ -14,7 +14,7 @@ public static class ValidateStarForceBuild
         if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
         var watched = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .Select(name => "ProjectSettings/" + name + ".asset")
-            .Concat(new[] { AssetDatabase.GUIDToAssetPath(BuildStarForce.SceneGuid) }).ToDictionary(path => path, Hash);
+            .Concat(new[] { BuildStarForce.GetScenePath() }).ToDictionary(path => path, Hash);
         var streaming = Tree("Assets/StreamingAssets");
         var memory = new[] { "PlayerSettings", "GraphicsSettings", "QualitySettings" }.ToDictionary(name => name,
             name => EditorJsonUtility.ToJson(Unsupported.GetSerializedAssetInterfaceSingleton(name)));

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -50,7 +50,13 @@ namespace UnityQGameFramework.Core.Scene
         /// 获取游戏框架模块优先级。
         /// </summary>
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        internal override int Priority => 2;
+        internal override int Priority
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
         /// <summary>
         /// 加载场景成功事件。
@@ -424,6 +430,12 @@ namespace UnityQGameFramework.Core.Scene
             m_ResourceManager.UnloadScene(sceneAssetName, m_UnloadSceneCallbacks, userData);
         }
 
+        /// <summary>
+        /// 记录已加载场景并派发加载成功事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="duration">加载耗时，以秒为单位。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadSceneSuccessCallback(string sceneAssetName, float duration, object userData)
         {
             m_LoadingSceneAssetNames.Remove(sceneAssetName);
@@ -436,6 +448,13 @@ namespace UnityQGameFramework.Core.Scene
             }
         }
 
+        /// <summary>
+        /// 清理场景加载登记并派发失败事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="status">加载失败状态。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadSceneFailureCallback(string sceneAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             m_LoadingSceneAssetNames.Remove(sceneAssetName);
@@ -451,6 +470,12 @@ namespace UnityQGameFramework.Core.Scene
             throw new FrameworkException(appendErrorMessage);
         }
 
+        /// <summary>
+        /// 派发场景加载进度事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="progress">加载进度。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadSceneUpdateCallback(string sceneAssetName, float progress, object userData)
         {
             if (m_LoadSceneUpdateEventHandler != null)
@@ -461,6 +486,14 @@ namespace UnityQGameFramework.Core.Scene
             }
         }
 
+        /// <summary>
+        /// 派发场景依赖资源加载事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="dependencyAssetName">依赖资源名称。</param>
+        /// <param name="loadedCount">已加载依赖数量。</param>
+        /// <param name="totalCount">依赖资源总数量。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void LoadSceneDependencyAssetCallback(string sceneAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             if (m_LoadSceneDependencyAssetEventHandler != null)
@@ -471,6 +504,11 @@ namespace UnityQGameFramework.Core.Scene
             }
         }
 
+        /// <summary>
+        /// 移除场景登记并派发卸载成功事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void UnloadSceneSuccessCallback(string sceneAssetName, object userData)
         {
             m_UnloadingSceneAssetNames.Remove(sceneAssetName);
@@ -483,6 +521,11 @@ namespace UnityQGameFramework.Core.Scene
             }
         }
 
+        /// <summary>
+        /// 清理卸载登记并派发卸载失败事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="userData">用户自定义数据。</param>
         private void UnloadSceneFailureCallback(string sceneAssetName, object userData)
         {
             m_UnloadingSceneAssetNames.Remove(sceneAssetName);

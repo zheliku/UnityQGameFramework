@@ -47,37 +47,73 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public bool Paused
         {
-            get => m_DownloadManager.Paused;
-            set => m_DownloadManager.Paused = value;
+            get
+            {
+                return m_DownloadManager.Paused;
+            }
+            set
+            {
+                m_DownloadManager.Paused = value;
+            }
         }
 
         /// <summary>
         /// 获取下载代理总数量。
         /// </summary>
-        public int TotalAgentCount => m_DownloadManager.TotalAgentCount;
+        public int TotalAgentCount
+        {
+            get
+            {
+                return m_DownloadManager.TotalAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取可用下载代理数量。
         /// </summary>
-        public int FreeAgentCount => m_DownloadManager.FreeAgentCount;
+        public int FreeAgentCount
+        {
+            get
+            {
+                return m_DownloadManager.FreeAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取工作中下载代理数量。
         /// </summary>
-        public int WorkingAgentCount => m_DownloadManager.WorkingAgentCount;
+        public int WorkingAgentCount
+        {
+            get
+            {
+                return m_DownloadManager.WorkingAgentCount;
+            }
+        }
 
         /// <summary>
         /// 获取等待下载任务数量。
         /// </summary>
-        public int WaitingTaskCount => m_DownloadManager.WaitingTaskCount;
+        public int WaitingTaskCount
+        {
+            get
+            {
+                return m_DownloadManager.WaitingTaskCount;
+            }
+        }
 
         /// <summary>
         /// 获取或设置连续没有收到数据的超时时长，以秒为单位。收到数据后重新计时。
         /// </summary>
         public float Timeout
         {
-            get => m_DownloadManager.Timeout;
-            set => m_DownloadManager.Timeout = m_Timeout = value;
+            get
+            {
+                return m_DownloadManager.Timeout;
+            }
+            set
+            {
+                m_DownloadManager.Timeout = m_Timeout = value;
+            }
         }
 
         /// <summary>
@@ -85,14 +121,26 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public int FlushSize
         {
-            get => m_DownloadManager.FlushSize;
-            set => m_DownloadManager.FlushSize = m_FlushSize = value;
+            get
+            {
+                return m_DownloadManager.FlushSize;
+            }
+            set
+            {
+                m_DownloadManager.FlushSize = m_FlushSize = value;
+            }
         }
 
         /// <summary>
         /// 获取所有下载任务的汇总速度，以字节每秒为单位。
         /// </summary>
-        public float CurrentSpeed => m_DownloadManager.CurrentSpeed;
+        public float CurrentSpeed
+        {
+            get
+            {
+                return m_DownloadManager.CurrentSpeed;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -116,6 +164,9 @@ namespace UnityQGameFramework.Runtime
             m_DownloadManager.Timeout = m_Timeout;
         }
 
+        /// <summary>
+        /// 创建下载代理并连接事件组件。
+        /// </summary>
         private void Start()
         {
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
@@ -336,21 +387,41 @@ namespace UnityQGameFramework.Runtime
             m_DownloadManager.AddDownloadAgentHelper(downloadAgentHelper);
         }
 
+        /// <summary>
+        /// 派发下载开始事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnDownloadStart(object sender, UnityQGameFramework.Core.Download.DownloadStartEventArgs e)
         {
             m_EventComponent.Fire(this, DownloadStartEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发下载进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnDownloadUpdate(object sender, UnityQGameFramework.Core.Download.DownloadUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, DownloadUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发下载成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnDownloadSuccess(object sender, UnityQGameFramework.Core.Download.DownloadSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, DownloadSuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 记录下载错误并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnDownloadFailure(object sender, UnityQGameFramework.Core.Download.DownloadFailureEventArgs e)
         {
             Log.Warning("Download failure, download serial id '{0}', download path '{1}', download uri '{2}', error message '{3}'.", e.SerialId, e.DownloadPath, e.DownloadUri, e.ErrorMessage);

@@ -46,8 +46,8 @@ public static class CurrentSampleCompatibility
             ValidateSampleStructure.Run();
             object modules = await ValidateModuleExamples.Run("Assets/Examples", new[]
             {
-                "LoadLubanTablesExample", "QueryRowsExample", "LoadCatalogExample", "FilterRowsExample",
-                "SpawnOrCreateCube"
+                "LoadLubanTablesExample", "QueryRowsExample", "LoadCatalogExample", "FilterRowsExample", "TableRegistryExample", "TableModesExample",
+                "SpawnOrCreateCube", "LoadCubePrefab", "LoadResourcePackage", "ReadBinaryResource", "LoadAddressRules"
             });
             string report = JsonConvert.SerializeObject(modules, Formatting.Indented);
             File.WriteAllText("Artifacts~/Compatibility/module-behavior.json", report);

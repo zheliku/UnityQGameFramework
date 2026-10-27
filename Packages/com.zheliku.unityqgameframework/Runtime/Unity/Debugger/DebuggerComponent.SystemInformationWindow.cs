@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,8 +10,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示操作系统和硬件信息。
+        /// </summary>
         private sealed class SystemInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制系统信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>System Information</b>");
@@ -40,6 +46,11 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 格式化电池电量。
+            /// </summary>
+            /// <param name="batteryLevel">电池剩余电量比例。</param>
+            /// <returns>电量百分比或未知状态文本。</returns>
             private string GetBatteryLevelString(float batteryLevel)
             {
                 if (batteryLevel < 0f)

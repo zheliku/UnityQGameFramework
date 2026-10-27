@@ -4,12 +4,16 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示查看运行信息。
+    /// </summary>
     public sealed class InspectDebuggerExample : MonoBehaviour
     {
-        [SerializeField] private Toggle activeToggle;
-        [SerializeField] private Text stateText;
+        [SerializeField]
+        private Toggle activeToggle;
+        [SerializeField]
+        private Text stateText;
         private Vector2Int screenSize;
-
         private void Start()
         {
             QGF.Debugger.ActiveWindow = QGF.Debugger.ShowFullWindow = true;
@@ -31,7 +35,11 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            if (screenSize != new Vector2Int(Screen.width, Screen.height)) PlaceWindow();
+            if (screenSize != new Vector2Int(Screen.width, Screen.height))
+            {
+                PlaceWindow();
+            }
+
             stateText.text = "在右侧调试窗口查看时间、场景和环境信息。";
         }
     }

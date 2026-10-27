@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -47,7 +47,13 @@ namespace UnityQGameFramework.Core.Sound
         /// <summary>
         /// 获取声音组数量。
         /// </summary>
-        public int SoundGroupCount => m_SoundGroups.Count;
+        public int SoundGroupCount
+        {
+            get
+            {
+                return m_SoundGroups.Count;
+            }
+        }
 
         /// <summary>
         /// 播放声音成功事件。
@@ -605,6 +611,13 @@ namespace UnityQGameFramework.Core.Sound
             throw new FrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
         }
 
+        /// <summary>
+        /// 处理声音资源加载结果并继续播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundAsset">加载完成的声音资源。</param>
+        /// <param name="duration">加载耗时，以秒为单位。</param>
+        /// <param name="userData">声音播放请求信息。</param>
         private void LoadAssetSuccessCallback(string soundAssetName, object soundAsset, float duration, object userData)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
@@ -675,6 +688,13 @@ namespace UnityQGameFramework.Core.Sound
             throw new FrameworkException(errorMessage);
         }
 
+        /// <summary>
+        /// 清理声音加载登记并派发失败事件。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="status">加载失败状态。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">声音播放请求信息。</param>
         private void LoadAssetFailureCallback(string soundAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
@@ -721,6 +741,12 @@ namespace UnityQGameFramework.Core.Sound
             throw new FrameworkException(appendErrorMessage);
         }
 
+        /// <summary>
+        /// 派发声音资源加载进度事件。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="progress">加载进度。</param>
+        /// <param name="userData">声音播放请求信息。</param>
         private void LoadAssetUpdateCallback(string soundAssetName, float progress, object userData)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
@@ -737,6 +763,14 @@ namespace UnityQGameFramework.Core.Sound
             }
         }
 
+        /// <summary>
+        /// 派发声音依赖资源加载事件。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="dependencyAssetName">依赖资源名称。</param>
+        /// <param name="loadedCount">已加载依赖数量。</param>
+        /// <param name="totalCount">依赖资源总数量。</param>
+        /// <param name="userData">声音播放请求信息。</param>
         private void LoadAssetDependencyAssetCallback(string soundAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;

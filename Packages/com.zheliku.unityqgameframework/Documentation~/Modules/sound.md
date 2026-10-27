@@ -6,7 +6,7 @@ Sound 管理声音组、播放请求和播放代理。资源模块加载 AudioCl
 
 ## 播放一段循环音乐
 
-准备 `Assets/MyGame/Audio/GuideMusic.wav`，并将它加入 ResourceBuildProfile 的收集规则。启用 `EnableAddressable`，把地址规则设为 `AddressByFileName`，然后创建下面完整入口流程：
+准备 `Assets/MyGame/Audio/GuideMusic.wav`，并将它加入 YooAsset Collector 的收集规则。启用 `EnableAddressable`，把地址规则设为 `AddressByFileName`，然后创建下面完整入口流程：
 
 ```csharp
 using UnityQGameFramework.Core.Fsm;

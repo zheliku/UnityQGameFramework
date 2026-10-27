@@ -57,7 +57,7 @@ public static class TomlWorkflowValidation
 
     private static void Validate()
     {
-        string launcher = AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb");
+        string launcher = "Assets/Examples/02_StarForce/StarForce Launcher.unity";
         string sample = Path.GetDirectoryName(launcher).Replace('\\', '/');
         string configs = sample + "/GameMain/Configs";
         string temporary = Path.GetFullPath("Results/ConfigCopies");

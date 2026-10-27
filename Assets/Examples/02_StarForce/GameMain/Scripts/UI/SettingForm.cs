@@ -10,6 +10,9 @@ using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 编辑音量、静音和语言设置。
+    /// </summary>
     public class SettingForm : UGuiForm
     {
         [SerializeField]
@@ -47,39 +50,67 @@ namespace StarForce
 
         private Language m_SelectedLanguage = Language.Unspecified;
 
+        /// <summary>
+        /// 修改音乐静音状态。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnMusicMuteChanged(bool isOn)
         {
             GameEntry.Sound.Mute("Music", !isOn);
             m_MusicVolumeSlider.gameObject.SetActive(isOn);
         }
 
+        /// <summary>
+        /// 修改音乐音量。
+        /// </summary>
+        /// <param name="volume">音量，范围为 0 到 1。</param>
         public void OnMusicVolumeChanged(float volume)
         {
             GameEntry.Sound.SetVolume("Music", volume);
         }
 
+        /// <summary>
+        /// 修改音效静音状态。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnSoundMuteChanged(bool isOn)
         {
             GameEntry.Sound.Mute("Sound", !isOn);
             m_SoundVolumeSlider.gameObject.SetActive(isOn);
         }
 
+        /// <summary>
+        /// 修改音效音量。
+        /// </summary>
+        /// <param name="volume">音量，范围为 0 到 1。</param>
         public void OnSoundVolumeChanged(float volume)
         {
             GameEntry.Sound.SetVolume("Sound", volume);
         }
 
+        /// <summary>
+        /// 修改界面声音静音状态。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnUISoundMuteChanged(bool isOn)
         {
             GameEntry.Sound.Mute("UISound", !isOn);
             m_UISoundVolumeSlider.gameObject.SetActive(isOn);
         }
 
+        /// <summary>
+        /// 修改界面声音音量。
+        /// </summary>
+        /// <param name="volume">音量，范围为 0 到 1。</param>
         public void OnUISoundVolumeChanged(float volume)
         {
             GameEntry.Sound.SetVolume("UISound", volume);
         }
 
+        /// <summary>
+        /// 选中后记录英语选项。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnEnglishSelected(bool isOn)
         {
             if (!isOn)
@@ -91,6 +122,10 @@ namespace StarForce
             RefreshLanguageTips();
         }
 
+        /// <summary>
+        /// 选中后记录简体中文选项。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnChineseSimplifiedSelected(bool isOn)
         {
             if (!isOn)
@@ -102,6 +137,10 @@ namespace StarForce
             RefreshLanguageTips();
         }
 
+        /// <summary>
+        /// 选中后记录繁体中文选项。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnChineseTraditionalSelected(bool isOn)
         {
             if (!isOn)
@@ -113,6 +152,10 @@ namespace StarForce
             RefreshLanguageTips();
         }
 
+        /// <summary>
+        /// 选中后记录韩语选项。
+        /// </summary>
+        /// <param name="isOn">对应开关是否选中。</param>
         public void OnKoreanSelected(bool isOn)
         {
             if (!isOn)
@@ -124,6 +167,9 @@ namespace StarForce
             RefreshLanguageTips();
         }
 
+        /// <summary>
+        /// 提交设置并关闭界面。
+        /// </summary>
         public void OnSubmitButtonClick()
         {
             if (m_SelectedLanguage == GameEntry.Localization.Language)
@@ -139,6 +185,10 @@ namespace StarForce
             UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
         }
 
+        /// <summary>
+        /// 打开界面并接收业务数据。
+        /// </summary>
+        /// <param name="userData">用户自定义数据。</param>
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
@@ -176,6 +226,11 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 更新界面状态。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);

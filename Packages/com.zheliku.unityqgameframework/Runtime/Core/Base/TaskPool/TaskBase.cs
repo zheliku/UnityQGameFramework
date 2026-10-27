@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -55,7 +55,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取任务描述。
         /// </summary>
-        public virtual string Description => null;
+        public virtual string Description
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// 初始化任务基类。

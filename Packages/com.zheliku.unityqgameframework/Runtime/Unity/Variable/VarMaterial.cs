@@ -24,6 +24,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 UnityEngine.Material 到 UnityEngine.Material 变量类的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>从引用池获取并保存指定值的变量对象。</returns>
         public static implicit operator VarMaterial(Material value)
         {
             VarMaterial varValue = ReferencePool.Acquire<VarMaterial>();
@@ -35,6 +36,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 UnityEngine.Material 变量类到 UnityEngine.Material 的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>变量对象中保存的值。</returns>
         public static implicit operator Material(VarMaterial value)
         {
             return value.Value;

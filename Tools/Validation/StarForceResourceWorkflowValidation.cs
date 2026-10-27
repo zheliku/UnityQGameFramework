@@ -59,7 +59,6 @@ public static class StarForceResourceWorkflowValidation
         bool injectingFailure = false;
         int expectedErrors = 0;
         ResourceSettings settings = null;
-        ResourceBuildProfile profile = null;
         FastServer server = null;
         EditorApplication.CallbackFunction observe = () =>
         {
@@ -92,25 +91,23 @@ public static class StarForceResourceWorkflowValidation
             }
             Directory.CreateDirectory(FixtureRoot);
             AssetDatabase.Refresh();
-            var original = AssetDatabase.LoadAssetAtPath<ResourceSettings>(AssetDatabase.GUIDToAssetPath("702e7dd8cbfc56694611d97fd39f3275"));
+            var original = AssetDatabase.LoadAssetAtPath<ResourceSettings>("Assets/Examples/02_StarForce/UnityQGameFramework/Resource/ResourceSettings.asset");
             settings = Object.Instantiate(original);
-            profile = Object.Instantiate(ResourceBuildService.GetProfile(original, original.DefaultPackageName));
             string packageName = "WF" + Guid.NewGuid().ToString("N").Substring(0, 12);
             var serialized = new SerializedObject(settings);
             serialized.FindProperty("m_DefaultPackageName").stringValue = packageName;
-            serialized.FindProperty("m_UseEditorSimulation").boolValue = false;
             var package = serialized.FindProperty("m_Packages").GetArrayElementAtIndex(0);
             package.FindPropertyRelative("m_Name").stringValue = packageName;
-            package.FindPropertyRelative("m_PlayMode").intValue = (int)ResourcePlayMode.Host;
+            package.FindPropertyRelative("m_Mode").intValue = (int)EPlayMode.HostPlayMode;
             package.FindPropertyRelative("m_UseBuiltinFiles").boolValue = false;
             serialized.ApplyModifiedPropertiesWithoutUndo();
             AssetDatabase.CreateAsset(settings, FixtureRoot + "/ResourceSettings.asset");
-            profile.Package.PackageName = packageName;
-            var buildSettings = new SerializedObject(profile);
-            buildSettings.FindProperty("m_Settings").objectReferenceValue = settings;
-            buildSettings.ApplyModifiedPropertiesWithoutUndo();
-            AssetDatabase.CreateAsset(profile, FixtureRoot + "/ResourceBuildProfile.asset");
-            string output = ResourceBuildService.Build(profile, false);
+            var nativeCollector = Object.Instantiate(ResourceBuildService.GetCollector(original));
+            nativeCollector.Packages.Single(item => item.PackageName == original.DefaultPackageName).PackageName = packageName;
+            AssetDatabase.CreateAsset(nativeCollector, FixtureRoot + "/YooAssetCollector.asset");
+            serialized.FindProperty("m_EditorCollector").objectReferenceValue = nativeCollector;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            string output = ResourceBuildService.Build(nativeCollector, packageName, false);
             server = new FastServer(output);
             settings = AssetDatabase.LoadAssetAtPath<ResourceSettings>(FixtureRoot + "/ResourceSettings.asset");
             serialized = new SerializedObject(settings);
@@ -121,7 +118,10 @@ public static class StarForceResourceWorkflowValidation
 
             EditorSettings.enterPlayModeOptionsEnabled = true;
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
-            EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb"));
+            EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");
+            // 临时 Launcher 只替换运行设置，资源仍使用导入的 Sample；保存临时场景前解析其资源根目录。
+            Check(AssetUtility.GameMainPath == "Assets/Examples/02_StarForce/GameMain",
+                "Validation resolves the imported Sample assets before saving its temporary Launcher");
             // 打开场景可能卸载只由本方法局部变量持有的资产，赋值前重新取得持久化对象。
             settings = AssetDatabase.LoadAssetAtPath<ResourceSettings>(FixtureRoot + "/ResourceSettings.asset");
             Check(settings != null, "Validation resource settings remain loadable after opening the scene");

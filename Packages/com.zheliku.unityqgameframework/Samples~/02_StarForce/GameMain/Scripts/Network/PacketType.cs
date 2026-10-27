@@ -5,6 +5,9 @@
 
 namespace StarForce
 {
+    /// <summary>
+    /// 消息的发送方向。
+    /// </summary>
     public enum PacketType : byte
     {
         /// <summary>

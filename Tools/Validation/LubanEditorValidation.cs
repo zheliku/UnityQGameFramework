@@ -14,10 +14,10 @@ public static class LubanEditorValidation
     public static async Task<object> Run()
     {
         if (EditorApplication.isPlaying) throw new Exception("Stop Play Mode first.");
-        var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(Root + "/Editor/LubanProfile.asset");
+        var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(Root + "/LubanProfile.asset");
         string before = Snapshot(Root + "/Generated") + Snapshot(Root + "/Data");
         string catalogGuid = AssetDatabase.AssetPathToGUID(Root + "/Data/Catalog.asset");
-        string definition = Root + "/Source/luban.conf";
+        string definition = Root + "/luban.conf";
         string schema = File.ReadAllText(definition);
         string userFile = Root + "/Generated/UserOwned.cs";
         string staleFile = Root + "/Generated/QgfObsolete.cs";
@@ -30,7 +30,7 @@ public static class LubanEditorValidation
             File.WriteAllText(definition, "{invalid");
             bool rejected = false;
             try { await LubanGenerator.GenerateAsync(profile); }
-            catch (IOException) { rejected = true; }
+            catch (Exception) { rejected = true; }
             finally { File.WriteAllText(definition, schema); }
             Require(rejected, "Invalid schema must fail.");
             Require(before == Snapshot(Root + "/Generated") + Snapshot(Root + "/Data"), "Failed generation changed existing outputs.");
@@ -41,15 +41,18 @@ public static class LubanEditorValidation
             profile.GeneratedCodeFiles.Add("QgfObsolete.cs");
             foreach (string folder in new[] { "Source", "Generated", "Data" })
                 Require(AssetDatabase.MoveAsset(Root + "/" + folder, Root + "/" + folder + " Moved") == string.Empty, "Folder move failed: " + folder);
-            Require(LubanGenerator.FolderPath(profile.SourceFolder).EndsWith("Source Moved"), "Profile did not follow source move.");
+            File.WriteAllText(definition, schema.Replace("Source/", "Source Moved/").Replace("\"dataDir\": \"Source\"", "\"dataDir\": \"Source Moved\""));
+            Require(LubanGenerator.SourcePath(profile).EndsWith("Source Moved"), "Luban did not read the updated source directory.");
             await LubanGenerator.GenerateAsync(profile);
             Require(File.Exists(Root + "/Generated Moved/UserOwned.cs"), "Unowned file was deleted.");
             Require(!File.Exists(Root + "/Generated Moved/QgfObsolete.cs") && !File.Exists(Root + "/Generated Moved/QgfObsolete.cs.meta"), "Obsolete output was not removed.");
             Require(AssetDatabase.AssetPathToGUID(Root + "/Data Moved/Catalog.asset") == catalogGuid, "Catalog GUID changed.");
             var catalog = AssetDatabase.LoadAssetAtPath<LubanDataTableCatalog>(Root + "/Data Moved/Catalog.asset");
             Require(catalog.GetAssets().Count == 11, "Catalog references did not follow the move.");
-            var native = new StarForce.Tables(name => new UnityQGameFramework.Luban.ByteBuf(catalog.GetAssets()[name].bytes));
-            Require(native.SchemaHash == catalog.SchemaHash && native.TbEntity.Get(10000).AssetName == "PlayerShip", "Moved catalog could not be parsed.");
+            IDataTableLoader loader = new StarForce.Tables();
+            var tables = loader.Load(name => new UnityQGameFramework.Luban.ByteBuf(catalog.GetAssets()[name].bytes));
+            var entities = (StarForce.TbEntity)tables.Single(table => table is StarForce.TbEntity);
+            Require(loader.SchemaHash == catalog.SchemaHash && entities.GetDataRow(10000).AssetName == "PlayerShip", "Moved catalog could not be parsed.");
         }
         finally
         {

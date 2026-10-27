@@ -24,7 +24,7 @@ public static class CompatibilitySmoke
         {
             EditorSettings.enterPlayModeOptionsEnabled = true;
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
-            EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath("f99fe5fffa1724e4ab21a8936d44ab7e"));
+            EditorSceneManager.OpenScene("Assets/Examples/00_PointPointPoint/GameMain/Scenes/PointPointPoint.unity");
             EditorApplication.isPlaying = true;
             await Wait(() => EditorApplication.isPlaying && Current() != null && Current().Available, "menu");
             Require(EventSystem.current?.currentInputModule != null, "uGUI input module");

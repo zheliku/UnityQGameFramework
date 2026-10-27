@@ -14,13 +14,13 @@ using UnityQGameFramework.Runtime;
 public static class ValidateDataTableExamples
 {
     /// <summary>
-    /// 运行四个数据表示例。
+    /// 运行数据表示例。
     /// </summary>
     /// <returns>场景检查结果。</returns>
     public static async Task<object> Run()
     {
         var names = new[] { "LoadLubanTablesExample", "QueryRowsExample", "LoadCatalogExample",
-            "FilterRowsExample" };
+            "FilterRowsExample", "TableRegistryExample", "TableModesExample" };
         var result = await ValidateModuleExamples.Run("Assets/Examples", names, Exercise);
         Directory.CreateDirectory("Artifacts~/Luban");
         File.WriteAllText("Artifacts~/Luban/examples-unified.json", JsonConvert.SerializeObject(result, Formatting.Indented));

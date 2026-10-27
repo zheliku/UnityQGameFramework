@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -40,7 +40,13 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源名称。
                 /// </summary>
-                public ResourceName ResourceName => m_ResourceName;
+                public ResourceName ResourceName
+                {
+                    get
+                    {
+                        return m_ResourceName;
+                    }
+                }
 
                 /// <summary>
                 /// 获取资源检查状态。
@@ -65,42 +71,90 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源所在的文件系统名称。
                 /// </summary>
-                public string FileSystemName => m_VersionInfo.FileSystemName;
+                public string FileSystemName
+                {
+                    get
+                    {
+                        return m_VersionInfo.FileSystemName;
+                    }
+                }
 
                 /// <summary>
                 /// 获取资源是否使用文件系统。
                 /// </summary>
-                public bool ReadWriteUseFileSystem => m_ReadWriteInfo.UseFileSystem;
+                public bool ReadWriteUseFileSystem
+                {
+                    get
+                    {
+                        return m_ReadWriteInfo.UseFileSystem;
+                    }
+                }
 
                 /// <summary>
                 /// 获取读写资源所在的文件系统名称。
                 /// </summary>
-                public string ReadWriteFileSystemName => m_ReadWriteInfo.FileSystemName;
+                public string ReadWriteFileSystemName
+                {
+                    get
+                    {
+                        return m_ReadWriteInfo.FileSystemName;
+                    }
+                }
 
                 /// <summary>
                 /// 获取资源加载方式。
                 /// </summary>
-                public LoadType LoadType => m_VersionInfo.LoadType;
+                public LoadType LoadType
+                {
+                    get
+                    {
+                        return m_VersionInfo.LoadType;
+                    }
+                }
 
                 /// <summary>
                 /// 获取资源大小。
                 /// </summary>
-                public int Length => m_VersionInfo.Length;
+                public int Length
+                {
+                    get
+                    {
+                        return m_VersionInfo.Length;
+                    }
+                }
 
                 /// <summary>
                 /// 获取资源哈希值。
                 /// </summary>
-                public int HashCode => m_VersionInfo.HashCode;
+                public int HashCode
+                {
+                    get
+                    {
+                        return m_VersionInfo.HashCode;
+                    }
+                }
 
                 /// <summary>
                 /// 获取压缩后大小。
                 /// </summary>
-                public int CompressedLength => m_VersionInfo.CompressedLength;
+                public int CompressedLength
+                {
+                    get
+                    {
+                        return m_VersionInfo.CompressedLength;
+                    }
+                }
 
                 /// <summary>
                 /// 获取压缩后哈希值。
                 /// </summary>
-                public int CompressedHashCode => m_VersionInfo.CompressedHashCode;
+                public int CompressedHashCode
+                {
+                    get
+                    {
+                        return m_VersionInfo.CompressedHashCode;
+                    }
+                }
 
                 /// <summary>
                 /// 临时缓存资源所在的文件系统名称。

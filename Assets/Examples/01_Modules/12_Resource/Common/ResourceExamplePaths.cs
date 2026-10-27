@@ -10,14 +10,19 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ResourceExamplePaths : MonoBehaviour
     {
         /// <summary>
-        /// Cube 预制体的 GUID。
+        /// 默认资源包中 Cube 预制体的地址。
         /// </summary>
-        public const string CubeGuid = "51d003874f9f553f84bccd96d341285c";
+        public const string CubeAddress = "Resource_Cube";
 
         /// <summary>
-        /// 原生数据文件的 GUID。
+        /// 远程包中 Cube 预制体的地址。
         /// </summary>
-        public const string BinaryGuid = "1422c43f096854ac866b7470b6411b71";
+        public const string RemoteCubeAddress = "Base_Cube";
+
+        /// <summary>
+        /// 原生数据文件的地址。
+        /// </summary>
+        public const string BinaryAddress = "Archive";
 
         /// <summary>
         /// 原生文件资源包名称。
@@ -52,7 +57,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             get
             {
-                return "先停止运行，执行 QGF > Examples > Build Resource Fixtures。";
+                return "先停止运行，选中 UpdateRemoteResources 对象并在 Inspector 点击“构建远程资源示例”。";
             }
         }
 

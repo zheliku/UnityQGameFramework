@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -13,6 +13,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制Web 请求组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(WebRequestComponent))]
     internal sealed class WebRequestComponentInspector : FrameworkInspector
     {
@@ -22,6 +25,9 @@ namespace UnityQGameFramework.Editor
 
         private HelperInfo<WebRequestAgentHelperBase> m_WebRequestAgentHelperInfo = new HelperInfo<WebRequestAgentHelperBase>("WebRequestAgent");
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -107,6 +113,9 @@ namespace UnityQGameFramework.Editor
             Repaint();
         }
 
+        /// <summary>
+        /// 脚本重新编译后刷新可用类型。
+        /// </summary>
         protected override void OnCompileComplete()
         {
             base.OnCompileComplete();
@@ -114,6 +123,9 @@ namespace UnityQGameFramework.Editor
             RefreshTypeNames();
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
             m_InstanceRoot = serializedObject.FindProperty("m_InstanceRoot");
@@ -125,11 +137,18 @@ namespace UnityQGameFramework.Editor
             RefreshTypeNames();
         }
 
+        /// <summary>
+        /// 绘制 Web 请求任务的状态和进度。
+        /// </summary>
+        /// <param name="webRequestInfo">Web 请求任务信息。</param>
         private void DrawWebRequestInfo(TaskInfo webRequestInfo)
         {
             EditorGUILayout.LabelField(webRequestInfo.Description, Utility.Text.Format("[SerialId]{0} [Tag]{1} [Priority]{2} [Status]{3}", webRequestInfo.SerialId, webRequestInfo.Tag ?? "<None>", webRequestInfo.Priority, webRequestInfo.Status));
         }
 
+        /// <summary>
+        /// 刷新可用辅助器或流程类型名称。
+        /// </summary>
         private void RefreshTypeNames()
         {
             m_WebRequestAgentHelperInfo.Refresh();

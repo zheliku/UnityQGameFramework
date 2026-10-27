@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,8 +10,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示屏幕分辨率和显示设置。
+        /// </summary>
         private sealed class ScreenInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制屏幕信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Screen Information</b>");
@@ -39,6 +45,11 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 获取屏幕休眠设置的描述。
+            /// </summary>
+            /// <param name="sleepTimeout">屏幕休眠超时值。</param>
+            /// <returns>休眠设置的显示文本。</returns>
             private string GetSleepTimeoutDescription(int sleepTimeout)
             {
                 if (sleepTimeout == SleepTimeout.NeverSleep)
@@ -54,11 +65,21 @@ namespace UnityQGameFramework.Runtime
                 return sleepTimeout.ToString();
             }
 
+            /// <summary>
+            /// 格式化屏幕分辨率。
+            /// </summary>
+            /// <param name="resolution">屏幕分辨率。</param>
+            /// <returns>分辨率和刷新率文本。</returns>
             private string GetResolutionString(Resolution resolution)
             {
                 return Utility.Text.Format("{0} x {1} @ {2:0.##}Hz", resolution.width, resolution.height, resolution.refreshRateRatio.value);
             }
 
+            /// <summary>
+            /// 格式化屏幕缺口区域。
+            /// </summary>
+            /// <param name="cutouts">屏幕缺口矩形数组。</param>
+            /// <returns>屏幕缺口区域文本。</returns>
             private string GetCutoutsString(Rect[] cutouts)
             {
                 string[] cutoutStrings = new string[cutouts.Length];
@@ -70,6 +91,11 @@ namespace UnityQGameFramework.Runtime
                 return string.Join("; ", cutoutStrings);
             }
 
+            /// <summary>
+            /// 格式化支持的分辨率列表。
+            /// </summary>
+            /// <param name="resolutions">分辨率数组。</param>
+            /// <returns>分辨率列表文本。</returns>
             private string GetResolutionsString(Resolution[] resolutions)
             {
                 string[] resolutionStrings = new string[resolutions.Length];

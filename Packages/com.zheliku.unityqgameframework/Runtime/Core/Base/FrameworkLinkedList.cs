@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -31,37 +31,79 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取链表中实际包含的结点数量。
         /// </summary>
-        public int Count => m_LinkedList.Count;
+        public int Count
+        {
+            get
+            {
+                return m_LinkedList.Count;
+            }
+        }
 
         /// <summary>
         /// 获取链表结点缓存数量。
         /// </summary>
-        public int CachedNodeCount => m_CachedNodes.Count;
+        public int CachedNodeCount
+        {
+            get
+            {
+                return m_CachedNodes.Count;
+            }
+        }
 
         /// <summary>
         /// 获取链表的第一个结点。
         /// </summary>
-        public LinkedListNode<T> First => m_LinkedList.First;
+        public LinkedListNode<T> First
+        {
+            get
+            {
+                return m_LinkedList.First;
+            }
+        }
 
         /// <summary>
         /// 获取链表的最后一个结点。
         /// </summary>
-        public LinkedListNode<T> Last => m_LinkedList.Last;
+        public LinkedListNode<T> Last
+        {
+            get
+            {
+                return m_LinkedList.Last;
+            }
+        }
 
         /// <summary>
         /// 获取一个值，该值指示 ICollection`1 是否为只读。
         /// </summary>
-        public bool IsReadOnly => ((ICollection<T>)m_LinkedList).IsReadOnly;
+        public bool IsReadOnly
+        {
+            get
+            {
+                return ((ICollection<T>)m_LinkedList).IsReadOnly;
+            }
+        }
 
         /// <summary>
         /// 获取可用于同步对 ICollection 的访问的对象。
         /// </summary>
-        public object SyncRoot => ((ICollection)m_LinkedList).SyncRoot;
+        public object SyncRoot
+        {
+            get
+            {
+                return ((ICollection)m_LinkedList).SyncRoot;
+            }
+        }
 
         /// <summary>
         /// 获取一个值，该值指示是否同步对 ICollection 的访问（线程安全）。
         /// </summary>
-        public bool IsSynchronized => ((ICollection)m_LinkedList).IsSynchronized;
+        public bool IsSynchronized
+        {
+            get
+            {
+                return ((ICollection)m_LinkedList).IsSynchronized;
+            }
+        }
 
         /// <summary>
         /// 在链表中指定的现有结点后添加包含指定值的新结点。
@@ -291,6 +333,11 @@ namespace UnityQGameFramework.Core
             return new Enumerator(m_LinkedList);
         }
 
+        /// <summary>
+        /// 获取链表节点，优先复用缓存节点。
+        /// </summary>
+        /// <param name="value">节点保存的值。</param>
+        /// <returns>保存指定值的链表节点。</returns>
         private LinkedListNode<T> AcquireNode(T value)
         {
             LinkedListNode<T> node = null;
@@ -307,6 +354,10 @@ namespace UnityQGameFramework.Core
             return node;
         }
 
+        /// <summary>
+        /// 清空节点的值并放回节点缓存。
+        /// </summary>
+        /// <param name="node">已从链表移除的节点。</param>
         private void ReleaseNode(LinkedListNode<T> node)
         {
             node.Value = default(T);
@@ -348,6 +399,10 @@ namespace UnityQGameFramework.Core
         {
             private LinkedList<T>.Enumerator m_Enumerator;
 
+            /// <summary>
+            /// 初始化链表枚举器。
+            /// </summary>
+            /// <param name="linkedList">要遍历的链表。</param>
             internal Enumerator(LinkedList<T> linkedList)
             {
                 if (linkedList == null)
@@ -359,14 +414,26 @@ namespace UnityQGameFramework.Core
             }
 
             /// <summary>
-            /// 获取当前结点。
+            /// 获取枚举器当前位置的元素。
             /// </summary>
-            public T Current => m_Enumerator.Current;
+            public T Current
+            {
+                get
+                {
+                    return m_Enumerator.Current;
+                }
+            }
 
             /// <summary>
-            /// 获取当前的枚举数。
+            /// 获取枚举器当前位置的元素。
             /// </summary>
-            object IEnumerator.Current => m_Enumerator.Current;
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return m_Enumerator.Current;
+                }
+            }
 
             /// <summary>
             /// 清理枚举数。
@@ -377,9 +444,9 @@ namespace UnityQGameFramework.Core
             }
 
             /// <summary>
-            /// 获取下一个结点。
+            /// 将枚举器移到下一个元素。
             /// </summary>
-            /// <returns>返回下一个结点。</returns>
+            /// <returns>成功移到下一个元素时返回真；已到集合末尾时返回假。</returns>
             public bool MoveNext()
             {
                 return m_Enumerator.MoveNext();

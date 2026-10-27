@@ -292,7 +292,6 @@ MonoBehaviour:
   instancesText: {fileID: 441591706}
   removeButton: {fileID: 1250231371}
   releaseButton: {fileID: 410845253}
-  prefabGuid: 51d003874f9f553f84bccd96d341285c
 --- !u!4 &107649091
 Transform:
   m_ObjectHideFlags: 0

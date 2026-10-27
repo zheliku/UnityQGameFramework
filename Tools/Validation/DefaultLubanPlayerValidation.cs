@@ -22,7 +22,7 @@ namespace QgfDefaultValidation
         {
             base.OnEnter(owner);
             var dataTable = GameEntry.GetComponent<DataTableComponent>();
-            dataTable.LoadDataTables(loader => new Tables(loader));
+            dataTable.LoadDataTables<Tables>();
             if (!dataTable.HasDataTable<TbItem>()) return;
             DRItem item = dataTable.GetDataTable<TbItem>().GetDataRow(1);
             UnityEngine.Debug.Log("Loaded default Item: " + item?.Name);

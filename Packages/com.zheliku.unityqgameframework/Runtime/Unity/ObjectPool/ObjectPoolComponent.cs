@@ -24,7 +24,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取对象池数量。
         /// </summary>
-        public int Count => m_ObjectPoolManager.Count;
+        public int Count
+        {
+            get
+            {
+                return m_ObjectPoolManager.Count;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -39,10 +45,6 @@ namespace UnityQGameFramework.Runtime
                 Log.Fatal("Object pool manager is invalid.");
                 return;
             }
-        }
-
-        private void Start()
-        {
         }
 
         /// <summary>
@@ -172,6 +174,7 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有对象池。
         /// </summary>
+        /// <returns>所有已注册的对象池。</returns>
         public ObjectPoolBase[] GetAllObjectPools()
         {
             return m_ObjectPoolManager.GetAllObjectPools();

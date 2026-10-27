@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -69,6 +69,9 @@ namespace UnityQGameFramework.Core.Resource
                     Task = null;
                 }
 
+                /// <summary>
+                /// 获取资源加载代理辅助器。
+                /// </summary>
                 public ILoadResourceAgentHelper Helper { get; }
 
                 /// <summary>
@@ -112,6 +115,9 @@ namespace UnityQGameFramework.Core.Resource
                     Helper.LoadResourceAgentHelperError -= OnLoadResourceAgentHelperError;
                 }
 
+                /// <summary>
+                /// 清理正在加载的资产和资源登记。
+                /// </summary>
                 public static void Clear()
                 {
                     s_CachedResourceNames.Clear();
@@ -232,16 +238,30 @@ namespace UnityQGameFramework.Core.Resource
                     Task = null;
                 }
 
+                /// <summary>
+                /// 检查资产是否正在被其他代理加载。
+                /// </summary>
+                /// <param name="assetName">资产名称。</param>
+                /// <returns>资产是否正在加载。</returns>
                 private static bool IsAssetLoading(string assetName)
                 {
                     return s_LoadingAssetNames.Contains(assetName);
                 }
 
+                /// <summary>
+                /// 检查资源是否正在被其他代理加载。
+                /// </summary>
+                /// <param name="resourceName">资源名称。</param>
+                /// <returns>资源是否正在加载。</returns>
                 private static bool IsResourceLoading(string resourceName)
                 {
                     return s_LoadingResourceNames.Contains(resourceName);
                 }
 
+                /// <summary>
+                /// 复用已就绪的资产并完成当前加载任务。
+                /// </summary>
+                /// <param name="assetObject">已就绪的资产登记条目。</param>
                 private void OnAssetObjectReady(AssetObject assetObject)
                 {
                     Helper.Reset();
@@ -256,11 +276,20 @@ namespace UnityQGameFramework.Core.Resource
                     Task.Done = true;
                 }
 
+                /// <summary>
+                /// 使用已就绪的资源加载主资产。
+                /// </summary>
+                /// <param name="resourceObject">已就绪的资源登记条目。</param>
                 private void OnResourceObjectReady(ResourceObject resourceObject)
                 {
                     Task.LoadMain(this, resourceObject);
                 }
 
+                /// <summary>
+                /// 终止当前加载任务并通知失败。
+                /// </summary>
+                /// <param name="status">加载失败状态。</param>
+                /// <param name="errorMessage">错误信息。</param>
                 private void OnError(LoadResourceStatus status, string errorMessage)
                 {
                     Helper.Reset();
@@ -270,11 +299,21 @@ namespace UnityQGameFramework.Core.Resource
                     Task.Done = true;
                 }
 
+                /// <summary>
+                /// 通知当前任务的加载进度。
+                /// </summary>
+                /// <param name="sender">事件发送者。</param>
+                /// <param name="e">事件参数。</param>
                 private void OnLoadResourceAgentHelperUpdate(object sender, LoadResourceAgentHelperUpdateEventArgs e)
                 {
                     Task.OnLoadAssetUpdate(this, e.Type, e.Progress);
                 }
 
+                /// <summary>
+                /// 解析已读取的资源文件。
+                /// </summary>
+                /// <param name="sender">事件发送者。</param>
+                /// <param name="e">事件参数。</param>
                 private void OnLoadResourceAgentHelperReadFileComplete(object sender, LoadResourceAgentHelperReadFileCompleteEventArgs e)
                 {
                     ResourceObject resourceObject = ResourceObject.Create(Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader);
@@ -283,6 +322,11 @@ namespace UnityQGameFramework.Core.Resource
                     OnResourceObjectReady(resourceObject);
                 }
 
+                /// <summary>
+                /// 解密并解析已读取的资源字节。
+                /// </summary>
+                /// <param name="sender">事件发送者。</param>
+                /// <param name="e">事件参数。</param>
                 private void OnLoadResourceAgentHelperReadBytesComplete(object sender, LoadResourceAgentHelperReadBytesCompleteEventArgs e)
                 {
                     byte[] bytes = e.GetBytes();
@@ -295,6 +339,11 @@ namespace UnityQGameFramework.Core.Resource
                     Helper.ParseBytes(bytes);
                 }
 
+                /// <summary>
+                /// 登记解析完成的资源并加载主资产。
+                /// </summary>
+                /// <param name="sender">事件发送者。</param>
+                /// <param name="e">事件参数。</param>
                 private void OnLoadResourceAgentHelperParseBytesComplete(object sender, LoadResourceAgentHelperParseBytesCompleteEventArgs e)
                 {
                     ResourceObject resourceObject = ResourceObject.Create(Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader);
@@ -303,6 +352,11 @@ namespace UnityQGameFramework.Core.Resource
                     OnResourceObjectReady(resourceObject);
                 }
 
+                /// <summary>
+                /// 登记加载完成的资产并通知当前任务。
+                /// </summary>
+                /// <param name="sender">事件发送者。</param>
+                /// <param name="e">事件参数。</param>
                 private void OnLoadResourceAgentHelperLoadComplete(object sender, LoadResourceAgentHelperLoadCompleteEventArgs e)
                 {
                     AssetObject assetObject = null;
@@ -335,6 +389,11 @@ namespace UnityQGameFramework.Core.Resource
                     OnAssetObjectReady(assetObject);
                 }
 
+                /// <summary>
+                /// 处理资源加载辅助器错误。
+                /// </summary>
+                /// <param name="sender">事件发送者。</param>
+                /// <param name="e">事件参数。</param>
                 private void OnLoadResourceAgentHelperError(object sender, LoadResourceAgentHelperErrorEventArgs e)
                 {
                     OnError(e.Status, e.ErrorMessage);

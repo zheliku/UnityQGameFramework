@@ -166,7 +166,7 @@ public static class QgfResourceBackendProbe
             Require(localization.GetString("Game.Name") == "Hello QGF", "Localization loads TOML through the same resource bridge");
 
             DataTableComponent tables = GameEntry.GetComponent<DataTableComponent>();
-            tables.LoadDataTables(Root + "/Content/Catalog.asset", loader => new Tables(loader));
+            tables.LoadDataTables<Tables>(Root + "/Content/Catalog.asset");
             await UniTask.WaitUntil(() => tables.IsLoaded).Timeout(TimeSpan.FromSeconds(20));
             Require(tables.GetDataTable<TbItem>().Count > 0, "Luban Catalog loads through YooAsset and publishes typed tables");
             tables.UnloadDataTables();
@@ -174,36 +174,32 @@ public static class QgfResourceBackendProbe
             using (var cancellation = new CancellationTokenSource())
             {
                 cancellation.Cancel();
-                var cancelled = await tables.LoadDataTablesAsync(Root + "/Content/Catalog.asset", loader => new Tables(loader), cancellationToken: cancellation.Token).SuppressCancellationThrow();
-                Require(cancelled.IsCanceled && !tables.IsLoading && tables.Count == 0, "Pre-cancelled table loading publishes nothing");
+                bool cancelled = await tables.LoadDataTablesAsync<Tables>(Root + "/Content/Catalog.asset", cancellationToken: cancellation.Token).SuppressCancellationThrow();
+                Require(cancelled && !tables.IsLoading && tables.Count == 0, "Pre-cancelled table loading publishes nothing");
             }
             using (var cancellation = new CancellationTokenSource())
             {
-                UniTask<Tables> pending = tables.LoadDataTablesAsync(Root + "/Content/CatalogCancel.asset", loader => new Tables(loader), cancellationToken: cancellation.Token);
+                UniTask pending = tables.LoadDataTablesAsync<Tables>(Root + "/Content/CatalogCancel.asset", cancellationToken: cancellation.Token);
                 cancellation.Cancel();
-                var cancelled = await pending.SuppressCancellationThrow();
-                Require(cancelled.IsCanceled && !tables.IsLoading && tables.Count == 0, "Cancelled table loading does not publish partial tables");
-                Tables loaded = await tables.LoadDataTablesAsync(Root + "/Content/Catalog.asset", loader => new Tables(loader));
-                Require(loaded.TbItem.Count > 0 && ReferenceEquals(loaded.TbItem, tables.GetDataTable<TbItem>()), "Table loading supports immediate retry after cancellation");
+                bool cancelled = await pending.SuppressCancellationThrow();
+                Require(cancelled && !tables.IsLoading && tables.Count == 0, "Cancelled table loading does not publish partial tables");
+                await tables.LoadDataTablesAsync<Tables>(Root + "/Content/Catalog.asset");
+                Require(tables.GetDataTable<TbItem>().Count > 0, "Table loading supports immediate retry after cancellation");
                 tables.UnloadDataTables();
             }
             bool tableFailure = false;
             try
             {
-                await tables.LoadDataTablesAsync("missing-catalog", loader => new Tables(loader));
+                await tables.LoadDataTablesAsync<Tables>("missing-catalog");
             }
             catch (FrameworkException)
             {
                 tableFailure = true;
             }
             Require(tableFailure && !tables.IsLoading && tables.Count == 0, "Async table failures throw and leave no registered tables");
-            var factoryCancelled = await tables.LoadDataTablesAsync(Root + "/Content/Catalog.asset", loader =>
-            {
-                tables.CancelLoadDataTables();
-                return new Tables(loader);
-            }).SuppressCancellationThrow();
-            Require(factoryCancelled.IsCanceled && tables.Count == 0, "Cancelling during the factory prevents table registration");
-            await tables.LoadDataTablesAsync(Root + "/Content/Catalog.asset", loader => new Tables(loader));
+            bool loaderCancelled = await tables.LoadDataTablesAsync<CancellingTableLoader>(Root + "/Content/Catalog.asset").SuppressCancellationThrow();
+            Require(loaderCancelled && tables.Count == 0, "Cancelling during parsing prevents table registration");
+            await tables.LoadDataTablesAsync<Tables>(Root + "/Content/Catalog.asset");
             tables.UnloadDataTables();
 
             SceneComponent scenes = GameEntry.GetComponent<SceneComponent>();
@@ -312,22 +308,21 @@ public static class QgfResourceBackendProbe
         var settings = ScriptableObject.CreateInstance<ResourceSettings>();
         JsonUtility.FromJsonOverwrite("{\"m_DefaultPackageName\":\"QgfProbeA\",\"m_UseEditorSimulation\":true,\"m_Packages\":[{\"m_Name\":\"QgfProbeA\"},{\"m_Name\":\"QgfProbeB\"},{\"m_Name\":\"QgfProbeRaw\"}]}", settings);
         AssetDatabase.CreateAsset(settings, Root + "/ResourceSettings.asset");
+        var nativeCollector = ScriptableObject.CreateInstance<BundleCollectorSetting>();
+        AssetDatabase.CreateAsset(nativeCollector, Root + "/Editor/YooAssetCollector.asset");
+        var settingsBinding = new SerializedObject(settings);
+        settingsBinding.FindProperty("m_EditorCollector").objectReferenceValue = nativeCollector;
+        settingsBinding.ApplyModifiedPropertiesWithoutUndo();
         foreach (string name in new[] { "QgfProbeA", "QgfProbeB", "QgfProbeRaw" })
         {
-            var profile = ScriptableObject.CreateInstance<ResourceBuildProfile>();
-            var serialized = new SerializedObject(profile);
-            serialized.FindProperty("m_Settings").objectReferenceValue = settings;
+            var package = new BundleCollectorPackage { PackageName = name, SupportExtensionless = false };
+            nativeCollector.Packages.Add(package);
+            package.PackageName = name;
+            package.AutoCollectShaders = false;
+            package.IncludeAssetGUID = true;
             if (name == "QgfProbeRaw")
             {
-                serialized.FindProperty("m_BundleType").intValue = (int)EBundleType.RawBundle;
-            }
-            serialized.ApplyModifiedPropertiesWithoutUndo();
-            profile.Package.PackageName = name;
-            profile.Package.AutoCollectShaders = false;
-            profile.Package.IncludeAssetGUID = true;
-            if (name == "QgfProbeRaw")
-            {
-                profile.Package.IgnoreRuleName = nameof(RawFileIgnoreRule);
+                package.IgnoreRuleName = nameof(RawFileIgnoreRule);
             }
             string path = Root + (name == "QgfProbeRaw" ? "/Raw" : "/Content");
             var group = new BundleCollectorGroup { GroupName = "Content" };
@@ -348,8 +343,8 @@ public static class QgfResourceBackendProbe
                     AddressRuleName = nameof(AddressDisable)
                 });
             }
-            profile.Package.Groups.Add(group);
-            AssetDatabase.CreateAsset(profile, Root + "/Editor/" + name + ".asset");
+            package.Groups.Add(group);
+            EditorUtility.SetDirty(nativeCollector);
         }
         var root = new GameObject("QGF");
         root.AddComponent<BaseComponent>();
@@ -369,18 +364,22 @@ public static class QgfResourceBackendProbe
 
     private static void PrepareTableFixture()
     {
-        const string source = "Assets/Examples/01_Modules/11_DataTable/Common/Config/Data";
+        const string source = "Assets/Examples/01_Modules/UnityQGameFramework/Config/Data";
         const string target = "Assets/TableFixture";
         if (!AssetDatabase.IsValidFolder(target))
         {
             Directory.CreateDirectory(target);
             AssetDatabase.Refresh();
         }
-        foreach (string fileName in new[] { "tbitem.bytes", "Catalog.asset" })
+        foreach (string fileName in Directory.GetFiles(source, "*.bytes").Select(Path.GetFileName).Concat(new[] { "Catalog.asset" }))
         {
             string sourcePath = source + "/" + fileName;
             string targetPath = target + "/" + fileName;
-            if (!File.Exists(targetPath) && !AssetDatabase.CopyAsset(sourcePath, targetPath))
+            if (File.Exists(targetPath))
+            {
+                AssetDatabase.DeleteAsset(targetPath);
+            }
+            if (!AssetDatabase.CopyAsset(sourcePath, targetPath))
             {
                 throw new IOException("Cannot copy Luban fixture: " + sourcePath);
             }
@@ -392,19 +391,44 @@ public static class QgfResourceBackendProbe
         for (int index = 0; index < entries.arraySize; index++)
         {
             SerializedProperty data = entries.GetArrayElementAtIndex(index).FindPropertyRelative("Data");
-            TextAsset original = data.objectReferenceValue as TextAsset;
-            if (original == null)
-            {
-                throw new InvalidOperationException("Luban Catalog has a missing bytes reference.");
-            }
-            data.objectReferenceValue = AssetDatabase.LoadAssetAtPath<TextAsset>(target + "/" + original.name + ".bytes");
+            string fileName = entries.GetArrayElementAtIndex(index).FindPropertyRelative("Name").stringValue;
+            data.objectReferenceValue = AssetDatabase.LoadAssetAtPath<TextAsset>(target + "/" + fileName + ".bytes");
             if (data.objectReferenceValue == null)
             {
-                throw new InvalidOperationException("Luban fixture bytes are missing: " + original.name);
+                throw new InvalidOperationException("Luban fixture bytes are missing: " + fileName);
             }
         }
         serialized.ApplyModifiedPropertiesWithoutUndo();
         AssetDatabase.SaveAssets();
+    }
+
+    /// <summary>
+    /// 模拟在解析过程中取消的数据表加载器。
+    /// </summary>
+    public sealed class CancellingTableLoader : IDataTableLoader
+    {
+        /// <summary>
+        /// 获取生成代码的结构版本。
+        /// </summary>
+        public string SchemaHash
+        {
+            get
+            {
+                return ((IDataTableLoader)new Tables()).SchemaHash;
+            }
+        }
+
+        /// <summary>
+        /// 解析数据后取消请求。
+        /// </summary>
+        /// <param name="loader">数据文件加载方法。</param>
+        /// <returns>已解析但不应登记的数据表。</returns>
+        public IReadOnlyList<UnityQGameFramework.Core.DataTable.DataTableBase> Load(Func<string, UnityQGameFramework.Luban.ByteBuf> loader)
+        {
+            var result = ((IDataTableLoader)new Tables()).Load(loader);
+            GameEntry.GetComponent<DataTableComponent>().CancelLoadDataTables();
+            return result;
+        }
     }
 
     private static void Require(bool condition, string description)

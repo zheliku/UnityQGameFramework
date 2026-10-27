@@ -33,12 +33,24 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取当前流程。
         /// </summary>
-        public ProcedureBase CurrentProcedure => m_Initialized ? m_ProcedureManager.CurrentProcedure : null;
+        public ProcedureBase CurrentProcedure
+        {
+            get
+            {
+                return m_Initialized ? m_ProcedureManager.CurrentProcedure : null;
+            }
+        }
 
         /// <summary>
         /// 获取当前流程持续时间。
         /// </summary>
-        public float CurrentProcedureTime => m_Initialized ? m_ProcedureManager.CurrentProcedureTime : 0f;
+        public float CurrentProcedureTime
+        {
+            get
+            {
+                return m_Initialized ? m_ProcedureManager.CurrentProcedureTime : 0f;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -55,6 +67,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 创建流程实例，等待其他组件启动后进入入口流程。
+        /// </summary>
+        /// <returns>等待其他组件完成启动的协程。</returns>
         private IEnumerator Start()
         {
             ProcedureBase[] procedures = new ProcedureBase[m_AvailableProcedureTypeNames.Length];

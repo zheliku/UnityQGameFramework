@@ -7,17 +7,21 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
-    /// <summary>GET 返回字节数据，在成功回调中解码为 JSON 文本。</summary>
+    /// <summary>
+    /// GET 返回字节数据，在成功回调中解码为 JSON 文本。
+    /// </summary>
     public sealed class GetWebRequestExample : MonoBehaviour
     {
-        [SerializeField] private Button requestButton;
-        [SerializeField] private Text stateText, responseText;
-        [SerializeField] private TextAsset response;
+        [SerializeField]
+        private Button requestButton;
+        [SerializeField]
+        private Text stateText, responseText;
+        [SerializeField]
+        private TextAsset response;
         private LocalHttpServer server;
         private int serial;
         private float started, elapsed;
         private string state = "尚未请求";
-
         private void Start()
         {
             server = new LocalHttpServer(response.bytes);
@@ -28,7 +32,11 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Request()
         {
-            if (server == null || serial != 0) return;
+            if (server == null || serial != 0)
+            {
+                return;
+            }
+
             string uri = server.Url("/status.json");
             // 返回任务序号；结果事件用它确认本次请求。
             serial = QGF.WebRequest.AddWebRequest(uri);
@@ -46,8 +54,14 @@ namespace UnityQGameFramework.Examples.Modules
                 state = $"完成 · {bytes.Length} 字节";
             }
             else if (args is WebRequestFailureEventArgs failure && failure.SerialId == serial)
+            {
                 state = "失败：" + failure.ErrorMessage;
-            else return;
+            }
+            else
+            {
+                return;
+            }
+
             // 回调中取出所需值，事件参数随后回池。
             elapsed = Time.realtimeSinceStartup - started;
             serial = 0;
@@ -62,13 +76,25 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnDestroy()
         {
             var web = GameEntry.GetComponent<WebRequestComponent>();
-            if (web != null && serial != 0) web.RemoveWebRequest(serial);
+            if (web != null && serial != 0)
+            {
+                web.RemoveWebRequest(serial);
+            }
+
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(WebRequestSuccessEventArgs.EventId, OnResult)) events.Unsubscribe(WebRequestSuccessEventArgs.EventId, OnResult);
-                if (events.Check(WebRequestFailureEventArgs.EventId, OnResult)) events.Unsubscribe(WebRequestFailureEventArgs.EventId, OnResult);
+                if (events.Check(WebRequestSuccessEventArgs.EventId, OnResult))
+                {
+                    events.Unsubscribe(WebRequestSuccessEventArgs.EventId, OnResult);
+                }
+
+                if (events.Check(WebRequestFailureEventArgs.EventId, OnResult))
+                {
+                    events.Unsubscribe(WebRequestFailureEventArgs.EventId, OnResult);
+                }
             }
+
             server?.Dispose();
         }
     }

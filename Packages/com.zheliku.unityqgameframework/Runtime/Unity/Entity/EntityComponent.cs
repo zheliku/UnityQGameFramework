@@ -104,6 +104,9 @@ namespace UnityQGameFramework.Runtime
             m_EntityManager.HideEntityComplete += OnHideEntityComplete;
         }
 
+        /// <summary>
+        /// 连接资源和对象池模块，创建实体辅助器及实体组。
+        /// </summary>
         private void Start()
         {
             BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
@@ -1109,27 +1112,52 @@ namespace UnityQGameFramework.Runtime
             entityGroup.SetEntityInstancePriority(entity.gameObject, priority);
         }
 
+        /// <summary>
+        /// 派发实体显示成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnShowEntitySuccess(object sender, UnityQGameFramework.Core.Entity.ShowEntitySuccessEventArgs e)
         {
             m_EventComponent.Fire(this, ShowEntitySuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 记录实体加载错误并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnShowEntityFailure(object sender, UnityQGameFramework.Core.Entity.ShowEntityFailureEventArgs e)
         {
             Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", e.EntityId, e.EntityAssetName, e.EntityGroupName, e.ErrorMessage);
             m_EventComponent.Fire(this, ShowEntityFailureEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发实体加载进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnShowEntityUpdate(object sender, UnityQGameFramework.Core.Entity.ShowEntityUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, ShowEntityUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发实体依赖资源加载事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnShowEntityDependencyAsset(object sender, UnityQGameFramework.Core.Entity.ShowEntityDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, ShowEntityDependencyAssetEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发实体隐藏完成事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnHideEntityComplete(object sender, UnityQGameFramework.Core.Entity.HideEntityCompleteEventArgs e)
         {
             m_EventComponent.Fire(this, HideEntityCompleteEventArgs.Create(e));

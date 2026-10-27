@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -31,7 +31,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取多值字典中实际包含的主键数量。
         /// </summary>
-        public int Count => m_Dictionary.Count;
+        public int Count
+        {
+            get
+            {
+                return m_Dictionary.Count;
+            }
+        }
 
         /// <summary>
         /// 获取多值字典中指定主键的范围。
@@ -214,6 +220,10 @@ namespace UnityQGameFramework.Core
         {
             private Dictionary<TKey, FrameworkLinkedListRange<TValue>>.Enumerator m_Enumerator;
 
+            /// <summary>
+            /// 初始化多值字典枚举器。
+            /// </summary>
+            /// <param name="dictionary">要遍历的字典。</param>
             internal Enumerator(Dictionary<TKey, FrameworkLinkedListRange<TValue>> dictionary)
             {
                 if (dictionary == null)
@@ -225,14 +235,26 @@ namespace UnityQGameFramework.Core
             }
 
             /// <summary>
-            /// 获取当前结点。
+            /// 获取枚举器当前位置的元素。
             /// </summary>
-            public KeyValuePair<TKey, FrameworkLinkedListRange<TValue>> Current => m_Enumerator.Current;
+            public KeyValuePair<TKey, FrameworkLinkedListRange<TValue>> Current
+            {
+                get
+                {
+                    return m_Enumerator.Current;
+                }
+            }
 
             /// <summary>
-            /// 获取当前的枚举数。
+            /// 获取枚举器当前位置的元素。
             /// </summary>
-            object IEnumerator.Current => m_Enumerator.Current;
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return m_Enumerator.Current;
+                }
+            }
 
             /// <summary>
             /// 清理枚举数。
@@ -243,9 +265,9 @@ namespace UnityQGameFramework.Core
             }
 
             /// <summary>
-            /// 获取下一个结点。
+            /// 将枚举器移到下一个元素。
             /// </summary>
-            /// <returns>返回下一个结点。</returns>
+            /// <returns>成功移到下一个元素时返回真；已到集合末尾时返回假。</returns>
             public bool MoveNext()
             {
                 return m_Enumerator.MoveNext();

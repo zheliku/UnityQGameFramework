@@ -18,15 +18,28 @@ namespace StarForce
         [SerializeField]
         private AircraftData m_AircraftData = null;
 
+        /// <summary>
+        /// 当前推进器实体。
+        /// </summary>
         [SerializeField]
         protected Thruster m_Thruster = null;
 
+        /// <summary>
+        /// 当前附加的武器实体。
+        /// </summary>
         [SerializeField]
         protected List<Weapon> m_Weapons = new List<Weapon>();
 
+        /// <summary>
+        /// 当前附加的装甲实体。
+        /// </summary>
         [SerializeField]
         protected List<Armor> m_Armors = new List<Armor>();
 
+        /// <summary>
+        /// 显示实体并接收业务数据。
+        /// </summary>
+        /// <param name="userData">显示时传入的飞机数据，类型为 AircraftData。</param>
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -56,11 +69,22 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 隐藏实体并清理本次使用的状态。
+        /// </summary>
+        /// <param name="isShutdown">是否是关闭实体管理器时触发。</param>
+        /// <param name="userData">用户自定义数据。</param>
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
         }
 
+        /// <summary>
+        /// 实体附加子实体。
+        /// </summary>
+        /// <param name="childEntity">附加的子实体。</param>
+        /// <param name="parentTransform">被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
         protected override void OnAttached(EntityLogic childEntity, Transform parentTransform, object userData)
         {
             base.OnAttached(childEntity, parentTransform, userData);
@@ -84,6 +108,11 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 实体解除子实体。
+        /// </summary>
+        /// <param name="childEntity">解除的子实体。</param>
+        /// <param name="userData">用户自定义数据。</param>
         protected override void OnDetached(EntityLogic childEntity, object userData)
         {
             base.OnDetached(childEntity, userData);
@@ -107,6 +136,10 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 处理实体死亡效果与隐藏。
+        /// </summary>
+        /// <param name="attacker">造成伤害的实体。</param>
         protected override void OnDead(Entity attacker)
         {
             base.OnDead(attacker);
@@ -118,6 +151,10 @@ namespace StarForce
             GameEntry.Sound.PlaySound(m_AircraftData.DeadSoundId);
         }
 
+        /// <summary>
+        /// 获取本次碰撞结算数据。
+        /// </summary>
+        /// <returns>阵营、生命值、攻击和防御信息。</returns>
         public override ImpactData GetImpactData()
         {
             return new ImpactData(m_AircraftData.Camp, m_AircraftData.HP, 0, m_AircraftData.Defense);

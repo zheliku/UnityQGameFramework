@@ -107,8 +107,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public bool ShowFullWindow
         {
-            get => m_ShowFullWindow;
-            set => m_ShowFullWindow = value;
+            get
+            {
+                return m_ShowFullWindow;
+            }
+            set
+            {
+                m_ShowFullWindow = value;
+            }
         }
 
         /// <summary>
@@ -116,8 +122,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public Rect IconRect
         {
-            get => m_IconRect;
-            set => m_IconRect = value;
+            get
+            {
+                return m_IconRect;
+            }
+            set
+            {
+                m_IconRect = value;
+            }
         }
 
         /// <summary>
@@ -125,8 +137,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public Rect WindowRect
         {
-            get => m_WindowRect;
-            set => m_WindowRect = value;
+            get
+            {
+                return m_WindowRect;
+            }
+            set
+            {
+                m_WindowRect = value;
+            }
         }
 
         /// <summary>
@@ -134,8 +152,14 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         public float WindowScale
         {
-            get => m_WindowScale;
-            set => m_WindowScale = value;
+            get
+            {
+                return m_WindowScale;
+            }
+            set
+            {
+                m_WindowScale = value;
+            }
         }
 
         /// <summary>
@@ -155,6 +179,9 @@ namespace UnityQGameFramework.Runtime
             m_FpsCounter = new FpsCounter(0.5f);
         }
 
+        /// <summary>
+        /// 注册内置调试窗口。
+        /// </summary>
         private void Start()
         {
             RegisterDebuggerWindow("Console", m_ConsoleWindow);
@@ -211,11 +238,17 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 更新帧率计数和调试窗口。
+        /// </summary>
         private void Update()
         {
             m_FpsCounter.Update(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
+        /// <summary>
+        /// 按显示状态绘制调试器图标或窗口。
+        /// </summary>
         private void OnGUI()
         {
             if (m_DebuggerManager == null || !m_DebuggerManager.ActiveWindow)
@@ -296,8 +329,8 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取记录的所有日志。
         /// </summary>
-        /// <remarks>清空并填充结果列表，按记录顺序返回。日志结点由调试器持有，需要长期保存时复制字段。</remarks>
         /// <param name="results">要获取的日志。</param>
+        /// <remarks>清空并填充结果列表，按记录顺序返回。日志结点由调试器持有，需要长期保存时复制字段。</remarks>
         public void GetRecentLogs(List<LogNode> results)
         {
             m_ConsoleWindow.GetRecentLogs(results);
@@ -306,20 +339,28 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取记录的最近日志。
         /// </summary>
-        /// <remarks>清空并填充结果列表，返回末尾的 count 条，保留记录顺序。</remarks>
         /// <param name="results">要获取的日志。</param>
         /// <param name="count">要获取最近日志的数量。</param>
+        /// <remarks>清空并填充结果列表，返回末尾的 count 条，保留记录顺序。</remarks>
         public void GetRecentLogs(List<LogNode> results, int count)
         {
             m_ConsoleWindow.GetRecentLogs(results, count);
         }
 
+        /// <summary>
+        /// 绘制调试器窗口框架及当前页面。
+        /// </summary>
+        /// <param name="windowId">IMGUI 窗口编号。</param>
         private void DrawWindow(int windowId)
         {
             GUI.DragWindow(m_DragRect);
             DrawDebuggerWindowGroup(m_DebuggerManager.DebuggerWindowRoot);
         }
 
+        /// <summary>
+        /// 绘制调试窗口组的导航及选中窗口。
+        /// </summary>
+        /// <param name="debuggerWindowGroup">当前调试窗口组。</param>
         private void DrawDebuggerWindowGroup(IDebuggerWindowGroup debuggerWindowGroup)
         {
             if (debuggerWindowGroup == null)
@@ -367,6 +408,10 @@ namespace UnityQGameFramework.Runtime
             debuggerWindowGroup.SelectedWindow.OnDraw();
         }
 
+        /// <summary>
+        /// 绘制调试器图标。
+        /// </summary>
+        /// <param name="windowId">IMGUI 窗口编号。</param>
         private void DrawDebuggerWindowIcon(int windowId)
         {
             GUI.DragWindow(m_DragRect);
@@ -397,6 +442,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 复制文本到系统剪贴板。
+        /// </summary>
+        /// <param name="content">要复制的文本。</param>
         private static void CopyToClipboard(string content)
         {
             GUIUtility.systemCopyBuffer = content;

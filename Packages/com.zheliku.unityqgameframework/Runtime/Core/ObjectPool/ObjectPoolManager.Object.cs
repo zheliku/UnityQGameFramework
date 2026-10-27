@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -29,15 +29,27 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// <summary>
             /// 获取对象名称。
             /// </summary>
-            public string Name => m_Object.Name;
+            public string Name
+            {
+                get
+                {
+                    return m_Object.Name;
+                }
+            }
 
             /// <summary>
             /// 获取对象是否被加锁。
             /// </summary>
             public bool Locked
             {
-                get => m_Object.Locked;
-                internal set => m_Object.Locked = value;
+                get
+                {
+                    return m_Object.Locked;
+                }
+                internal set
+                {
+                    m_Object.Locked = value;
+                }
             }
 
             /// <summary>
@@ -45,24 +57,48 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// </summary>
             public int Priority
             {
-                get => m_Object.Priority;
-                internal set => m_Object.Priority = value;
+                get
+                {
+                    return m_Object.Priority;
+                }
+                internal set
+                {
+                    m_Object.Priority = value;
+                }
             }
 
             /// <summary>
             /// 获取自定义释放检查标记。
             /// </summary>
-            public bool CustomCanReleaseFlag => m_Object.CustomCanReleaseFlag;
+            public bool CustomCanReleaseFlag
+            {
+                get
+                {
+                    return m_Object.CustomCanReleaseFlag;
+                }
+            }
 
             /// <summary>
             /// 获取对象上次使用时间。
             /// </summary>
-            public DateTime LastUseTime => m_Object.LastUseTime;
+            public DateTime LastUseTime
+            {
+                get
+                {
+                    return m_Object.LastUseTime;
+                }
+            }
 
             /// <summary>
             /// 获取对象是否正在使用。
             /// </summary>
-            public bool IsInUse => SpawnCount > 0;
+            public bool IsInUse
+            {
+                get
+                {
+                    return SpawnCount > 0;
+                }
+            }
 
             /// <summary>
             /// 获取对象的获取计数。

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -21,7 +21,13 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取数据在此计算机结构中存储时的字节顺序。
             /// </summary>
-            public static bool IsLittleEndian => BitConverter.IsLittleEndian;
+            public static bool IsLittleEndian
+            {
+                get
+                {
+                    return BitConverter.IsLittleEndian;
+                }
+            }
 
             /// <summary>
             /// 获取或设置屏幕每英寸点数。

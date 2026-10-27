@@ -4,6 +4,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Globalization;
 using UnityQGameFramework.Core;
 using UnityEngine;
 
@@ -14,6 +15,13 @@ namespace UnityQGameFramework.Runtime
     /// </summary>
     public class DefaultLogHelper : FrameworkLog.ILogHelper
     {
+#if UNITY_EDITOR
+        /// <summary>
+        /// 获取或设置编辑器日志的格式化方法。
+        /// </summary>
+        public static Func<FrameworkLogLevel, string, string> EditorLogFormatter { get; set; }
+#endif
+
         /// <summary>
         /// 记录日志。
         /// </summary>
@@ -21,33 +29,43 @@ namespace UnityQGameFramework.Runtime
         /// <param name="message">日志内容。</param>
         public void Log(FrameworkLogLevel level, object message)
         {
+            if (level == FrameworkLogLevel.Fatal)
+            {
+                throw new FrameworkException(message == null ? "null" : message.ToString(), message as Exception);
+            }
+            if (level == FrameworkLogLevel.Error && message is Exception exception)
+            {
+                // Unity 直接记录原异常，保留异常类型、抛出位置和 InnerException。
+                Debug.LogException(exception);
+                return;
+            }
+            string content = message == null ? "null" : message.ToString();
+            string text;
+#if UNITY_EDITOR
+            // 编辑器时间由 Console 展示；格式化器只补充等级和调用位置。
+            text = EditorLogFormatter != null ? EditorLogFormatter(level, content)
+                : "[QGF] " + level.ToString().ToUpperInvariant() + " | " + content;
+#else
+            string time = DateTime.Now.ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            text = "[QGF] " + time + " | " + level.ToString().ToUpperInvariant() + " | " + content;
+#endif
             switch (level)
             {
                 case FrameworkLogLevel.Debug:
-                    Debug.Log(Utility.Text.Format("<color=#888888>{0}</color>", message));
-                    break;
-
                 case FrameworkLogLevel.Info:
-                    Debug.Log(message.ToString());
+                    Debug.Log(text);
                     break;
 
                 case FrameworkLogLevel.Warning:
-                    Debug.LogWarning(message.ToString());
+                    Debug.LogWarning(text);
                     break;
 
                 case FrameworkLogLevel.Error:
-                    if (message is Exception exception)
-                    {
-                        Debug.LogException(exception);
-                    }
-                    else
-                    {
-                        Debug.LogError(message.ToString());
-                    }
+                    Debug.LogError(text);
                     break;
 
                 default:
-                    throw new FrameworkException(message.ToString());
+                    throw new FrameworkException(content, message as Exception);
             }
         }
     }

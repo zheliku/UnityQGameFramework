@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -55,7 +55,13 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取所在的声音组。
             /// </summary>
-            public ISoundGroup SoundGroup => m_SoundGroup;
+            public ISoundGroup SoundGroup
+            {
+                get
+                {
+                    return m_SoundGroup;
+                }
+            }
 
             /// <summary>
             /// 获取或设置声音的序列编号。
@@ -65,26 +71,50 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取当前是否正在播放。
             /// </summary>
-            public bool IsPlaying => Helper.IsPlaying;
+            public bool IsPlaying
+            {
+                get
+                {
+                    return Helper.IsPlaying;
+                }
+            }
 
             /// <summary>
             /// 获取声音长度。
             /// </summary>
-            public float Length => Helper.Length;
+            public float Length
+            {
+                get
+                {
+                    return Helper.Length;
+                }
+            }
 
             /// <summary>
             /// 获取或设置播放位置。
             /// </summary>
             public float Time
             {
-                get => Helper.Time;
-                set => Helper.Time = value;
+                get
+                {
+                    return Helper.Time;
+                }
+                set
+                {
+                    Helper.Time = value;
+                }
             }
 
             /// <summary>
             /// 获取是否静音。
             /// </summary>
-            public bool Mute => Helper.Mute;
+            public bool Mute
+            {
+                get
+                {
+                    return Helper.Mute;
+                }
+            }
 
             /// <summary>
             /// 获取或设置在声音组内是否静音。
@@ -107,8 +137,14 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public bool Loop
             {
-                get => Helper.Loop;
-                set => Helper.Loop = value;
+                get
+                {
+                    return Helper.Loop;
+                }
+                set
+                {
+                    Helper.Loop = value;
+                }
             }
 
             /// <summary>
@@ -116,14 +152,26 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public int Priority
             {
-                get => Helper.Priority;
-                set => Helper.Priority = value;
+                get
+                {
+                    return Helper.Priority;
+                }
+                set
+                {
+                    Helper.Priority = value;
+                }
             }
 
             /// <summary>
             /// 获取音量大小。
             /// </summary>
-            public float Volume => Helper.Volume;
+            public float Volume
+            {
+                get
+                {
+                    return Helper.Volume;
+                }
+            }
 
             /// <summary>
             /// 获取或设置在声音组内音量大小。
@@ -146,8 +194,14 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public float Pitch
             {
-                get => Helper.Pitch;
-                set => Helper.Pitch = value;
+                get
+                {
+                    return Helper.Pitch;
+                }
+                set
+                {
+                    Helper.Pitch = value;
+                }
             }
 
             /// <summary>
@@ -155,8 +209,14 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public float PanStereo
             {
-                get => Helper.PanStereo;
-                set => Helper.PanStereo = value;
+                get
+                {
+                    return Helper.PanStereo;
+                }
+                set
+                {
+                    Helper.PanStereo = value;
+                }
             }
 
             /// <summary>
@@ -164,8 +224,14 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public float SpatialBlend
             {
-                get => Helper.SpatialBlend;
-                set => Helper.SpatialBlend = value;
+                get
+                {
+                    return Helper.SpatialBlend;
+                }
+                set
+                {
+                    Helper.SpatialBlend = value;
+                }
             }
 
             /// <summary>
@@ -173,8 +239,14 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public float MaxDistance
             {
-                get => Helper.MaxDistance;
-                set => Helper.MaxDistance = value;
+                get
+                {
+                    return Helper.MaxDistance;
+                }
+                set
+                {
+                    Helper.MaxDistance = value;
+                }
             }
 
             /// <summary>
@@ -182,8 +254,14 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public float DopplerLevel
             {
-                get => Helper.DopplerLevel;
-                set => Helper.DopplerLevel = value;
+                get
+                {
+                    return Helper.DopplerLevel;
+                }
+                set
+                {
+                    Helper.DopplerLevel = value;
+                }
             }
 
             /// <summary>
@@ -289,6 +367,11 @@ namespace UnityQGameFramework.Core.Sound
                 Helper.Reset();
             }
 
+            /// <summary>
+            /// 为声音代理设置已加载的声音资源。
+            /// </summary>
+            /// <param name="soundAsset">声音资源。</param>
+            /// <returns>是否成功设置声音资源。</returns>
             internal bool SetSoundAsset(object soundAsset)
             {
                 Reset();
@@ -297,16 +380,27 @@ namespace UnityQGameFramework.Core.Sound
                 return Helper.SetSoundAsset(soundAsset);
             }
 
+            /// <summary>
+            /// 将声音组和播放参数的静音设置应用到代理。
+            /// </summary>
             internal void RefreshMute()
             {
                 Helper.Mute = m_SoundGroup.Mute || m_MuteInSoundGroup;
             }
 
+            /// <summary>
+            /// 将声音组和播放参数的音量应用到代理。
+            /// </summary>
             internal void RefreshVolume()
             {
                 Helper.Volume = m_SoundGroup.Volume * m_VolumeInSoundGroup;
             }
 
+            /// <summary>
+            /// 重置声音代理并归还声音资源。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnResetSoundAgent(object sender, ResetSoundAgentEventArgs e)
             {
                 Reset();

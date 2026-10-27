@@ -18,6 +18,10 @@ namespace StarForce
 
         private float m_ElapseSeconds = 0f;
 
+        /// <summary>
+        /// 显示实体并接收业务数据。
+        /// </summary>
+        /// <param name="userData">显示时传入的特效数据，类型为 EffectData。</param>
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -32,6 +36,11 @@ namespace StarForce
             m_ElapseSeconds = 0f;
         }
 
+        /// <summary>
+        /// 更新实体状态。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);

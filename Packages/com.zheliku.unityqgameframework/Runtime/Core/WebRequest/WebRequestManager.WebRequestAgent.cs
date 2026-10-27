@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -14,8 +14,19 @@ namespace UnityQGameFramework.Core.WebRequest
         {
             private readonly IWebRequestAgentHelper m_Helper;
 
+            /// <summary>
+            /// Web 请求开始回调。
+            /// </summary>
             public FrameworkAction<WebRequestAgent> WebRequestAgentStart;
+
+            /// <summary>
+            /// Web 请求成功回调。
+            /// </summary>
             public FrameworkAction<WebRequestAgent, byte[]> WebRequestAgentSuccess;
+
+            /// <summary>
+            /// Web 请求失败回调。
+            /// </summary>
             public FrameworkAction<WebRequestAgent, string> WebRequestAgentFailure;
 
             /// <summary>
@@ -130,6 +141,11 @@ namespace UnityQGameFramework.Core.WebRequest
                 WaitTime = 0f;
             }
 
+            /// <summary>
+            /// 通知 Web 请求成功。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnWebRequestAgentHelperComplete(object sender, WebRequestAgentHelperCompleteEventArgs e)
             {
                 m_Helper.Reset();
@@ -143,6 +159,11 @@ namespace UnityQGameFramework.Core.WebRequest
                 Task.Done = true;
             }
 
+            /// <summary>
+            /// 通知 Web 请求失败。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnWebRequestAgentHelperError(object sender, WebRequestAgentHelperErrorEventArgs e)
             {
                 m_Helper.Reset();

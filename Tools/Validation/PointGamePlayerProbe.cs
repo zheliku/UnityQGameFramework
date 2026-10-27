@@ -1,3 +1,4 @@
+using YooAsset;
 using System;
 using System.IO;
 using System.Reflection;
@@ -35,8 +36,8 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
             await Until(() => GameEntry.GetComponent<ProcedureComponent>()?.CurrentProcedure is PointGameMenu
                 && Game() != null, "Package boot and asynchronous menu form");
             object game = Game();
-            Require(!Application.isEditor && QGF.Resource.ResourceMode == ResourceMode.Package, "Actual Player Package backend");
-            Require(QGF.Resource.Settings.GetPackage().PlayMode == ResourcePlayMode.Offline
+            Require(!Application.isEditor && QGF.Resource.PlayMode == YooAsset.EPlayMode.OfflinePlayMode, "Actual Player Package backend");
+            Require(QGF.Resource.Settings.GetPackage().PlayMode == EPlayMode.OfflinePlayMode
                 && QGF.Resource.Settings.DefaultPackageName == "QgfExamples.PointPointPoint", "Sample-owned YooAsset package");
             Require((int)Get(game, "TargetCount") == 10 && (float)Get(game, "Duration") == 20, "Rules loaded from bundled TOML");
             Require(GameEntry.GetComponent<BaseComponent>().gameObject.name == "QGF", "QGF root name");
@@ -69,7 +70,7 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
                 await Until(() => QGF.Procedure.CurrentProcedure is PointGamePlay && Game() != null, "Second process round");
                 for (int i = 0; i < 3; i++)
                 {
-                    Click("missButton");
+                    Click("boardButton");
                     int expected = 2 - i;
                     await Until(() => (int)Get(game, "Lives") == expected, "Miss " + i);
                 }

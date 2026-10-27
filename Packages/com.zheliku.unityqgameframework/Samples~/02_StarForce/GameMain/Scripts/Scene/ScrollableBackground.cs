@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 滚动背景并提供显示、移动和出生边界。
+    /// </summary>
     public class ScrollableBackground : MonoBehaviour
     {
         [SerializeField]
@@ -39,10 +42,37 @@ namespace StarForce
             m_CachedTransform.position = m_StartPosition + Vector3.forward * newPosition;
         }
 
-        public BoxCollider VisibleBoundary => m_VisibleBoundary;
+        /// <summary>
+        /// 获取实体可见边界。
+        /// </summary>
+        public BoxCollider VisibleBoundary
+        {
+            get
+            {
+                return m_VisibleBoundary;
+            }
+        }
 
-        public BoxCollider PlayerMoveBoundary => m_PlayerMoveBoundary;
+        /// <summary>
+        /// 获取玩家移动边界。
+        /// </summary>
+        public BoxCollider PlayerMoveBoundary
+        {
+            get
+            {
+                return m_PlayerMoveBoundary;
+            }
+        }
 
-        public BoxCollider EnemySpawnBoundary => m_EnemySpawnBoundary;
+        /// <summary>
+        /// 获取敌人出生边界。
+        /// </summary>
+        public BoxCollider EnemySpawnBoundary
+        {
+            get
+            {
+                return m_EnemySpawnBoundary;
+            }
+        }
     }
 }

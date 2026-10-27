@@ -361,7 +361,7 @@ public static class ValidateUguiExamples
         }
         else if (name == "LoadRoomExample")
         {
-            string path = AssetDatabase.GUIDToAssetPath((string)example.GetType().GetField("roomGuid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(example));
+            string path = "Scene_LoadRoom_BlueRoom";
             for (int i = 0; i < 2; i++)
             {
                 await Click(button("loadButton"), mouse);

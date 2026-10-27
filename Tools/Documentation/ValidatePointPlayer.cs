@@ -11,6 +11,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Examples.PointPointPoint.Editor;
+using UnityQGameFramework.Runtime;
+using YooAsset;
 
 // 验收真实 Player，构建后分别启动两个进程；不修改项目资源与设置。
 public static class ValidatePointPlayer
@@ -21,7 +23,10 @@ public static class ValidatePointPlayer
         string output = Path.GetFullPath("Artifacts~/PointPlayer");
         Directory.CreateDirectory(output);
         string player = Path.Combine(output, "PointPointPoint.exe");
-        string scene = AssetDatabase.GUIDToAssetPath(BuildPointGame.SceneGuid);
+        string scene = BuildPointGame.GetScenePath();
+        string resourceSettingsPath = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(scene))).Replace('\\', '/')
+            + "/UnityQGameFramework/Resource/ResourceSettings.asset";
+        byte[] resourceSettingsBytes = File.ReadAllBytes(resourceSettingsPath);
         var watched = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .Select(name => "ProjectSettings/" + name + ".asset").Concat(new[] { scene }).ToDictionary(path => path, Hash);
         var streaming = Tree("Assets/StreamingAssets");
@@ -40,6 +45,11 @@ public static class ValidatePointPlayer
         Application.logMessageReceived += capture;
         try
         {
+            // 和开发者在 Inspector 中的操作相同：构建前明确选择离线模式，验收后还原源资产。
+            var resourceSettings = new SerializedObject(AssetDatabase.LoadAssetAtPath<ResourceSettings>(resourceSettingsPath));
+            resourceSettings.FindProperty("m_Packages").GetArrayElementAtIndex(0).FindPropertyRelative("m_Mode").intValue = (int)EPlayMode.OfflinePlayMode;
+            resourceSettings.ApplyModifiedPropertiesWithoutUndo();
+            AssetDatabase.SaveAssets();
             BuildPointGame.BuildPlayer(player);
             foreach (string run in new[] { "first", "second" })
             {
@@ -71,6 +81,8 @@ public static class ValidatePointPlayer
         finally
         {
             Application.logMessageReceived -= capture;
+            File.WriteAllBytes(resourceSettingsPath, resourceSettingsBytes);
+            AssetDatabase.ImportAsset(resourceSettingsPath, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
             // 测试会覆盖示例纪录；完成后还原验收前的文件。
             if (save != null) File.WriteAllBytes(PointGameSettingHelper.SavePath, save);
             else if (File.Exists(PointGameSettingHelper.SavePath)) File.Delete(PointGameSettingHelper.SavePath);

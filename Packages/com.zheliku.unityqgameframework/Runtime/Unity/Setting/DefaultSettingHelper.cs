@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -21,7 +21,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取游戏配置项数量。
         /// </summary>
-        public override int Count => Setting != null ? Setting.Count : 0;
+        public override int Count
+        {
+            get
+            {
+                return Setting != null ? Setting.Count : 0;
+            }
+        }
 
         /// <summary>
         /// 获取游戏配置存储文件路径。
@@ -333,6 +339,9 @@ namespace UnityQGameFramework.Runtime
             SetString(settingName, Utility.Json.ToJson(obj));
         }
 
+        /// <summary>
+        /// 注册本地设置序列化和反序列化回调。
+        /// </summary>
         private void Awake()
         {
             FilePath = Utility.Path.GetRegularPath(Path.Combine(Application.persistentDataPath, SettingFileName));
@@ -342,12 +351,23 @@ namespace UnityQGameFramework.Runtime
             Serializer.RegisterDeserializeCallback(0, DeserializeDefaultSettingCallback);
         }
 
+        /// <summary>
+        /// 将本地设置写入流。
+        /// </summary>
+        /// <param name="stream">写入目标流。</param>
+        /// <param name="defaultSetting">要写入的本地设置。</param>
+        /// <returns>是否成功写入本地设置。</returns>
         private bool SerializeDefaultSettingCallback(Stream stream, DefaultSetting defaultSetting)
         {
             Setting.Serialize(stream);
             return true;
         }
 
+        /// <summary>
+        /// 从流中读取本地设置。
+        /// </summary>
+        /// <param name="stream">设置数据流。</param>
+        /// <returns>读取的本地设置。</returns>
         private DefaultSetting DeserializeDefaultSettingCallback(Stream stream)
         {
             Setting.Deserialize(stream);

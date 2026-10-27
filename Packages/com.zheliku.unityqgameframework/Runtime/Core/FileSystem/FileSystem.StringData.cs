@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -23,12 +23,22 @@ namespace UnityQGameFramework.Core.FileSystem
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = byte.MaxValue)]
             private readonly byte[] m_Bytes;
 
+            /// <summary>
+            /// 初始化文件名字符串数据。
+            /// </summary>
+            /// <param name="length">有效字符串的 UTF-8 字节数。</param>
+            /// <param name="bytes">用于保存加密字符串的缓冲区。</param>
             public StringData(byte length, byte[] bytes)
             {
                 m_Length = length;
                 m_Bytes = bytes;
             }
 
+            /// <summary>
+            /// 解密并读取文件名字符串。
+            /// </summary>
+            /// <param name="encryptBytes">文件名加密字节序列。</param>
+            /// <returns>解密后的文件名字符串。</returns>
             public string GetString(byte[] encryptBytes)
             {
                 if (m_Length <= 0)
@@ -41,6 +51,12 @@ namespace UnityQGameFramework.Core.FileSystem
                 return Utility.Converter.GetString(s_CachedBytes, 0, m_Length);
             }
 
+            /// <summary>
+            /// 加密并写入文件名字符串。
+            /// </summary>
+            /// <param name="value">文件名字符串。</param>
+            /// <param name="encryptBytes">文件名加密字节序列。</param>
+            /// <returns>写入后的字符串数据。</returns>
             public StringData SetString(string value, byte[] encryptBytes)
             {
                 if (string.IsNullOrEmpty(value))
@@ -59,6 +75,10 @@ namespace UnityQGameFramework.Core.FileSystem
                 return new StringData((byte)length, m_Bytes);
             }
 
+            /// <summary>
+            /// 清空字符串的有效长度。
+            /// </summary>
+            /// <returns>清空后的字符串数据。</returns>
             public StringData Clear()
             {
                 return new StringData(0, m_Bytes);

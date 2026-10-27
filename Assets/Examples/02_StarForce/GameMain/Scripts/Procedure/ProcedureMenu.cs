@@ -9,17 +9,27 @@ using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Cor
 
 namespace StarForce
 {
+    /// <summary>
+    /// 等待菜单中的开始请求。
+    /// </summary>
     public class ProcedureMenu : ProcedureBase
     {
         private bool m_StartGame = false;
         private MenuForm m_MenuForm = null;
 
+        /// <summary>
+        /// 提出开始游戏请求。
+        /// </summary>
         public void StartGame()
         {
             // 按钮只提出开始请求，流程在 OnUpdate 中统一切换。
             m_StartGame = true;
         }
 
+        /// <summary>
+        /// 进入状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -31,6 +41,11 @@ namespace StarForce
             GameEntry.UI.OpenUIForm(UIFormId.MenuForm, this);
         }
 
+        /// <summary>
+        /// 离开状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="isShutdown">是否是关闭状态机时触发。</param>
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
@@ -44,6 +59,12 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 更新当前流程。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);

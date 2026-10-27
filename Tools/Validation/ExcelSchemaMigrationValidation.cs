@@ -14,7 +14,7 @@ public static class ExcelSchemaMigrationValidation
         {
             foreach (string root in new[] { "Assets/UnityQGameFramework/Config", "Assets/Examples/02_StarForce/UnityQGameFramework/Config" })
             {
-                var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/Editor/LubanProfile.asset");
+                var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/LubanProfile.asset");
                 await LubanGenerator.GenerateAsync(profile);
                 var catalog = AssetDatabase.LoadAssetAtPath<LubanDataTableCatalog>(root + "/Data/Catalog.asset");
                 int expected = root.Contains("StarForce") ? 11 : 1;

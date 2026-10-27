@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -193,6 +193,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查并跳过压缩流头标识。
+        /// </summary>
+        /// <param name="compressedStream">压缩数据流。</param>
         private static void ProcessHeader(Stream compressedStream)
         {
             if (compressedStream.Length >= 8L)

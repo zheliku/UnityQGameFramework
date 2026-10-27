@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -96,12 +96,24 @@ namespace UnityQGameFramework.Core.UI
             /// <summary>
             /// 获取界面组中界面数量。
             /// </summary>
-            public int UIFormCount => m_UIFormInfos.Count;
+            public int UIFormCount
+            {
+                get
+                {
+                    return m_UIFormInfos.Count;
+                }
+            }
 
             /// <summary>
             /// 获取当前界面。
             /// </summary>
-            public IUIForm CurrentUIForm => m_UIFormInfos.First != null ? m_UIFormInfos.First.Value.UIForm : null;
+            public IUIForm CurrentUIForm
+            {
+                get
+                {
+                    return m_UIFormInfos.First != null ? m_UIFormInfos.First.Value.UIForm : null;
+                }
+            }
 
             /// <summary>
             /// 获取界面组辅助器。
@@ -448,6 +460,11 @@ namespace UnityQGameFramework.Core.UI
                 }
             }
 
+            /// <summary>
+            /// 收集指定资源名称的已打开界面。
+            /// </summary>
+            /// <param name="uiFormAssetName">界面资源名称。</param>
+            /// <param name="results">接收界面的列表，保留已有内容并追加匹配界面。</param>
             internal void InternalGetUIForms(string uiFormAssetName, List<IUIForm> results)
             {
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
@@ -459,6 +476,10 @@ namespace UnityQGameFramework.Core.UI
                 }
             }
 
+            /// <summary>
+            /// 收集组内所有已打开界面。
+            /// </summary>
+            /// <param name="results">接收界面的列表，保留已有内容并追加组内界面。</param>
             internal void InternalGetAllUIForms(List<IUIForm> results)
             {
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
@@ -467,6 +488,11 @@ namespace UnityQGameFramework.Core.UI
                 }
             }
 
+            /// <summary>
+            /// 查找界面的组内状态记录。
+            /// </summary>
+            /// <param name="uiForm">要查找的界面。</param>
+            /// <returns>界面状态记录；未加入本组时返回空。</returns>
             private UIFormInfo GetUIFormInfo(IUIForm uiForm)
             {
                 if (uiForm == null)

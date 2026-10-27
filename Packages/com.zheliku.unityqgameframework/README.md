@@ -18,6 +18,8 @@ https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.un
 
 ## 文档
 
+DataTableComponent 自动初始化；在业务 `Start` 或启动流程中用 `LoadDataTables<Tables>()` 加载一次，再用 `GetDataTable<TbXxx>()` 查询。全局 Luban Profile 决定生成目标，组件的 Catalog 决定运行时数据；Catalog 是数据清单，不是缓存。配置与完整步骤见[模块 Sample README](Samples~/01_Modules/README.md#datatable-从哪里开始)。
+
 - [框架运行](Documentation~/00-runtime.md)：初始化、更新、关闭和异步调用。
 - [模块示例](Documentation~/06-module-examples.md)：运行场景、编辑代码和资源。
 - [项目约定](Documentation~/03-conventions.md)：生命周期与资源归还。

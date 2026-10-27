@@ -783,7 +783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c05f2c5a795f94a55585ba87b77444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityQGameFramework.Examples.Modules::UnityQGameFramework.Examples.Modules.OneShotSoundExample
-  soundGuid: a2ff4d3726e155fab387bad7053f88ad
   playButton: {fileID: 517981618}
   outputText: {fileID: 121741513}
 --- !u!4 &842627690

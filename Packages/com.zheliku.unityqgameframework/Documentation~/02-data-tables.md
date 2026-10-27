@@ -26,7 +26,7 @@ Excel 是编辑数据的地方；C# 定义运行时类型；bytes 保存具体�
 
 ## 2. 先看清四个 Excel
 
-打开 `Source/Datas`，初始内容有四个工作簿：
+打开 `Source`，初始内容有四个工作簿：
 
 | 文件                  | 用途                                       |
 | --------------------- | ------------------------------------------ |
@@ -101,7 +101,7 @@ Data/Catalog.asset       记录本次生成的表资源
 
 ```csharp
 var dataTable = QGF.DataTable;
-dataTable.LoadDataTables(loader => new Tables(loader));
+dataTable.LoadDataTables<Tables>();
 ```
 
 这里的 `GameEntry` 来自 `UnityQGameFramework.Runtime`，`Tables` 来自默认命名空间 `UnityQGameFramework.Config`。第一次示例中的 GameStartup 就是一个完整可运行的加载例子。
@@ -207,26 +207,28 @@ var weapon = weapons.GetDataRow(101);
 | 全局 Profile          | 菜单与 Inspector | 本次点击生成时使用哪份 Profile     |
 | LubanDataTableCatalog | 运行时组件       | 加载哪组 bytes，以及它们的结构版本 |
 
-Profile 放在 `Editor/LubanProfile.asset`，字段为：
+Profile 与 `luban.conf` 放在 Config 根目录；可在 DataTable 组件 Inspector 展开“生成配置”直接修改。Profile 字段为：
 
 | 字段          | 内容                                 |
 | ------------- | ------------------------------------ |
-| Source Folder | 包含 luban.conf 的目录               |
+| Configuration File | Config 根目录的 luban.conf       |
 | Code Folder   | 生成 C# 的目录                       |
 | Data Folder   | 生成 bytes 与 Catalog 的目录         |
 | Target        | luban.conf 中的目标名称，默认 client |
 
-源表、代码、数据目录必须相互独立，不能彼此嵌套。Extensions 放手写代码，不用指定为生成目录。
+源表、代码、数据目录必须相互独立，不能彼此嵌套。手写扩展放在 Config 根目录或自己的脚本目录，不放入 Generated。
 
 全局选择位于 `QGF > Settings > Profile`，也可在 DataTable Inspector 选择 Profile 后点 **设为全局**。设置保存在 `ProjectSettings/UnityQGameFrameworkSettings.asset`，团队应一起提交。
 
-Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，交给 `new Tables(loader)`；构造、跨表引用解析和版本校验成功后登记全部生成表。
+Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，创建生成的 `Tables` 加载器并执行 `IDataTableLoader.Load`；解析跨表引用和完成版本校验后登记全部生成表。
+
+它是需要随游戏分发的数据清单，不是缓存。Profile 是生成输入配置，Catalog 是生成输出；已生成的 C# 负责解析，具体记录值仍来自 bytes。DataTableComponent 会自动初始化，在普通业务 `Start` 或启动流程中调用 `LoadDataTables<Tables>()` 即可；无需额外 Initialize，也不要在 `Awake` 中提前加载。成功后用 `GetDataTable<TbXxx>()` 查询，查询本身不会自动加载。
 
 全局 Profile 改成默认配置后，StarForce 仍能运行，是因为 Launcher 的 Catalog 仍然引用示例数据。这是明确的两个选择。需要改变运行时数据时，先生成目标 Profile，再在组件点击 **使用全局 Catalog**，或手动拖入目标 Catalog。
 
 ### 命名空间在哪里改
 
-打开 `Source/luban.conf`，找到 targets：
+打开 `Config/luban.conf`，找到 targets：
 
 ```json
 "targets": [
@@ -241,7 +243,7 @@ Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 
 
 `name` 与 Profile.Target 对应；`manager` 决定总入口类名；`topModule` 是命名空间；`groups` 决定导出分组。Profile Inspector 会显示这几个值，点击 **编辑配置** 可打开原文件。
 
-修改后重新生成，同时修改业务 using 和 Extensions 中 partial 类的命名空间。同一游戏中保留两套配置时，给它们不同命名空间，例如 MyGame.Config 与 StarForce，避免生成类型重复。
+修改后重新生成，同时修改业务 using 和 手写 partial 类的命名空间。同一游戏中保留两套配置时，给它们不同命名空间，例如 MyGame.Config 与 StarForce，避免生成类型重复。
 
 ## 8. 生成会覆盖哪些文件
 
@@ -253,7 +255,7 @@ Profile 中隐藏的生成文件清单和输出目录 GUID 用来确认归属。
 
 生成先在 Library 的临时目录完成 Luban 严格校验，再更新项目文件。可处理的同步异常会回滚本次修改。若回滚失败，Console 会报告保留备份的位置。Excel 和生成物仍应交给 Git 管理。
 
-手写扩展放在 `Extensions/DRItemExtension.cs`，例如：
+手写扩展放在 `DRItemExtension.cs`，例如：
 
 ```csharp
 namespace UnityQGameFramework.Config
@@ -295,9 +297,8 @@ namespace MyGame
             m_Event = QGF.Event;
             m_Event.Subscribe(LoadDataTableSuccessEventArgs.EventId, OnSuccess);
             m_Event.Subscribe(LoadDataTableFailureEventArgs.EventId, OnFailure);
-            m_DataTable.LoadDataTables(
-                "Assets/UnityQGameFramework/Config/Data/Catalog.asset",
-                loader => new Tables(loader), this);
+            m_DataTable.LoadDataTables<Tables>(
+                "Assets/UnityQGameFramework/Config/Data/Catalog.asset", this);
         }
 
         private void OnSuccess(object sender, GameEventArgs args)
@@ -328,11 +329,11 @@ namespace MyGame
 
 上面的成功、失败事件也适用于 Inspector 引用方式。事件携带调用时传入的 UserData，用来区分加载请求。事件参数会回收到引用池，不要把整个 args 存下来长期使用。
 
-上面的事件入口返回请求序号。使用 UniTask 时，可调用 `await dataTable.LoadDataTablesAsync(path, loader => new Tables(loader), cancellationToken: token)`，直接取得生成的 Tables；加载或解析失败会抛出异常，取消会抛出 `OperationCanceledException`。两个入口使用相同的请求记录和事件通知。
+上面的事件入口返回请求序号。使用 UniTask 时，可调用 `await dataTable.LoadDataTablesAsync<Tables>(path, cancellationToken: token)`，等待整组表完成加载，再通过 GetDataTable 查询；加载或解析失败会抛出异常，取消会抛出 `OperationCanceledException`。两个入口使用相同的请求记录和事件通知。
 
 `CancelLoadDataTables()` 取消当前请求的发布，晚到的资源回调仍会释放资产。表构造及结构校验通过后，组件先归还 Catalog 资源，再完成异步任务；表和记录不再依赖 Unity 资产。`IsLoading` 表示资源请求是否在进行，`Count` 表示已登记的全部表数量，包含 map、list 和 one。`IsLoaded` 表示整组表已经发布。
 
-一个组件同时持有一组 Tables。重复加载前调用 `UnloadDataTables()`；它取消在途请求，并解除组件对整组表的引用。业务自己保存的记录引用也应在更换配置时一并更新。
+一个组件同时持有一组已加载的数据表。重复加载前调用 `UnloadDataTables()`；它取消在途请求，并解除组件对整组表的引用。业务自己保存的记录引用也应在更换配置时一并更新。
 
 `DestroyDataTable<TbXxx>()` 移除对应登记，不改写业务仍持有的表及记录。切换配置使用 `UnloadDataTables()`，并更新业务保存的旧记录引用。
 
@@ -342,9 +343,9 @@ namespace MyGame
 
 只更换 `QGF > Settings` 中的“新配置目录”不会移动旧目录；它只决定下次点击 **创建** 的位置。已有工作区通过移动文件夹或修改 Profile 调整。
 
-单独移动 Source、Generated、Data 也要在 Project 窗口操作，检查 Profile 三个引用仍然正确。Luban 配置内部的 input、schemaFiles 和 dataDir 是相对 Source 的路径，调整 Source 内部结构时需要同步修改 `luban.conf`。
+整个 Config 目录可在 Project 窗口移动，Profile 的配置文件和输出目录引用会随之更新。单独移动 Source 时，在 `luban.conf` 中修改 `dataDir` 与 `schemaFiles`；路径相对于配置文件所在目录，表的 input 相对于 dataDir。Generated、Data 的位置由 Profile 指定。
 
-应提交 Excel、luban.conf、Profile、Generated、Data、Extensions、对应 `.meta` 与项目级全局选择。不提交 Library 中的编译器、缓存和临时目录。提交完整生成物后，队友可以直接运行游戏，只有改表和生成时才需要外部工具。
+应提交 Excel、luban.conf、Profile、Generated、Data、手写扩展、对应 `.meta` 与项目级全局选择。不提交 Library 中的编译器、缓存和临时目录。提交完整生成物后，队友可以直接运行游戏，只有改表和生成时才需要外部工具。
 
 运行时 Catalog 不引用 Excel、Profile 或源 schema，因此它们不会仅因放在 Assets 就随 Catalog 进入 Player。不要把源表放在 Resources、StreamingAssets，也不要手工登记进发布资源集合。
 
@@ -385,7 +386,7 @@ StarForce 的 `GameMain/Configs` 仍保存运行时 TOML：
 | BuildSettings.toml | 编辑器场景工具使用的清单 |
 | AudioMixer.mixer、DebuggerSkin.guiskin | Unity 序列化资产 |
 
-以上文本配置统一使用 TOML，并由 Tomlyn 解析。资源构建不再读取 ResourceBuilder、ResourceCollection 或 ResourceEditor 文本；YooAsset 的运行时配置和收集规则分别保存在 `ResourceSettings.asset` 与 `ResourceBuildProfile.asset`。
+以上文本配置统一使用 TOML，并由 Tomlyn 解析。资源构建不再读取 ResourceBuilder、ResourceCollection 或 ResourceEditor 文本；YooAsset 的运行时配置和收集规则分别保存在 `ResourceSettings.asset` 与 `YooAssetCollector.asset`。
 
 ### 本地化的层级表
 
@@ -415,7 +416,7 @@ Localization 选择当前语言，再把内部层级映射成查询键。`Langua
 | Id 重复或字段类型错误 | Console 中 Luban 报出的工作簿、工作表和单元格 |
 | 改表后游戏还是旧值 | 是否保存 Excel、生成正确 Profile、引用目标 Catalog |
 | C# 与数据版本不匹配 | 是否只提交了 C#、bytes、Catalog 中的一部分 |
-| 场景找不到资产 | ResourceSettings 的默认包、Profile 收集目录和 GUID |
+| 场景找不到资产 | ResourceSettings 的默认包、Collector 收集目录及地址 |
 | 资源包初始化失败 | Profile 是否已构建、编辑器模拟输出是否完整 |
 | Host 下载失败 | HostServer、FallbackServer、清单版本和下载器状态 |
 | 运行时 TOML 读取失败 | TOML 子表层级、UTF-8 编码和 Config／Localization 组件 |

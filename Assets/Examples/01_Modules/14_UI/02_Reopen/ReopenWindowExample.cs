@@ -11,19 +11,20 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class ReopenWindowExample : MonoBehaviour
     {
-        [SerializeField] private string windowGuid;
-        [SerializeField] private Slider idleSlider;
-        [SerializeField] private Toggle lockedToggle;
-        [SerializeField] private Button reopenButton;
-        [SerializeField] private Text stateText, lifecycleText, policyText;
-        private string asset;
+        private const string AssetName = "UI_Reopen_Window";
+        [SerializeField]
+        private Slider idleSlider;
+        [SerializeField]
+        private Toggle lockedToggle;
+        [SerializeField]
+        private Button reopenButton;
+        [SerializeField]
+        private Text stateText, lifecycleText, policyText;
         private int serialId, previousSerial, previousInstance, openCount;
         private float remaining;
         private bool ready, changing;
-
         private void Start()
         {
-            asset = windowGuid;
             QGF.UI.AddUIGroup("Example", 0);
             // UI 组件管理实例池，容量用于空闲回收。
             QGF.UI.InstanceAutoReleaseInterval = .2f;
@@ -32,7 +33,7 @@ namespace UnityQGameFramework.Examples.Modules
             QGF.UI.InstancePriority = 0;
             reopenButton.onClick.AddListener(CloseAndReopen);
             // 返回值是打开请求的序号；窗口加载完后 GetUIForm 才能取得实例。
-            serialId = QGF.UI.OpenUIForm(asset, "Example", $"第 {++openCount} 次打开");
+            serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"第 {++openCount} 次打开");
             ready = true;
         }
 
@@ -57,29 +58,36 @@ namespace UnityQGameFramework.Examples.Modules
                     remaining = end - Time.realtimeSinceStartup;
                     await UniTask.NextFrame(cancellation);
                 }
+
                 remaining = 0;
                 // 每次打开都会产生新序号；是否复用旧 GameObject 由实例池的缓存状态决定。
-                serialId = QGF.UI.OpenUIForm(asset, "Example", $"第 {++openCount} 次打开");
+                serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"第 {++openCount} 次打开");
             }
-            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
-            catch (Exception exception) { Log.Error(exception); }
-            finally { changing = false; }
+            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
+            finally
+            {
+                changing = false;
+            }
         }
 
         private void Update()
         {
-            if (!ready) return;
+            if (!ready)
+            {
+                return;
+            }
+
             var form = QGF.UI.GetUIForm(serialId);
-            string source = previousInstance == 0 ? "首次创建"
-                : form != null && form.gameObject.GetInstanceID() == previousInstance ? "复用上次实例" : "新建实例";
-            stateText.text = changing ? $"窗口已关闭，等待 {remaining:F1} 秒"
-                : form == null ? "正在加载" : $"本次序号：{serialId}    上次序号：{previousSerial}\n"
-                    + $"实例：{form.gameObject.GetInstanceID()}\n本次来源：{source}";
+            string source = previousInstance == 0 ? "首次创建" : form != null && form.gameObject.GetInstanceID() == previousInstance ? "复用上次实例" : "新建实例";
+            stateText.text = changing ? $"窗口已关闭，等待 {remaining:F1} 秒" : form == null ? "正在加载" : $"本次序号：{serialId}    上次序号：{previousSerial}\n" + $"实例：{form.gameObject.GetInstanceID()}\n本次来源：{source}";
             var view = form == null ? null : (ReopenWindowExampleView)form.Logic;
-            lifecycleText.text = view == null
-                ? string.Empty
-                : $"本实例 OnInit：{view.InitCalls}    OnOpen：{view.OpenCalls}\n"
-                    + $"OnClose：{view.CloseCalls}    OnRecycle：{view.RecycleCalls}";
+            lifecycleText.text = view == null ? string.Empty : $"本实例 OnInit：{view.InitCalls}    OnOpen：{view.OpenCalls}\n" + $"OnClose：{view.CloseCalls}    OnRecycle：{view.RecycleCalls}";
             policyText.text = $"空闲过期：{QGF.UI.InstanceExpireTime:F1} 秒    本次等待：{idleSlider.value:F1} 秒\n锁定后，过期也保留缓存实例";
             reopenButton.interactable = form != null && !changing;
             idleSlider.interactable = lockedToggle.interactable = !changing;
@@ -89,7 +97,10 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // 等待重开的 UniTask 会随脚本取消，当前打开或加载中的序号也要关闭。
             var ui = GameEntry.GetComponent<UIComponent>();
-            if (ui != null && (ui.HasUIForm(serialId) || ui.IsLoadingUIForm(serialId))) ui.CloseUIForm(serialId);
+            if (ui != null && (ui.HasUIForm(serialId) || ui.IsLoadingUIForm(serialId)))
+            {
+                ui.CloseUIForm(serialId);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -11,6 +11,10 @@ using UnityEngine;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 记录辅助器类型及其显示名称。
+    /// </summary>
+    /// <typeparam name="T">辅助器组件的基类型。</typeparam>
     internal sealed class HelperInfo<T> where T : MonoBehaviour
     {
         private const string CustomOptionName = "<Custom>";
@@ -22,6 +26,10 @@ namespace UnityQGameFramework.Editor
         private string[] m_HelperTypeNames;
         private int m_HelperTypeNameIndex;
 
+        /// <summary>
+        /// 初始化编辑器辅助器信息。
+        /// </summary>
+        /// <param name="name">辅助器名称。</param>
         public HelperInfo(string name)
         {
             m_Name = name;
@@ -32,12 +40,19 @@ namespace UnityQGameFramework.Editor
             m_HelperTypeNameIndex = 0;
         }
 
+        /// <summary>
+        /// 绑定辅助器类型和自定义对象属性。
+        /// </summary>
+        /// <param name="serializedObject">目标组件的序列化对象。</param>
         public void Init(SerializedObject serializedObject)
         {
             m_HelperTypeName = serializedObject.FindProperty(Utility.Text.Format("m_{0}HelperTypeName", m_Name));
             m_CustomHelper = serializedObject.FindProperty(Utility.Text.Format("m_Custom{0}Helper", m_Name));
         }
 
+        /// <summary>
+        /// 绘制辅助器类型选择和自定义对象字段。
+        /// </summary>
         public void Draw()
         {
             string displayName = FieldNameForDisplay(m_Name);
@@ -58,6 +73,9 @@ namespace UnityQGameFramework.Editor
             }
         }
 
+        /// <summary>
+        /// 刷新可用辅助器类型。
+        /// </summary>
         public void Refresh()
         {
             List<string> helperTypeNameList = new List<string>
@@ -80,6 +98,11 @@ namespace UnityQGameFramework.Editor
             }
         }
 
+        /// <summary>
+        /// 将序列化字段名转换为显示名称。
+        /// </summary>
+        /// <param name="fieldName">字段名称。</param>
+        /// <returns>用于显示的字段名称。</returns>
         private string FieldNameForDisplay(string fieldName)
         {
             if (string.IsNullOrEmpty(fieldName))

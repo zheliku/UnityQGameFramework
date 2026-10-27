@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -13,6 +13,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 按类型汇总运行时对象内存。
+        /// </summary>
         private sealed partial class RuntimeMemorySummaryWindow : ScrollableDebuggerWindowBase
         {
             private readonly List<Record> m_Records = new List<Record>();
@@ -21,6 +24,9 @@ namespace UnityQGameFramework.Runtime
             private int m_SampleCount = 0;
             private long m_SampleSize = 0L;
 
+            /// <summary>
+            /// 绘制运行时内存汇总。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Runtime Memory Summary</b>");
@@ -62,6 +68,9 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 按类型汇总已加载对象数量和内存。
+            /// </summary>
             private void TakeSample()
             {
                 m_Records.Clear();
@@ -101,6 +110,12 @@ namespace UnityQGameFramework.Runtime
                 m_Records.Sort(m_RecordComparer);
             }
 
+            /// <summary>
+            /// 按内存降序，再按数量和名称比较汇总记录。
+            /// </summary>
+            /// <param name="a">第一条汇总记录。</param>
+            /// <param name="b">第二条汇总记录。</param>
+            /// <returns>表示记录排序关系的有符号整数。</returns>
             private static int RecordComparer(Record a, Record b)
             {
                 int result = b.Size.CompareTo(a.Size);

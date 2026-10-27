@@ -93,18 +93,18 @@ public static class SampleLifecycleValidation
             switch (s_State.stage)
             {
                 case "install":
-                    if (!File.Exists(Workspace + "/Editor/LubanProfile.asset")) return;
+                    if (!File.Exists(Workspace + "/LubanProfile.asset")) return;
                     Require(UnityEditor.PackageManager.PackageInfo.GetAllRegisteredPackages().Single(p => p.name == Package).source == PackageSource.Git, "Not a UPM Git installation");
                     s_State.automaticWorkspace = true;
                     string[] schemas = { "__tables__", "__beans__", "__enums__" };
-                    foreach (string schema in schemas) Require(File.Exists(Workspace + "/Source/Datas/" + schema + ".xlsx"), "Missing starter " + schema);
-                    string item = Workspace + "/Source/Datas/Item.xlsx";
+                    foreach (string schema in schemas) Require(File.Exists(Workspace + "/Source/" + schema + ".xlsx"), "Missing starter " + schema);
+                    string item = Workspace + "/Source/Item.xlsx";
                     string itemHash = Hash(item);
-                    string tableMeta = Hash(Workspace + "/Source/Datas/__tables__.xlsx.meta");
-                    foreach (string schema in schemas) File.Delete(Workspace + "/Source/Datas/" + schema + ".xlsx");
+                    string tableMeta = Hash(Workspace + "/Source/__tables__.xlsx.meta");
+                    foreach (string schema in schemas) File.Delete(Workspace + "/Source/" + schema + ".xlsx");
                     Call("UnityQGameFramework.Editor.LubanWorkspace", "EnsureInitialized");
-                    foreach (string schema in schemas) Require(File.Exists(Workspace + "/Source/Datas/" + schema + ".xlsx"), "Schema repair failed: " + schema);
-                    Require(Hash(item) == itemHash && Hash(Workspace + "/Source/Datas/__tables__.xlsx.meta") == tableMeta, "Repair overwrote data or metadata");
+                    foreach (string schema in schemas) Require(File.Exists(Workspace + "/Source/" + schema + ".xlsx"), "Schema repair failed: " + schema);
+                    Require(Hash(item) == itemHash && Hash(Workspace + "/Source/__tables__.xlsx.meta") == tableMeta, "Repair overwrote data or metadata");
                     s_State.repairedSchemas = true;
                     var collectionType = Type("UnityQGameFramework.Editor.ResourceTools.ResourceCollection");
                     var collection = Activator.CreateInstance(collectionType, new object[] { null });
@@ -217,10 +217,10 @@ public static class SampleLifecycleValidation
                     CheckSettings();
                     var settings = Type("UnityQGameFramework.Editor.LubanSettings").GetProperty("instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).GetValue(null);
                     var profileProperty = settings.GetType().GetProperty("Profile");
-                    profileProperty.SetValue(settings, AssetDatabase.LoadAssetAtPath(s_State.sample + "/UnityQGameFramework/Config/Editor/LubanProfile.asset", Type("UnityQGameFramework.Editor.LubanProfile")));
+                    profileProperty.SetValue(settings, AssetDatabase.LoadAssetAtPath(s_State.sample + "/UnityQGameFramework/Config/LubanProfile.asset", Type("UnityQGameFramework.Editor.LubanProfile")));
                     Call("UnityQGameFramework.Editor.QgfProjectAssets", "RemoveSample");
                     Require(!Directory.Exists(s_State.sample), "Sample uninstall left its files");
-                    Require(AssetDatabase.GetAssetPath((UnityEngine.Object)profileProperty.GetValue(settings)) == Workspace + "/Editor/LubanProfile.asset", "Sample uninstall left a broken global Profile");
+                    Require(AssetDatabase.GetAssetPath((UnityEngine.Object)profileProperty.GetValue(settings)) == Workspace + "/LubanProfile.asset", "Sample uninstall left a broken global Profile");
                     CheckSettings();
                     s_State.sampleRemoved = true;
                     Stage("reimported");

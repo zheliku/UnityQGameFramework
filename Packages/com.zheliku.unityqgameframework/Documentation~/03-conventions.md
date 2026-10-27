@@ -18,16 +18,17 @@ Assets/MyGame/
   Scenes/
   Audio/
 Assets/UnityQGameFramework/Config/
-  Source/           Excel 与 luban.conf
+  LubanProfile.asset 配置文件引用、生成目录与 target
+  luban.conf        命名空间、schemaFiles、dataDir 与导出目标
+  Source/           Excel 表定义与数据
   Generated/        生成代码
   Data/             bytes 与 Catalog
-  Extensions/       手写的表扩展
-  Editor/           LubanProfile.asset
+  DRItem.Extensions.cs 手写的表扩展（需要时添加）
 ```
 
 业务代码与资源放在 Assets，目录名可以按项目调整。更换配置目录时更新 Profile 和相关引用；Packages 提供框架代码与示例模板。
 
-生成文件只由生成器改写；手写扩展放进 Extensions。多个 Profile 可以输出不同业务配置，但不要在同一工程生成两组相同命名空间、相同类型名的代码。
+生成文件只由生成器改写；手写扩展放在 Config 根目录或业务脚本目录。多个 Profile 可以输出不同业务配置，但不要在同一工程生成两组相同命名空间、相同类型名的代码。
 
 ## 2. 入口只做组件获取，业务初始化放进流程
 
@@ -110,7 +111,7 @@ Unity 工程的 Core 更新统一由 BaseComponent 驱动。
 - `#if UNITY_EDITOR` 用于隔离依赖 `UnityEditor` API 或编辑器专用辅助类的代码，不是每个脚本都要加。独立编辑器工具放入 Editor 文件夹或 Editor 程序集；整份 MonoBehaviour 被宏包住时，该类型不会编译进 Player。需要在 Player 使用的组件应保留在运行程序集，并提供 Player 可用的资源路径与加载实现。
 - 自己的 asmdef 按使用的功能引用 Core、Runtime、Luban；可选插件由使用它的程序集引用。
 
-资源位置由 YooAsset 的 ResourceBuildProfile 决定。启用包的 `EnableAddressable` 并使用 `AddressByFileName` 时，传文件名且不带扩展名；启用 `IncludeAssetGUID` 时也可以传 Unity 资产 GUID。不要把 `Assets/...` 文件路径、YooAsset 地址和网络 URL 混用。
+资源位置由 YooAsset 的 Collector 收集规则决定。启用包的 `EnableAddressable` 并使用 `AddressByFileName` 时，传文件名且不带扩展名；启用 `IncludeAssetGUID` 时也可以传 Unity 资产 GUID。不要把 `Assets/...` 文件路径、YooAsset 地址和网络 URL 混用。
 
 ## 9. 加入一个功能时如何验收
 

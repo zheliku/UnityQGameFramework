@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -330,6 +330,9 @@ namespace UnityQGameFramework.Runtime
             m_Disposed = true;
         }
 
+        /// <summary>
+        /// 推进资源读取、解析和加载操作。
+        /// </summary>
         private void Update()
         {
             UpdateUnityWebRequest();
@@ -339,6 +342,9 @@ namespace UnityQGameFramework.Runtime
             UpdateAsyncOperation();
         }
 
+        /// <summary>
+        /// 检查网络读取结果并通知资源字节已就绪。
+        /// </summary>
         private void UpdateUnityWebRequest()
         {
             if (m_UnityWebRequest != null)
@@ -374,6 +380,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查从文件创建资源包的结果。
+        /// </summary>
         private void UpdateFileAssetBundleCreateRequest()
         {
             if (m_FileAssetBundleCreateRequest != null)
@@ -410,6 +419,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查从字节创建资源包的结果。
+        /// </summary>
         private void UpdateBytesAssetBundleCreateRequest()
         {
             if (m_BytesAssetBundleCreateRequest != null)
@@ -446,6 +458,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查资产加载结果。
+        /// </summary>
         private void UpdateAssetBundleRequest()
         {
             if (m_AssetBundleRequest != null)
@@ -478,6 +493,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 检查场景异步加载结果。
+        /// </summary>
         private void UpdateAsyncOperation()
         {
             if (m_AsyncOperation != null)

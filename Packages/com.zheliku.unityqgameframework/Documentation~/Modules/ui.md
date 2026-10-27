@@ -8,7 +8,7 @@ UIComponent → UIManager → Resource / ObjectPool → UIFormHelper → UIFormL
 
 ## 创建一个最小窗口
 
-创建 Canvas，设为 Screen Space - Overlay。添加一个 Text 作为标题、一个 Button 作为关闭按钮。把根节点保存为 `Assets/MyGame/UI/GuideWindow.prefab`，删除场景中的原实例。将预制体加入 ResourceBuildProfile，启用 `EnableAddressable` 并使用 `AddressByFileName`。
+创建 Canvas，设为 Screen Space - Overlay。添加一个 Text 作为标题、一个 Button 作为关闭按钮。把根节点保存为 `Assets/MyGame/UI/GuideWindow.prefab`，删除场景中的原实例。将预制体加入 YooAsset Collector，启用 `EnableAddressable` 并使用 `AddressByFileName`。
 
 在预制体根节点挂 `GuideWindow`，并把关闭按钮的 OnClick 绑定到它的 Close 方法：
 

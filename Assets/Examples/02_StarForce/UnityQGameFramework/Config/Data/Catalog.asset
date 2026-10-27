@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154542dc7ab2408b82a2f89dd8596656, type: 3}
   m_Name: Catalog
   m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.LubanDataTableCatalog
-  m_SchemaHash: 0eb51945c098ff8ed04de369d944331c4f115f53e879199ce68741f1bacf57a7
+  m_SchemaHash: b2dd1904381f946eed9e4febd5d144fe15aaf89e6a6ff616204353a33b8ed8cb
   m_GeneratorVersion: 5.1.0
   m_Entries:
   - Name: tbaircraft

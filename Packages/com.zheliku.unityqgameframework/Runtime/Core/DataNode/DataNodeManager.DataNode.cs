@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -20,6 +20,9 @@ namespace UnityQGameFramework.Core.DataNode
             private DataNode m_Parent;
             private List<DataNode> m_Childs;
 
+            /// <summary>
+            /// 初始化数据结点。
+            /// </summary>
             public DataNode()
             {
                 Name = null;
@@ -66,12 +69,24 @@ namespace UnityQGameFramework.Core.DataNode
             /// <summary>
             /// 获取父数据结点。
             /// </summary>
-            public IDataNode Parent => m_Parent;
+            public IDataNode Parent
+            {
+                get
+                {
+                    return m_Parent;
+                }
+            }
 
             /// <summary>
             /// 获取子数据结点的数量。
             /// </summary>
-            public int ChildCount => m_Childs != null ? m_Childs.Count : 0;
+            public int ChildCount
+            {
+                get
+                {
+                    return m_Childs != null ? m_Childs.Count : 0;
+                }
+            }
 
             /// <summary>
             /// 根据类型获取数据结点的数据。
@@ -286,6 +301,9 @@ namespace UnityQGameFramework.Core.DataNode
                 ReferencePool.Release(node);
             }
 
+            /// <summary>
+            /// 清理数据结点及其子结点。
+            /// </summary>
             public void Clear()
             {
                 if (m_Data != null)
@@ -351,6 +369,9 @@ namespace UnityQGameFramework.Core.DataNode
                 return true;
             }
 
+            /// <summary>
+            /// 清理数据结点及其子结点。
+            /// </summary>
             void IReference.Clear()
             {
                 Name = null;

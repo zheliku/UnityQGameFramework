@@ -65,14 +65,14 @@ def main():
     # Compile the current engine-independent sources, so this check can run before Unity imports.
     core = root / 'Packages/com.zheliku.unityqgameframework/Runtime/Core'
     luban = root / 'Packages/com.zheliku.unityqgameframework/Runtime/Luban'
-    table_set = root / 'Packages/com.zheliku.unityqgameframework/Runtime/Unity/DataTable/LubanTableSet.cs'
+    table_loader = root / 'Packages/com.zheliku.unityqgameframework/Runtime/Unity/DataTable/IDataTableLoader.cs'
     sdk_major = int(subprocess.check_output(['dotnet', '--version'], text=True).split('.')[0])
     (output / 'Fixture.csproj').write_text(f'''<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net{sdk_major}.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><GenerateAssemblyInfo>false</GenerateAssemblyInfo><EnableDefaultCompileItems>false</EnableDefaultCompileItems><UseAppHost>false</UseAppHost><UseSharedCompilation>false</UseSharedCompilation></PropertyGroup>
 <ItemGroup>
 <Compile Include={quoteattr(str(core / '**/*.cs'))} Exclude={quoteattr(str(core / 'Config/TomlConfigParser.cs') + ';' + str(core / 'Localization/TomlLocalizationParser.cs'))}/>
 <Compile Include={quoteattr(str(luban / '**/*.cs'))}/>
-<Compile Include={quoteattr(str(table_set))}/>
+<Compile Include={quoteattr(str(table_loader))}/>
 <Compile Include="Generated/**/*.cs"/><Compile Include="Program.cs"/>
 </ItemGroup></Project>''', encoding='utf-8')
     (output / 'Program.cs').write_text('''using System;
@@ -83,6 +83,7 @@ using QgfFixture;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Core.DataTable;
 using UnityQGameFramework.Luban;
+using UnityQGameFramework.Runtime;
 class Program
 {
     static int checks;
@@ -95,9 +96,10 @@ class Program
     static ByteBuf Load(string name) => new ByteBuf(File.ReadAllBytes("Data/" + name + ".bytes"));
     static void Main()
     {
-        var tables = new Tables(Load);
+        var tables = new Tables();
+        var loaded = ((IDataTableLoader)tables).Load(Load);
         var manager = FrameworkEntry.GetModule<IDataTableManager>();
-        manager.RegisterDataTables(tables.DataTables);
+        manager.RegisterDataTables(loaded);
         Check(manager.Count == 12, "All map/list/one/struct tables must be registered.");
         Check(ReferenceEquals(manager.GetDataTable<TbItem>(), tables.TbItem), "The registry holds the generated table itself.");
         Check(ReferenceEquals(tables.TbItem.GetDataRow(1), tables.TbItem.DataMap[1]), "No copied records.");

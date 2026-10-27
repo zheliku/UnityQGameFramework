@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -17,6 +17,9 @@ namespace UnityQGameFramework.Core.Debugger
             private readonly List<KeyValuePair<string, IDebuggerWindow>> m_DebuggerWindows;
             private string[] m_DebuggerWindowNames;
 
+            /// <summary>
+            /// 初始化调试器窗口组。
+            /// </summary>
             public DebuggerWindowGroup()
             {
                 m_DebuggerWindows = new List<KeyValuePair<string, IDebuggerWindow>>();
@@ -27,7 +30,13 @@ namespace UnityQGameFramework.Core.Debugger
             /// <summary>
             /// 获取调试器窗口数量。
             /// </summary>
-            public int DebuggerWindowCount => m_DebuggerWindows.Count;
+            public int DebuggerWindowCount
+            {
+                get
+                {
+                    return m_DebuggerWindows.Count;
+                }
+            }
 
             /// <summary>
             /// 获取或设置当前选中的调试器窗口索引。
@@ -104,6 +113,9 @@ namespace UnityQGameFramework.Core.Debugger
             {
             }
 
+            /// <summary>
+            /// 刷新调试器窗口名称缓存。
+            /// </summary>
             private void RefreshDebuggerWindowNames()
             {
                 int index = 0;
@@ -117,6 +129,7 @@ namespace UnityQGameFramework.Core.Debugger
             /// <summary>
             /// 获取调试组的调试器窗口名称集合。
             /// </summary>
+            /// <returns>当前组的调试器窗口名称数组。</returns>
             public string[] GetDebuggerWindowNames()
             {
                 return m_DebuggerWindowNames;
@@ -240,11 +253,23 @@ namespace UnityQGameFramework.Core.Debugger
                 if (pos < 0 || pos >= path.Length - 1)
                 {
                     IDebuggerWindow debuggerWindow = InternalGetDebuggerWindow(path);
-                    if (debuggerWindow == null) return false;
+                    if (debuggerWindow == null)
+                    {
+                        return false;
+                    }
+
                     int index = m_DebuggerWindows.IndexOf(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
                     m_DebuggerWindows.RemoveAt(index);
-                    if (SelectedIndex > index) SelectedIndex--;
-                    if (SelectedIndex >= m_DebuggerWindows.Count) SelectedIndex = System.Math.Max(0, m_DebuggerWindows.Count - 1);
+                    if (SelectedIndex > index)
+                    {
+                        SelectedIndex--;
+                    }
+
+                    if (SelectedIndex >= m_DebuggerWindows.Count)
+                    {
+                        SelectedIndex = System.Math.Max(0, m_DebuggerWindows.Count - 1);
+                    }
+
                     debuggerWindow.Shutdown();
                     RefreshDebuggerWindowNames();
                     return true;
@@ -261,6 +286,11 @@ namespace UnityQGameFramework.Core.Debugger
                 return debuggerWindowGroup.UnregisterDebuggerWindow(leftPath);
             }
 
+            /// <summary>
+            /// 按路径查找调试器窗口。
+            /// </summary>
+            /// <param name="name">窗口路径。</param>
+            /// <returns>找到的窗口；不存在时返回空。</returns>
             private IDebuggerWindow InternalGetDebuggerWindow(string name)
             {
                 foreach (KeyValuePair<string, IDebuggerWindow> debuggerWindow in m_DebuggerWindows)
@@ -274,6 +304,11 @@ namespace UnityQGameFramework.Core.Debugger
                 return null;
             }
 
+            /// <summary>
+            /// 按路径选中调试器窗口。
+            /// </summary>
+            /// <param name="name">窗口路径。</param>
+            /// <returns>是否成功选中窗口。</returns>
             private bool InternalSelectDebuggerWindow(string name)
             {
                 for (int i = 0; i < m_DebuggerWindows.Count; i++)

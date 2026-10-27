@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -13,6 +13,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示、筛选并查看运行日志。
+        /// </summary>
         [Serializable]
         private sealed class ConsoleWindow : IDebuggerWindow
         {
@@ -62,74 +65,204 @@ namespace UnityQGameFramework.Runtime
             [SerializeField]
             private Color32 m_FatalColor = new Color(0.7f, 0.2f, 0.2f);
 
+            /// <summary>
+            /// 获取或设置是否锁定日志滚动位置。
+            /// </summary>
             public bool LockScroll
             {
-                get => m_LockScroll;
-                set => m_LockScroll = value;
+                get
+                {
+                    return m_LockScroll;
+                }
+                set
+                {
+                    m_LockScroll = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置最多保留的日志条数。
+            /// </summary>
             public int MaxLine
             {
-                get => m_MaxLine;
-                set => m_MaxLine = value;
+                get
+                {
+                    return m_MaxLine;
+                }
+                set
+                {
+                    m_MaxLine = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置是否显示普通日志。
+            /// </summary>
             public bool InfoFilter
             {
-                get => m_InfoFilter;
-                set => m_InfoFilter = value;
+                get
+                {
+                    return m_InfoFilter;
+                }
+                set
+                {
+                    m_InfoFilter = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置是否显示警告日志。
+            /// </summary>
             public bool WarningFilter
             {
-                get => m_WarningFilter;
-                set => m_WarningFilter = value;
+                get
+                {
+                    return m_WarningFilter;
+                }
+                set
+                {
+                    m_WarningFilter = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置是否显示错误日志。
+            /// </summary>
             public bool ErrorFilter
             {
-                get => m_ErrorFilter;
-                set => m_ErrorFilter = value;
+                get
+                {
+                    return m_ErrorFilter;
+                }
+                set
+                {
+                    m_ErrorFilter = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置是否显示异常日志。
+            /// </summary>
             public bool FatalFilter
             {
-                get => m_FatalFilter;
-                set => m_FatalFilter = value;
+                get
+                {
+                    return m_FatalFilter;
+                }
+                set
+                {
+                    m_FatalFilter = value;
+                }
             }
 
-            public int InfoCount => m_InfoCount;
+            /// <summary>
+            /// 获取普通日志数量。
+            /// </summary>
+            public int InfoCount
+            {
+                get
+                {
+                    return m_InfoCount;
+                }
+            }
 
-            public int WarningCount => m_WarningCount;
+            /// <summary>
+            /// 获取警告日志数量。
+            /// </summary>
+            public int WarningCount
+            {
+                get
+                {
+                    return m_WarningCount;
+                }
+            }
 
-            public int ErrorCount => m_ErrorCount;
+            /// <summary>
+            /// 获取错误日志数量。
+            /// </summary>
+            public int ErrorCount
+            {
+                get
+                {
+                    return m_ErrorCount;
+                }
+            }
 
-            public int FatalCount => m_FatalCount;
+            /// <summary>
+            /// 获取异常日志数量。
+            /// </summary>
+            public int FatalCount
+            {
+                get
+                {
+                    return m_FatalCount;
+                }
+            }
 
+            /// <summary>
+            /// 获取或设置普通日志颜色。
+            /// </summary>
             public Color32 InfoColor
             {
-                get => m_InfoColor;
-                set => m_InfoColor = value;
+                get
+                {
+                    return m_InfoColor;
+                }
+                set
+                {
+                    m_InfoColor = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置警告日志颜色。
+            /// </summary>
             public Color32 WarningColor
             {
-                get => m_WarningColor;
-                set => m_WarningColor = value;
+                get
+                {
+                    return m_WarningColor;
+                }
+                set
+                {
+                    m_WarningColor = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置错误日志颜色。
+            /// </summary>
             public Color32 ErrorColor
             {
-                get => m_ErrorColor;
-                set => m_ErrorColor = value;
+                get
+                {
+                    return m_ErrorColor;
+                }
+                set
+                {
+                    m_ErrorColor = value;
+                }
             }
 
+            /// <summary>
+            /// 获取或设置异常日志颜色。
+            /// </summary>
             public Color32 FatalColor
             {
-                get => m_FatalColor;
-                set => m_FatalColor = value;
+                get
+                {
+                    return m_FatalColor;
+                }
+                set
+                {
+                    m_FatalColor = value;
+                }
             }
 
+            /// <summary>
+            /// 订阅 Unity 日志接收事件。
+            /// </summary>
+            /// <param name="args">窗口初始化参数。</param>
             public void Initialize(params object[] args)
             {
                 m_SettingComponent = GameEntry.GetComponent<SettingComponent>();
@@ -147,20 +280,34 @@ namespace UnityQGameFramework.Runtime
                 m_FatalFilter = m_LastFatalFilter = m_SettingComponent.GetBool("Debugger.Console.FatalFilter", true);
             }
 
+            /// <summary>
+            /// 取消日志接收并清理日志记录。
+            /// </summary>
             public void Shutdown()
             {
                 Application.logMessageReceived -= OnLogMessageReceived;
                 Clear();
             }
 
+            /// <summary>
+            /// 进入控制台调试窗口。
+            /// </summary>
             public void OnEnter()
             {
             }
 
+            /// <summary>
+            /// 离开控制台调试窗口。
+            /// </summary>
             public void OnLeave()
             {
             }
 
+            /// <summary>
+            /// 更新控制台日志统计。
+            /// </summary>
+            /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void OnUpdate(float elapseSeconds, float realElapseSeconds)
             {
                 if (m_LastLockScroll != m_LockScroll)
@@ -194,6 +341,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制日志筛选、列表和堆栈区域。
+            /// </summary>
             public void OnDraw()
             {
                 RefreshCount();
@@ -292,11 +442,17 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 清空日志记录。
+            /// </summary>
             private void Clear()
             {
                 m_LogNodes.Clear();
             }
 
+            /// <summary>
+            /// 重新统计各等级的日志数量。
+            /// </summary>
             public void RefreshCount()
             {
                 m_InfoCount = 0;
@@ -326,6 +482,10 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 获取最近保留的日志记录。
+            /// </summary>
+            /// <param name="results">用于接收日志记录的列表。</param>
             public void GetRecentLogs(List<LogNode> results)
             {
                 if (results == null)
@@ -341,6 +501,11 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 获取最近保留的日志记录。
+            /// </summary>
+            /// <param name="results">用于接收日志记录的列表。</param>
+            /// <param name="count">最多获取的日志条数。</param>
             public void GetRecentLogs(List<LogNode> results, int count)
             {
                 if (results == null)
@@ -374,6 +539,12 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 记录 Unity 日志，超过上限时归还最早的记录。
+            /// </summary>
+            /// <param name="logMessage">日志内容。</param>
+            /// <param name="stackTrace">调用堆栈。</param>
+            /// <param name="logType">日志类型。</param>
             private void OnLogMessageReceived(string logMessage, string stackTrace, LogType logType)
             {
                 if (logType == LogType.Assert)
@@ -388,12 +559,22 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 生成包含时间、帧数和等级颜色的日志文本。
+            /// </summary>
+            /// <param name="logNode">日志记录。</param>
+            /// <returns>用于列表显示的日志文本。</returns>
             private string GetLogString(LogNode logNode)
             {
                 Color32 color = GetLogStringColor(logNode.LogType);
                 return Utility.Text.Format("<color=#{0:x2}{1:x2}{2:x2}{3:x2}>[{4:HH:mm:ss.fff}][{5}] {6}</color>", color.r, color.g, color.b, color.a, logNode.LogTime.ToLocalTime(), logNode.LogFrameCount, logNode.LogMessage);
             }
 
+            /// <summary>
+            /// 获取日志类型对应的颜色。
+            /// </summary>
+            /// <param name="logType">日志类型。</param>
+            /// <returns>日志显示颜色。</returns>
             internal Color32 GetLogStringColor(LogType logType)
             {
                 Color32 color = Color.white;

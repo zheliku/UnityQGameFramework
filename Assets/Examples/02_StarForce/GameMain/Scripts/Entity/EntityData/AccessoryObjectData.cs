@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 附属实体的类型、归属和阵营数据。
+    /// </summary>
     [Serializable]
     public abstract class AccessoryObjectData : EntityData
     {
@@ -17,6 +20,13 @@ namespace StarForce
         [SerializeField]
         private CampType m_OwnerCamp = CampType.Unknown;
 
+        /// <summary>
+        /// 附属实体的类型、归属和阵营数据。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="typeId">配置表中的实体类型编号。</param>
+        /// <param name="ownerId">所属实体编号。</param>
+        /// <param name="ownerCamp">所属实体的阵营。</param>
         public AccessoryObjectData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId)
         {
@@ -27,11 +37,23 @@ namespace StarForce
         /// <summary>
         /// 拥有者编号。
         /// </summary>
-        public int OwnerId => m_OwnerId;
+        public int OwnerId
+        {
+            get
+            {
+                return m_OwnerId;
+            }
+        }
 
         /// <summary>
         /// 拥有者阵营。
         /// </summary>
-        public CampType OwnerCamp => m_OwnerCamp;
+        public CampType OwnerCamp
+        {
+            get
+            {
+                return m_OwnerCamp;
+            }
+        }
     }
 }

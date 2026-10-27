@@ -23,6 +23,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.Int16 到 System.Int16 变量类的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>从引用池获取并保存指定值的变量对象。</returns>
         public static implicit operator VarInt16(short value)
         {
             VarInt16 varValue = ReferencePool.Acquire<VarInt16>();
@@ -34,6 +35,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.Int16 变量类到 System.Int16 的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>变量对象中保存的值。</returns>
         public static implicit operator short(VarInt16 value)
         {
             return value.Value;

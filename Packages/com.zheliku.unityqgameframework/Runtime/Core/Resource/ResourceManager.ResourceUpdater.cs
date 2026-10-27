@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -39,15 +39,54 @@ namespace UnityQGameFramework.Core.Resource
             private string m_ReadWriteVersionListFileName;
             private string m_ReadWriteVersionListTempFileName;
 
+            /// <summary>
+            /// 资源包应用开始回调。
+            /// </summary>
             public FrameworkAction<string, int, long> ResourceApplyStart;
+
+            /// <summary>
+            /// 单个资源应用成功回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, string, int, int> ResourceApplySuccess;
+
+            /// <summary>
+            /// 单个资源应用失败回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, string> ResourceApplyFailure;
+
+            /// <summary>
+            /// 资源包应用完成回调。
+            /// </summary>
             public FrameworkAction<string, bool> ResourceApplyComplete;
+
+            /// <summary>
+            /// 资源下载开始回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
+
+            /// <summary>
+            /// 资源下载进度回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
+
+            /// <summary>
+            /// 资源下载成功回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, string, int, int> ResourceUpdateSuccess;
+
+            /// <summary>
+            /// 资源下载失败回调。
+            /// </summary>
             public FrameworkAction<ResourceName, string, int, int, string> ResourceUpdateFailure;
+
+            /// <summary>
+            /// 资源组更新完成回调。
+            /// </summary>
             public FrameworkAction<ResourceGroup, bool> ResourceUpdateComplete;
+
+            /// <summary>
+            /// 所有资源更新完成回调。
+            /// </summary>
             public FrameworkAction ResourceUpdateAllComplete;
 
             /// <summary>
@@ -102,7 +141,13 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取等待应用资源数量。
             /// </summary>
-            public int ApplyWaitingCount => m_ApplyWaitingInfo.Count;
+            public int ApplyWaitingCount
+            {
+                get
+                {
+                    return m_ApplyWaitingInfo.Count;
+                }
+            }
 
             /// <summary>
             /// 获取或设置资源更新重试次数。
@@ -112,22 +157,46 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取正在更新的资源组。
             /// </summary>
-            public IResourceGroup UpdatingResourceGroup => m_UpdatingResourceGroup;
+            public IResourceGroup UpdatingResourceGroup
+            {
+                get
+                {
+                    return m_UpdatingResourceGroup;
+                }
+            }
 
             /// <summary>
             /// 获取等待更新资源数量。
             /// </summary>
-            public int UpdateWaitingCount => m_UpdateWaitingInfo.Count;
+            public int UpdateWaitingCount
+            {
+                get
+                {
+                    return m_UpdateWaitingInfo.Count;
+                }
+            }
 
             /// <summary>
             /// 获取使用时下载的等待更新资源数量。
             /// </summary>
-            public int UpdateWaitingWhilePlayingCount => m_UpdateWaitingInfoWhilePlaying.Count;
+            public int UpdateWaitingWhilePlayingCount
+            {
+                get
+                {
+                    return m_UpdateWaitingInfoWhilePlaying.Count;
+                }
+            }
 
             /// <summary>
             /// 获取候选更新资源数量。
             /// </summary>
-            public int UpdateCandidateCount => m_UpdateCandidateInfo.Count;
+            public int UpdateCandidateCount
+            {
+                get
+                {
+                    return m_UpdateCandidateInfo.Count;
+                }
+            }
 
             /// <summary>
             /// 资源更新器轮询。
@@ -445,6 +514,11 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 从资源包解出并校验单个资源。
+            /// </summary>
+            /// <param name="applyInfo">待应用的资源记录。</param>
+            /// <returns>本次应用后是否已写入读写版本列表。</returns>
             private bool ApplyResource(ApplyInfo applyInfo)
             {
                 long position = m_ApplyingResourcePackStream.Position;
@@ -602,6 +676,11 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 为待更新资源提交下载任务。
+            /// </summary>
+            /// <param name="updateInfo">待更新的资源记录。</param>
+            /// <returns>是否新提交了下载任务。</returns>
             private bool DownloadResource(UpdateInfo updateInfo)
             {
                 if (updateInfo.Downloading)
@@ -615,6 +694,9 @@ namespace UnityQGameFramework.Core.Resource
                 return true;
             }
 
+            /// <summary>
+            /// 将当前可用资源写入读写版本列表。
+            /// </summary>
             private void GenerateReadWriteVersionList()
             {
                 FileStream fileStream = null;
@@ -694,6 +776,11 @@ namespace UnityQGameFramework.Core.Resource
                 m_CurrentGenerateReadWriteVersionListLength = 0;
             }
 
+            /// <summary>
+            /// 通知资源下载开始。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadStart(object sender, DownloadStartEventArgs e)
             {
                 UpdateInfo updateInfo = e.UserData as UpdateInfo;
@@ -718,6 +805,11 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 更新资源下载长度并通知进度。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadUpdate(object sender, DownloadUpdateEventArgs e)
             {
                 UpdateInfo updateInfo = e.UserData as UpdateInfo;
@@ -753,6 +845,11 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 校验下载文件并登记可用资源。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
             {
                 UpdateInfo updateInfo = e.UserData as UpdateInfo;
@@ -914,6 +1011,11 @@ namespace UnityQGameFramework.Core.Resource
                 }
             }
 
+            /// <summary>
+            /// 重试资源下载或通知最终失败。
+            /// </summary>
+            /// <param name="sender">事件发送者。</param>
+            /// <param name="e">事件参数。</param>
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
             {
                 UpdateInfo updateInfo = e.UserData as UpdateInfo;

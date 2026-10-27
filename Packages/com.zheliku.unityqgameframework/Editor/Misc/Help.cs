@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -13,6 +13,9 @@ namespace UnityQGameFramework.Editor
     /// </summary>
     public static class Help
     {
+        /// <summary>
+        /// 打开框架文档。
+        /// </summary>
         [MenuItem("QGF/Documentation", false, 90)]
         public static void ShowDocumentation()
         {

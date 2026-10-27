@@ -1,0 +1,387 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185f6993d5150494d98da50e26cb1c25, type: 3}
+  m_Name: YooAssetCollector
+  m_EditorClassIdentifier: 
+  ShowPackageView: 1
+  ShowEditorAlias: 0
+  UniqueBundleName: 1
+  Packages:
+  - PackageName: QgfExamples.Modules.ByFileName
+    PackageDesc: AddressByFileName
+    EnableAddressable: 1
+    SupportExtensionless: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: Demo
+      GroupDesc: 
+      AssetTags: Demo
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Cube.prefab
+        CollectorGUID: 51d003874f9f553f84bccd96d341285c
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+  - PackageName: QgfExamples.Modules.ByFolder
+    PackageDesc: AddressByFolderAndFileName
+    EnableAddressable: 1
+    SupportExtensionless: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: Demo
+      GroupDesc: 
+      AssetTags: Demo
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Cube.prefab
+        CollectorGUID: 51d003874f9f553f84bccd96d341285c
+        CollectorType: 0
+        AddressRuleName: AddressByFolderAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+  - PackageName: QgfExamples.Modules.ByGroup
+    PackageDesc: AddressByGroupAndFileName
+    EnableAddressable: 1
+    SupportExtensionless: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: Demo
+      GroupDesc: 
+      AssetTags: Demo
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Cube.prefab
+        CollectorGUID: 51d003874f9f553f84bccd96d341285c
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+  - PackageName: QgfExamples.Modules.Raw
+    PackageDesc: 
+    EnableAddressable: 1
+    SupportExtensionless: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 1
+    AutoCollectShaders: 0
+    IgnoreRuleName: RawFileIgnoreRule
+    Groups:
+    - GroupName: Data
+      GroupDesc: 
+      AssetTags: Data
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Archive.bytes
+        CollectorGUID: 1422c43f096854ac866b7470b6411b71
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Message.bytes
+        CollectorGUID: b6b770d6e2cc5b32af15eeea51583291
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+  - PackageName: QgfExamples.Modules.Remote
+    PackageDesc: 
+    EnableAddressable: 1
+    SupportExtensionless: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 1
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: Base
+      GroupDesc: 
+      AssetTags: Base
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Cube.prefab
+        CollectorGUID: 51d003874f9f553f84bccd96d341285c
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Data
+      GroupDesc: 
+      AssetTags: Data
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Archive.bytes
+        CollectorGUID: 1422c43f096854ac866b7470b6411b71
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art/Message.bytes
+        CollectorGUID: b6b770d6e2cc5b32af15eeea51583291
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+  - PackageName: QgfExamples.Modules
+    PackageDesc: 
+    EnableAddressable: 1
+    SupportExtensionless: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 1
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: ObjectPool
+      GroupDesc: 
+      AssetTags: ObjectPool
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/08_ObjectPool/Art
+        CollectorGUID: 401529af59d153d3b40d96032e97bcae
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: Resource
+      GroupDesc: 
+      AssetTags: Resource
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/12_Resource/Common/Art
+        CollectorGUID: 2a2e235b0e875e9ab8428d809f6379f9
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: Entity_ShowHide
+      GroupDesc: 
+      AssetTags: Entity_ShowHide
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/13_Entity/01_ShowHide/Art
+        CollectorGUID: 1d201de9610053ada97cd1b499d8412c
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: Entity_Reuse
+      GroupDesc: 
+      AssetTags: Entity_Reuse
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/13_Entity/02_Reuse/Art
+        CollectorGUID: 24d816fd3daa56ea9482e99218252452
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: UI_OpenWindow
+      GroupDesc: 
+      AssetTags: UI_OpenWindow
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/14_UI/01_OpenWindow/Art
+        CollectorGUID: 1b8f1ff4db67571bbf62ab141ac99c66
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: UI_Reopen
+      GroupDesc: 
+      AssetTags: UI_Reopen
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/14_UI/02_Reopen/Art
+        CollectorGUID: ce78a6181a745e6e9d4aced5ac79d5c1
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: UI_Cover
+      GroupDesc: 
+      AssetTags: UI_Cover
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/14_UI/03_Cover/Art
+        CollectorGUID: 0b3194aebe8e5ab5a755a2f6b201c79a
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: Sound_OneShot
+      GroupDesc: 
+      AssetTags: Sound_OneShot
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/15_Sound/01_OneShot/Art
+        CollectorGUID: b6b47a92e2a7516b87ae755a9c338e3d
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Sound_GroupVolume
+      GroupDesc: 
+      AssetTags: Sound_GroupVolume
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/15_Sound/02_GroupVolume/Art
+        CollectorGUID: 36c2862943ce5fd2bcb8e840c0faac8d
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Sound_Spatial
+      GroupDesc: 
+      AssetTags: Sound_Spatial
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/15_Sound/03_Spatial/Art
+        CollectorGUID: d58360051d9453a38806fcd6470c031c
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Scene_LoadRoom
+      GroupDesc: 
+      AssetTags: Scene_LoadRoom
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/16_Scene/01_LoadRoom/Art
+        CollectorGUID: 9f7b57103ab358d2ba0e9128fa3f3984
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectScene
+        AssetTags: 
+        UserData: 
+    - GroupName: Scene_SwitchRooms
+      GroupDesc: 
+      AssetTags: Scene_SwitchRooms
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/16_Scene/02_SwitchRooms/Art
+        CollectorGUID: 8d18d4af40f65614807582f99485db45
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectScene
+        AssetTags: 
+        UserData: 
+    - GroupName: ExampleUI
+      GroupDesc: 
+      AssetTags: ExampleUI
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/Common/UI
+        CollectorGUID: 95b81017aba453c9b3f180dac0ae216c
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Tables
+      GroupDesc: 
+      AssetTags: Tables
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/UnityQGameFramework/Config/Data
+        CollectorGUID: 5769ea3171ff519cb67a7e6bd665905b
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Localization
+      GroupDesc: 
+      AssetTags: Localization
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/10_Localization/Common
+        CollectorGUID: a2b19e5b8d44518495deee3bbe5ebd48
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Config_Values
+      GroupDesc: 
+      AssetTags: Config_Values
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/02_Config/01_ReadValues/Game.toml
+        CollectorGUID: 2fc8efa1aab156fab5c33cacded19bfd
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Config_Asset
+      GroupDesc: 
+      AssetTags: Config_Asset
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Examples/01_Modules/02_Config/02_LoadAsset/Level.toml
+        CollectorGUID: 534a4ddb17415c2fa2d99e3668d48ee9
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackByGuid
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 

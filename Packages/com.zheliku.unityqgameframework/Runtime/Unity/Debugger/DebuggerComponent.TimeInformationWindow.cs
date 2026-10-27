@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,8 +10,14 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示帧时间、运行时间与时间缩放。
+        /// </summary>
         private sealed class TimeInformationWindow : ScrollableDebuggerWindowBase
         {
+            /// <summary>
+            /// 绘制时间信息。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Time Information</b>");
@@ -40,6 +46,11 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.EndVertical();
             }
 
+            /// <summary>
+            /// 获取时间缩放设置的描述。
+            /// </summary>
+            /// <param name="timeScale">时间缩放比例。</param>
+            /// <returns>时间缩放状态的显示文本。</returns>
             private string GetTimeScaleDescription(float timeScale)
             {
                 if (timeScale <= 0f)

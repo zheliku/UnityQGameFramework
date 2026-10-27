@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -53,14 +53,26 @@ namespace UnityQGameFramework.Core.FileSystem
         /// </summary>
         protected internal override long Position
         {
-            get => m_FileStream.Position;
-            set => m_FileStream.Position = value;
+            get
+            {
+                return m_FileStream.Position;
+            }
+            set
+            {
+                m_FileStream.Position = value;
+            }
         }
 
         /// <summary>
         /// 获取文件系统流长度。
         /// </summary>
-        protected internal override long Length => m_FileStream.Length;
+        protected internal override long Length
+        {
+            get
+            {
+                return m_FileStream.Length;
+            }
+        }
 
         /// <summary>
         /// 设置文件系统流长度。

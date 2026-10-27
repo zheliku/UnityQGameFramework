@@ -63,12 +63,24 @@ namespace UnityQGameFramework.Runtime
             await WithCancellation(AsResult(task), cancellationToken);
         }
 
+        /// <summary>
+        /// 将无返回值任务转换为布尔结果任务。
+        /// </summary>
+        /// <param name="task">要等待的任务。</param>
+        /// <returns>原任务完成后返回 true 的任务。</returns>
         private static async UniTask<bool> AsResult(UniTask task)
         {
             await task;
             return true;
         }
 
+        /// <summary>
+        /// 观察原任务并向等待器传递完成结果。
+        /// </summary>
+        /// <typeparam name="T">原任务的结果类型。</typeparam>
+        /// <param name="task">原始任务。</param>
+        /// <param name="waiter">接收结果、取消或异常的等待器。</param>
+        /// <returns>观察原任务完成的异步任务。</returns>
         private static async UniTask CompleteWaitAsync<T>(UniTask<T> task, CancellationWaiter<T> waiter)
         {
             try
@@ -116,6 +128,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 初始化支持独立取消的等待器。
+        /// </summary>
+        /// <typeparam name="T">资源操作结果类型。</typeparam>
         private sealed class CancellationWaiter<T>
         {
             private readonly object m_Lock = new object();
@@ -126,11 +142,18 @@ namespace UnityQGameFramework.Runtime
             private bool m_Cancelled;
             private bool m_Completed;
 
+            /// <summary>
+            /// 初始化支持独立取消的等待器。
+            /// </summary>
+            /// <param name="cancellationToken">取消异步操作的令牌。</param>
             internal CancellationWaiter(CancellationToken cancellationToken)
             {
                 m_CancellationToken = cancellationToken;
             }
 
+            /// <summary>
+            /// 获取支持独立取消的等待任务。
+            /// </summary>
             internal UniTask<T> Task
             {
                 get
@@ -139,6 +162,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 注册取消回调并处理登记期间发生的取消。
+            /// </summary>
             internal void Register()
             {
                 CancellationTokenRegistration registration = m_CancellationToken.Register(OnCancelled);
@@ -155,6 +181,10 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 尝试完成等待并释放取消登记。
+            /// </summary>
+            /// <param name="result">原任务的结果。</param>
             internal void TrySetResult(T result)
             {
                 CancellationTokenRegistration registration;
@@ -171,6 +201,10 @@ namespace UnityQGameFramework.Runtime
                 m_Completion.TrySetResult(result);
             }
 
+            /// <summary>
+            /// 尝试将等待标记为取消并释放取消登记。
+            /// </summary>
+            /// <param name="cancellationToken">取消异步操作的令牌。</param>
             internal void TrySetCanceled(CancellationToken cancellationToken)
             {
                 CancellationTokenRegistration registration;
@@ -187,6 +221,10 @@ namespace UnityQGameFramework.Runtime
                 m_Completion.TrySetCanceled(cancellationToken);
             }
 
+            /// <summary>
+            /// 尝试将等待标记为失败并释放取消登记。
+            /// </summary>
+            /// <param name="exception">原任务发生的异常。</param>
             internal void TrySetException(Exception exception)
             {
                 CancellationTokenRegistration registration;
@@ -203,6 +241,9 @@ namespace UnityQGameFramework.Runtime
                 m_Completion.TrySetException(exception);
             }
 
+            /// <summary>
+            /// 记录取消状态并尝试结束等待。
+            /// </summary>
             private void OnCancelled()
             {
                 lock (m_Lock)

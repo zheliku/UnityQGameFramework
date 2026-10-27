@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -21,6 +21,9 @@ namespace UnityQGameFramework.Core.Resource
                 private IResourceHelper m_ResourceHelper;
                 private ResourceLoader m_ResourceLoader;
 
+                /// <summary>
+                /// 初始化资源的池内登记条目。
+                /// </summary>
                 public ResourceObject()
                 {
                     m_DependencyResources = new List<object>();
@@ -28,6 +31,9 @@ namespace UnityQGameFramework.Core.Resource
                     m_ResourceLoader = null;
                 }
 
+                /// <summary>
+                /// 获取资源是否未被其他资源依赖且允许释放。
+                /// </summary>
                 public override bool CustomCanReleaseFlag
                 {
                     get
@@ -38,6 +44,14 @@ namespace UnityQGameFramework.Core.Resource
                     }
                 }
 
+                /// <summary>
+                /// 从引用池获取资源登记条目。
+                /// </summary>
+                /// <param name="name">资源名称。</param>
+                /// <param name="target">被池管理的实际资源对象。</param>
+                /// <param name="resourceHelper">资源辅助器。</param>
+                /// <param name="resourceLoader">资源加载器。</param>
+                /// <returns>资源的池内登记条目。</returns>
                 public static ResourceObject Create(string name, object target, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
                 {
                     if (resourceHelper == null)
@@ -57,6 +71,9 @@ namespace UnityQGameFramework.Core.Resource
                     return resourceObject;
                 }
 
+                /// <summary>
+                /// 清理资源登记数据。
+                /// </summary>
                 public override void Clear()
                 {
                     base.Clear();
@@ -65,6 +82,10 @@ namespace UnityQGameFramework.Core.Resource
                     m_ResourceLoader = null;
                 }
 
+                /// <summary>
+                /// 登记资源依赖并增加依赖引用计数。
+                /// </summary>
+                /// <param name="dependencyResource">当前资源依赖的资源对象。</param>
                 public void AddDependencyResource(object dependencyResource)
                 {
                     if (Target == dependencyResource)
@@ -90,6 +111,10 @@ namespace UnityQGameFramework.Core.Resource
                     }
                 }
 
+                /// <summary>
+                /// 释放资源对象并更新依赖引用计数。
+                /// </summary>
+                /// <param name="isShutdown">是否正在关闭框架。</param>
                 protected internal override void Release(bool isShutdown)
                 {
                     if (!isShutdown)

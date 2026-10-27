@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -14,6 +14,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Editor
 {
+    /// <summary>
+    /// 绘制引用池组件的 Inspector。
+    /// </summary>
     [CustomEditor(typeof(ReferencePoolComponent))]
     internal sealed class ReferencePoolComponentInspector : FrameworkInspector
     {
@@ -24,6 +27,9 @@ namespace UnityQGameFramework.Editor
 
         private bool m_ShowFullClassName = false;
 
+        /// <summary>
+        /// 绘制组件的 Inspector 配置和运行时信息。
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -125,16 +131,29 @@ namespace UnityQGameFramework.Editor
             Repaint();
         }
 
+        /// <summary>
+        /// 初始化序列化属性和编辑器缓存。
+        /// </summary>
         private void OnEnable()
         {
             m_EnableStrictCheck = serializedObject.FindProperty("m_EnableStrictCheck");
         }
 
+        /// <summary>
+        /// 绘制引用池使用统计。
+        /// </summary>
+        /// <param name="referencePoolInfo">引用池统计信息。</param>
         private void DrawReferencePoolInfo(ReferencePoolInfo referencePoolInfo)
         {
             EditorGUILayout.LabelField(m_ShowFullClassName ? referencePoolInfo.Type.FullName : referencePoolInfo.Type.Name, Utility.Text.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", referencePoolInfo.UnusedReferenceCount, referencePoolInfo.UsingReferenceCount, referencePoolInfo.AcquireReferenceCount, referencePoolInfo.ReleaseReferenceCount, referencePoolInfo.AddReferenceCount, referencePoolInfo.RemoveReferenceCount));
         }
 
+        /// <summary>
+        /// 按显示模式比较引用池记录。
+        /// </summary>
+        /// <param name="a">第一条引用池记录。</param>
+        /// <param name="b">第二条引用池记录。</param>
+        /// <returns>表示排序关系的有符号整数。</returns>
         private int Comparison(ReferencePoolInfo a, ReferencePoolInfo b)
         {
             if (m_ShowFullClassName)

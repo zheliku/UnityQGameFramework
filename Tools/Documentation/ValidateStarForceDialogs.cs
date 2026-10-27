@@ -51,7 +51,7 @@ public static class ValidateStarForceDialogs
         {
             EditorSettings.enterPlayModeOptionsEnabled = true;
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
-            EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath("9d2d51bf0fc3dfc42908e3a7a64f4feb"));
+        EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");
             await Play(true);
             Application.runInBackground = true;
             input.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;

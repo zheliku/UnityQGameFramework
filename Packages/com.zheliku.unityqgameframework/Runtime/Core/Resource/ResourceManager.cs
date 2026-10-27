@@ -2411,11 +2411,20 @@ namespace UnityQGameFramework.Core.Resource
             return new ResourceGroupCollection(resourceGroups, m_ResourceInfos);
         }
 
+        /// <summary>
+        /// 请求更新指定资源。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
         private void UpdateResource(ResourceName resourceName)
         {
             m_ResourceUpdater.UpdateResource(resourceName);
         }
 
+        /// <summary>
+        /// 获取资源组，不存在时创建。
+        /// </summary>
+        /// <param name="resourceGroupName">资源组名称。</param>
+        /// <returns>指定的资源组。</returns>
         private ResourceGroup GetOrAddResourceGroup(string resourceGroupName)
         {
             if (resourceGroupName == null)
@@ -2433,6 +2442,11 @@ namespace UnityQGameFramework.Core.Resource
             return resourceGroup;
         }
 
+        /// <summary>
+        /// 查找资源的资产记录。
+        /// </summary>
+        /// <param name="assetName">资产名称。</param>
+        /// <returns>资产记录；尚未初始化或不存在时返回空。</returns>
         private AssetInfo GetAssetInfo(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
@@ -2454,6 +2468,11 @@ namespace UnityQGameFramework.Core.Resource
             return null;
         }
 
+        /// <summary>
+        /// 查找资源记录。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <returns>资源记录；尚未初始化或不存在时返回空。</returns>
         private ResourceInfo GetResourceInfo(ResourceName resourceName)
         {
             if (m_ResourceInfos == null)
@@ -2470,6 +2489,12 @@ namespace UnityQGameFramework.Core.Resource
             return null;
         }
 
+        /// <summary>
+        /// 获取或打开资源使用的文件系统。
+        /// </summary>
+        /// <param name="fileSystemName">文件系统名称。</param>
+        /// <param name="storageInReadOnly">是否从只读目录打开。</param>
+        /// <returns>对应的文件系统。</returns>
         private IFileSystem GetFileSystem(string fileSystemName, bool storageInReadOnly)
         {
             if (string.IsNullOrEmpty(fileSystemName))
@@ -2522,6 +2547,9 @@ namespace UnityQGameFramework.Core.Resource
             return fileSystem;
         }
 
+        /// <summary>
+        /// 准备并清空资源处理缓冲流。
+        /// </summary>
         private void PrepareCachedStream()
         {
             if (m_CachedStream == null)
@@ -2533,6 +2561,9 @@ namespace UnityQGameFramework.Core.Resource
             m_CachedStream.SetLength(0L);
         }
 
+        /// <summary>
+        /// 释放资源处理缓冲流。
+        /// </summary>
         private void FreeCachedStream()
         {
             if (m_CachedStream != null)
@@ -2542,6 +2573,9 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 通知资源初始化完成。
+        /// </summary>
         private void OnIniterResourceInitComplete()
         {
             m_ResourceIniter.ResourceInitComplete -= OnIniterResourceInitComplete;
@@ -2552,11 +2586,21 @@ namespace UnityQGameFramework.Core.Resource
             m_InitResourcesCompleteCallback = null;
         }
 
+        /// <summary>
+        /// 通知版本资源列表更新成功。
+        /// </summary>
+        /// <param name="downloadPath">下载文件路径。</param>
+        /// <param name="downloadUri">下载地址。</param>
         private void OnVersionListProcessorUpdateSuccess(string downloadPath, string downloadUri)
         {
             m_UpdateVersionListCallbacks.UpdateVersionListSuccessCallback(downloadPath, downloadUri);
         }
 
+        /// <summary>
+        /// 通知版本资源列表更新失败。
+        /// </summary>
+        /// <param name="downloadUri">下载地址。</param>
+        /// <param name="errorMessage">错误信息。</param>
         private void OnVersionListProcessorUpdateFailure(string downloadUri, string errorMessage)
         {
             if (m_UpdateVersionListCallbacks.UpdateVersionListFailureCallback != null)
@@ -2565,6 +2609,11 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发资源校验开始事件。
+        /// </summary>
+        /// <param name="count">资源数量。</param>
+        /// <param name="totalLength">资源总字节数。</param>
         private void OnVerifierResourceVerifyStart(int count, long totalLength)
         {
             if (m_ResourceVerifyStartEventHandler != null)
@@ -2575,6 +2624,11 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发单个资源校验成功事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="length">资源字节数。</param>
         private void OnVerifierResourceVerifySuccess(ResourceName resourceName, int length)
         {
             if (m_ResourceVerifySuccessEventHandler != null)
@@ -2585,6 +2639,10 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发单个资源校验失败事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
         private void OnVerifierResourceVerifyFailure(ResourceName resourceName)
         {
             if (m_ResourceVerifyFailureEventHandler != null)
@@ -2595,6 +2653,10 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 通知资源校验完成。
+        /// </summary>
+        /// <param name="result">操作是否成功。</param>
         private void OnVerifierResourceVerifyComplete(bool result)
         {
             m_VerifyResourcesCompleteCallback(result);
@@ -2606,11 +2668,29 @@ namespace UnityQGameFramework.Core.Resource
             m_ResourceVerifier = null;
         }
 
+        /// <summary>
+        /// 登记需要更新的资源。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="fileSystemName">文件系统名称。</param>
+        /// <param name="loadType">资源加载方式。</param>
+        /// <param name="length">资源字节数。</param>
+        /// <param name="hashCode">资源 CRC32 校验值。</param>
+        /// <param name="compressedLength">压缩后的资源字节数。</param>
+        /// <param name="compressedHashCode">压缩后的资源 CRC32 校验值。</param>
         private void OnCheckerResourceNeedUpdate(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode)
         {
             m_ResourceUpdater.AddResourceUpdate(resourceName, fileSystemName, loadType, length, hashCode, compressedLength, compressedHashCode, Utility.Path.GetRegularPath(Path.Combine(ReadWritePath, resourceName.FullName)));
         }
 
+        /// <summary>
+        /// 通知资源检查结果。
+        /// </summary>
+        /// <param name="movedCount">已移动资源数量。</param>
+        /// <param name="removedCount">已移除资源数量。</param>
+        /// <param name="updateCount">需要更新的资源数量。</param>
+        /// <param name="updateTotalLength">待更新资源总字节数。</param>
+        /// <param name="updateTotalCompressedLength">待更新资源压缩后的总字节数。</param>
         private void OnCheckerResourceCheckComplete(int movedCount, int removedCount, int updateCount, long updateTotalLength, long updateTotalCompressedLength)
         {
             m_VersionListProcessor.VersionListUpdateSuccess -= OnVersionListProcessorUpdateSuccess;
@@ -2651,6 +2731,12 @@ namespace UnityQGameFramework.Core.Resource
             m_CheckResourcesCompleteCallback = null;
         }
 
+        /// <summary>
+        /// 派发资源包应用开始事件。
+        /// </summary>
+        /// <param name="resourcePackPath">资源包文件路径。</param>
+        /// <param name="count">资源数量。</param>
+        /// <param name="totalLength">资源总字节数。</param>
         private void OnUpdaterResourceApplyStart(string resourcePackPath, int count, long totalLength)
         {
             if (m_ResourceApplyStartEventHandler != null)
@@ -2661,6 +2747,14 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发单个资源应用成功事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="applyPath">解包后写入的资源路径。</param>
+        /// <param name="resourcePackPath">资源包文件路径。</param>
+        /// <param name="length">资源字节数。</param>
+        /// <param name="compressedLength">压缩后的资源字节数。</param>
         private void OnUpdaterResourceApplySuccess(ResourceName resourceName, string applyPath, string resourcePackPath, int length, int compressedLength)
         {
             if (m_ResourceApplySuccessEventHandler != null)
@@ -2671,6 +2765,12 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发单个资源应用失败事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="resourcePackPath">资源包文件路径。</param>
+        /// <param name="errorMessage">错误信息。</param>
         private void OnUpdaterResourceApplyFailure(ResourceName resourceName, string resourcePackPath, string errorMessage)
         {
             if (m_ResourceApplyFailureEventHandler != null)
@@ -2681,6 +2781,11 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 通知资源包应用完成。
+        /// </summary>
+        /// <param name="resourcePackPath">资源包文件路径。</param>
+        /// <param name="result">操作是否成功。</param>
         private void OnUpdaterResourceApplyComplete(string resourcePackPath, bool result)
         {
             ApplyResourcesCompleteCallback applyResourcesCompleteCallback = m_ApplyResourcesCompleteCallback;
@@ -2688,6 +2793,15 @@ namespace UnityQGameFramework.Core.Resource
             applyResourcesCompleteCallback(resourcePackPath, result);
         }
 
+        /// <summary>
+        /// 派发资源下载开始事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="downloadPath">下载文件路径。</param>
+        /// <param name="downloadUri">下载地址。</param>
+        /// <param name="currentLength">已下载字节数。</param>
+        /// <param name="compressedLength">压缩后的资源字节数。</param>
+        /// <param name="retryCount">已重试次数。</param>
         private void OnUpdaterResourceUpdateStart(ResourceName resourceName, string downloadPath, string downloadUri, int currentLength, int compressedLength, int retryCount)
         {
             if (m_ResourceUpdateStartEventHandler != null)
@@ -2698,6 +2812,14 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发资源下载进度事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="downloadPath">下载文件路径。</param>
+        /// <param name="downloadUri">下载地址。</param>
+        /// <param name="currentLength">已下载字节数。</param>
+        /// <param name="compressedLength">压缩后的资源字节数。</param>
         private void OnUpdaterResourceUpdateChanged(ResourceName resourceName, string downloadPath, string downloadUri, int currentLength, int compressedLength)
         {
             if (m_ResourceUpdateChangedEventHandler != null)
@@ -2708,6 +2830,14 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发资源下载成功事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="downloadPath">下载文件路径。</param>
+        /// <param name="downloadUri">下载地址。</param>
+        /// <param name="length">资源字节数。</param>
+        /// <param name="compressedLength">压缩后的资源字节数。</param>
         private void OnUpdaterResourceUpdateSuccess(ResourceName resourceName, string downloadPath, string downloadUri, int length, int compressedLength)
         {
             if (m_ResourceUpdateSuccessEventHandler != null)
@@ -2718,6 +2848,14 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 派发资源下载失败事件。
+        /// </summary>
+        /// <param name="resourceName">资源名称。</param>
+        /// <param name="downloadUri">下载地址。</param>
+        /// <param name="retryCount">已重试次数。</param>
+        /// <param name="totalRetryCount">允许重试的总次数。</param>
+        /// <param name="errorMessage">错误信息。</param>
         private void OnUpdaterResourceUpdateFailure(ResourceName resourceName, string downloadUri, int retryCount, int totalRetryCount, string errorMessage)
         {
             if (m_ResourceUpdateFailureEventHandler != null)
@@ -2728,6 +2866,11 @@ namespace UnityQGameFramework.Core.Resource
             }
         }
 
+        /// <summary>
+        /// 通知资源组更新完成。
+        /// </summary>
+        /// <param name="resourceGroup">已完成更新的资源组。</param>
+        /// <param name="result">操作是否成功。</param>
         private void OnUpdaterResourceUpdateComplete(ResourceGroup resourceGroup, bool result)
         {
             Utility.Path.RemoveEmptyDirectory(ReadWritePath);
@@ -2736,6 +2879,9 @@ namespace UnityQGameFramework.Core.Resource
             updateResourcesCompleteCallback(resourceGroup, result);
         }
 
+        /// <summary>
+        /// 派发所有资源更新完成事件。
+        /// </summary>
         private void OnUpdaterResourceUpdateAllComplete()
         {
             m_ResourceUpdater.ResourceApplyStart -= OnUpdaterResourceApplyStart;

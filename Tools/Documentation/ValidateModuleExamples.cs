@@ -208,9 +208,9 @@ public static class ValidateModuleExamples
                 Click("playButton"); Require(Field<int>("serialId") > 0, "Sound submitted");
                 await Wait(() => !QGF.Sound.IsLoadingSound(Field<int>("serialId"))); break;
             case "LoadRoomExample":
-                Click("loadButton"); await Wait(() => QGF.Scene.SceneIsLoaded(Field<string>("room")));
-                Click("unloadButton"); await Wait(() => !QGF.Scene.SceneIsUnloading(Field<string>("room")));
-                Require(!QGF.Scene.SceneIsLoaded(Field<string>("room")), "Room unloaded"); break;
+                Click("loadButton"); await Wait(() => QGF.Scene.SceneIsLoaded("Scene_LoadRoom_BlueRoom"));
+                Click("unloadButton"); await Wait(() => !QGF.Scene.SceneIsUnloading("Scene_LoadRoom_BlueRoom"));
+                Require(!QGF.Scene.SceneIsLoaded("Scene_LoadRoom_BlueRoom"), "Room unloaded"); break;
             case "WriteReadFileExample":
                 Field<InputField>("contentInput").text = "QGF 读写"; Click("writeButton"); await Task.Delay(80); Click("readButton");
                 Require(Field<Text>("resultText").text == "QGF 读写", "Container UTF8 roundtrip"); break;

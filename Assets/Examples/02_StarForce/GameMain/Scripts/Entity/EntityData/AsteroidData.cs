@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 小行星的生命值、速度和碰撞数据。
+    /// </summary>
     [Serializable]
     public class AsteroidData : TargetableObjectData
     {
@@ -30,6 +33,11 @@ namespace StarForce
         [SerializeField]
         private int m_DeadSoundId = 0;
 
+        /// <summary>
+        /// 小行星的生命值、速度和碰撞数据。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="typeId">配置表中的实体类型编号。</param>
         public AsteroidData(int entityId, int typeId)
             : base(entityId, typeId, CampType.Neutral)
         {
@@ -48,16 +56,70 @@ namespace StarForce
             m_DeadSoundId = drAsteroid.DeadSoundId;
         }
 
-        public override int MaxHP => m_MaxHP;
+        /// <summary>
+        /// 获取最大生命值。
+        /// </summary>
+        public override int MaxHP
+        {
+            get
+            {
+                return m_MaxHP;
+            }
+        }
 
-        public int Attack => m_Attack;
+        /// <summary>
+        /// 获取攻击力。
+        /// </summary>
+        public int Attack
+        {
+            get
+            {
+                return m_Attack;
+            }
+        }
 
-        public float Speed => m_Speed;
+        /// <summary>
+        /// 获取移动速度。
+        /// </summary>
+        public float Speed
+        {
+            get
+            {
+                return m_Speed;
+            }
+        }
 
-        public float AngularSpeed => m_AngularSpeed;
+        /// <summary>
+        /// 获取角速度。
+        /// </summary>
+        public float AngularSpeed
+        {
+            get
+            {
+                return m_AngularSpeed;
+            }
+        }
 
-        public int DeadEffectId => m_DeadEffectId;
+        /// <summary>
+        /// 获取死亡特效配置编号。
+        /// </summary>
+        public int DeadEffectId
+        {
+            get
+            {
+                return m_DeadEffectId;
+            }
+        }
 
-        public int DeadSoundId => m_DeadSoundId;
+        /// <summary>
+        /// 获取死亡声音配置编号。
+        /// </summary>
+        public int DeadSoundId
+        {
+            get
+            {
+                return m_DeadSoundId;
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,6 +10,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class UIComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 界面组的序列化配置。
+        /// </summary>
         [Serializable]
         private sealed class UIGroup
         {
@@ -19,9 +22,27 @@ namespace UnityQGameFramework.Runtime
             [SerializeField]
             private int m_Depth = 0;
 
-            public string Name => m_Name;
+            /// <summary>
+            /// 获取界面组名称。
+            /// </summary>
+            public string Name
+            {
+                get
+                {
+                    return m_Name;
+                }
+            }
 
-            public int Depth => m_Depth;
+            /// <summary>
+            /// 获取界面组深度。
+            /// </summary>
+            public int Depth
+            {
+                get
+                {
+                    return m_Depth;
+                }
+            }
         }
     }
 }

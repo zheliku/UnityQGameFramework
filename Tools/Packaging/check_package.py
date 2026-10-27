@@ -18,6 +18,30 @@ def file_digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def unguarded_editor_reference(content):
+    """Find Editor APIs that could remain when UNITY_EDITOR is not defined."""
+    branches = []
+    reference = re.compile(r'\bUnityEditor(?:\.|\b)|\bAssetDatabase\b|\bResourceBuildService\b')
+    for number, line in enumerate(content.splitlines(), 1):
+        directive = re.match(r'\s*#(if|elif|else|endif)\b(.*)', line)
+        if directive:
+            kind, expression = directive[1], directive[2].strip().strip('() ')
+            if kind in ('if', 'elif'):
+                guarded = True if expression == 'UNITY_EDITOR' else False if expression == '!UNITY_EDITOR' else None
+                if kind == 'if':
+                    branches.append(guarded)
+                elif branches:
+                    branches[-1] = guarded
+            elif kind == 'else' and branches:
+                branches[-1] = None if branches[-1] is None else not branches[-1]
+            elif kind == 'endif' and branches:
+                branches.pop()
+            continue
+        if reference.search(line) and True not in branches:
+            return number
+    return None
+
+
 def main():
     root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(description=__doc__)
@@ -133,9 +157,9 @@ def main():
                          for path in parent.glob('*.asmdef')), None)
         editor_only_assembly = assembly is not None and 'Editor' in json.loads(
             assembly.read_text(encoding='utf-8-sig')).get('includePlatforms', [])
-        editor_fixture = re.search(r'\bUnityEditor(?:\.|\b)|\bAssetDatabase\b|\bResourceBuildService\b|\bResourceBuildProfile\b', content)
-        if editor_fixture and not content.lstrip().startswith('#if UNITY_EDITOR') and not editor_only_assembly:
-            errors.append('An example using Editor APIs or fixtures needs an Editor-only guard: ' + script.relative_to(root).as_posix())
+        editor_reference = unguarded_editor_reference(content)
+        if editor_reference is not None and not editor_only_assembly:
+            errors.append('An Editor API needs a UNITY_EDITOR guard: ' + script.relative_to(root).as_posix() + ':' + str(editor_reference))
         if re.search(r'\bAwaitable\b', content):
             errors.append('Unity 2022.3 examples must use UniTask instead of Awaitable: ' + script.relative_to(root).as_posix())
         if 'using Cysharp.Threading.Tasks;' in content:

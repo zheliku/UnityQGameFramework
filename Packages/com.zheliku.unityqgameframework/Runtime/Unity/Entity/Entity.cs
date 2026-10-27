@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -28,7 +28,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体实例。
         /// </summary>
-        public object Handle => gameObject;
+        public object Handle
+        {
+            get
+            {
+                return gameObject;
+            }
+        }
 
         /// <summary>
         /// 获取实体所属的实体组。
@@ -47,7 +53,7 @@ namespace UnityQGameFramework.Runtime
         /// <param name="entityAssetName">实体资源名称。</param>
         /// <param name="entityGroup">实体所属的实体组。</param>
         /// <param name="isNewInstance">是否是新实例。</param>
-        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="userData">包含逻辑类型和业务数据的实体显示信息。</param>
         public void OnInit(int entityId, string entityAssetName, IEntityGroup entityGroup, bool isNewInstance, object userData)
         {
             Id = entityId;
@@ -120,7 +126,7 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 实体显示。
         /// </summary>
-        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="userData">包含逻辑类型和业务数据的实体显示信息。</param>
         public void OnShow(object userData)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
@@ -155,7 +161,7 @@ namespace UnityQGameFramework.Runtime
         /// 实体附加子实体。
         /// </summary>
         /// <param name="childEntity">附加的子实体。</param>
-        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="userData">包含父变换和业务数据的实体附加信息。</param>
         public void OnAttached(IEntity childEntity, object userData)
         {
             AttachEntityInfo attachEntityInfo = (AttachEntityInfo)userData;
@@ -187,10 +193,10 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 实体附加子实体。
+        /// 实体附加到父实体。
         /// </summary>
-        /// <param name="parentEntity">被附加的父实体。</param>
-        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="parentEntity">要附加到的父实体。</param>
+        /// <param name="userData">包含父变换和业务数据的实体附加信息。</param>
         public void OnAttachTo(IEntity parentEntity, object userData)
         {
             AttachEntityInfo attachEntityInfo = (AttachEntityInfo)userData;
@@ -207,9 +213,9 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 实体解除子实体。
+        /// 实体从父实体解除。
         /// </summary>
-        /// <param name="parentEntity">被解除的父实体。</param>
+        /// <param name="parentEntity">原先附加到的父实体。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void OnDetachFrom(IEntity parentEntity, object userData)
         {

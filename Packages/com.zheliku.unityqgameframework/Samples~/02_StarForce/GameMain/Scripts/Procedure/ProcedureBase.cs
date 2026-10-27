@@ -5,6 +5,9 @@
 
 namespace StarForce
 {
+    /// <summary>
+    /// StarForce 流程的公共基类。
+    /// </summary>
     public abstract class ProcedureBase : UnityQGameFramework.Core.Procedure.ProcedureBase
     {
     }

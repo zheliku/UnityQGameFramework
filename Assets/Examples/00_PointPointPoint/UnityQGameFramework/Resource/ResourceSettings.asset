@@ -11,12 +11,16 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 620342455f6933f40915a27cbdb5a51e, type: 3}
   m_Name: ResourceSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_DefaultPackageName: QgfExamples.PointPointPoint
-  m_UseEditorSimulation: 1
+  m_EditorCollector: {fileID: 11400000, guid: d1f8e52b5e7c4baaa33fecb71ff88de5, type: 2}
+  m_SerializationVersion: 3
+  m_CachePathType: 2
+  m_MinUnloadUnusedAssetsInterval: 60
+  m_MaxUnloadUnusedAssetsInterval: 300
   m_Packages:
   - m_Name: QgfExamples.PointPointPoint
-    m_PlayMode: 1
-    m_HostServer: 
-    m_FallbackServer: 
-    m_PackageVersion: 
+    m_Mode: 1
+    m_HostServer:
+    m_FallbackServer:
+    m_PackageVersion:

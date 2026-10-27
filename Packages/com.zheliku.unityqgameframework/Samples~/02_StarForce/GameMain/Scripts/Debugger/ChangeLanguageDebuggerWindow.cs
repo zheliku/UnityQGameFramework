@@ -10,27 +10,48 @@ using UnityQGameFramework.Runtime;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 在调试器中切换游戏语言。
+    /// </summary>
     public class ChangeLanguageDebuggerWindow : IDebuggerWindow
     {
         private Vector2 m_ScrollPosition = Vector2.zero;
         private bool m_NeedRestart = false;
 
+        /// <summary>
+        /// 初始化本局游戏。
+        /// </summary>
+        /// <param name="args">调试窗口初始化参数。</param>
         public void Initialize(params object[] args)
         {
         }
 
+        /// <summary>
+        /// 结束本局并解除事件订阅。
+        /// </summary>
         public void Shutdown()
         {
         }
 
+        /// <summary>
+        /// 进入调试窗口。
+        /// </summary>
         public void OnEnter()
         {
         }
 
+        /// <summary>
+        /// 离开调试窗口。
+        /// </summary>
         public void OnLeave()
         {
         }
 
+        /// <summary>
+        /// 更新调试窗口状态。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑时间间隔，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实时间间隔，以秒为单位。</param>
         public void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             if (m_NeedRestart)
@@ -40,6 +61,9 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 绘制语言切换按钮。
+        /// </summary>
         public void OnDraw()
         {
             m_ScrollPosition = GUILayout.BeginScrollView(m_ScrollPosition);

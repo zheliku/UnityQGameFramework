@@ -10,14 +10,18 @@ using ErrorArgs = UnityQGameFramework.Runtime.NetworkErrorEventArgs;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示连接 TCP 通道。
+    /// </summary>
     public sealed class ConnectNetworkExample : MonoBehaviour
     {
-        [SerializeField] private Button connectButton, closeButton;
-        [SerializeField] private Text stateText;
+        [SerializeField]
+        private Button connectButton, closeButton;
+        [SerializeField]
+        private Text stateText;
         private NetworkEchoServer server;
         private INetworkChannel channel;
         private bool connecting;
-
         private void Start()
         {
             server = new NetworkEchoServer(); // 示例自带本机服务器，无需外网。
@@ -40,21 +44,33 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // 全局事件先确认通道，避免处理其他业务连接的结果。
             if (args is ConnectedArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
+            {
                 stateText.text = "已连接";
+            }
             else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
+            {
                 stateText.text = "已断开，可以重新连接";
+            }
             else if (args is ErrorArgs error && ReferenceEquals(error.NetworkChannel, channel))
             {
                 stateText.text = "连接失败：" + error.SocketErrorCode;
                 channel.Close();
             }
-            else return;
+            else
+            {
+                return;
+            }
+
             connecting = false;
         }
 
         private void Update()
         {
-            if (channel == null) return;
+            if (channel == null)
+            {
+                return;
+            }
+
             connectButton.interactable = !connecting && !channel.Connected;
             closeButton.interactable = connecting || channel.Connected;
         }
@@ -64,12 +80,28 @@ namespace UnityQGameFramework.Examples.Modules
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(ConnectedArgs.EventId, OnEvent)) events.Unsubscribe(ConnectedArgs.EventId, OnEvent);
-                if (events.Check(ClosedArgs.EventId, OnEvent)) events.Unsubscribe(ClosedArgs.EventId, OnEvent);
-                if (events.Check(ErrorArgs.EventId, OnEvent)) events.Unsubscribe(ErrorArgs.EventId, OnEvent);
+                if (events.Check(ConnectedArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(ConnectedArgs.EventId, OnEvent);
+                }
+
+                if (events.Check(ClosedArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(ClosedArgs.EventId, OnEvent);
+                }
+
+                if (events.Check(ErrorArgs.EventId, OnEvent))
+                {
+                    events.Unsubscribe(ErrorArgs.EventId, OnEvent);
+                }
             }
+
             var network = GameEntry.GetComponent<NetworkComponent>();
-            if (network != null && channel != null) network.DestroyNetworkChannel("Example.Main");
+            if (network != null && channel != null)
+            {
+                network.DestroyNetworkChannel("Example.Main");
+            }
+
             server?.Dispose();
         }
     }

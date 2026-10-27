@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -29,7 +29,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源校验失败事件编号。
         /// </summary>
-        public override int Id => EventId;
+        public override int Id
+        {
+            get
+            {
+                return EventId;
+            }
+        }
 
         /// <summary>
         /// 获取资源名称。

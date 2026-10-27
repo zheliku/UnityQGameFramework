@@ -24,7 +24,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取有限状态机数量。
         /// </summary>
-        public int Count => m_FsmManager.Count;
+        public int Count
+        {
+            get
+            {
+                return m_FsmManager.Count;
+            }
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -39,10 +45,6 @@ namespace UnityQGameFramework.Runtime
                 Log.Fatal("FSM manager is invalid.");
                 return;
             }
-        }
-
-        private void Start()
-        {
         }
 
         /// <summary>
@@ -132,6 +134,7 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有有限状态机。
         /// </summary>
+        /// <returns>所有已注册的有限状态机。</returns>
         public FsmBase[] GetAllFsms()
         {
             return m_FsmManager.GetAllFsms();

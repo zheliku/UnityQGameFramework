@@ -5,8 +5,20 @@
 
 namespace StarForce
 {
+    /// <summary>
+    /// 服务端发往客户端的消息基类。
+    /// </summary>
     public abstract class SCPacketBase : PacketBase
     {
-        public override PacketType PacketType => PacketType.ServerToClient;
+        /// <summary>
+        /// 消息的发送方向。
+        /// </summary>
+        public override PacketType PacketType
+        {
+            get
+            {
+                return PacketType.ServerToClient;
+            }
+        }
     }
 }

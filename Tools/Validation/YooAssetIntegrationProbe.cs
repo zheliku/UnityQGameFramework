@@ -60,12 +60,14 @@ public static class YooAssetIntegrationProbe
             var originalPackages = collector.Packages;
             string before = EditorJsonUtility.ToJson(collector);
             string diskBefore = Hash(AssetDatabase.GetAssetPath(collector));
-            var profiles = new List<ResourceBuildProfile>();
+            var sources = new List<BundleCollectorSetting>();
             foreach (string name in new[] { "ProbeA", "ProbeB", "ProbeRaw" })
             {
-                var profile = ScriptableObject.CreateInstance<ResourceBuildProfile>();
-                profile.Package.PackageName = name;
-                profile.Package.AutoCollectShaders = false;
+                var nativeCollector = ScriptableObject.CreateInstance<BundleCollectorSetting>();
+                nativeCollector.Packages.Add(new BundleCollectorPackage { PackageName = name, SupportExtensionless = false });
+                AssetDatabase.CreateAsset(nativeCollector, "Assets/Probe/Editor/" + name + "Collector.asset");
+                var package = nativeCollector.GetPackage(name);
+                package.AutoCollectShaders = false;
                 var group = new BundleCollectorGroup { GroupName = "Content", AssetTags = "Base" };
                 string path = name == "ProbeRaw" ? "Assets/Probe/Raw" : "Assets/Probe/Content";
                 group.Collectors.Add(new BundleCollector
@@ -75,16 +77,13 @@ public static class YooAssetIntegrationProbe
                     PackRuleName = nameof(PackSeparately),
                     AddressRuleName = nameof(AddressDisable)
                 });
-                profile.Package.Groups.Add(group);
+                package.Groups.Add(group);
                 if (name == "ProbeRaw")
                 {
-                    profile.Package.IgnoreRuleName = nameof(RawFileIgnoreRule);
-                    var serialized = new SerializedObject(profile);
-                    serialized.FindProperty("m_BundleType").intValue = (int)EBundleType.RawBundle;
-                    serialized.ApplyModifiedPropertiesWithoutUndo();
+                    package.IgnoreRuleName = nameof(RawFileIgnoreRule);
                 }
-                AssetDatabase.CreateAsset(profile, "Assets/Probe/Editor/" + name + ".asset");
-                profiles.Add(profile);
+                EditorUtility.SetDirty(nativeCollector);
+                sources.Add(nativeCollector);
             }
             string moveError = AssetDatabase.MoveAsset("Assets/Probe/Content", "Assets/Probe/MovedContent");
             if (!string.IsNullOrEmpty(moveError))
@@ -93,9 +92,9 @@ public static class YooAssetIntegrationProbe
             }
 
             var outputs = new List<string>();
-            foreach (ResourceBuildProfile profile in profiles)
+            foreach (BundleCollectorSetting source in sources)
             {
-                outputs.Add(ResourceBuildService.Build(profile, true));
+                outputs.Add(ResourceBuildService.Build(source, source.Packages[0].PackageName, true));
                 if (!ReferenceEquals(collector.Packages, originalPackages) || before != EditorJsonUtility.ToJson(collector)
                     || diskBefore != Hash(AssetDatabase.GetAssetPath(collector)) || EditorUtility.IsDirty(collector))
                 {
@@ -110,9 +109,9 @@ public static class YooAssetIntegrationProbe
             await SetPlayMode(true);
             YooAssets.Initialize();
             var packages = new List<ResourcePackage>();
-            for (int index = 0; index < profiles.Count; index++)
+            for (int index = 0; index < sources.Count; index++)
             {
-                ResourcePackage package = YooAssets.CreatePackage(profiles[index].Package.PackageName);
+                ResourcePackage package = YooAssets.CreatePackage(sources[index].Packages[0].PackageName);
                 packages.Add(package);
                 var initialize = package.InitializePackageAsync(new EditorSimulateModeOptions
                 {

@@ -27,10 +27,35 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取或设置编辑器模拟包的构建方法。
+        /// 获取默认资源包配置的 YooAsset 运行模式。
         /// </summary>
-        public static Func<ResourceSettings, string, string> EditorSimulationBuilder { get; set; }
+        public EPlayMode PlayMode
+        {
+            get
+            {
+                return m_Settings.GetPackage().PlayMode;
+            }
+        }
 
+        /// <summary>
+        /// 获取正在执行的资源请求数量。
+        /// </summary>
+        public int LoadingCount
+        {
+            get
+            {
+                return GetYooAssetBackend().LoadWorkingAgentCount;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置编辑器资源包的构建方法。
+        /// </summary>
+        public static Func<ResourceSettings, string, bool, string> EditorPackageBuilder { get; set; }
+
+        /// <summary>
+        /// 获取资源管理器。
+        /// </summary>
         internal IResourceManager ResourceManager
         {
             get
@@ -178,11 +203,20 @@ namespace UnityQGameFramework.Runtime
             return GetYooAssetBackend().UnloadUnusedAssetsAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// 获取已加载场景的实际名称。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源地址。</param>
+        /// <returns>实际场景名称；未加载时返回空。</returns>
         internal string GetLoadedSceneName(string sceneAssetName)
         {
             return GetYooAssetBackend().GetLoadedSceneName(sceneAssetName, null);
         }
 
+        /// <summary>
+        /// 获取当前资源组件使用的 YooAsset 后端。
+        /// </summary>
+        /// <returns>YooAsset 资源后端；尚未配置时抛出异常。</returns>
         private YooAssetResourceBackend GetYooAssetBackend()
         {
             if (m_YooAssetBackend == null)

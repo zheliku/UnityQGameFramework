@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 飞机装甲的配置和归属数据。
+    /// </summary>
     [Serializable]
     public class ArmorData : AccessoryObjectData
     {
@@ -18,6 +21,13 @@ namespace StarForce
         [SerializeField]
         private int m_Defense = 0;
 
+        /// <summary>
+        /// 飞机装甲的配置和归属数据。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="typeId">配置表中的实体类型编号。</param>
+        /// <param name="ownerId">所属实体编号。</param>
+        /// <param name="ownerCamp">所属实体的阵营。</param>
         public ArmorData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
@@ -35,11 +45,23 @@ namespace StarForce
         /// <summary>
         /// 最大生命。
         /// </summary>
-        public int MaxHP => m_MaxHP;
+        public int MaxHP
+        {
+            get
+            {
+                return m_MaxHP;
+            }
+        }
 
         /// <summary>
         /// 防御力。
         /// </summary>
-        public int Defense => m_Defense;
+        public int Defense
+        {
+            get
+            {
+                return m_Defense;
+            }
+        }
     }
 }

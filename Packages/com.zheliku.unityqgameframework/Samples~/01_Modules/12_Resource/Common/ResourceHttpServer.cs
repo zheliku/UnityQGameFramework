@@ -23,6 +23,7 @@ namespace UnityQGameFramework.Examples.Modules
         private readonly string root;
         private int rejectResources, requests;
         private bool disposed;
+
         /// <summary>
         /// 获取本地服务器地址。
         /// </summary>
@@ -150,8 +151,10 @@ namespace UnityQGameFramework.Examples.Modules
             }
             string relative = Uri.UnescapeDataString(request[1].Split('?')[0]).TrimStart('/');
             string path = Path.GetFullPath(Path.Combine(root, relative));
-            bool version = Path.GetFileName(path).StartsWith("PackageManifest_", StringComparison.Ordinal);
-            bool found = path.StartsWith(root, StringComparison.OrdinalIgnoreCase) && File.Exists(path) && (version || !RejectResources);
+            // YooAsset 3 的清单名使用包名；故障开关只拒绝 Bundle，不阻断版本和清单请求。
+            string extension = Path.GetExtension(path);
+            bool manifest = extension == ".version" || extension == ".hash" || extension == ".bytes";
+            bool found = path.StartsWith(root, StringComparison.OrdinalIgnoreCase) && File.Exists(path) && (manifest || !RejectResources);
             byte[] bytes = found ? File.ReadAllBytes(path) : Array.Empty<byte>();
             int offset = 0;
             bool partial = false, validRange = true;
@@ -170,7 +173,7 @@ namespace UnityQGameFramework.Examples.Modules
             string range = partial && found && validRange ? $"Content-Range: bytes {offset}-{bytes.Length - 1}/{bytes.Length}\r\n" : "";
             byte[] response = Encoding.ASCII.GetBytes($"HTTP/1.1 {status}\r\nContent-Length: {length}\r\n{range}Connection: close\r\n\r\n");
             // 留出可观察的下载时间，方便点击停止；版本清单立即返回。
-            if (!version)
+            if (!manifest)
             {
                 await Task.Delay(1000, stop.Token).ConfigureAwait(false);
             }
@@ -178,7 +181,7 @@ namespace UnityQGameFramework.Examples.Modules
             for (int position = offset; position < offset + length; position += 1024)
             {
                 await stream.WriteAsync(bytes, position, Math.Min(1024, offset + length - position), stop.Token).ConfigureAwait(false);
-                if (!version)
+                if (!manifest)
                 {
                     await Task.Delay(40, stop.Token).ConfigureAwait(false);
                 }

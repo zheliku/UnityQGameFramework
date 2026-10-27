@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -70,6 +70,12 @@ namespace UnityQGameFramework.Editor
             return GetTypeNames(typeBase, AssembliesType.Editor);
         }
 
+        /// <summary>
+        /// 获取继承指定基类的类型名称。
+        /// </summary>
+        /// <param name="typeBase">类型基类。</param>
+        /// <param name="assembliesType">搜索程序集范围。</param>
+        /// <returns>符合条件的类型名称数组。</returns>
         private static string[] GetTypeNames(System.Type typeBase, AssembliesType assembliesType)
         {
             HashSet<string> assemblyNames = new HashSet<string>();

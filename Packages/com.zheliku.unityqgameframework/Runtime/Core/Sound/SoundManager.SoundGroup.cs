@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -48,7 +48,13 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取声音代理数。
             /// </summary>
-            public int SoundAgentCount => m_SoundAgents.Count;
+            public int SoundAgentCount
+            {
+                get
+                {
+                    return m_SoundAgents.Count;
+                }
+            }
 
             /// <summary>
             /// 获取或设置声音组中的声音是否避免被同优先级声音替换。

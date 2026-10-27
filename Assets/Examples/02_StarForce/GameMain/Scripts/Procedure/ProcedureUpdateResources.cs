@@ -27,6 +27,10 @@ namespace StarForce
         private float m_PreviousProgressTime;
         private float m_DownloadSpeedKB;
 
+        /// <summary>
+        /// 进入状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -36,6 +40,12 @@ namespace StarForce
             PrepareDownloadAsync(m_Cancellation.Token).Forget();
         }
 
+        /// <summary>
+        /// 更新当前流程。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
@@ -58,6 +68,11 @@ namespace StarForce
             }
         }
 
+        /// <summary>
+        /// 离开状态时调用。
+        /// </summary>
+        /// <param name="procedureOwner">流程持有者。</param>
+        /// <param name="isShutdown">是否是关闭状态机时触发。</param>
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             if (m_Cancellation != null)

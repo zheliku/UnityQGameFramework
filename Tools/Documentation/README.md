@@ -13,7 +13,7 @@
 
 `ValidateSampleStructure.Run` 检查三个 Sample 的场景、预制体、脚本引用和资源归属；`ValidateModuleExamples.Run` 运行当前登记的模块场景。`ValidateExampleCancellation.Run` 专门检查实体和窗口跨帧等待的销毁取消。
 
-当前精简版先运行模块行为检查，再运行 Sample 导入和 StarForce 检查；未包含专门断言的场景只算启动检查。
+模块回归会按登记顺序运行全部示例；每个场景都有启动绑定检查和行为分支，未登记行为时检查器直接失败，不会静默按启动成功通过。
 
 跨版本复核使用 `Tools/Validation/CurrentSampleCompatibility.cs`。在隔离工程复制当前三个示例和所需验证脚本后，通过 Unity CLI 的 `open --batchmode --args "-executeMethod CurrentSampleCompatibility.Run"` 启动。它检查场景与预制体引用、数据表操作、StarForce 启动、点点点流程和 UniTask；报告写入隔离工程的 `Artifacts~`，完成后自动退出。2022.3、6.0、6.3 分别使用匹配的 URP 版本；原生鼠标输入和界面截图由单独的游戏检查覆盖。
 
@@ -25,11 +25,14 @@
 
 模块示例共用一份 Common 资源和一个运行时程序集。`sync_samples.py` 直接复制三个目录，保留内容、GUID 和命名空间；`--check` 逐文件比较源与发布副本。修改场景和代码只在 Assets 中进行。
 
+Sample 不包含点点点和 StarForce 的专用打包脚本。自动验收使用 `Tools/Validation/BuildPointGame.cs` 和 `BuildStarForce.cs`，需要打包验收时将它们复制到隔离工程的 Editor 目录；开发者从 Unity 原生 Build Profiles / Build Settings 构建 Player。
+
 ```text
 python Tools/Packaging/sync_samples.py
 python Tools/Packaging/sync_samples.py --check
 python Tools/Packaging/check_package.py
 python Tools/Documentation/check_docs.py
+dotnet run --project Tools/Style/CodeStyleAudit.csproj -- .
 ```
 
 Git Consumer 按单份 Sample 验证 `ImportOne`、`MoveOne`、`PlayOne` 和 `RemoveOne`。消费工程必须位于 `Artifacts~` 并带有 `QgfExampleConsumer~.json`。

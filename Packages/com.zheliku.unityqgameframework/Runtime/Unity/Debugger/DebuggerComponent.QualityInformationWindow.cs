@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,10 +10,16 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 显示当前画质设置。
+        /// </summary>
         private sealed class QualityInformationWindow : ScrollableDebuggerWindowBase
         {
             private bool m_ApplyExpensiveChanges = false;
 
+            /// <summary>
+            /// 绘制画质设置。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Quality Level</b>");

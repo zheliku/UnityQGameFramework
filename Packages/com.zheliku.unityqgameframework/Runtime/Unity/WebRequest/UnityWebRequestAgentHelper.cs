@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -55,7 +55,7 @@ namespace UnityQGameFramework.Runtime
         /// 通过 Web 请求代理辅助器发送请求。
         /// </summary>
         /// <param name="webRequestUri">要发送的远程地址。</param>
-        /// <param name="userData">用户自定义数据。</param>
+        /// <param name="userData">表单请求信息；表单为空时发送 GET 请求，否则发送 POST 请求。</param>
         public override void Request(string webRequestUri, object userData)
         {
             if (m_WebRequestAgentHelperCompleteEventHandler == null || m_WebRequestAgentHelperErrorEventHandler == null)
@@ -145,6 +145,9 @@ namespace UnityQGameFramework.Runtime
             m_Disposed = true;
         }
 
+        /// <summary>
+        /// 检查 Web 请求完成状态并通知结果。
+        /// </summary>
         private void Update()
         {
             if (m_UnityWebRequest == null || !m_UnityWebRequest.isDone)

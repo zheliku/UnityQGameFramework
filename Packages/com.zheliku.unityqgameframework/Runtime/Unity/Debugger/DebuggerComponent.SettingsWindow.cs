@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,6 +9,9 @@ namespace UnityQGameFramework.Runtime
 {
     public sealed partial class DebuggerComponent : FrameworkComponent
     {
+        /// <summary>
+        /// 编辑运行时调试器选项。
+        /// </summary>
         private sealed class SettingsWindow : ScrollableDebuggerWindowBase
         {
             private DebuggerComponent m_DebuggerComponent = null;
@@ -21,6 +24,10 @@ namespace UnityQGameFramework.Runtime
             private float m_LastWindowHeight = 0f;
             private float m_LastWindowScale = 0f;
 
+            /// <summary>
+            /// 读取已保存的调试器窗口位置和缩放设置。
+            /// </summary>
+            /// <param name="args">窗口初始化参数。</param>
             public override void Initialize(params object[] args)
             {
                 m_DebuggerComponent = GameEntry.GetComponent<DebuggerComponent>();
@@ -48,6 +55,11 @@ namespace UnityQGameFramework.Runtime
                 m_DebuggerComponent.WindowRect = new Rect(m_LastWindowX, m_LastWindowY, m_LastWindowWidth, m_LastWindowHeight);
             }
 
+            /// <summary>
+            /// 记录调试器窗口位置、尺寸和缩放的变更。
+            /// </summary>
+            /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public override void OnUpdate(float elapseSeconds, float realElapseSeconds)
             {
                 if (m_LastIconX != m_DebuggerComponent.IconRect.x)
@@ -93,6 +105,9 @@ namespace UnityQGameFramework.Runtime
                 }
             }
 
+            /// <summary>
+            /// 绘制调试器设置。
+            /// </summary>
             protected override void OnDrawScrollableWindow()
             {
                 GUILayout.Label("<b>Window Settings</b>");

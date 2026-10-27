@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 武器的配置和归属数据。
+    /// </summary>
     [Serializable]
     public class WeaponData : AccessoryObjectData
     {
@@ -27,6 +30,13 @@ namespace StarForce
         [SerializeField]
         private int m_BulletSoundId = 0;
 
+        /// <summary>
+        /// 武器的配置和归属数据。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="typeId">配置表中的实体类型编号。</param>
+        /// <param name="ownerId">所属实体编号。</param>
+        /// <param name="ownerCamp">所属实体的阵营。</param>
         public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
@@ -47,26 +57,56 @@ namespace StarForce
         /// <summary>
         /// 攻击力。
         /// </summary>
-        public int Attack => m_Attack;
+        public int Attack
+        {
+            get
+            {
+                return m_Attack;
+            }
+        }
 
         /// <summary>
         /// 攻击间隔。
         /// </summary>
-        public float AttackInterval => m_AttackInterval;
+        public float AttackInterval
+        {
+            get
+            {
+                return m_AttackInterval;
+            }
+        }
 
         /// <summary>
         /// 子弹编号。
         /// </summary>
-        public int BulletId => m_BulletId;
+        public int BulletId
+        {
+            get
+            {
+                return m_BulletId;
+            }
+        }
 
         /// <summary>
         /// 子弹速度。
         /// </summary>
-        public float BulletSpeed => m_BulletSpeed;
+        public float BulletSpeed
+        {
+            get
+            {
+                return m_BulletSpeed;
+            }
+        }
 
         /// <summary>
         /// 子弹声音编号。
         /// </summary>
-        public int BulletSoundId => m_BulletSoundId;
+        public int BulletSoundId
+        {
+            get
+            {
+                return m_BulletSoundId;
+            }
+        }
     }
 }

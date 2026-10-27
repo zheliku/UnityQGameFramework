@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -18,7 +18,13 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取游戏配置项数量。
         /// </summary>
-        public override int Count => -1;
+        public override int Count
+        {
+            get
+            {
+                return -1;
+            }
+        }
 
         /// <summary>
         /// 加载游戏配置。

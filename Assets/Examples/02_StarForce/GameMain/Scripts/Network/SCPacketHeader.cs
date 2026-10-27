@@ -5,8 +5,20 @@
 
 namespace StarForce
 {
+    /// <summary>
+    /// 服务端发送消息的消息头。
+    /// </summary>
     public sealed class SCPacketHeader : PacketHeaderBase
     {
-        public override PacketType PacketType => PacketType.ServerToClient;
+        /// <summary>
+        /// 消息的发送方向。
+        /// </summary>
+        public override PacketType PacketType
+        {
+            get
+            {
+                return PacketType.ServerToClient;
+            }
+        }
     }
 }

@@ -19,25 +19,95 @@ namespace UnityQGameFramework.Core.Network
         {
             private const float DefaultHeartBeatInterval = 30f;
 
+            /// <summary>
+            /// 等待发送的消息包队列。
+            /// </summary>
             protected readonly Queue<Packet> m_SendPacketPool;
+
+            /// <summary>
+            /// 用于派发接收消息包的事件池。
+            /// </summary>
             protected readonly EventPool<Packet> m_ReceivePacketPool;
+
+            /// <summary>
+            /// 网络频道辅助器。
+            /// </summary>
             protected readonly INetworkChannelHelper m_NetworkChannelHelper;
+
+            /// <summary>
+            /// 套接字地址族。
+            /// </summary>
             protected AddressFamily m_AddressFamily;
+
+            /// <summary>
+            /// 收到消息包后是否重置心跳计时。
+            /// </summary>
             protected bool m_ResetHeartBeatElapseSecondsWhenReceivePacket;
+
+            /// <summary>
+            /// 心跳发送间隔，以秒为单位。
+            /// </summary>
             protected float m_HeartBeatInterval;
+
+            /// <summary>
+            /// 网络频道套接字。
+            /// </summary>
             protected Socket m_Socket;
+
+            /// <summary>
+            /// 消息包发送状态。
+            /// </summary>
             protected readonly SendState m_SendState;
+
+            /// <summary>
+            /// 消息包接收状态。
+            /// </summary>
             protected readonly ReceiveState m_ReceiveState;
+
+            /// <summary>
+            /// 心跳状态。
+            /// </summary>
             protected readonly HeartBeatState m_HeartBeatState;
+
+            /// <summary>
+            /// 已发送消息包数量。
+            /// </summary>
             protected int m_SentPacketCount;
+
+            /// <summary>
+            /// 已接收消息包数量。
+            /// </summary>
             protected int m_ReceivedPacketCount;
+
+            /// <summary>
+            /// 网络频道是否处于活动状态。
+            /// </summary>
             protected bool m_Active;
             private bool m_Disposed;
 
+            /// <summary>
+            /// 网络连接成功回调。
+            /// </summary>
             public FrameworkAction<NetworkChannelBase, object> NetworkChannelConnected;
+
+            /// <summary>
+            /// 网络连接关闭回调。
+            /// </summary>
             public FrameworkAction<NetworkChannelBase> NetworkChannelClosed;
+
+            /// <summary>
+            /// 网络心跳丢失回调。
+            /// </summary>
             public FrameworkAction<NetworkChannelBase, int> NetworkChannelMissHeartBeat;
+
+            /// <summary>
+            /// 网络错误回调。
+            /// </summary>
             public FrameworkAction<NetworkChannelBase, NetworkErrorCode, SocketError, string> NetworkChannelError;
+
+            /// <summary>
+            /// 网络自定义错误回调。
+            /// </summary>
             public FrameworkAction<NetworkChannelBase, object> NetworkChannelCustomError;
 
             /// <summary>
@@ -62,13 +132,11 @@ namespace UnityQGameFramework.Core.Network
                 m_ReceivedPacketCount = 0;
                 m_Active = false;
                 m_Disposed = false;
-
                 NetworkChannelConnected = null;
                 NetworkChannelClosed = null;
                 NetworkChannelMissHeartBeat = null;
                 NetworkChannelError = null;
                 NetworkChannelCustomError = null;
-
                 networkChannelHelper.Initialize(this);
             }
 
@@ -80,7 +148,13 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取网络频道所使用的 Socket。
             /// </summary>
-            public Socket Socket => m_Socket;
+            public Socket Socket
+            {
+                get
+                {
+                    return m_Socket;
+                }
+            }
 
             /// <summary>
             /// 获取是否已连接。
@@ -106,55 +180,111 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取网络地址类型。
             /// </summary>
-            public AddressFamily AddressFamily => m_AddressFamily;
+            public AddressFamily AddressFamily
+            {
+                get
+                {
+                    return m_AddressFamily;
+                }
+            }
 
             /// <summary>
             /// 获取要发送的消息包数量。
             /// </summary>
-            public int SendPacketCount => m_SendPacketPool.Count;
+            public int SendPacketCount
+            {
+                get
+                {
+                    return m_SendPacketPool.Count;
+                }
+            }
 
             /// <summary>
             /// 获取累计完成 Socket 发送的消息数，不是服务端业务确认数。一次发送可包含多条消息。
             /// </summary>
-            public int SentPacketCount => m_SentPacketCount;
+            public int SentPacketCount
+            {
+                get
+                {
+                    return m_SentPacketCount;
+                }
+            }
 
             /// <summary>
             /// 获取已接收未处理的消息包数量。
             /// </summary>
-            public int ReceivePacketCount => m_ReceivePacketPool.EventCount;
+            public int ReceivePacketCount
+            {
+                get
+                {
+                    return m_ReceivePacketPool.EventCount;
+                }
+            }
 
             /// <summary>
             /// 获取累计已接收的消息包数量。
             /// </summary>
-            public int ReceivedPacketCount => m_ReceivedPacketCount;
+            public int ReceivedPacketCount
+            {
+                get
+                {
+                    return m_ReceivedPacketCount;
+                }
+            }
 
             /// <summary>
             /// 获取或设置当收到消息包时是否重置心跳流逝时间。
             /// </summary>
             public bool ResetHeartBeatElapseSecondsWhenReceivePacket
             {
-                get => m_ResetHeartBeatElapseSecondsWhenReceivePacket;
-                set => m_ResetHeartBeatElapseSecondsWhenReceivePacket = value;
+                get
+                {
+                    return m_ResetHeartBeatElapseSecondsWhenReceivePacket;
+                }
+
+                set
+                {
+                    m_ResetHeartBeatElapseSecondsWhenReceivePacket = value;
+                }
             }
 
             /// <summary>
             /// 获取丢失心跳的次数。
             /// </summary>
-            public int MissHeartBeatCount => m_HeartBeatState.MissHeartBeatCount;
+            public int MissHeartBeatCount
+            {
+                get
+                {
+                    return m_HeartBeatState.MissHeartBeatCount;
+                }
+            }
 
             /// <summary>
             /// 获取或设置心跳间隔，以秒为单位；小于等于零时关闭计时。协议仍须实现发送和回复。
             /// </summary>
             public float HeartBeatInterval
             {
-                get => m_HeartBeatInterval;
-                set => m_HeartBeatInterval = value;
+                get
+                {
+                    return m_HeartBeatInterval;
+                }
+
+                set
+                {
+                    m_HeartBeatInterval = value;
+                }
             }
 
             /// <summary>
             /// 获取心跳等待时长，以秒为单位。
             /// </summary>
-            public float HeartBeatElapseSeconds => m_HeartBeatState.HeartBeatElapseSeconds;
+            public float HeartBeatElapseSeconds
+            {
+                get
+                {
+                    return m_HeartBeatState.HeartBeatElapseSeconds;
+                }
+            }
 
             /// <summary>
             /// 网络频道轮询。
@@ -176,7 +306,6 @@ namespace UnityQGameFramework.Core.Network
                 }
 
                 m_ReceivePacketPool.Update(elapseSeconds, realElapseSeconds);
-
                 if (m_HeartBeatInterval > 0f)
                 {
                     bool sendHeartBeat = false;
@@ -270,11 +399,9 @@ namespace UnityQGameFramework.Core.Network
                     case System.Net.Sockets.AddressFamily.InterNetwork:
                         m_AddressFamily = AddressFamily.IPv4;
                         break;
-
                     case System.Net.Sockets.AddressFamily.InterNetworkV6:
                         m_AddressFamily = AddressFamily.IPv6;
                         break;
-
                     default:
                         string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily);
                         if (NetworkChannelError != null)
@@ -303,7 +430,6 @@ namespace UnityQGameFramework.Core.Network
                     }
 
                     m_Active = false;
-
                     try
                     {
                         m_Socket.Shutdown(SocketShutdown.Both);
@@ -315,7 +441,6 @@ namespace UnityQGameFramework.Core.Network
                     {
                         m_Socket.Close();
                         m_Socket = null;
-
                         if (NetworkChannelClosed != null)
                         {
                             NetworkChannelClosed(this);
@@ -324,14 +449,12 @@ namespace UnityQGameFramework.Core.Network
 
                     m_SentPacketCount = 0;
                     m_ReceivedPacketCount = 0;
-
                     lock (m_SendPacketPool)
                     {
                         m_SendPacketPool.Clear();
                     }
 
                     m_ReceivePacketPool.Clear();
-
                     lock (m_HeartBeatState)
                     {
                         m_HeartBeatState.Reset(true);
@@ -344,7 +467,8 @@ namespace UnityQGameFramework.Core.Network
             /// </summary>
             /// <typeparam name="T">消息包类型。</typeparam>
             /// <param name="packet">要发送的消息包。</param>
-            public void Send<T>(T packet) where T : Packet
+            public void Send<T>(T packet)
+                where T : Packet
             {
                 if (m_Socket == null)
                 {
@@ -418,6 +542,10 @@ namespace UnityQGameFramework.Core.Network
                 m_Disposed = true;
             }
 
+            /// <summary>
+            /// 将等待发送的消息包序列化到发送缓冲区。
+            /// </summary>
+            /// <returns>是否准备好了可发送的数据。</returns>
             protected virtual bool ProcessSend()
             {
                 if (m_SendState.Stream.Length > 0 || m_SendPacketPool.Count <= 0)
@@ -462,6 +590,7 @@ namespace UnityQGameFramework.Core.Network
 
                         throw new FrameworkException(errorMessage);
                     }
+
                     m_SendState.PacketCount++;
                 }
 
@@ -469,17 +598,23 @@ namespace UnityQGameFramework.Core.Network
                 return true;
             }
 
+            /// <summary>
+            /// 处理网络接收。
+            /// </summary>
             protected virtual void ProcessReceive()
             {
             }
 
+            /// <summary>
+            /// 解析消息包头并准备接收消息包体。
+            /// </summary>
+            /// <returns>是否成功处理消息包头。</returns>
             protected virtual bool ProcessPacketHeader()
             {
                 try
                 {
                     object customErrorData = null;
                     IPacketHeader packetHeader = m_NetworkChannelHelper.DeserializePacketHeader(m_ReceiveState.Stream, out customErrorData);
-
                     if (customErrorData != null && NetworkChannelCustomError != null)
                     {
                         NetworkChannelCustomError(this, customErrorData);
@@ -521,6 +656,10 @@ namespace UnityQGameFramework.Core.Network
                 return true;
             }
 
+            /// <summary>
+            /// 反序列化并派发消息包。
+            /// </summary>
+            /// <returns>是否成功处理消息包。</returns>
             protected virtual bool ProcessPacket()
             {
                 lock (m_HeartBeatState)
@@ -532,7 +671,6 @@ namespace UnityQGameFramework.Core.Network
                 {
                     object customErrorData = null;
                     Packet packet = m_NetworkChannelHelper.DeserializePacket(m_ReceiveState.PacketHeader, m_ReceiveState.Stream, out customErrorData);
-
                     if (customErrorData != null && NetworkChannelCustomError != null)
                     {
                         NetworkChannelCustomError(this, customErrorData);

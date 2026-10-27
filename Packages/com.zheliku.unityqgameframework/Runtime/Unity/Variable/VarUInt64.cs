@@ -23,6 +23,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.UInt64 到 System.UInt64 变量类的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>从引用池获取并保存指定值的变量对象。</returns>
         public static implicit operator VarUInt64(ulong value)
         {
             VarUInt64 varValue = ReferencePool.Acquire<VarUInt64>();
@@ -34,6 +35,7 @@ namespace UnityQGameFramework.Runtime
         /// 从 System.UInt64 变量类到 System.UInt64 的隐式转换。
         /// </summary>
         /// <param name="value">值。</param>
+        /// <returns>变量对象中保存的值。</returns>
         public static implicit operator ulong(VarUInt64 value)
         {
             return value.Value;

@@ -7,18 +7,22 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示立即派发与排队。
+    /// </summary>
     public sealed class EventDispatchOrder : MonoBehaviour
     {
-        [SerializeField] private Button compareButton;
-        [SerializeField] private Text orderText;
-        [SerializeField] private Text queueText;
+        [SerializeField]
+        private Button compareButton;
+        [SerializeField]
+        private Text orderText;
+        [SerializeField]
+        private Text queueText;
         private bool viewReady;
         private int sequence, immediate, afterImmediate, queued, afterQueued, waiting;
-
         private void Start()
         {
             viewReady = true;
-
             // 事件组件持有回调委托；离开流程或销毁对象时解除订阅。
             QGF.Event.Subscribe(EventDispatchOrderArgs.EventId, OnAdded);
             compareButton.onClick.AddListener(() =>
@@ -37,31 +41,68 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void OnAdded(object sender, GameEventArgs args)
         {
-            if (((EventDispatchOrderArgs)args).Amount == 1) immediate = ++sequence;
-            else queued = ++sequence;
+            if (((EventDispatchOrderArgs)args).Amount == 1)
+            {
+                immediate = ++sequence;
+            }
+            else
+            {
+                queued = ++sequence;
+            }
         }
 
         private void Update()
         {
-            if (!viewReady) return;
-            orderText.text = $"FireNow 的回调：第 {immediate} 步\nFireNow 返回后：第 {afterImmediate} 步\n"
-                + $"Fire 返回后：第 {afterQueued} 步\n排队消息的回调：第 {queued} 步";
+            if (!viewReady)
+            {
+                return;
+            }
+
+            orderText.text = $"FireNow 的回调：第 {immediate} 步\nFireNow 返回后：第 {afterImmediate} 步\n" + $"Fire 返回后：第 {afterQueued} 步\n排队消息的回调：第 {queued} 步";
             queueText.text = $"提交时排队：{waiting} 条\n当前排队：{QGF.Event.EventCount} 条";
         }
 
         private void OnDestroy()
         {
             var events = GameEntry.GetComponent<EventComponent>();
-            if (events != null && events.Check(EventDispatchOrderArgs.EventId, OnAdded)) events.Unsubscribe(EventDispatchOrderArgs.EventId, OnAdded);
+            if (events != null && events.Check(EventDispatchOrderArgs.EventId, OnAdded))
+            {
+                events.Unsubscribe(EventDispatchOrderArgs.EventId, OnAdded);
+            }
         }
     }
 
+    /// <summary>
+    /// 携带数量的事件派发顺序测试数据。
+    /// </summary>
     public sealed class EventDispatchOrderArgs : GameEventArgs
     {
+        /// <summary>
+        /// 事件编号。
+        /// </summary>
         public static readonly int EventId = typeof(EventDispatchOrderArgs).GetHashCode();
-        public override int Id => EventId;
+
+        /// <summary>
+        /// 获取事件编号。
+        /// </summary>
+        public override int Id
+        {
+            get
+            {
+                return EventId;
+            }
+        }
+
+        /// <summary>
+        /// 获取本次事件携带的数量。
+        /// </summary>
         public int Amount { get; private set; }
 
+        /// <summary>
+        /// 从引用池获取并填写事件参数。
+        /// </summary>
+        /// <param name="amount">本次数量变化。</param>
+        /// <returns>携带数量的事件参数，派发后由事件模块归还引用池。</returns>
         public static EventDispatchOrderArgs Create(int amount)
         {
             var args = ReferencePool.Acquire<EventDispatchOrderArgs>();
@@ -69,6 +110,12 @@ namespace UnityQGameFramework.Examples.Modules
             return args;
         }
 
-        public override void Clear() => Amount = 0;
+        /// <summary>
+        /// 重置数据，供引用池复用。
+        /// </summary>
+        public override void Clear()
+        {
+            Amount = 0;
+        }
     }
 }

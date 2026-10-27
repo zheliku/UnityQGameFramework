@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -25,7 +25,13 @@ namespace UnityQGameFramework.Core.Debugger
         /// 获取游戏框架模块优先级。
         /// </summary>
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        internal override int Priority => -1;
+        internal override int Priority
+        {
+            get
+            {
+                return -1;
+            }
+        }
 
         /// <summary>
         /// 获取或设置调试器窗口是否激活。
@@ -35,7 +41,13 @@ namespace UnityQGameFramework.Core.Debugger
         /// <summary>
         /// 调试器窗口根结点。
         /// </summary>
-        public IDebuggerWindowGroup DebuggerWindowRoot => m_DebuggerWindowRoot;
+        public IDebuggerWindowGroup DebuggerWindowRoot
+        {
+            get
+            {
+                return m_DebuggerWindowRoot;
+            }
+        }
 
         /// <summary>
         /// 调试器管理器轮询。

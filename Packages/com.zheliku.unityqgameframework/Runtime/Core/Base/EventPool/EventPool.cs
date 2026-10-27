@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -55,7 +55,13 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取事件数量。
         /// </summary>
-        public int EventCount => m_Events.Count;
+        public int EventCount
+        {
+            get
+            {
+                return m_Events.Count;
+            }
+        }
 
         /// <summary>
         /// 事件池轮询。

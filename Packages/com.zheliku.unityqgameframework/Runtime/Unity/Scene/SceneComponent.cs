@@ -80,6 +80,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 连接场景管理器与资源组件。
+        /// </summary>
         private void Start()
         {
             BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
@@ -480,6 +483,14 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 等待卸载请求完成，并在未启动失败时清理事件订阅。
+        /// </summary>
+        /// <param name="request">场景异步请求。</param>
+        /// <param name="cancellation">取消回调的登记。</param>
+        /// <param name="successHandler">卸载成功事件处理器。</param>
+        /// <param name="failureHandler">卸载失败事件处理器。</param>
+        /// <returns>表示请求完成的异步任务。</returns>
         private async UniTask AwaitSceneRequestAsync(SceneAsyncRequest request, CancellationTokenRegistration cancellation,
             EventHandler<GameEventArgs> successHandler, EventHandler<GameEventArgs> failureHandler)
         {
@@ -500,11 +511,29 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 记录场景异步请求的完成、取消和启动状态。
+        /// </summary>
         private sealed class SceneAsyncRequest
         {
+            /// <summary>
+            /// 向异步调用方通知场景操作结果。
+            /// </summary>
             internal readonly UniTaskCompletionSource Completion = new UniTaskCompletionSource();
+
+            /// <summary>
+            /// 是否仍在等待场景事件。
+            /// </summary>
             internal bool Pending = true;
+
+            /// <summary>
+            /// 调用方是否已取消等待。
+            /// </summary>
             internal bool Cancelled;
+
+            /// <summary>
+            /// 场景操作是否已成功提交。
+            /// </summary>
             internal bool Started;
         }
 
@@ -545,6 +574,9 @@ namespace UnityQGameFramework.Runtime
             MainCamera = Camera.main;
         }
 
+        /// <summary>
+        /// 将已加载场景中顺序最高的场景设为活动场景。
+        /// </summary>
         private void RefreshSceneOrder()
         {
             if (m_SceneOrder.Count > 0)
@@ -601,6 +633,10 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 切换活动场景并刷新主摄像机。
+        /// </summary>
+        /// <param name="activeScene">要设置的活动场景。</param>
         private void SetActiveScene(Scene activeScene)
         {
             Scene lastActiveScene = SceneManager.GetActiveScene();
@@ -613,6 +649,11 @@ namespace UnityQGameFramework.Runtime
             RefreshMainCamera();
         }
 
+        /// <summary>
+        /// 登记场景顺序并派发加载成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnLoadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.LoadSceneSuccessEventArgs e)
         {
             if (!m_SceneOrder.ContainsKey(e.SceneAssetName))
@@ -624,22 +665,42 @@ namespace UnityQGameFramework.Runtime
             RefreshSceneOrder();
         }
 
+        /// <summary>
+        /// 记录场景加载错误并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnLoadSceneFailure(object sender, UnityQGameFramework.Core.Scene.LoadSceneFailureEventArgs e)
         {
             Log.Warning("Load scene failure, scene asset name '{0}', error message '{1}'.", e.SceneAssetName, e.ErrorMessage);
             m_EventComponent.Fire(this, LoadSceneFailureEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发场景加载进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnLoadSceneUpdate(object sender, UnityQGameFramework.Core.Scene.LoadSceneUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadSceneUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发场景依赖资源加载事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnLoadSceneDependencyAsset(object sender, UnityQGameFramework.Core.Scene.LoadSceneDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, LoadSceneDependencyAssetEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发卸载成功事件并刷新活动场景。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnUnloadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.UnloadSceneSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, UnloadSceneSuccessEventArgs.Create(e));
@@ -647,6 +708,11 @@ namespace UnityQGameFramework.Runtime
             RefreshSceneOrder();
         }
 
+        /// <summary>
+        /// 记录场景卸载错误并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnUnloadSceneFailure(object sender, UnityQGameFramework.Core.Scene.UnloadSceneFailureEventArgs e)
         {
             Log.Warning("Unload scene failure, scene asset name '{0}'.", e.SceneAssetName);

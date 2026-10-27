@@ -114,6 +114,9 @@ namespace UnityQGameFramework.Runtime
             }
         }
 
+        /// <summary>
+        /// 创建本地化辅助器并设置初始语言。
+        /// </summary>
         private void Start()
         {
             BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
@@ -757,22 +760,42 @@ namespace UnityQGameFramework.Runtime
             m_LocalizationManager.RemoveAllRawStrings();
         }
 
+        /// <summary>
+        /// 派发字典读取成功事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataSuccess(object sender, ReadDataSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, LoadDictionarySuccessEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 记录字典读取失败并派发失败事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataFailure(object sender, ReadDataFailureEventArgs e)
         {
             Log.Warning("Load dictionary failure, asset name '{0}', error message '{1}'.", e.DataAssetName, e.ErrorMessage);
             m_EventComponent.Fire(this, LoadDictionaryFailureEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发字典读取进度事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataUpdate(object sender, ReadDataUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadDictionaryUpdateEventArgs.Create(e));
         }
 
+        /// <summary>
+        /// 派发字典依赖资源加载事件。
+        /// </summary>
+        /// <param name="sender">事件发送者。</param>
+        /// <param name="e">事件参数。</param>
         private void OnReadDataDependencyAsset(object sender, ReadDataDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, LoadDictionaryDependencyAssetEventArgs.Create(e));

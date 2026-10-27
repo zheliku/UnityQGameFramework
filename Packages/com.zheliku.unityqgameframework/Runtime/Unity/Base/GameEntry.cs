@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -127,6 +127,9 @@ namespace UnityQGameFramework.Runtime
             s_ComponentCache.Add(type, frameworkComponent);
         }
 
+        /// <summary>
+        /// 清空框架组件登记。
+        /// </summary>
         internal static void ClearComponents()
         {
             s_FrameworkComponents.Clear();

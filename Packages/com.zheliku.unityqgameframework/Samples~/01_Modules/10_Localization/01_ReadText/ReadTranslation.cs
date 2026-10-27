@@ -5,6 +5,9 @@ using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
 {
+    /// <summary>
+    /// 演示查询与格式化翻译。
+    /// </summary>
     public sealed class ReadTranslation : MonoBehaviour
     {
         [SerializeField] private TextAsset dictionary;

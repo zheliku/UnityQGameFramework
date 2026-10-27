@@ -5,9 +5,9 @@ using UnityQGameFramework.Runtime;
 
 {{namespace_with_grace_begin __namespace}}
 /// <summary>
-/// 数据表集合。
+/// 数据表加载器。
 /// </summary>
-public partial class {{__name}} : LubanTableSet
+public partial class {{__name}} : IDataTableLoader
 {
     {{~for table in __tables ~}}
 {{~if table.comment != '' ~}}
@@ -19,13 +19,13 @@ public partial class {{__name}} : LubanTableSet
     /// 获取 {{table.name}} 数据表。
     /// </summary>
 {{~end~}}
-    public {{table.full_name}} {{format_property_name __code_style table.name}} {get; }
+    internal {{table.full_name}} {{format_property_name __code_style table.name}} { get; private set; }
     {{~end~}}
 
     /// <summary>
     /// 获取生成代码的结构版本。
     /// </summary>
-    public override string SchemaHash
+    string IDataTableLoader.SchemaHash
     {
         get
         {
@@ -33,21 +33,17 @@ public partial class {{__name}} : LubanTableSet
         }
     }
     /// <summary>
-    /// 获取所有数据表。
-    /// </summary>
-    public override System.Collections.Generic.IReadOnlyList<DataTableBase> DataTables { get; }
-
-    /// <summary>
-    /// 初始化数据表集合，加载数据并解析表间引用。
+    /// 加载数据表并解析表间引用。
     /// </summary>
     /// <param name="loader">读取指定数据文件的加载方法。</param>
-    public {{__name}}(System.Func<string, ByteBuf> loader)
+    /// <returns>已完成解析的数据表。</returns>
+    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.Load(System.Func<string, ByteBuf> loader)
     {
         {{~for table in __tables ~}}
         {{format_property_name __code_style table.name}} = new {{table.full_name}}(loader("{{table.output_data_file}}"));
         {{~end~}}
         ResolveRef();
-        DataTables = System.Array.AsReadOnly(new DataTableBase[]
+        return System.Array.AsReadOnly(new DataTableBase[]
         {
         {{~for table in __tables~}}
             {{format_property_name __code_style table.name}},

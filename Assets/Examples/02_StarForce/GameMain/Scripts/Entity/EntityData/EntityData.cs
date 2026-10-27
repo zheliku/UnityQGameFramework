@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace StarForce
 {
+    /// <summary>
+    /// 游戏实体的标识、类型和初始变换。
+    /// </summary>
     [Serializable]
     public abstract class EntityData
     {
@@ -23,6 +26,11 @@ namespace StarForce
         [SerializeField]
         private Quaternion m_Rotation = Quaternion.identity;
 
+        /// <summary>
+        /// 游戏实体的标识、类型和初始变换。
+        /// </summary>
+        /// <param name="entityId">实体实例编号。</param>
+        /// <param name="typeId">配置表中的实体类型编号。</param>
         public EntityData(int entityId, int typeId)
         {
             m_Id = entityId;
@@ -32,20 +40,38 @@ namespace StarForce
         /// <summary>
         /// 实体编号。
         /// </summary>
-        public int Id => m_Id;
+        public int Id
+        {
+            get
+            {
+                return m_Id;
+            }
+        }
 
         /// <summary>
         /// 实体类型编号。
         /// </summary>
-        public int TypeId => m_TypeId;
+        public int TypeId
+        {
+            get
+            {
+                return m_TypeId;
+            }
+        }
 
         /// <summary>
         /// 实体位置。
         /// </summary>
         public Vector3 Position
         {
-            get => m_Position;
-            set => m_Position = value;
+            get
+            {
+                return m_Position;
+            }
+            set
+            {
+                m_Position = value;
+            }
         }
 
         /// <summary>
@@ -53,8 +79,14 @@ namespace StarForce
         /// </summary>
         public Quaternion Rotation
         {
-            get => m_Rotation;
-            set => m_Rotation = value;
+            get
+            {
+                return m_Rotation;
+            }
+            set
+            {
+                m_Rotation = value;
+            }
         }
     }
 }

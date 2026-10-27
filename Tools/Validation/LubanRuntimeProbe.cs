@@ -32,7 +32,7 @@ namespace Luban.Validation
             try
             {
                 var component = GameEntry.GetComponent<DataTableComponent>();
-                component.LoadDataTables(loader => new StarForce.Tables(loader));
+                component.LoadDataTables<StarForce.Tables>();
                 Verify(component);
                 component.UnloadDataTables();
                 Require(component.Count == 0 && !component.IsLoaded, "Unload failed.");
@@ -45,9 +45,10 @@ namespace Luban.Validation
                 Require(config.GetString("Game.Id") == "Star Force" && config.GetInt("Scene.Menu") == 1 && config.GetInt("Scene.Main") == 2,
                     "TOML Config changed the original global settings.");
                 var assets = catalog.GetAssets();
-                var tables = new StarForce.Tables(name => new UnityQGameFramework.Luban.ByteBuf(assets[name].bytes));
+                var tables = ((IDataTableLoader)new StarForce.Tables()).Load(name => new UnityQGameFramework.Luban.ByteBuf(assets[name].bytes));
+                component.RegisterDataTables(tables);
                 bundle.Unload(true);
-                Require(tables.TbEntity.Get(10000).AssetName == "PlayerShip", "Parsed rows depended on released Unity assets.");
+                Require(component.GetDataTable<StarForce.TbEntity>().GetDataRow(10000).AssetName == "PlayerShip", "Parsed rows depended on released Unity assets.");
                 Require(m_Errors == 0, "Player logged errors.");
             }
             catch (Exception exception) { failure = exception.ToString(); }

@@ -518,7 +518,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f60ecff41650cfa6af1c7043c8c717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityQGameFramework.Examples.Modules::UnityQGameFramework.Examples.Modules.OpenWindowExample
-  windowGuid: b8c74c4675cb5d96b731e899567554ac
   openButton: {fileID: 294074395}
   closeButton: {fileID: 1493952720}
   stateText: {fileID: 741999732}

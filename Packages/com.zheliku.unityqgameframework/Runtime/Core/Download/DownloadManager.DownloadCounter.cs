@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -7,6 +7,9 @@ namespace UnityQGameFramework.Core.Download
 {
     internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
     {
+        /// <summary>
+        /// 统计最近一段时间的下载流量。
+        /// </summary>
         private sealed partial class DownloadCounter
         {
             private readonly FrameworkLinkedList<DownloadCounterNode> m_DownloadCounterNodes;
@@ -15,6 +18,11 @@ namespace UnityQGameFramework.Core.Download
             private float m_Accumulator;
             private float m_TimeLeft;
 
+            /// <summary>
+            /// 初始化下载速率统计器。
+            /// </summary>
+            /// <param name="updateInterval">速率刷新间隔，以秒为单位。</param>
+            /// <param name="recordInterval">统计样本保留时长，以秒为单位。</param>
             public DownloadCounter(float updateInterval, float recordInterval)
             {
                 if (updateInterval <= 0f)
@@ -33,6 +41,9 @@ namespace UnityQGameFramework.Core.Download
                 Reset();
             }
 
+            /// <summary>
+            /// 获取或设置速率刷新间隔，以秒为单位。
+            /// </summary>
             public float UpdateInterval
             {
                 get
@@ -51,6 +62,9 @@ namespace UnityQGameFramework.Core.Download
                 }
             }
 
+            /// <summary>
+            /// 获取或设置统计样本保留时长，以秒为单位。
+            /// </summary>
             public float RecordInterval
             {
                 get
@@ -69,13 +83,24 @@ namespace UnityQGameFramework.Core.Download
                 }
             }
 
+            /// <summary>
+            /// 获取当前下载速率，以字节每秒为单位。
+            /// </summary>
             public float CurrentSpeed { get; private set; }
 
+            /// <summary>
+            /// 清理下载速率统计样本。
+            /// </summary>
             public void Shutdown()
             {
                 Reset();
             }
 
+            /// <summary>
+            /// 更新采样时间并计算下载速率。
+            /// </summary>
+            /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
                 if (m_DownloadCounterNodes.Count <= 0)
@@ -126,6 +151,10 @@ namespace UnityQGameFramework.Core.Download
                 }
             }
 
+            /// <summary>
+            /// 记录新增下载长度。
+            /// </summary>
+            /// <param name="deltaLength">新增下载字节数。</param>
             public void RecordDeltaLength(int deltaLength)
             {
                 if (deltaLength <= 0)
@@ -149,6 +178,9 @@ namespace UnityQGameFramework.Core.Download
                 m_DownloadCounterNodes.AddLast(downloadCounterNode);
             }
 
+            /// <summary>
+            /// 重置统计计时并归还采样结点。
+            /// </summary>
             private void Reset()
             {
                 m_DownloadCounterNodes.Clear();
