@@ -3,16 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Scene
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 场景管理器。
     /// </summary>
-    internal sealed class SceneManager : FrameworkModule, ISceneManager
+    internal sealed class SceneManager : GameFrameworkModule, ISceneManager
     {
         private readonly List<string> m_LoadedSceneAssetNames;
         private readonly List<string> m_LoadingSceneAssetNames;
@@ -186,7 +186,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (resourceManager == null)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                throw new GameFrameworkException("Resource manager is invalid.");
             }
 
             m_ResourceManager = resourceManager;
@@ -201,7 +201,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             return m_LoadedSceneAssetNames.Contains(sceneAssetName);
@@ -224,7 +224,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -240,7 +240,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             return m_LoadingSceneAssetNames.Contains(sceneAssetName);
@@ -263,7 +263,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -279,7 +279,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             return m_UnloadingSceneAssetNames.Contains(sceneAssetName);
@@ -302,7 +302,7 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -325,7 +325,7 @@ namespace UnityQGameFramework.Core.Scene
         /// <param name="sceneAssetName">场景资源名称。</param>
         public void LoadScene(string sceneAssetName)
         {
-            LoadScene(sceneAssetName, Constant.DefaultPriority, null);
+            LoadScene(sceneAssetName, ResourceConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace UnityQGameFramework.Core.Scene
         /// <param name="userData">用户自定义数据。</param>
         public void LoadScene(string sceneAssetName, object userData)
         {
-            LoadScene(sceneAssetName, Constant.DefaultPriority, userData);
+            LoadScene(sceneAssetName, ResourceConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -358,27 +358,27 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (m_ResourceManager == null)
             {
-                throw new FrameworkException("You must set resource manager first.");
+                throw new GameFrameworkException("You must set resource manager first.");
             }
 
             if (SceneIsUnloading(sceneAssetName))
             {
-                throw new FrameworkException(Utility.Text.Format("Scene asset '{0}' is being unloaded.", sceneAssetName));
+                throw new GameFrameworkException(Utility.Text.Format("Scene asset '{0}' is being unloaded.", sceneAssetName));
             }
 
             if (SceneIsLoading(sceneAssetName))
             {
-                throw new FrameworkException(Utility.Text.Format("Scene asset '{0}' is being loaded.", sceneAssetName));
+                throw new GameFrameworkException(Utility.Text.Format("Scene asset '{0}' is being loaded.", sceneAssetName));
             }
 
             if (SceneIsLoaded(sceneAssetName))
             {
-                throw new FrameworkException(Utility.Text.Format("Scene asset '{0}' is already loaded.", sceneAssetName));
+                throw new GameFrameworkException(Utility.Text.Format("Scene asset '{0}' is already loaded.", sceneAssetName));
             }
 
             m_LoadingSceneAssetNames.Add(sceneAssetName);
@@ -403,27 +403,27 @@ namespace UnityQGameFramework.Core.Scene
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (m_ResourceManager == null)
             {
-                throw new FrameworkException("You must set resource manager first.");
+                throw new GameFrameworkException("You must set resource manager first.");
             }
 
             if (SceneIsUnloading(sceneAssetName))
             {
-                throw new FrameworkException(Utility.Text.Format("Scene asset '{0}' is being unloaded.", sceneAssetName));
+                throw new GameFrameworkException(Utility.Text.Format("Scene asset '{0}' is being unloaded.", sceneAssetName));
             }
 
             if (SceneIsLoading(sceneAssetName))
             {
-                throw new FrameworkException(Utility.Text.Format("Scene asset '{0}' is being loaded.", sceneAssetName));
+                throw new GameFrameworkException(Utility.Text.Format("Scene asset '{0}' is being loaded.", sceneAssetName));
             }
 
             if (!SceneIsLoaded(sceneAssetName))
             {
-                throw new FrameworkException(Utility.Text.Format("Scene asset '{0}' is not loaded yet.", sceneAssetName));
+                throw new GameFrameworkException(Utility.Text.Format("Scene asset '{0}' is not loaded yet.", sceneAssetName));
             }
 
             m_UnloadingSceneAssetNames.Add(sceneAssetName);
@@ -467,7 +467,7 @@ namespace UnityQGameFramework.Core.Scene
                 return;
             }
 
-            throw new FrameworkException(appendErrorMessage);
+            throw new GameFrameworkException(appendErrorMessage);
         }
 
         /// <summary>
@@ -537,7 +537,7 @@ namespace UnityQGameFramework.Core.Scene
                 return;
             }
 
-            throw new FrameworkException(Utility.Text.Format("Unload scene failure, scene asset name '{0}'.", sceneAssetName));
+            throw new GameFrameworkException(Utility.Text.Format("Unload scene failure, scene asset name '{0}'.", sceneAssetName));
         }
     }
 }

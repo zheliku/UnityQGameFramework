@@ -3,15 +3,13 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.FileSystem;
-using UnityQGameFramework.Core.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 加载资源器。
@@ -265,7 +263,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_AssetPool == null || m_ResourcePool == null)
                 {
-                    throw new FrameworkException("You must set object pool manager first.");
+                    throw new GameFrameworkException("You must set object pool manager first.");
                 }
 
                 LoadResourceAgent agent = new LoadResourceAgent(loadResourceAgentHelper, resourceHelper, this, readOnlyPath, readWritePath, decryptResourceCallback ?? DefaultDecryptResourceCallback);
@@ -321,7 +319,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (resourceInfo.IsLoadFromBinary)
@@ -333,7 +331,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 LoadAssetTask mainTask = LoadAssetTask.Create(assetName, assetType, priority, resourceInfo, dependencyAssetNames, loadAssetCallbacks, userData);
@@ -348,7 +346,7 @@ namespace UnityQGameFramework.Core.Resource
                             return;
                         }
 
-                        throw new FrameworkException(errorMessage);
+                        throw new GameFrameworkException(errorMessage);
                     }
                 }
 
@@ -388,7 +386,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (resourceInfo.IsLoadFromBinary)
@@ -400,7 +398,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 LoadSceneTask mainTask = LoadSceneTask.Create(sceneAssetName, priority, resourceInfo, dependencyAssetNames, loadSceneCallbacks, userData);
@@ -415,7 +413,7 @@ namespace UnityQGameFramework.Core.Resource
                             return;
                         }
 
-                        throw new FrameworkException(errorMessage);
+                        throw new GameFrameworkException(errorMessage);
                     }
                 }
 
@@ -436,7 +434,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
-                    throw new FrameworkException("You must set resource helper first.");
+                    throw new GameFrameworkException("You must set resource helper first.");
                 }
 
                 object asset = null;
@@ -448,7 +446,7 @@ namespace UnityQGameFramework.Core.Resource
                 }
                 else
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not find asset of scene '{0}'.", sceneAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find asset of scene '{0}'.", sceneAssetName));
                 }
 
                 m_ResourceManager.m_ResourceHelper.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
@@ -576,7 +574,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (!resourceInfo.Ready)
@@ -588,7 +586,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
@@ -600,7 +598,7 @@ namespace UnityQGameFramework.Core.Resource
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (resourceInfo.UseFileSystem)
@@ -624,22 +622,22 @@ namespace UnityQGameFramework.Core.Resource
                 ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
                 if (resourceInfo == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
                 }
 
                 if (!resourceInfo.Ready)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
                 }
 
                 if (!resourceInfo.UseFileSystem)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
                 }
 
                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
@@ -671,22 +669,22 @@ namespace UnityQGameFramework.Core.Resource
                 ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
                 if (resourceInfo == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
                 }
 
                 if (!resourceInfo.Ready)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
                 }
 
                 if (!resourceInfo.UseFileSystem)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
                 }
 
                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
@@ -712,22 +710,22 @@ namespace UnityQGameFramework.Core.Resource
                 ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
                 if (resourceInfo == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
                 }
 
                 if (!resourceInfo.Ready)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
                 }
 
                 if (!resourceInfo.UseFileSystem)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
                 }
 
                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
@@ -759,22 +757,22 @@ namespace UnityQGameFramework.Core.Resource
                 ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
                 if (resourceInfo == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
                 }
 
                 if (!resourceInfo.Ready)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
                 }
 
                 if (!resourceInfo.UseFileSystem)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
                 }
 
                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
@@ -817,7 +815,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (mainTask == null)
                 {
-                    throw new FrameworkException("Main task is invalid.");
+                    throw new GameFrameworkException("Main task is invalid.");
                 }
 
                 ResourceInfo resourceInfo = null;
@@ -930,7 +928,7 @@ namespace UnityQGameFramework.Core.Resource
                         XorResourceBytes(bytes, startIndex, count, 0, false, hashCode);
                         break;
                     default:
-                        throw new FrameworkException("Not supported load type when decrypt resource.");
+                        throw new GameFrameworkException("Not supported load type when decrypt resource.");
                 }
             }
 
@@ -995,7 +993,7 @@ namespace UnityQGameFramework.Core.Resource
                 LoadBinaryInfo loadBinaryInfo = (LoadBinaryInfo)userData;
                 if (loadBinaryInfo == null)
                 {
-                    throw new FrameworkException("Load binary info is invalid.");
+                    throw new GameFrameworkException("Load binary info is invalid.");
                 }
 
                 ResourceInfo resourceInfo = loadBinaryInfo.ResourceInfo;
@@ -1020,7 +1018,7 @@ namespace UnityQGameFramework.Core.Resource
                 LoadBinaryInfo loadBinaryInfo = (LoadBinaryInfo)userData;
                 if (loadBinaryInfo == null)
                 {
-                    throw new FrameworkException("Load binary info is invalid.");
+                    throw new GameFrameworkException("Load binary info is invalid.");
                 }
 
                 if (loadBinaryInfo.LoadBinaryCallbacks.LoadBinaryFailureCallback != null)

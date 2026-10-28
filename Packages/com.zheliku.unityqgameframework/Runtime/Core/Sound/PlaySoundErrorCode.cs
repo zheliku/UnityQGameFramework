@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 播放声音错误码。

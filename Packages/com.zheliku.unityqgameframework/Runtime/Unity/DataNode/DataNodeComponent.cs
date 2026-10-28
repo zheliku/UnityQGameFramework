@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataNode;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
@@ -15,7 +14,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Data Node")]
-    public sealed class DataNodeComponent : FrameworkComponent
+    public sealed class DataNodeComponent : GameFrameworkComponent
     {
         private IDataNodeManager m_DataNodeManager = null;
 
@@ -37,7 +36,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_DataNodeManager = FrameworkEntry.GetModule<IDataNodeManager>();
+            m_DataNodeManager = GameFrameworkEntry.GetModule<IDataNodeManager>();
             if (m_DataNodeManager == null)
             {
                 Log.Fatal("Data node manager is invalid.");

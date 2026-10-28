@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.DataNode
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DataNodeManager : FrameworkModule, IDataNodeManager
+    internal sealed partial class DataNodeManager : GameFrameworkModule, IDataNodeManager
     {
         /// <summary>
         /// 数据结点。
@@ -41,7 +41,7 @@ namespace UnityQGameFramework.Core.DataNode
             {
                 if (!IsValidName(name))
                 {
-                    throw new FrameworkException("Name of data node is invalid.");
+                    throw new GameFrameworkException("Name of data node is invalid.");
                 }
 
                 DataNode node = ReferencePool.Acquire<DataNode>();
@@ -53,7 +53,10 @@ namespace UnityQGameFramework.Core.DataNode
             /// <summary>
             /// 获取数据结点的名称。
             /// </summary>
-            public string Name { get; private set; }
+            public string Name
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取数据结点的完整名称。
@@ -150,7 +153,7 @@ namespace UnityQGameFramework.Core.DataNode
             {
                 if (!IsValidName(name))
                 {
-                    throw new FrameworkException("Name is invalid.");
+                    throw new GameFrameworkException("Name is invalid.");
                 }
 
                 if (m_Childs == null)
@@ -188,7 +191,7 @@ namespace UnityQGameFramework.Core.DataNode
             {
                 if (!IsValidName(name))
                 {
-                    throw new FrameworkException("Name is invalid.");
+                    throw new GameFrameworkException("Name is invalid.");
                 }
 
                 if (m_Childs == null)
@@ -254,7 +257,7 @@ namespace UnityQGameFramework.Core.DataNode
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();

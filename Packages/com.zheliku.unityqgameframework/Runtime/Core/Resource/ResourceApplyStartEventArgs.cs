@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 资源应用开始事件。
     /// </summary>
-    public sealed class ResourceApplyStartEventArgs : FrameworkEventArgs
+    public sealed class ResourceApplyStartEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化资源应用开始事件的新实例。
@@ -23,17 +23,26 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源包路径。
         /// </summary>
-        public string ResourcePackPath { get; private set; }
+        public string ResourcePackPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取要应用资源的数量。
         /// </summary>
-        public int Count { get; private set; }
+        public int Count
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取要应用资源的总大小。
         /// </summary>
-        public long TotalLength { get; private set; }
+        public long TotalLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源应用开始事件。

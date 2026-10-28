@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     public partial struct PackageVersionList
     {
@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (name == null)
                 {
-                    throw new FrameworkException("Name is invalid.");
+                    throw new GameFrameworkException("Name is invalid.");
                 }
 
                 Name = name;
@@ -38,7 +38,10 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取文件系统名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取文件系统包含的资源索引集合。

@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 读取数据时加载依赖资源事件。
     /// </summary>
-    public sealed class ReadDataDependencyAssetEventArgs : FrameworkEventArgs
+    public sealed class ReadDataDependencyAssetEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化读取数据时加载依赖资源事件的新实例。
@@ -25,27 +25,42 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取内容资源名称。
         /// </summary>
-        public string DataAssetName { get; private set; }
+        public string DataAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被加载的依赖资源名称。
         /// </summary>
-        public string DependencyAssetName { get; private set; }
+        public string DependencyAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前已加载依赖资源数量。
         /// </summary>
-        public int LoadedCount { get; private set; }
+        public int LoadedCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取总共加载依赖资源数量。
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int TotalCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建读取数据时加载依赖资源事件。

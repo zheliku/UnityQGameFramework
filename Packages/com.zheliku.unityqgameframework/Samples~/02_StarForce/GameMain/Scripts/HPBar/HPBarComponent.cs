@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
@@ -13,7 +13,7 @@ namespace StarForce
     /// <summary>
     /// 借用对象池血条并跟随实体。
     /// </summary>
-    public class HPBarComponent : FrameworkComponent
+    public class HPBarComponent : GameFrameworkComponent
     {
         [SerializeField]
         private HPBarItem m_HPBarItemTemplate = null;

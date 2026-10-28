@@ -10,18 +10,18 @@ namespace UnityQGameFramework.Core
     /// </summary>
     public static partial class Version
     {
-        private const string FrameworkVersionString = "0.1.0-exp.8";
+        private const string GameFrameworkVersionString = "0.1.0-exp.8";
 
         private static IVersionHelper s_VersionHelper = null;
 
         /// <summary>
         /// 获取游戏框架版本号。
         /// </summary>
-        public static string FrameworkVersion
+        public static string GameFrameworkVersion
         {
             get
             {
-                return FrameworkVersionString;
+                return GameFrameworkVersionString;
             }
         }
 

@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.DataNode
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 数据结点接口。
@@ -15,22 +15,34 @@ namespace UnityQGameFramework.Core.DataNode
         /// <summary>
         /// 获取数据结点的名称。
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取数据结点的完整名称。
         /// </summary>
-        string FullName { get; }
+        string FullName
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取父数据结点。
         /// </summary>
-        IDataNode Parent { get; }
+        IDataNode Parent
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取子数据结点的数量。
         /// </summary>
-        int ChildCount { get; }
+        int ChildCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 根据类型获取数据结点的数据。

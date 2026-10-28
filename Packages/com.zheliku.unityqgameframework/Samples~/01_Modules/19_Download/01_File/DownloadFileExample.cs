@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules

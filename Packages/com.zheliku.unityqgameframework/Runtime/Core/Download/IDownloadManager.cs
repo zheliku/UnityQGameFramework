@@ -3,10 +3,11 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 下载管理器接口。
@@ -16,42 +17,66 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取或设置任务池是否暂停调度。已经发出的 HTTP 请求仍可能继续接收数据。
         /// </summary>
-        bool Paused { get; set; }
+        bool Paused
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取下载代理总数量。
         /// </summary>
-        int TotalAgentCount { get; }
+        int TotalAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取可用下载代理数量。
         /// </summary>
-        int FreeAgentCount { get; }
+        int FreeAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取工作中下载代理数量。
         /// </summary>
-        int WorkingAgentCount { get; }
+        int WorkingAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取等待下载任务数量。
         /// </summary>
-        int WaitingTaskCount { get; }
+        int WaitingTaskCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取或设置刷新文件流的字节阈值。入队时保存到任务。
         /// </summary>
-        int FlushSize { get; set; }
+        int FlushSize
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置连续没有收到数据的超时时长，以秒为单位。收到数据后重新计时。
         /// </summary>
-        float Timeout { get; set; }
+        float Timeout
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取所有下载任务的汇总速度，以字节每秒为单位。
         /// </summary>
-        float CurrentSpeed { get; }
+        float CurrentSpeed
+        {
+            get;
+        }
 
         /// <summary>
         /// 下载开始事件。

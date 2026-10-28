@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Fsm
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 有限状态机。
@@ -35,7 +35,10 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取有限状态机持有者。
         /// </summary>
-        public T Owner { get; private set; }
+        public T Owner
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取有限状态机持有者类型。
@@ -84,7 +87,10 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取当前有限状态机状态。
         /// </summary>
-        public FsmState<T> CurrentState { get; private set; }
+        public FsmState<T> CurrentState
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前有限状态机状态名称。
@@ -119,12 +125,12 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (owner == null)
             {
-                throw new FrameworkException("FSM owner is invalid.");
+                throw new GameFrameworkException("FSM owner is invalid.");
             }
 
             if (states == null || states.Length < 1)
             {
-                throw new FrameworkException("FSM states is invalid.");
+                throw new GameFrameworkException("FSM states is invalid.");
             }
 
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
@@ -135,13 +141,13 @@ namespace UnityQGameFramework.Core.Fsm
             {
                 if (state == null)
                 {
-                    throw new FrameworkException("FSM states is invalid.");
+                    throw new GameFrameworkException("FSM states is invalid.");
                 }
 
                 Type stateType = state.GetType();
                 if (fsm.m_States.ContainsKey(stateType))
                 {
-                    throw new FrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", new TypeNamePair(typeof(T), name), stateType.FullName));
+                    throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", new TypeNamePair(typeof(T), name), stateType.FullName));
                 }
 
                 fsm.m_States.Add(stateType, state);
@@ -162,12 +168,12 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (owner == null)
             {
-                throw new FrameworkException("FSM owner is invalid.");
+                throw new GameFrameworkException("FSM owner is invalid.");
             }
 
             if (states == null || states.Count < 1)
             {
-                throw new FrameworkException("FSM states is invalid.");
+                throw new GameFrameworkException("FSM states is invalid.");
             }
 
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
@@ -178,13 +184,13 @@ namespace UnityQGameFramework.Core.Fsm
             {
                 if (state == null)
                 {
-                    throw new FrameworkException("FSM states is invalid.");
+                    throw new GameFrameworkException("FSM states is invalid.");
                 }
 
                 Type stateType = state.GetType();
                 if (fsm.m_States.ContainsKey(stateType))
                 {
-                    throw new FrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", new TypeNamePair(typeof(T), name), stateType.FullName));
+                    throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", new TypeNamePair(typeof(T), name), stateType.FullName));
                 }
 
                 fsm.m_States.Add(stateType, state);
@@ -241,13 +247,13 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (IsRunning)
             {
-                throw new FrameworkException("FSM is running, can not start again.");
+                throw new GameFrameworkException("FSM is running, can not start again.");
             }
 
             FsmState<T> state = GetState<TState>();
             if (state == null)
             {
-                throw new FrameworkException(Utility.Text.Format("FSM '{0}' can not start state '{1}' which is not exist.", new TypeNamePair(typeof(T), Name), typeof(TState).FullName));
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not start state '{1}' which is not exist.", new TypeNamePair(typeof(T), Name), typeof(TState).FullName));
             }
 
             m_CurrentStateTime = 0f;
@@ -263,23 +269,23 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (IsRunning)
             {
-                throw new FrameworkException("FSM is running, can not start again.");
+                throw new GameFrameworkException("FSM is running, can not start again.");
             }
 
             if (stateType == null)
             {
-                throw new FrameworkException("State type is invalid.");
+                throw new GameFrameworkException("State type is invalid.");
             }
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new FrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             FsmState<T> state = GetState(stateType);
             if (state == null)
             {
-                throw new FrameworkException(Utility.Text.Format("FSM '{0}' can not start state '{1}' which is not exist.", new TypeNamePair(typeof(T), Name), stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not start state '{1}' which is not exist.", new TypeNamePair(typeof(T), Name), stateType.FullName));
             }
 
             m_CurrentStateTime = 0f;
@@ -307,12 +313,12 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (stateType == null)
             {
-                throw new FrameworkException("State type is invalid.");
+                throw new GameFrameworkException("State type is invalid.");
             }
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new FrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             return m_States.ContainsKey(stateType);
@@ -344,12 +350,12 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (stateType == null)
             {
-                throw new FrameworkException("State type is invalid.");
+                throw new GameFrameworkException("State type is invalid.");
             }
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new FrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             FsmState<T> state = null;
@@ -385,7 +391,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -404,7 +410,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Data name is invalid.");
+                throw new GameFrameworkException("Data name is invalid.");
             }
 
             if (m_Datas == null)
@@ -436,7 +442,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Data name is invalid.");
+                throw new GameFrameworkException("Data name is invalid.");
             }
 
             if (m_Datas == null)
@@ -474,7 +480,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Data name is invalid.");
+                throw new GameFrameworkException("Data name is invalid.");
             }
 
             if (m_Datas == null)
@@ -500,7 +506,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Data name is invalid.");
+                throw new GameFrameworkException("Data name is invalid.");
             }
 
             if (m_Datas == null)
@@ -559,13 +565,13 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (CurrentState == null)
             {
-                throw new FrameworkException("Current state is invalid.");
+                throw new GameFrameworkException("Current state is invalid.");
             }
 
             FsmState<T> state = GetState(stateType);
             if (state == null)
             {
-                throw new FrameworkException(Utility.Text.Format("FSM '{0}' can not change state to '{1}' which is not exist.", new TypeNamePair(typeof(T), Name), stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not change state to '{1}' which is not exist.", new TypeNamePair(typeof(T), Name), stateType.FullName));
             }
 
             CurrentState.OnLeave(this, false);

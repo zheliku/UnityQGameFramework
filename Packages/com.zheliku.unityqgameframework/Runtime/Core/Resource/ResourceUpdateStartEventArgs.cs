@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 资源更新开始事件。
     /// </summary>
-    public sealed class ResourceUpdateStartEventArgs : FrameworkEventArgs
+    public sealed class ResourceUpdateStartEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化资源更新开始事件的新实例。
@@ -26,32 +26,50 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源下载后存放路径。
         /// </summary>
-        public string DownloadPath { get; private set; }
+        public string DownloadPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载地址。
         /// </summary>
-        public string DownloadUri { get; private set; }
+        public string DownloadUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前下载大小。
         /// </summary>
-        public int CurrentLength { get; private set; }
+        public int CurrentLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int CompressedLength { get; private set; }
+        public int CompressedLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取已重试下载次数。
         /// </summary>
-        public int RetryCount { get; private set; }
+        public int RetryCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源更新开始事件。

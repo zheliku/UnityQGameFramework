@@ -5,9 +5,9 @@
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 记录读写区资源的版本和存储信息。
@@ -44,22 +44,34 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取文件系统名称。
             /// </summary>
-            public string FileSystemName { get; }
+            public string FileSystemName
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源加载方式。
             /// </summary>
-            public LoadType LoadType { get; }
+            public LoadType LoadType
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源字节数。
             /// </summary>
-            public int Length { get; }
+            public int Length
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源 CRC32 校验值。
             /// </summary>
-            public int HashCode { get; }
+            public int HashCode
+            {
+                get;
+            }
         }
     }
 }

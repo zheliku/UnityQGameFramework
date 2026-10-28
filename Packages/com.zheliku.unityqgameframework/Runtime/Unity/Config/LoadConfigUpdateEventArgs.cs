@@ -4,7 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core.Events;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,17 +42,26 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取全局配置资源名称。
         /// </summary>
-        public string ConfigAssetName { get; private set; }
+        public string ConfigAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载全局配置进度。
         /// </summary>
-        public float Progress { get; private set; }
+        public float Progress
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载全局配置更新事件。

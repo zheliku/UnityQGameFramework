@@ -4,8 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Config;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Config")]
-    public sealed class ConfigComponent : FrameworkComponent
+    public sealed class ConfigComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
@@ -67,7 +66,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_ConfigManager = FrameworkEntry.GetModule<IConfigManager>();
+            m_ConfigManager = GameFrameworkEntry.GetModule<IConfigManager>();
             if (m_ConfigManager == null)
             {
                 Log.Fatal("Config manager is invalid.");

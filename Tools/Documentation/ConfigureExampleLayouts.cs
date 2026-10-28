@@ -28,12 +28,14 @@ public static class ConfigureExampleLayouts
             {
                 string script = (string)entry.Value["script"];
                 string module = "01_Modules/" + script.Split('/')[3];
-                if ((bool?)definitions.Single(item => (string)item["folder"] == module)["responsiveLayout"] != true) continue;
+                if ((bool?)definitions.Single(item => (string)item["folder"] == module)["responsiveLayout"] != true)
+                    continue;
                 string path = script.Substring(0, script.Length - 3) + ".unity";
                 var scene = EditorSceneManager.OpenScene(path);
                 var canvas = UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None).Single(item => item.name == "Canvas_Example");
                 var panel = canvas.GetComponentInChildren<ScrollRect>().GetComponent<RectTransform>();
-                if (panel.anchorMax.x >= .75f) continue;
+                if (panel.anchorMax.x >= .75f)
+                    continue;
                 AddScrollbar(panel.GetComponent<ScrollRect>());
                 var component = canvas.GetComponent<ExampleSceneLayout>() ?? canvas.gameObject.AddComponent<ExampleSceneLayout>();
                 var data = new SerializedObject(component);
@@ -43,7 +45,8 @@ public static class ConfigureExampleLayouts
                 data.ApplyModifiedPropertiesWithoutUndo();
                 EditorSceneManager.SaveScene(scene);
                 changed.Add(path);
-                if (!module.EndsWith("/14_UI", StringComparison.Ordinal)) continue;
+                if (!module.EndsWith("/14_UI", StringComparison.Ordinal))
+                    continue;
                 string prefab = Path.GetDirectoryName(script).Replace('\\', '/') + "/Art/Window.prefab";
                 var root = PrefabUtility.LoadPrefabContents(prefab);
                 try
@@ -60,17 +63,25 @@ public static class ConfigureExampleLayouts
         }
         finally
         {
-            if (setup.Any(item => item.isActive && item.isLoaded && !string.IsNullOrEmpty(item.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(item => item.isActive && item.isLoaded && !string.IsNullOrEmpty(item.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Directory.CreateDirectory("Artifacts~/ResponsiveExamples");
         File.WriteAllText("Artifacts~/ResponsiveExamples/configured.json", Newtonsoft.Json.JsonConvert.SerializeObject(changed));
-        return new { passed = true, assets = changed.Count, changed };
+        return new
+        {
+            passed = true,
+            assets = changed.Count,
+            changed
+        };
     }
 
     private static void AddScrollbar(ScrollRect scroll)
     {
-        if (scroll.verticalScrollbar != null) return;
+        if (scroll.verticalScrollbar != null)
+            return;
         var root = DefaultControls.CreateScrollbar(new DefaultControls.Resources());
         root.name = "Scrollbar_Controls";
         root.transform.SetParent(scroll.transform, false);

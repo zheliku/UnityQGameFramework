@@ -76,7 +76,7 @@ def main():
     if optional_tools.intersection(manifest.get('dependencies', {})):
         errors.append('Optional editor tools must not be required framework dependencies.')
     version_source = (package / 'Runtime/Core/Base/Version/Version.cs').read_text(encoding='utf-8-sig')
-    runtime_version = re.search(r'FrameworkVersionString\s*=\s*"([^"]+)"', version_source)
+    runtime_version = re.search(r'GameFrameworkVersionString\s*=\s*"([^"]+)"', version_source)
     if runtime_version is None or runtime_version[1] != manifest['version']:
         errors.append('Framework display version does not match package.json.')
     changelog = package / 'CHANGELOG.md'
@@ -129,6 +129,11 @@ def main():
     module_assembly = module_root / 'UnityQGameFramework.Examples.Modules.asmdef'
     if not module_assembly.is_file():
         errors.append('Module Sample needs one root assembly: 01_Modules')
+    for directory, assembly in (('00_PointPointPoint', 'PointPointPoint'), ('02_StarForce', 'StarForce')):
+        sample = examples / directory
+        expected = sample / ('UnityQGameFramework.Examples.' + assembly + '.asmdef')
+        if not expected.is_file() or len(list(sample.rglob('*.asmdef'))) != 1:
+            errors.append('Sample needs one root assembly: ' + directory)
     if not (common / 'Prefabs/QGF.prefab').is_file() or len(list(common.rglob('*.prefab'))) != 1:
         errors.append('Module Sample must contain one Common/Prefabs/QGF.prefab.')
     example_cases = sorted(path for path in module_root.rglob('*')
@@ -140,7 +145,7 @@ def main():
         errors.append('Old unnumbered sample directories remain.')
     point_root = examples / '00_PointPointPoint/GameMain'
     for relative in ('Configs/Game.toml', 'Prefabs/QGF.prefab', 'Scenes/PointPointPoint.unity',
-                     'Scripts/UnityQGameFramework.PointPointPoint.asmdef', 'UI/UIForms/PointGameView.prefab'):
+                      'UI/UIForms/PointGameView.prefab'):
         if not (point_root / relative).is_file():
             errors.append('The PointPointPoint GameMain layout is incomplete: ' + relative)
     for case in example_cases:

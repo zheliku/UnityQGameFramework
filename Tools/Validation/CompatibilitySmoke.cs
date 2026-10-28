@@ -40,22 +40,25 @@ public static class CompatibilitySmoke
             CancellationToken token = owner.GetCancellationTokenOnDestroy();
             var pending = UniTask.Delay(10000, cancellationToken: token);
             UnityEngine.Object.Destroy(owner);
-            try { await pending; }
+            try
+            {
+                await pending;
+            }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { cancellation = true; }
             Require(cancellation, "Destruction cancellation");
             Click("startButton");
-            await Wait(() => Phase() == "游玩" && Current()?.Available == true, "play");
+            await Wait(() => Phase() == "Play" && Current()?.Available == true, "play");
             for (int i = 0; i < 10; i++)
             {
                 Click("targetButton");
                 await UniTask.NextFrame();
             }
-            await Wait(() => Phase() == "结算" && Current()?.Available == true, "result");
+            await Wait(() => Phase() == "Result" && Current()?.Available == true, "result");
             object state = Current().GetType().GetProperty("Game", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(Current());
             game = (int)state.GetType().GetField("Score").GetValue(state) == 100;
             Require(game && QGF.Event.EventHandlerCount == 0, "Game result and event cleanup");
             Click("menuButton");
-            await Wait(() => Phase() == "菜单" && Current()?.Available == true, "return to menu");
+            await Wait(() => Phase() == "Menu" && Current()?.Available == true, "return to menu");
             exitCode = 0;
         }
         catch (Exception exception) { failure = exception.ToString(); }
@@ -64,14 +67,20 @@ public static class CompatibilitySmoke
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 EditorApplication.isPlaying = false;
-                for (int i = 0; i < 200 && EditorApplication.isPlayingOrWillChangePlaymode; i++) await Task.Delay(50);
+                for (int i = 0; i < 200 && EditorApplication.isPlayingOrWillChangePlaymode; i++)
+                    await Task.Delay(50);
             }
             Directory.CreateDirectory("Artifacts~");
             File.WriteAllText("Artifacts~/compatibility.json", JsonUtility.ToJson(new Result
             {
-                passed = exitCode == 0, unity = Application.unityVersion, uniTaskNextFrame = nextFrame,
-                unscaledDelay = delay, destructionCancellation = cancellation, pointGame = game,
-                input = "Programmatic uGUI button actions; native pointer input is checked separately", error = failure
+                passed = exitCode == 0,
+                unity = Application.unityVersion,
+                uniTaskNextFrame = nextFrame,
+                unscaledDelay = delay,
+                destructionCancellation = cancellation,
+                pointGame = game,
+                input = "Programmatic uGUI button actions; native pointer input is checked separately",
+                error = failure
             }, true));
             EditorApplication.Exit(exitCode);
         }
@@ -81,7 +90,8 @@ public static class CompatibilitySmoke
     private static string Phase()
     {
         var view = Current();
-        if (view == null || !view.Available) return null;
+        if (view == null || !view.Available)
+            return null;
         object state = view.GetType().GetProperty("Game", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(view);
         return state?.GetType().GetField("Phase").GetValue(state) as string;
     }
@@ -91,11 +101,16 @@ public static class CompatibilitySmoke
         var deadline = DateTime.UtcNow.AddSeconds(30);
         while (!condition())
         {
-            if (DateTime.UtcNow > deadline) throw new TimeoutException(step);
+            if (DateTime.UtcNow > deadline)
+                throw new TimeoutException(step);
             await Task.Delay(20);
         }
     }
-    private static void Require(bool condition, string step) { if (!condition) throw new Exception(step); }
+    private static void Require(bool condition, string step)
+    {
+        if (!condition)
+            throw new Exception(step);
+    }
     [Serializable]
     private class Result
     {

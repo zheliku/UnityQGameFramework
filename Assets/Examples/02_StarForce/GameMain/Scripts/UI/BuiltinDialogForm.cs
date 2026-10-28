@@ -64,7 +64,7 @@ namespace StarForce
             Answer(parameters.OnClickOther);
         }
 
-        private void Answer(FrameworkAction<object> callback)
+        private void Answer(GameFrameworkAction<object> callback)
         {
             if (answered)
             {

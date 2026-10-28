@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -35,7 +35,7 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 return Compress(bytes, 0, bytes.Length);
@@ -51,7 +51,7 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 return Compress(bytes, 0, bytes.Length, compressedStream);
@@ -91,22 +91,22 @@ namespace UnityQGameFramework.Core
             {
                 if (s_CompressionHelper == null)
                 {
-                    throw new FrameworkException("Compressed helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
-                    throw new FrameworkException("Offset or length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 if (compressedStream == null)
                 {
-                    throw new FrameworkException("Compressed stream is invalid.");
+                    throw new GameFrameworkException("Compressed stream is invalid.");
                 }
 
                 try
@@ -115,12 +115,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not compress with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -154,17 +154,17 @@ namespace UnityQGameFramework.Core
             {
                 if (s_CompressionHelper == null)
                 {
-                    throw new FrameworkException("Compressed helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (stream == null)
                 {
-                    throw new FrameworkException("Stream is invalid.");
+                    throw new GameFrameworkException("Stream is invalid.");
                 }
 
                 if (compressedStream == null)
                 {
-                    throw new FrameworkException("Compressed stream is invalid.");
+                    throw new GameFrameworkException("Compressed stream is invalid.");
                 }
 
                 try
@@ -173,12 +173,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not compress with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 return Decompress(bytes, 0, bytes.Length);
@@ -207,7 +207,7 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 return Decompress(bytes, 0, bytes.Length, decompressedStream);
@@ -247,22 +247,22 @@ namespace UnityQGameFramework.Core
             {
                 if (s_CompressionHelper == null)
                 {
-                    throw new FrameworkException("Compressed helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
-                    throw new FrameworkException("Offset or length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 if (decompressedStream == null)
                 {
-                    throw new FrameworkException("Decompressed stream is invalid.");
+                    throw new GameFrameworkException("Decompressed stream is invalid.");
                 }
 
                 try
@@ -271,12 +271,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -310,17 +310,17 @@ namespace UnityQGameFramework.Core
             {
                 if (s_CompressionHelper == null)
                 {
-                    throw new FrameworkException("Compressed helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (stream == null)
                 {
-                    throw new FrameworkException("Stream is invalid.");
+                    throw new GameFrameworkException("Stream is invalid.");
                 }
 
                 if (decompressedStream == null)
                 {
-                    throw new FrameworkException("Decompressed stream is invalid.");
+                    throw new GameFrameworkException("Decompressed stream is invalid.");
                 }
 
                 try
@@ -329,12 +329,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception), exception);
                 }
             }
         }

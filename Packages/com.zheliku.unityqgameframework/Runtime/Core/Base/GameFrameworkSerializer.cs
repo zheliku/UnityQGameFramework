@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace UnityQGameFramework.Core
     /// 游戏框架序列化器基类。
     /// </summary>
     /// <typeparam name="T">要序列化的数据类型。</typeparam>
-    public abstract class FrameworkSerializer<T>
+    public abstract class GameFrameworkSerializer<T>
     {
         private readonly Dictionary<byte, SerializeCallback> m_SerializeCallbacks;
         private readonly Dictionary<byte, DeserializeCallback> m_DeserializeCallbacks;
@@ -22,7 +22,7 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 初始化游戏框架序列化器基类的新实例。
         /// </summary>
-        public FrameworkSerializer()
+        public GameFrameworkSerializer()
         {
             m_SerializeCallbacks = new Dictionary<byte, SerializeCallback>();
             m_DeserializeCallbacks = new Dictionary<byte, DeserializeCallback>();
@@ -63,7 +63,7 @@ namespace UnityQGameFramework.Core
         {
             if (callback == null)
             {
-                throw new FrameworkException("Serialize callback is invalid.");
+                throw new GameFrameworkException("Serialize callback is invalid.");
             }
 
             m_SerializeCallbacks[version] = callback;
@@ -82,7 +82,7 @@ namespace UnityQGameFramework.Core
         {
             if (callback == null)
             {
-                throw new FrameworkException("Deserialize callback is invalid.");
+                throw new GameFrameworkException("Deserialize callback is invalid.");
             }
 
             m_DeserializeCallbacks[version] = callback;
@@ -97,7 +97,7 @@ namespace UnityQGameFramework.Core
         {
             if (callback == null)
             {
-                throw new FrameworkException("Try get value callback is invalid.");
+                throw new GameFrameworkException("Try get value callback is invalid.");
             }
 
             m_TryGetValueCallbacks[version] = callback;
@@ -113,7 +113,7 @@ namespace UnityQGameFramework.Core
         {
             if (m_SerializeCallbacks.Count <= 0)
             {
-                throw new FrameworkException("No serialize callback registered.");
+                throw new GameFrameworkException("No serialize callback registered.");
             }
 
             return Serialize(stream, data, m_LatestSerializeCallbackVersion);
@@ -136,7 +136,7 @@ namespace UnityQGameFramework.Core
             SerializeCallback callback = null;
             if (!m_SerializeCallbacks.TryGetValue(version, out callback))
             {
-                throw new FrameworkException(Utility.Text.Format("Serialize callback '{0}' is not exist.", version));
+                throw new GameFrameworkException(Utility.Text.Format("Serialize callback '{0}' is not exist.", version));
             }
 
             return callback(stream, data);
@@ -155,14 +155,14 @@ namespace UnityQGameFramework.Core
             byte header2 = (byte)stream.ReadByte();
             if (header0 != header[0] || header1 != header[1] || header2 != header[2])
             {
-                throw new FrameworkException(Utility.Text.Format("Header is invalid, need '{0}{1}{2}', current '{3}{4}{5}'.", (char)header[0], (char)header[1], (char)header[2], (char)header0, (char)header1, (char)header2));
+                throw new GameFrameworkException(Utility.Text.Format("Header is invalid, need '{0}{1}{2}', current '{3}{4}{5}'.", (char)header[0], (char)header[1], (char)header[2], (char)header0, (char)header1, (char)header2));
             }
 
             byte version = (byte)stream.ReadByte();
             DeserializeCallback callback = null;
             if (!m_DeserializeCallbacks.TryGetValue(version, out callback))
             {
-                throw new FrameworkException(Utility.Text.Format("Deserialize callback '{0}' is not exist.", version));
+                throw new GameFrameworkException(Utility.Text.Format("Deserialize callback '{0}' is not exist.", version));
             }
 
             return callback(stream);

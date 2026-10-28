@@ -13,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制资源配置引用和运行状态。
     /// </summary>
     [CustomEditor(typeof(ResourceComponent))]
-    internal sealed class ResourceComponentInspector : FrameworkInspector
+    internal sealed class ResourceComponentInspector : GameFrameworkInspector
     {
         private bool m_ShowSettings = true;
         private UnityEditor.Editor m_SettingsEditor;

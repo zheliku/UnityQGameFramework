@@ -15,7 +15,8 @@ public static class LubanFailureValidation
 
     public static async Task<object> Run()
     {
-        if (EditorApplication.isPlaying || Directory.Exists(Root)) throw new Exception("Validation workspace is occupied or Play Mode is active.");
+        if (EditorApplication.isPlaying || Directory.Exists(Root))
+            throw new Exception("Validation workspace is occupied or Play Mode is active.");
         EditorApplication.LockReloadAssemblies();
         try
         {
@@ -29,12 +30,16 @@ public static class LubanFailureValidation
 
             // Ensure C# is changed first, then fail while replacing the data file.
             File.AppendAllText(code, "\n// Before failed generation.\n");
-            using (var append = new FileStream(data, FileMode.Append)) append.WriteByte(0);
+            using (var append = new FileStream(data, FileMode.Append))
+                append.WriteByte(0);
             string before = Snapshot(Root);
             bool rejected = false;
             using (var locked = new FileStream(data, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                try { await LubanGenerator.GenerateAsync(profile); }
+                try
+                {
+                    await LubanGenerator.GenerateAsync(profile);
+                }
                 catch (IOException) { rejected = true; }
             }
             Require(rejected && !LubanGenerator.IsBusy && Snapshot(Root) == before, "An I/O failure did not restore outputs, GUIDs and Profile state.");
@@ -45,7 +50,10 @@ public static class LubanFailureValidation
             AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<LubanProfile>(), catalog);
             before = Snapshot(Root);
             rejected = false;
-            try { await LubanGenerator.GenerateAsync(profile); }
+            try
+            {
+                await LubanGenerator.GenerateAsync(profile);
+            }
             catch (IOException) { rejected = true; }
             Require(rejected && Snapshot(Root) == before, "Invalid catalog changed outputs.");
 
@@ -54,7 +62,10 @@ public static class LubanFailureValidation
             var pending = (Task<string>)runProcess.Invoke(null, new object[]
             { "powershell.exe", new[] { "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", "Start-Sleep -Seconds 10" }, Directory.GetCurrentDirectory(), 0, 200 });
             bool timedOut = false;
-            try { await pending; }
+            try
+            {
+                await pending;
+            }
             catch (TimeoutException) { timedOut = true; }
             Require(timedOut, "Long-running generation process was not terminated.");
 
@@ -76,6 +87,14 @@ public static class LubanFailureValidation
             return string.Join("|", Directory.GetFiles(root, "*", SearchOption.AllDirectories).OrderBy(path => path, StringComparer.Ordinal)
                 .Select(path => path + ":" + BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(path)))));
     }
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
-    [Serializable] private sealed class Result { public bool passed; public bool ioRollback; public bool catalogPreflight; public bool timeout; }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
+    [Serializable]
+    private sealed class Result
+    {
+        public bool passed; public bool ioRollback; public bool catalogPreflight; public bool timeout;
+    }
 }

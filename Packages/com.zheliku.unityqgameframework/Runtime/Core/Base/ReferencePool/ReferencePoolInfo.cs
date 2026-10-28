@@ -38,36 +38,57 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取引用池类型。
         /// </summary>
-        public Type Type { get; }
+        public Type Type
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取未使用引用数量。
         /// </summary>
-        public int UnusedReferenceCount { get; }
+        public int UnusedReferenceCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取正在使用引用数量。
         /// </summary>
-        public int UsingReferenceCount { get; }
+        public int UsingReferenceCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取获取引用数量。
         /// </summary>
-        public int AcquireReferenceCount { get; }
+        public int AcquireReferenceCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取归还引用数量。
         /// </summary>
-        public int ReleaseReferenceCount { get; }
+        public int ReleaseReferenceCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取增加引用数量。
         /// </summary>
-        public int AddReferenceCount { get; }
+        public int AddReferenceCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取移除引用数量。
         /// </summary>
-        public int RemoveReferenceCount { get; }
+        public int RemoveReferenceCount
+        {
+            get;
+        }
     }
 }

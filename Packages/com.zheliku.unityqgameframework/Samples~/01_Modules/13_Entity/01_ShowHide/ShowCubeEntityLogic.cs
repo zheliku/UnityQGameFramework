@@ -11,22 +11,34 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取初始化回调次数。
         /// </summary>
-        public int InitCalls { get; private set; }
+        public int InitCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取显示回调次数。
         /// </summary>
-        public int ShowCalls { get; private set; }
+        public int ShowCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取显示时是否收到业务数据。
         /// </summary>
-        public bool HasShowData { get; private set; }
+        public bool HasShowData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取隐藏时是否收到业务数据。
         /// </summary>
-        public bool HasHideData { get; private set; }
+        public bool HasHideData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 初始化实例。

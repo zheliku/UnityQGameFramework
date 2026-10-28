@@ -14,7 +14,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Editor;
 using UnityQGameFramework.Runtime;
 using YooAsset;
@@ -172,7 +171,7 @@ public static class StarForceResourceWorkflowValidation
             {
                 await Entry.Resource.ClearCacheAsync(ClearCacheMethods.ClearUnusedBundleFiles);
             }
-            catch (FrameworkException)
+            catch (GameFrameworkException)
             {
                 cacheProtected = true;
             }
@@ -209,7 +208,14 @@ public static class StarForceResourceWorkflowValidation
             Check(!visited.Contains(nameof(ProcedureClearUnusedCache)) && ActiveDialog() == null,
                 "Cached startup skips download confirmation and post-download cleanup");
             Check(errors.Count == 0, "No unexpected runtime errors: " + string.Join("\n", errors));
-            var result = new { passed = true, unity = Application.unityVersion, downloads, expectedErrors, checks = Checks.ToArray() };
+            var result = new
+            {
+                passed = true,
+                unity = Application.unityVersion,
+                downloads,
+                expectedErrors,
+                checks = Checks.ToArray()
+            };
             Directory.CreateDirectory("Artifacts~/StarForceWorkflow");
             File.WriteAllText("Artifacts~/StarForceWorkflow/check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
             return result;
@@ -248,7 +254,7 @@ public static class StarForceResourceWorkflowValidation
 
     private static void SetCachePath()
     {
-        UnityQGameFramework.Core.FrameworkEntry.GetModule<IResourceManager>()
+        UnityQGameFramework.Core.GameFrameworkEntry.GetModule<IResourceManager>()
             .SetReadWritePath(Path.GetFullPath("Artifacts~/StarForceWorkflow/Runtime"));
     }
 
@@ -295,7 +301,10 @@ public static class StarForceResourceWorkflowValidation
         private readonly List<Task> workers = new List<Task>();
         private int reject;
 
-        internal string Url { get; }
+        internal string Url
+        {
+            get;
+        }
 
         internal bool RejectResources
         {
@@ -341,7 +350,8 @@ public static class StarForceResourceWorkflowValidation
                     while (!header.ToString().Contains("\r\n\r\n"))
                     {
                         int count = await stream.ReadAsync(buffer, 0, buffer.Length, stop.Token).ConfigureAwait(false);
-                        if (count == 0 || header.Length > 8192) return;
+                        if (count == 0 || header.Length > 8192)
+                            return;
                         header.Append(Encoding.ASCII.GetString(buffer, 0, count));
                     }
                     string relative = Uri.UnescapeDataString(header.ToString().Split(' ')[1].Split('?')[0]).TrimStart('/');

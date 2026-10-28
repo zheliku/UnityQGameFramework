@@ -13,7 +13,8 @@ public static class ValidateEncryptionRanges
         var checks = new List<string>();
         Action<bool, string> require = (condition, label) =>
         {
-            if (!condition) throw new Exception(label);
+            if (!condition)
+                throw new Exception(label);
             checks.Add(label);
         };
         byte[] key = { 17, 39, 63, 81 };
@@ -48,11 +49,20 @@ public static class ValidateEncryptionRanges
         foreach (var range in new[] { new[] { -1, 1 }, new[] { 301, 0 }, new[] { 2, 300 }, new[] { 2, int.MaxValue } })
         {
             bool rejected = false;
-            try { Utility.Encryption.GetSelfXorBytes(slice, range[0], range[1], key); }
-            catch (FrameworkException) { rejected = true; }
+            try
+            {
+                Utility.Encryption.GetSelfXorBytes(slice, range[0], range[1], key);
+            }
+            catch (GameFrameworkException) { rejected = true; }
             require(rejected && slice.SequenceEqual(source), "Invalid interval rejected before writing: " + string.Join(",", range));
         }
-        var result = new { passed = true, unity = Application.unityVersion, assertionCount = checks.Count, checks };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            assertionCount = checks.Count,
+            checks
+        };
         Directory.CreateDirectory("Artifacts~/ResourceVariantExamples");
         File.WriteAllText("Artifacts~/ResourceVariantExamples/encryption-ranges.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;

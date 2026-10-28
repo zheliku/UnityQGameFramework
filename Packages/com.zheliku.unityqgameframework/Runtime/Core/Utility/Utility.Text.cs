@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -58,7 +58,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -84,7 +84,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -112,7 +112,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -142,7 +142,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -174,7 +174,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -208,7 +208,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -244,7 +244,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -282,7 +282,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -322,7 +322,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -364,7 +364,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -408,7 +408,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -454,7 +454,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -502,7 +502,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -552,7 +552,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)
@@ -604,7 +604,7 @@ namespace UnityQGameFramework.Core
             {
                 if (format == null)
                 {
-                    throw new FrameworkException("Format is invalid.");
+                    throw new GameFrameworkException("Format is invalid.");
                 }
 
                 if (s_TextHelper == null)

@@ -19,7 +19,8 @@ public static class ValidatePointPlayer
 {
     public static async Task<object> Run()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
         string output = Path.GetFullPath("Artifacts~/PointPlayer");
         Directory.CreateDirectory(output);
         string player = Path.Combine(output, "PointPointPoint.exe");
@@ -35,11 +36,13 @@ public static class ValidatePointPlayer
         var editorErrors = new List<string>();
         Application.LogCallback capture = (message, stack, type) =>
         {
-            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) editorErrors.Add(message);
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                editorErrors.Add(message);
         };
         string baseline = Path.Combine(output, "Before");
         Directory.CreateDirectory(baseline);
-        foreach (string path in watched.Keys) File.Copy(path, Path.Combine(baseline, Path.GetFileName(path)), true);
+        foreach (string path in watched.Keys)
+            File.Copy(path, Path.Combine(baseline, Path.GetFileName(path)), true);
         byte[] save = File.Exists(PointGameSettingHelper.SavePath) ? File.ReadAllBytes(PointGameSettingHelper.SavePath) : null;
         var runs = new List<JObject>();
         Application.logMessageReceived += capture;
@@ -54,15 +57,19 @@ public static class ValidatePointPlayer
             foreach (string run in new[] { "first", "second" })
             {
                 string report = Path.Combine(output, run + ".json");
-                if (File.Exists(report)) File.Delete(report);
+                if (File.Exists(report))
+                    File.Delete(report);
                 using (var process = Process.Start(new ProcessStartInfo(player)
                 {
                     Arguments = "-batchmode -nographics -logFile \"" + Path.Combine(output, run + ".log")
                         + "\" -qgf-point-run " + run + " -qgf-point-result \"" + report + "\"",
-                    UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
                 }))
                 {
-                    if (process == null) throw new Exception("Player did not start.");
+                    if (process == null)
+                        throw new Exception("Player did not start.");
                     var wait = Task.Run(() => process.WaitForExit(60000));
                     if (!await wait)
                     {
@@ -70,7 +77,8 @@ public static class ValidatePointPlayer
                         process.WaitForExit(5000);
                         throw new TimeoutException("Point Player did not exit: " + run);
                     }
-                    if (!File.Exists(report)) throw new Exception("Player did not write a report. See " + run + ".log");
+                    if (!File.Exists(report))
+                        throw new Exception("Player did not write a report. See " + run + ".log");
                     var result = JObject.Parse(File.ReadAllText(report));
                     runs.Add(result);
                     if (process.ExitCode != 0 || (bool?)result["passed"] != true)
@@ -84,8 +92,10 @@ public static class ValidatePointPlayer
             File.WriteAllBytes(resourceSettingsPath, resourceSettingsBytes);
             AssetDatabase.ImportAsset(resourceSettingsPath, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
             // 测试会覆盖示例纪录；完成后还原验收前的文件。
-            if (save != null) File.WriteAllBytes(PointGameSettingHelper.SavePath, save);
-            else if (File.Exists(PointGameSettingHelper.SavePath)) File.Delete(PointGameSettingHelper.SavePath);
+            if (save != null)
+                File.WriteAllBytes(PointGameSettingHelper.SavePath, save);
+            else if (File.Exists(PointGameSettingHelper.SavePath))
+                File.Delete(PointGameSettingHelper.SavePath);
         }
         var changed = watched.Where(pair => Hash(pair.Key) != pair.Value).Select(pair => pair.Key).ToArray();
         if (changed.Length != 0 || !Same(streaming, Tree("Assets/StreamingAssets")))
@@ -93,11 +103,21 @@ public static class ValidatePointPlayer
                 + "; StreamingAssets unchanged: " + Same(streaming, Tree("Assets/StreamingAssets")));
         if (memory.Any(pair => EditorJsonUtility.ToJson(Unsupported.GetSerializedAssetInterfaceSingleton(pair.Key)) != pair.Value))
             throw new Exception("Player build changed in-memory project settings.");
-        if (editorErrors.Count != 0) throw new Exception("Editor build errors: " + string.Join("\n", editorErrors));
-        var summary = new { passed = true, unity = Application.unityVersion, player, runs,
-            settingsUnchanged = true, sceneUnchanged = true, projectStreamingAssetsUnchanged = true,
-            settingsMemoryUnchanged = true, editorErrors = 0,
-            input = "Player Button.onClick; native mouse interaction checked separately in Editor" };
+        if (editorErrors.Count != 0)
+            throw new Exception("Editor build errors: " + string.Join("\n", editorErrors));
+        var summary = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            player,
+            runs,
+            settingsUnchanged = true,
+            sceneUnchanged = true,
+            projectStreamingAssetsUnchanged = true,
+            settingsMemoryUnchanged = true,
+            editorErrors = 0,
+            input = "Player Button.onClick; native mouse interaction checked separately in Editor"
+        };
         File.WriteAllText(Path.Combine(output, "audit.json"), JsonConvert.SerializeObject(summary, Formatting.Indented));
         return summary;
     }
@@ -109,6 +129,7 @@ public static class ValidatePointPlayer
         && a.All(pair => b.TryGetValue(pair.Key, out string value) && value == pair.Value);
     private static string Hash(string path)
     {
-        using (var hash = SHA256.Create()) return Convert.ToBase64String(hash.ComputeHash(File.ReadAllBytes(path)));
+        using (var hash = SHA256.Create())
+            return Convert.ToBase64String(hash.ComputeHash(File.ReadAllBytes(path)));
     }
 }

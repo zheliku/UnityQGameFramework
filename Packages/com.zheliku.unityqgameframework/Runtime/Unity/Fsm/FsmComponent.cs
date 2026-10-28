@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Fsm;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +16,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/FSM")]
-    public sealed class FsmComponent : FrameworkComponent
+    public sealed class FsmComponent : GameFrameworkComponent
     {
         private IFsmManager m_FsmManager = null;
 
@@ -39,7 +38,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_FsmManager = FrameworkEntry.GetModule<IFsmManager>();
+            m_FsmManager = GameFrameworkEntry.GetModule<IFsmManager>();
             if (m_FsmManager == null)
             {
                 Log.Fatal("FSM manager is invalid.");

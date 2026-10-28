@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Procedure;
+using UnityQGameFramework.Core;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -16,7 +16,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制流程组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(ProcedureComponent))]
-    internal sealed class ProcedureComponentInspector : FrameworkInspector
+    internal sealed class ProcedureComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_AvailableProcedureTypeNames = null;
         private SerializedProperty m_EntranceProcedureTypeName = null;

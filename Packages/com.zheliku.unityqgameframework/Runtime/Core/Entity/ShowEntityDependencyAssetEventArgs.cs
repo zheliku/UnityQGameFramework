@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 显示实体时加载依赖资源事件。
     /// </summary>
-    public sealed class ShowEntityDependencyAssetEventArgs : FrameworkEventArgs
+    public sealed class ShowEntityDependencyAssetEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化显示实体时加载依赖资源事件的新实例。
@@ -27,37 +27,58 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取实体编号。
         /// </summary>
-        public int EntityId { get; private set; }
+        public int EntityId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体资源名称。
         /// </summary>
-        public string EntityAssetName { get; private set; }
+        public string EntityAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体组名称。
         /// </summary>
-        public string EntityGroupName { get; private set; }
+        public string EntityGroupName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被加载的依赖资源名称。
         /// </summary>
-        public string DependencyAssetName { get; private set; }
+        public string DependencyAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前已加载依赖资源数量。
         /// </summary>
-        public int LoadedCount { get; private set; }
+        public int LoadedCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取总共加载依赖资源数量。
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int TotalCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建显示实体时加载依赖资源事件。

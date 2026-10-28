@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Localization
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 本地化辅助器接口。
@@ -13,6 +13,9 @@ namespace UnityQGameFramework.Core.Localization
         /// <summary>
         /// 获取系统语言。
         /// </summary>
-        Language SystemLanguage { get; }
+        Language SystemLanguage
+        {
+            get;
+        }
     }
 }

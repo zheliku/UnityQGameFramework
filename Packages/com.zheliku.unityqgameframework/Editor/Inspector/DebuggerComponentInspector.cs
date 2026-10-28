@@ -13,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制调试器组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(DebuggerComponent))]
-    internal sealed class DebuggerComponentInspector : FrameworkInspector
+    internal sealed class DebuggerComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_Skin = null;
         private SerializedProperty m_ActiveWindow = null;

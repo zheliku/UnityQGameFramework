@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.ObjectPool;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +16,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Object Pool")]
-    public sealed class ObjectPoolComponent : FrameworkComponent
+    public sealed class ObjectPoolComponent : GameFrameworkComponent
     {
         private IObjectPoolManager m_ObjectPoolManager = null;
 
@@ -39,7 +38,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_ObjectPoolManager = FrameworkEntry.GetModule<IObjectPoolManager>();
+            m_ObjectPoolManager = GameFrameworkEntry.GetModule<IObjectPoolManager>();
             if (m_ObjectPoolManager == null)
             {
                 Log.Fatal("Object pool manager is invalid.");

@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         /// <summary>
         /// 统计最近一段时间的下载流量。
@@ -29,12 +29,18 @@ namespace UnityQGameFramework.Core.Download
                 /// <summary>
                 /// 获取采样期间新增的下载字节数。
                 /// </summary>
-                public long DeltaLength { get; private set; }
+                public long DeltaLength
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取采样已流逝时间，以秒为单位。
                 /// </summary>
-                public float ElapseSeconds { get; private set; }
+                public float ElapseSeconds
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 从引用池获取下载速率采样结点。

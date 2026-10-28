@@ -1,0 +1,14 @@
+{
+  "name": "UnityQGameFramework.Examples.StarForce",
+  "rootNamespace": "StarForce",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Runtime",
+    "UnityQGameFramework.Luban",
+    "UnityEngine.UI",
+    "Unity.InputSystem",
+    "UniTask",
+    "YooAsset"
+  ],
+  "autoReferenced": true
+}

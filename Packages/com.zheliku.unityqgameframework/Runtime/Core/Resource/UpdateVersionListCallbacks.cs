@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 版本资源列表更新回调函数集。
@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (updateVersionListSuccessCallback == null)
             {
-                throw new FrameworkException("Update version list success callback is invalid.");
+                throw new GameFrameworkException("Update version list success callback is invalid.");
             }
 
             UpdateVersionListSuccessCallback = updateVersionListSuccessCallback;
@@ -38,11 +38,17 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取版本资源列表更新成功回调函数。
         /// </summary>
-        public UpdateVersionListSuccessCallback UpdateVersionListSuccessCallback { get; }
+        public UpdateVersionListSuccessCallback UpdateVersionListSuccessCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取版本资源列表更新失败回调函数。
         /// </summary>
-        public UpdateVersionListFailureCallback UpdateVersionListFailureCallback { get; }
+        public UpdateVersionListFailureCallback UpdateVersionListFailureCallback
+        {
+            get;
+        }
     }
 }

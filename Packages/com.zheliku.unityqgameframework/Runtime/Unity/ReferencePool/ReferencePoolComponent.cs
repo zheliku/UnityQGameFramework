@@ -14,7 +14,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/ReferencePool")]
-    public sealed class ReferencePoolComponent : FrameworkComponent
+    public sealed class ReferencePoolComponent : GameFrameworkComponent
     {
         [SerializeField]
         private ReferenceStrictCheckType m_EnableStrictCheck = ReferenceStrictCheckType.AlwaysEnable;

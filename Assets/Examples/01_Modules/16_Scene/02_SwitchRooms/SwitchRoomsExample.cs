@@ -59,7 +59,7 @@ namespace UnityQGameFramework.Examples.Modules
                 phase = "Switch complete";
                 pending = null;
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

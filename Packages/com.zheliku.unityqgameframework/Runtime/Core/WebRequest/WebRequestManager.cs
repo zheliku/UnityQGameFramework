@@ -3,15 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.WebRequest
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// Web 请求管理器。
     /// </summary>
-    internal sealed partial class WebRequestManager : FrameworkModule, IWebRequestManager
+    internal sealed partial class WebRequestManager : GameFrameworkModule, IWebRequestManager
     {
         private readonly TaskPool<WebRequestTask> m_TaskPool;
         private EventHandler<WebRequestStartEventArgs> m_WebRequestStartEventHandler;
@@ -77,7 +78,10 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <summary>
         /// 获取或设置 Web 请求超时时长，以秒为单位。
         /// </summary>
-        public float Timeout { get; set; }
+        public float Timeout
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Web 请求开始事件。
@@ -211,7 +215,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri)
         {
-            return AddWebRequest(webRequestUri, null, null, Constant.DefaultPriority, null);
+            return AddWebRequest(webRequestUri, null, null, WebRequestConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -222,7 +226,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData)
         {
-            return AddWebRequest(webRequestUri, postData, null, Constant.DefaultPriority, null);
+            return AddWebRequest(webRequestUri, postData, null, WebRequestConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -233,7 +237,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, string tag)
         {
-            return AddWebRequest(webRequestUri, null, tag, Constant.DefaultPriority, null);
+            return AddWebRequest(webRequestUri, null, tag, WebRequestConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -255,7 +259,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, object userData)
         {
-            return AddWebRequest(webRequestUri, null, null, Constant.DefaultPriority, userData);
+            return AddWebRequest(webRequestUri, null, null, WebRequestConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -267,7 +271,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData, string tag)
         {
-            return AddWebRequest(webRequestUri, postData, tag, Constant.DefaultPriority, null);
+            return AddWebRequest(webRequestUri, postData, tag, WebRequestConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -291,7 +295,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData, object userData)
         {
-            return AddWebRequest(webRequestUri, postData, null, Constant.DefaultPriority, userData);
+            return AddWebRequest(webRequestUri, postData, null, WebRequestConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -315,7 +319,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, string tag, object userData)
         {
-            return AddWebRequest(webRequestUri, null, tag, Constant.DefaultPriority, userData);
+            return AddWebRequest(webRequestUri, null, tag, WebRequestConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -353,7 +357,7 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData, string tag, object userData)
         {
-            return AddWebRequest(webRequestUri, postData, tag, Constant.DefaultPriority, userData);
+            return AddWebRequest(webRequestUri, postData, tag, WebRequestConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -395,12 +399,12 @@ namespace UnityQGameFramework.Core.WebRequest
         {
             if (string.IsNullOrEmpty(webRequestUri))
             {
-                throw new FrameworkException("Web request uri is invalid.");
+                throw new GameFrameworkException("Web request uri is invalid.");
             }
 
             if (TotalAgentCount <= 0)
             {
-                throw new FrameworkException("You must add web request agent first.");
+                throw new GameFrameworkException("You must add web request agent first.");
             }
 
             WebRequestTask webRequestTask = WebRequestTask.Create(webRequestUri, postData, tag, priority, Timeout, userData);

@@ -14,18 +14,18 @@ namespace UnityQGameFramework.Core
     /// </summary>
     /// <typeparam name="TKey">指定多值字典的主键类型。</typeparam>
     /// <typeparam name="TValue">指定多值字典的值类型。</typeparam>
-    public sealed class FrameworkMultiDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, FrameworkLinkedListRange<TValue>>>, IEnumerable
+    public sealed class GameFrameworkMultiDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>>, IEnumerable
     {
-        private readonly FrameworkLinkedList<TValue> m_LinkedList;
-        private readonly Dictionary<TKey, FrameworkLinkedListRange<TValue>> m_Dictionary;
+        private readonly GameFrameworkLinkedList<TValue> m_LinkedList;
+        private readonly Dictionary<TKey, GameFrameworkLinkedListRange<TValue>> m_Dictionary;
 
         /// <summary>
         /// 初始化游戏框架多值字典类的新实例。
         /// </summary>
-        public FrameworkMultiDictionary()
+        public GameFrameworkMultiDictionary()
         {
-            m_LinkedList = new FrameworkLinkedList<TValue>();
-            m_Dictionary = new Dictionary<TKey, FrameworkLinkedListRange<TValue>>();
+            m_LinkedList = new GameFrameworkLinkedList<TValue>();
+            m_Dictionary = new Dictionary<TKey, GameFrameworkLinkedListRange<TValue>>();
         }
 
         /// <summary>
@@ -44,11 +44,11 @@ namespace UnityQGameFramework.Core
         /// </summary>
         /// <param name="key">指定的主键。</param>
         /// <returns>指定主键的范围。</returns>
-        public FrameworkLinkedListRange<TValue> this[TKey key]
+        public GameFrameworkLinkedListRange<TValue> this[TKey key]
         {
             get
             {
-                FrameworkLinkedListRange<TValue> range = default(FrameworkLinkedListRange<TValue>);
+                GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
                 m_Dictionary.TryGetValue(key, out range);
                 return range;
             }
@@ -81,7 +81,7 @@ namespace UnityQGameFramework.Core
         /// <returns>多值字典中是否包含指定值。</returns>
         public bool Contains(TKey key, TValue value)
         {
-            FrameworkLinkedListRange<TValue> range = default(FrameworkLinkedListRange<TValue>);
+            GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
                 return range.Contains(value);
@@ -96,7 +96,7 @@ namespace UnityQGameFramework.Core
         /// <param name="key">指定的主键。</param>
         /// <param name="range">指定主键的范围。</param>
         /// <returns>是否获取成功。</returns>
-        public bool TryGetValue(TKey key, out FrameworkLinkedListRange<TValue> range)
+        public bool TryGetValue(TKey key, out GameFrameworkLinkedListRange<TValue> range)
         {
             return m_Dictionary.TryGetValue(key, out range);
         }
@@ -108,7 +108,7 @@ namespace UnityQGameFramework.Core
         /// <param name="value">指定的值。</param>
         public void Add(TKey key, TValue value)
         {
-            FrameworkLinkedListRange<TValue> range = default(FrameworkLinkedListRange<TValue>);
+            GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
                 m_LinkedList.AddBefore(range.Terminal, value);
@@ -117,7 +117,7 @@ namespace UnityQGameFramework.Core
             {
                 LinkedListNode<TValue> first = m_LinkedList.AddLast(value);
                 LinkedListNode<TValue> terminal = m_LinkedList.AddLast(default(TValue));
-                m_Dictionary.Add(key, new FrameworkLinkedListRange<TValue>(first, terminal));
+                m_Dictionary.Add(key, new GameFrameworkLinkedListRange<TValue>(first, terminal));
             }
         }
 
@@ -129,7 +129,7 @@ namespace UnityQGameFramework.Core
         /// <returns>是否移除成功。</returns>
         public bool Remove(TKey key, TValue value)
         {
-            FrameworkLinkedListRange<TValue> range = default(FrameworkLinkedListRange<TValue>);
+            GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
                 for (LinkedListNode<TValue> current = range.First; current != null && current != range.Terminal; current = current.Next)
@@ -146,7 +146,7 @@ namespace UnityQGameFramework.Core
                             }
                             else
                             {
-                                m_Dictionary[key] = new FrameworkLinkedListRange<TValue>(next, range.Terminal);
+                                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(next, range.Terminal);
                             }
                         }
 
@@ -166,7 +166,7 @@ namespace UnityQGameFramework.Core
         /// <returns>是否移除成功。</returns>
         public bool RemoveAll(TKey key)
         {
-            FrameworkLinkedListRange<TValue> range = default(FrameworkLinkedListRange<TValue>);
+            GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
                 m_Dictionary.Remove(key);
@@ -198,7 +198,7 @@ namespace UnityQGameFramework.Core
         /// 返回循环访问集合的枚举数。
         /// </summary>
         /// <returns>循环访问集合的枚举数。</returns>
-        IEnumerator<KeyValuePair<TKey, FrameworkLinkedListRange<TValue>>> IEnumerable<KeyValuePair<TKey, FrameworkLinkedListRange<TValue>>>.GetEnumerator()
+        IEnumerator<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>> IEnumerable<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>>.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -216,19 +216,19 @@ namespace UnityQGameFramework.Core
         /// 循环访问集合的枚举数。
         /// </summary>
         [StructLayout(LayoutKind.Auto)]
-        public struct Enumerator : IEnumerator<KeyValuePair<TKey, FrameworkLinkedListRange<TValue>>>, IEnumerator
+        public struct Enumerator : IEnumerator<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>>, IEnumerator
         {
-            private Dictionary<TKey, FrameworkLinkedListRange<TValue>>.Enumerator m_Enumerator;
+            private Dictionary<TKey, GameFrameworkLinkedListRange<TValue>>.Enumerator m_Enumerator;
 
             /// <summary>
             /// 初始化多值字典枚举器。
             /// </summary>
             /// <param name="dictionary">要遍历的字典。</param>
-            internal Enumerator(Dictionary<TKey, FrameworkLinkedListRange<TValue>> dictionary)
+            internal Enumerator(Dictionary<TKey, GameFrameworkLinkedListRange<TValue>> dictionary)
             {
                 if (dictionary == null)
                 {
-                    throw new FrameworkException("Dictionary is invalid.");
+                    throw new GameFrameworkException("Dictionary is invalid.");
                 }
 
                 m_Enumerator = dictionary.GetEnumerator();
@@ -237,7 +237,7 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取枚举器当前位置的元素。
             /// </summary>
-            public KeyValuePair<TKey, FrameworkLinkedListRange<TValue>> Current
+            public KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>> Current
             {
                 get
                 {
@@ -278,7 +278,7 @@ namespace UnityQGameFramework.Core
             /// </summary>
             void IEnumerator.Reset()
             {
-                ((IEnumerator<KeyValuePair<TKey, FrameworkLinkedListRange<TValue>>>)m_Enumerator).Reset();
+                ((IEnumerator<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>>)m_Enumerator).Reset();
             }
         }
     }

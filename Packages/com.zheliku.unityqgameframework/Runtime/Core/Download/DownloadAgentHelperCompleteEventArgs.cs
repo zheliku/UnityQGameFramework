@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 下载代理辅助器完成事件。
     /// </summary>
-    public sealed class DownloadAgentHelperCompleteEventArgs : FrameworkEventArgs
+    public sealed class DownloadAgentHelperCompleteEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化下载代理辅助器完成事件的新实例。
@@ -21,7 +21,10 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取下载的数据大小。
         /// </summary>
-        public long Length { get; private set; }
+        public long Length
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建下载代理辅助器完成事件。
@@ -32,7 +35,7 @@ namespace UnityQGameFramework.Core.Download
         {
             if (length < 0L)
             {
-                throw new FrameworkException("Length is invalid.");
+                throw new GameFrameworkException("Length is invalid.");
             }
 
             DownloadAgentHelperCompleteEventArgs downloadAgentHelperCompleteEventArgs = ReferencePool.Acquire<DownloadAgentHelperCompleteEventArgs>();

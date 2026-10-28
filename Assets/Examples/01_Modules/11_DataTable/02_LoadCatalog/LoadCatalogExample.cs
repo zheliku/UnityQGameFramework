@@ -1,7 +1,7 @@
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules.TableData;
 

@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Sound
 /// </summary>
-public partial class TbSound : UnityQGameFramework.Core.DataTable.DataTable<DRSound>
+public partial class TbSound : UnityQGameFramework.Core.DataTable<DRSound>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

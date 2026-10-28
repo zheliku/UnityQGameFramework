@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.FileSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/File System")]
-    public sealed class FileSystemComponent : FrameworkComponent
+    public sealed class FileSystemComponent : GameFrameworkComponent
     {
         private IFileSystemManager m_FileSystemManager = null;
 
@@ -44,7 +43,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_FileSystemManager = FrameworkEntry.GetModule<IFileSystemManager>();
+            m_FileSystemManager = GameFrameworkEntry.GetModule<IFileSystemManager>();
             if (m_FileSystemManager == null)
             {
                 Log.Fatal("File system manager is invalid.");

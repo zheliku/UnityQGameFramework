@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 显示实体失败事件。
     /// </summary>
-    public sealed class ShowEntityFailureEventArgs : FrameworkEventArgs
+    public sealed class ShowEntityFailureEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化显示实体失败事件的新实例。
@@ -25,27 +25,42 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取实体编号。
         /// </summary>
-        public int EntityId { get; private set; }
+        public int EntityId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体资源名称。
         /// </summary>
-        public string EntityAssetName { get; private set; }
+        public string EntityAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体组名称。
         /// </summary>
-        public string EntityGroupName { get; private set; }
+        public string EntityGroupName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建显示实体失败事件。

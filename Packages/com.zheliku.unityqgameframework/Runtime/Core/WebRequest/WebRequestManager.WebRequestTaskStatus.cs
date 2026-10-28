@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.WebRequest
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class WebRequestManager : FrameworkModule, IWebRequestManager
+    internal sealed partial class WebRequestManager : GameFrameworkModule, IWebRequestManager
     {
         /// <summary>
         /// Web 请求任务的状态。

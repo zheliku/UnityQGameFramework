@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 显示已加载场景与场景切换状态。

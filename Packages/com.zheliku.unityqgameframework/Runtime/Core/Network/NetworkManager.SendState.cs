@@ -6,9 +6,9 @@
 using System;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         /// <summary>
         /// 管理待发送数据及发送缓冲。
@@ -30,12 +30,18 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取发送数据缓冲流。
             /// </summary>
-            public MemoryStream Stream { get; private set; }
+            public MemoryStream Stream
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取或设置缓冲区中的消息包数量。
             /// </summary>
-            public int PacketCount { get; set; }
+            public int PacketCount
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 清空发送缓冲区和消息包数量。

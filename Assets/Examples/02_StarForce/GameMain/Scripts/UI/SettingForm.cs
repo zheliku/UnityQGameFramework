@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Localization;
+using UnityQGameFramework.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;

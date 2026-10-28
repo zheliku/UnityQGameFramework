@@ -8,11 +8,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Resource;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
-using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
+using ProcedureOwner = UnityQGameFramework.Core.IFsm<UnityQGameFramework.Core.IProcedureManager>;
 
 namespace StarForce
 {

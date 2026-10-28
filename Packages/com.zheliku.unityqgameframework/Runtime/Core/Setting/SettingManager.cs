@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,12 +6,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Setting
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 游戏配置管理器。
     /// </summary>
-    internal sealed class SettingManager : FrameworkModule, ISettingManager
+    internal sealed class SettingManager : GameFrameworkModule, ISettingManager
     {
         private ISettingHelper m_SettingHelper;
 
@@ -32,7 +32,7 @@ namespace UnityQGameFramework.Core.Setting
             {
                 if (m_SettingHelper == null)
                 {
-                    throw new FrameworkException("Setting helper is invalid.");
+                    throw new GameFrameworkException("Setting helper is invalid.");
                 }
 
                 return m_SettingHelper.Count;
@@ -67,7 +67,7 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (settingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             m_SettingHelper = settingHelper;
@@ -81,7 +81,7 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             return m_SettingHelper.Load();
@@ -95,7 +95,7 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             return m_SettingHelper.Save();
@@ -109,7 +109,7 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             return m_SettingHelper.GetAllSettingNames();
@@ -123,7 +123,7 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             m_SettingHelper.GetAllSettingNamesNonAlloc(results);
@@ -138,12 +138,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.HasSetting(settingName);
@@ -158,12 +158,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.RemoveSetting(settingName);
@@ -176,7 +176,7 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             m_SettingHelper.RemoveAllSettings();
@@ -191,12 +191,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetBool(settingName);
@@ -212,12 +212,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetBool(settingName, defaultValue);
@@ -232,12 +232,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             m_SettingHelper.SetBool(settingName, value);
@@ -252,12 +252,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetInt(settingName);
@@ -273,12 +273,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetInt(settingName, defaultValue);
@@ -293,12 +293,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             m_SettingHelper.SetInt(settingName, value);
@@ -313,12 +313,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetFloat(settingName);
@@ -334,12 +334,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetFloat(settingName, defaultValue);
@@ -354,12 +354,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             m_SettingHelper.SetFloat(settingName, value);
@@ -374,12 +374,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetString(settingName);
@@ -395,12 +395,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetString(settingName, defaultValue);
@@ -415,12 +415,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             m_SettingHelper.SetString(settingName, value);
@@ -436,12 +436,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetObject<T>(settingName);
@@ -457,17 +457,17 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (objectType == null)
             {
-                throw new FrameworkException("Object type is invalid.");
+                throw new GameFrameworkException("Object type is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetObject(objectType, settingName);
@@ -484,12 +484,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetObject(settingName, defaultObj);
@@ -506,17 +506,17 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (objectType == null)
             {
-                throw new FrameworkException("Object type is invalid.");
+                throw new GameFrameworkException("Object type is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             return m_SettingHelper.GetObject(objectType, settingName, defaultObj);
@@ -532,12 +532,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             m_SettingHelper.SetObject(settingName, obj);
@@ -552,12 +552,12 @@ namespace UnityQGameFramework.Core.Setting
         {
             if (m_SettingHelper == null)
             {
-                throw new FrameworkException("Setting helper is invalid.");
+                throw new GameFrameworkException("Setting helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(settingName))
             {
-                throw new FrameworkException("Setting name is invalid.");
+                throw new GameFrameworkException("Setting name is invalid.");
             }
 
             m_SettingHelper.SetObject(settingName, obj);

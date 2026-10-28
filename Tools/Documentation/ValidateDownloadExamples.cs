@@ -15,7 +15,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
+using FileInfo = System.IO.FileInfo;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
@@ -28,8 +28,10 @@ public static class ValidateDownloadExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use the isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -39,7 +41,8 @@ public static class ValidateDownloadExamples
         var cases = layouts.Properties().Where(pair => new[] { "19_Download" }
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -68,7 +71,8 @@ public static class ValidateDownloadExamples
             {
                 string sourcePath = (string)test.layout["script"];
                 string anchor = AssetDatabase.GUIDToAssetPath("c939d5324e4b51d2854cd7c1f8104eef");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Download sample not found.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported Download sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
                 string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
@@ -97,30 +101,55 @@ public static class ValidateDownloadExamples
                 Require(ownedPath == null || (!File.Exists(ownedPath) && !File.Exists(ownedPath + ".download")), "Example files cleaned after stop");
                 Require(ownedDirectory == null || Directory.GetFiles(ownedDirectory).Length == 0, "Queue files cleaned after stop");
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, scene = script.Substring(0, script.Length - 3) + ".unity", startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown.value and InputField.text set by the test; actions use native mouse clicks",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/DownloadExamples");
         string report = names == null ? "download-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/DownloadExamples/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
 
@@ -162,7 +191,8 @@ public static class ValidateDownloadExamples
                 Require(progress.value > 0 && progress.value < 1 && text("stateText").text.Contains("字节"), "Real percentage and byte count " + i);
                 Require(text("fileText").text.Contains("正式文件：尚未生成"), "Partial download state is readable " + i);
                 Require(QGF.Download.FlushSize == original, "Global flush restored " + i);
-                if (i == 0) await Screenshot("download-progress");
+                if (i == 0)
+                    await Screenshot("download-progress");
                 await Until(() => Field<int>(example, "serial") == 0, 7000, "Streaming completes " + i);
                 Require(Field<bool>(example, "matched") && File.ReadAllBytes(path).SequenceEqual(payload), "Payload exact after streamed disk write " + i);
                 await Until(() => text("fileText").text.Contains("正式文件：已保存"), 1000, "Completed download state is readable " + i);
@@ -236,20 +266,25 @@ public static class ValidateDownloadExamples
                 await Until(() => Field<int>(example, "serial") == 0, 5000, "Failure/retry ends " + i);
                 await Task.Delay(80); // 等 LateUpdate 把结果值写到界面。
                 Require(QGF.Download.Timeout == previous, "Default timeout restored " + i);
-                if (i < 4) Require(File.ReadAllText(path) == "existing file", "Failure preserves previous final file " + i);
+                if (i < 4)
+                    Require(File.ReadAllText(path) == "existing file", "Failure preserves previous final file " + i);
                 string result = text("stateText").text;
                 Require(result.Contains(i == 0 ? "404" : i == 1 ? "Timeout" : i == 2 ? "requested byte range" : i == 3 ? "416" : "内容一致"), "Actual error or success reason " + i + ": " + result);
                 string expectedFileState = i < 4 ? "正式文件：旧文件仍保留" : "正式文件：新文件已保存";
                 Require(text("fileText").text.Contains(expectedFileState), "Final file state is readable " + i);
-                if (i == 0) Require(new FileInfo(path + ".download").Length == 0, "404 page never written as partial asset");
-                if (i == 1) Require(Field<float>(example, "elapsed") >= .9f, "No-data timeout waits one real second");
+                if (i == 0)
+                    Require(new FileInfo(path + ".download").Length == 0, "404 page never written as partial asset");
+                if (i == 1)
+                    Require(Field<float>(example, "elapsed") >= .9f, "No-data timeout waits one real second");
                 if (i == 2)
                 {
                     Require(File.ReadAllBytes(path + ".download").SequenceEqual(payload.Take(8)), "Ignored Range rejected before appending any full-response byte");
                     await Screenshot("download-range-failure");
                 }
-                if (i == 3) Require(!File.Exists(path + ".download"), "416 deletes unusable temporary file");
-                if (i == 4) Require(File.ReadAllBytes(path).SequenceEqual(payload) && !File.Exists(path + ".download"), "Successful retry replaces old final with exact payload");
+                if (i == 3)
+                    Require(!File.Exists(path + ".download"), "416 deletes unusable temporary file");
+                if (i == 4)
+                    Require(File.ReadAllBytes(path).SequenceEqual(payload) && !File.Exists(path + ".download"), "Successful retry replaces old final with exact payload");
             }
         }
     }
@@ -259,7 +294,8 @@ public static class ValidateDownloadExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -277,7 +313,8 @@ public static class ValidateDownloadExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -286,7 +323,8 @@ public static class ValidateDownloadExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -317,13 +355,15 @@ public static class ValidateDownloadExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -331,13 +371,15 @@ public static class ValidateDownloadExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

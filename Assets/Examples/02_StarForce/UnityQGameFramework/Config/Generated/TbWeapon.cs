@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Weapon
 /// </summary>
-public partial class TbWeapon : UnityQGameFramework.Core.DataTable.DataTable<DRWeapon>
+public partial class TbWeapon : UnityQGameFramework.Core.DataTable<DRWeapon>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

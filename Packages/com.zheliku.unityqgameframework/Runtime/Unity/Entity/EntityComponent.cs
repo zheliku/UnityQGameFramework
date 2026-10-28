@@ -4,9 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Entity;
-using UnityQGameFramework.Core.ObjectPool;
-using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +16,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Entity")]
-    public sealed partial class EntityComponent : FrameworkComponent
+    public sealed partial class EntityComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
@@ -81,7 +78,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_EntityManager = FrameworkEntry.GetModule<IEntityManager>();
+            m_EntityManager = GameFrameworkEntry.GetModule<IEntityManager>();
             if (m_EntityManager == null)
             {
                 Log.Fatal("Entity manager is invalid.");
@@ -125,7 +122,7 @@ namespace UnityQGameFramework.Runtime
 
             m_EntityManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
-            m_EntityManager.SetObjectPoolManager(FrameworkEntry.GetModule<IObjectPoolManager>());
+            m_EntityManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
 
             EntityHelperBase entityHelper = Helper.CreateHelper(m_EntityHelperTypeName, m_CustomEntityHelper);
             if (entityHelper == null)
@@ -1117,7 +1114,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnShowEntitySuccess(object sender, UnityQGameFramework.Core.Entity.ShowEntitySuccessEventArgs e)
+        private void OnShowEntitySuccess(object sender, UnityQGameFramework.Core.Events.ShowEntitySuccessEventArgs e)
         {
             m_EventComponent.Fire(this, ShowEntitySuccessEventArgs.Create(e));
         }
@@ -1127,7 +1124,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnShowEntityFailure(object sender, UnityQGameFramework.Core.Entity.ShowEntityFailureEventArgs e)
+        private void OnShowEntityFailure(object sender, UnityQGameFramework.Core.Events.ShowEntityFailureEventArgs e)
         {
             Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", e.EntityId, e.EntityAssetName, e.EntityGroupName, e.ErrorMessage);
             m_EventComponent.Fire(this, ShowEntityFailureEventArgs.Create(e));
@@ -1138,7 +1135,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnShowEntityUpdate(object sender, UnityQGameFramework.Core.Entity.ShowEntityUpdateEventArgs e)
+        private void OnShowEntityUpdate(object sender, UnityQGameFramework.Core.Events.ShowEntityUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, ShowEntityUpdateEventArgs.Create(e));
         }
@@ -1148,7 +1145,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnShowEntityDependencyAsset(object sender, UnityQGameFramework.Core.Entity.ShowEntityDependencyAssetEventArgs e)
+        private void OnShowEntityDependencyAsset(object sender, UnityQGameFramework.Core.Events.ShowEntityDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, ShowEntityDependencyAssetEventArgs.Create(e));
         }
@@ -1158,7 +1155,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnHideEntityComplete(object sender, UnityQGameFramework.Core.Entity.HideEntityCompleteEventArgs e)
+        private void OnHideEntityComplete(object sender, UnityQGameFramework.Core.Events.HideEntityCompleteEventArgs e)
         {
             m_EventComponent.Fire(this, HideEntityCompleteEventArgs.Create(e));
         }

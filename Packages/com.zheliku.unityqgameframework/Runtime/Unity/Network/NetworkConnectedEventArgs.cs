@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Network;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,19 +40,25 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建网络连接成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的网络连接成功事件。</returns>
-        public static NetworkConnectedEventArgs Create(UnityQGameFramework.Core.Network.NetworkConnectedEventArgs e)
+        public static NetworkConnectedEventArgs Create(UnityQGameFramework.Core.Events.NetworkConnectedEventArgs e)
         {
             NetworkConnectedEventArgs networkConnectedEventArgs = ReferencePool.Acquire<NetworkConnectedEventArgs>();
             networkConnectedEventArgs.NetworkChannel = e.NetworkChannel;

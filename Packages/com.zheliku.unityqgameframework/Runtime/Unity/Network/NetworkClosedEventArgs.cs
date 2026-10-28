@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Network;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -41,14 +39,17 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建网络连接关闭事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的网络连接关闭事件。</returns>
-        public static NetworkClosedEventArgs Create(UnityQGameFramework.Core.Network.NetworkClosedEventArgs e)
+        public static NetworkClosedEventArgs Create(UnityQGameFramework.Core.Events.NetworkClosedEventArgs e)
         {
             NetworkClosedEventArgs networkClosedEventArgs = ReferencePool.Acquire<NetworkClosedEventArgs>();
             networkClosedEventArgs.NetworkChannel = e.NetworkChannel;

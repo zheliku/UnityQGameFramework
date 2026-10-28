@@ -19,8 +19,10 @@ public static class LubanSetupValidation
 
     private static void WaitForAutomaticSetup()
     {
-        if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
-        if (LubanSettings.instance.Profile == null && Timer.Elapsed.TotalSeconds < 30) return;
+        if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+            return;
+        if (LubanSettings.instance.Profile == null && Timer.Elapsed.TotalSeconds < 30)
+            return;
         EditorApplication.update -= WaitForAutomaticSetup;
         var result = new Result { unityVersion = Application.unityVersion };
         try
@@ -55,7 +57,10 @@ public static class LubanSetupValidation
             Require(LubanWorkspace.EnsureInitialized() == initial, "Repeated initialization changed the active Profile.");
             Require(Convert.ToBase64String(workbook) == Convert.ToBase64String(File.ReadAllBytes(source + "/Item.xlsx")), "Existing source data changed.");
             bool rejected = false;
-            try { settings.WorkspaceRoot = "Assets/../../OutsideAssets"; }
+            try
+            {
+                settings.WorkspaceRoot = "Assets/../../OutsideAssets";
+            }
             catch (ArgumentException) { rejected = true; }
             Require(rejected, "An invalid workspace root was accepted.");
             result.existingWorkspacePreserved = true;
@@ -69,7 +74,8 @@ public static class LubanSetupValidation
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
     }
 
     [Serializable]

@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System;
 
-namespace UnityQGameFramework.Core.ObjectPool
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 对象池接口。
@@ -16,52 +16,82 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象池名称。
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象池完整名称。
         /// </summary>
-        string FullName { get; }
+        string FullName
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取登记条目类型 T，不是 Target 的运行时类型。
         /// </summary>
-        Type ObjectType { get; }
+        Type ObjectType
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取登记条目总数，包含借出与空闲条目。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象池中能被释放的对象的数量。
         /// </summary>
-        int CanReleaseCount { get; }
+        int CanReleaseCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取是否允许对象被多次获取。
         /// </summary>
-        bool AllowMultiSpawn { get; }
+        bool AllowMultiSpawn
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取或设置对象池自动释放可释放对象的间隔秒数。
         /// </summary>
-        float AutoReleaseInterval { get; set; }
+        float AutoReleaseInterval
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置释放策略的容量阈值。不会限制创建或借出数量，只淘汰符合条件的空闲目标。
         /// </summary>
-        int Capacity { get; set; }
+        int Capacity
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置对象池对象过期秒数。
         /// </summary>
-        float ExpireTime { get; set; }
+        float ExpireTime
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置对象池的优先级。
         /// </summary>
-        int Priority { get; set; }
+        int Priority
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 登记已有的条目及 Target，不会创建业务对象。spawned 为 true 时执行一次 OnSpawn。

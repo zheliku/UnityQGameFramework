@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,24 +41,33 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取场景资源名称。
         /// </summary>
-        public string SceneAssetName { get; private set; }
+        public string SceneAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载场景进度。
         /// </summary>
-        public float Progress { get; private set; }
+        public float Progress
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载场景更新事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的加载场景更新事件。</returns>
-        public static LoadSceneUpdateEventArgs Create(UnityQGameFramework.Core.Scene.LoadSceneUpdateEventArgs e)
+        public static LoadSceneUpdateEventArgs Create(UnityQGameFramework.Core.Events.LoadSceneUpdateEventArgs e)
         {
             LoadSceneUpdateEventArgs loadSceneUpdateEventArgs = ReferencePool.Acquire<LoadSceneUpdateEventArgs>();
             loadSceneUpdateEventArgs.SceneAssetName = e.SceneAssetName;

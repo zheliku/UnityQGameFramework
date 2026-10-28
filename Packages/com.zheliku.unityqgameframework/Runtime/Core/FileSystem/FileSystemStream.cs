@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,7 +6,7 @@
 using System;
 using System.IO;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 文件系统流。
@@ -26,12 +26,18 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取或设置文件系统流位置。
         /// </summary>
-        protected internal abstract long Position { get; set; }
+        protected internal abstract long Position
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取文件系统流长度。
         /// </summary>
-        protected internal abstract long Length { get; }
+        protected internal abstract long Length
+        {
+            get;
+        }
 
         /// <summary>
         /// 设置文件系统流长度。

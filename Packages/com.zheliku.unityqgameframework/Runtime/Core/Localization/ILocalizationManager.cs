@@ -1,11 +1,10 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
 
-namespace UnityQGameFramework.Core.Localization
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 本地化管理器接口。
@@ -15,22 +14,34 @@ namespace UnityQGameFramework.Core.Localization
         /// <summary>
         /// 获取或设置本地化语言。
         /// </summary>
-        Language Language { get; set; }
+        Language Language
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取系统语言。
         /// </summary>
-        Language SystemLanguage { get; }
+        Language SystemLanguage
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取当前字典的文本条目数量。
         /// </summary>
-        int DictionaryCount { get; }
+        int DictionaryCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        int CachedBytesSize { get; }
+        int CachedBytesSize
+        {
+            get;
+        }
 
         /// <summary>
         /// 设置资源管理器。

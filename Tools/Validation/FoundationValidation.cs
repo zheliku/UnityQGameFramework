@@ -10,9 +10,6 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.ObjectPool;
-using UnityQGameFramework.Core.Procedure;
 using UnityQGameFramework.Runtime;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -57,7 +54,10 @@ namespace Foundation.Validation
             }
             finally
             {
-                try { FrameworkEntry.Shutdown(); }
+                try
+                {
+                    GameFrameworkEntry.Shutdown();
+                }
                 catch (Exception exception)
                 {
                     result.success = false;
@@ -72,10 +72,10 @@ namespace Foundation.Validation
 
         private static void ValidateCore()
         {
-            FrameworkEntry.Shutdown();
-            var core = typeof(FrameworkEntry).Assembly;
+            GameFrameworkEntry.Shutdown();
+            var core = typeof(GameFrameworkEntry).Assembly;
             Require(!core.GetReferencedAssemblies().Any(a => a.Name.StartsWith("UnityEngine", StringComparison.Ordinal)), "Core must remain engine-independent");
-            MethodInfo getModule = typeof(FrameworkEntry).GetMethod("GetModule", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo getModule = typeof(GameFrameworkEntry).GetMethod("GetModule", BindingFlags.Public | BindingFlags.Static);
             int modules = 0;
             foreach (var contract in core.GetTypes().Where(t => t.IsInterface && t.Name.EndsWith("Manager", StringComparison.Ordinal)))
             {
@@ -89,20 +89,20 @@ namespace Foundation.Validation
                 }
                 catch (TargetInvocationException exception)
                 {
-                    Require(exception.InnerException is FrameworkException, "Interface-only lookup invariant");
+                    Require(exception.InnerException is GameFrameworkException, "Interface-only lookup invariant");
                 }
                 modules++;
             }
             Require(modules == 19, "Expected all 19 core manager contracts; got " + modules);
             s_Checks.Add("19 module singletons, interface validation and engine independence");
 
-            var events = FrameworkEntry.GetModule<IEventManager>();
+            var events = GameFrameworkEntry.GetModule<IEventManager>();
             int received = 0;
             EventHandler<GameEventArgs> handler = (sender, data) => received++;
             events.Subscribe(ProbeEvent.EventId, handler);
             events.Fire(null, ReferencePool.Acquire<ProbeEvent>());
             Require(received == 0, "Queued events must not fire immediately");
-            FrameworkEntry.Update(0.1f, 0.1f);
+            GameFrameworkEntry.Update(0.1f, 0.1f);
             Require(received == 1, "Queued events must dispatch on update");
             events.FireNow(null, ReferencePool.Acquire<ProbeEvent>());
             Require(received == 2, "Immediate events must dispatch synchronously");
@@ -110,7 +110,7 @@ namespace Foundation.Validation
             Require(!events.Check(ProbeEvent.EventId, handler), "Event unsubscribe");
             s_Checks.Add("Queued and immediate events, unsubscribe and reference recycling");
 
-            var pool = FrameworkEntry.GetModule<IObjectPoolManager>().CreateSingleSpawnObjectPool<ProbeObject>("Validation");
+            var pool = GameFrameworkEntry.GetModule<IObjectPoolManager>().CreateSingleSpawnObjectPool<ProbeObject>("Validation");
             var pooled = ReferencePool.Acquire<ProbeObject>();
             object target = new object();
             pooled.Setup(target);
@@ -122,10 +122,10 @@ namespace Foundation.Validation
             pool.Unspawn(target);
             s_Checks.Add("Single-spawn object pool lifecycle");
 
-            var previous = FrameworkEntry.GetModule<IEventManager>();
-            FrameworkEntry.Shutdown();
-            Require(!ReferenceEquals(previous, FrameworkEntry.GetModule<IEventManager>()), "Shutdown must discard module cache");
-            FrameworkEntry.Shutdown();
+            var previous = GameFrameworkEntry.GetModule<IEventManager>();
+            GameFrameworkEntry.Shutdown();
+            Require(!ReferenceEquals(previous, GameFrameworkEntry.GetModule<IEventManager>()), "Shutdown must discard module cache");
+            GameFrameworkEntry.Shutdown();
             s_Checks.Add("Shutdown and fresh module creation");
         }
 
@@ -135,20 +135,20 @@ namespace Foundation.Validation
             var first = list.AddLast((string)null);
             list.AddLast("present");
             var terminal = list.AddLast("outside range");
-            var range = new FrameworkLinkedListRange<string>(first, terminal);
+            var range = new GameFrameworkLinkedListRange<string>(first, terminal);
             Require(range.Contains(null), "A range must support a null element");
             Require(range.Contains("present"), "A range must find an element after null");
             Require(!range.Contains("outside range"), "The terminal node must remain excluded");
             Require(!range.Contains("absent"), "A range must reject missing elements");
 
-            var core = typeof(FrameworkEntry).Assembly;
+            var core = typeof(GameFrameworkEntry).Assembly;
             var pairType = core.GetType("UnityQGameFramework.Core.TypeNamePair", true);
             var emptyPair = Activator.CreateInstance(pairType);
             Require(emptyPair.GetHashCode() == 0 && emptyPair.Equals(Activator.CreateInstance(pairType)), "Default type/name keys must support hashing and equality");
             var pair = Activator.CreateInstance(pairType, new object[] { typeof(string), "probe" });
             Require(pair.GetHashCode() == (typeof(string).GetHashCode() ^ "probe".GetHashCode()), "Type/name hashing must preserve existing valid-key behavior");
 
-            var resourceType = core.GetType("UnityQGameFramework.Core.Resource.ResourceManager+ResourceName", true);
+            var resourceType = core.GetType("UnityQGameFramework.Core.ResourceManager+ResourceName", true);
             var emptyResource = Activator.CreateInstance(resourceType);
             Require(emptyResource.GetHashCode() == 0 && emptyResource.Equals(Activator.CreateInstance(resourceType)), "Default resource keys must support hashing and equality");
             var resource = Activator.CreateInstance(resourceType, new object[] { "ship", null, "ab" });
@@ -180,7 +180,8 @@ namespace Foundation.Validation
                     var property = new SerializedObject(component).GetIterator();
                     while (property.NextVisible(true))
                     {
-                        if (property.propertyType != SerializedPropertyType.String || !property.name.EndsWith("HelperTypeName", StringComparison.Ordinal) || string.IsNullOrEmpty(property.stringValue)) continue;
+                        if (property.propertyType != SerializedPropertyType.String || !property.name.EndsWith("HelperTypeName", StringComparison.Ordinal) || string.IsNullOrEmpty(property.stringValue))
+                            continue;
                         Require(Utility.Assembly.GetType(property.stringValue) != null, "Unresolved serialized helper: " + property.stringValue);
                         helpers++;
                     }
@@ -231,24 +232,35 @@ namespace Foundation.Validation
 
         private static void Require(bool condition, string message)
         {
-            if (!condition) throw new Exception(message);
+            if (!condition)
+                throw new Exception(message);
         }
 
         public sealed class ProbeEvent : GameEventArgs
         {
             public const int EventId = 87654321;
             public override int Id => EventId;
-            public override void Clear() { }
+            public override void Clear()
+            {
+            }
         }
 
         public sealed class ProbeObject : ObjectBase
         {
-            public void Setup(object target) { Initialize("probe", target); }
-            protected override void Release(bool isShutdown) { }
+            public void Setup(object target)
+            {
+                Initialize("probe", target);
+            }
+            protected override void Release(bool isShutdown)
+            {
+            }
         }
 
         [Serializable]
-        private sealed class PlayerSummary { public bool success; }
+        private sealed class PlayerSummary
+        {
+            public bool success;
+        }
 
         [Serializable]
         private sealed class ValidationResult

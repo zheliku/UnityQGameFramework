@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Aircraft
 /// </summary>
-public partial class TbAircraft : UnityQGameFramework.Core.DataTable.DataTable<DRAircraft>
+public partial class TbAircraft : UnityQGameFramework.Core.DataTable<DRAircraft>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

@@ -37,7 +37,10 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 获取是否正在安装或生成。
         /// </summary>
-        public static bool IsBusy { get; private set; }
+        public static bool IsBusy
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取最近一次编译器输出。

@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
 
@@ -17,17 +17,26 @@ namespace StarForce
         /// <summary>
         /// 获取当前游戏模式。
         /// </summary>
-        public abstract GameMode GameMode { get; }
+        public abstract GameMode GameMode
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取本局使用的背景与边界。
         /// </summary>
-        protected ScrollableBackground SceneBackground { get; private set; }
+        protected ScrollableBackground SceneBackground
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置本局是否结束。
         /// </summary>
-        public bool GameOver { get; protected set; }
+        public bool GameOver
+        {
+            get; protected set;
+        }
 
         private MyAircraft m_MyAircraft = null;
 

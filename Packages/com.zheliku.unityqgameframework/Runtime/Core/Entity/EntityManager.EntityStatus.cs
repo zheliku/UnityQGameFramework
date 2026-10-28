@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class EntityManager : FrameworkModule, IEntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         /// <summary>
         /// 实体状态。

@@ -3,16 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Config
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 全局配置管理器。
     /// </summary>
-    internal sealed partial class ConfigManager : FrameworkModule, IConfigManager
+    internal sealed partial class ConfigManager : GameFrameworkModule, IConfigManager
     {
         private readonly Dictionary<string, ConfigData> m_ConfigDatas;
         private readonly DataProvider<IConfigManager> m_DataProvider;
@@ -152,7 +152,7 @@ namespace UnityQGameFramework.Core.Config
         {
             if (configHelper == null)
             {
-                throw new FrameworkException("Config helper is invalid.");
+                throw new GameFrameworkException("Config helper is invalid.");
             }
 
             m_ConfigHelper = configHelper;
@@ -302,7 +302,7 @@ namespace UnityQGameFramework.Core.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new FrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.BoolValue;
@@ -330,7 +330,7 @@ namespace UnityQGameFramework.Core.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new FrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.IntValue;
@@ -358,7 +358,7 @@ namespace UnityQGameFramework.Core.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new FrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.FloatValue;
@@ -386,7 +386,7 @@ namespace UnityQGameFramework.Core.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new FrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.StringValue;
@@ -476,7 +476,7 @@ namespace UnityQGameFramework.Core.Config
         {
             if (string.IsNullOrEmpty(configName))
             {
-                throw new FrameworkException("Config name is invalid.");
+                throw new GameFrameworkException("Config name is invalid.");
             }
 
             ConfigData configData = default(ConfigData);

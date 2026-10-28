@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -46,7 +46,7 @@ namespace UnityQGameFramework.Core
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();
@@ -78,7 +78,7 @@ namespace UnityQGameFramework.Core
             {
                 if (string.IsNullOrEmpty(typeName))
                 {
-                    throw new FrameworkException("Type name is invalid.");
+                    throw new GameFrameworkException("Type name is invalid.");
                 }
 
                 Type type = null;

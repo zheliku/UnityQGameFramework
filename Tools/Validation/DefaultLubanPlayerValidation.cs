@@ -4,8 +4,7 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityQGameFramework.Config;
-using UnityQGameFramework.Core.Fsm;
-using UnityQGameFramework.Core.Procedure;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 #if UNITY_EDITOR
 using System.Diagnostics;
@@ -23,7 +22,8 @@ namespace QgfDefaultValidation
             base.OnEnter(owner);
             var dataTable = GameEntry.GetComponent<DataTableComponent>();
             dataTable.LoadDataTables<Tables>();
-            if (!dataTable.HasDataTable<TbItem>()) return;
+            if (!dataTable.HasDataTable<TbItem>())
+                return;
             DRItem item = dataTable.GetDataTable<TbItem>().GetDataRow(1);
             UnityEngine.Debug.Log("Loaded default Item: " + item?.Name);
         }
@@ -36,7 +36,10 @@ namespace QgfDefaultValidation
         private void Awake() => Application.logMessageReceived += Capture;
         private void OnDestroy() => Application.logMessageReceived -= Capture;
         private void Capture(string message, string stack, LogType type)
-        { if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) ++m_Errors; }
+        {
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                ++m_Errors;
+        }
 
         private IEnumerator Start()
         {
@@ -59,11 +62,16 @@ namespace QgfDefaultValidation
             result.errors = m_Errors;
             var args = Environment.GetCommandLineArgs();
             for (int i = 0; i < args.Length - 1; ++i)
-                if (args[i] == "-qgf-default-result") File.WriteAllText(args[i + 1], JsonUtility.ToJson(result, true));
+                if (args[i] == "-qgf-default-result")
+                    File.WriteAllText(args[i + 1], JsonUtility.ToJson(result, true));
             Application.Quit(result.success ? 0 : 1);
         }
 
-        [Serializable] private sealed class Result { public bool success; public string unityVersion; public string itemName; public int errors; public string failure; }
+        [Serializable]
+        private sealed class Result
+        {
+            public bool success; public string unityVersion; public string itemName; public int errors; public string failure;
+        }
 #if UNITY_EDITOR
         public static void Run()
         {

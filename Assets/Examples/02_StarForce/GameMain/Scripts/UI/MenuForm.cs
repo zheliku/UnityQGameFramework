@@ -47,10 +47,16 @@ namespace StarForce
         /// </summary>
         public void OnQuitButtonClick()
         {
-            GameEntry.UI.OpenDialog(new DialogParams() { Mode = 2, Title = GameEntry.Localization.GetString("AskQuitGame.Title"), Message = GameEntry.Localization.GetString("AskQuitGame.Message"), OnClickConfirm = delegate (object userData)
+            GameEntry.UI.OpenDialog(new DialogParams()
+            {
+                Mode = 2,
+                Title = GameEntry.Localization.GetString("AskQuitGame.Title"),
+                Message = GameEntry.Localization.GetString("AskQuitGame.Message"),
+                OnClickConfirm = delegate (object userData)
             {
                 UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit);
-            }, });
+            },
+            });
         }
 
         /// <summary>

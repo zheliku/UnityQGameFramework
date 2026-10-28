@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Sound;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -47,44 +45,65 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取声音的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音资源名称。
         /// </summary>
-        public string SoundAssetName { get; private set; }
+        public string SoundAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音组名称。
         /// </summary>
-        public string SoundGroupName { get; private set; }
+        public string SoundGroupName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取播放声音参数。
         /// </summary>
-        public PlaySoundParams PlaySoundParams { get; private set; }
+        public PlaySoundParams PlaySoundParams
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载声音进度。
         /// </summary>
-        public float Progress { get; private set; }
+        public float Progress
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音绑定的实体。
         /// </summary>
-        public Entity BindingEntity { get; private set; }
+        public Entity BindingEntity
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建播放声音更新事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的播放声音更新事件。</returns>
-        public static PlaySoundUpdateEventArgs Create(UnityQGameFramework.Core.Sound.PlaySoundUpdateEventArgs e)
+        public static PlaySoundUpdateEventArgs Create(UnityQGameFramework.Core.Events.PlaySoundUpdateEventArgs e)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
             PlaySoundUpdateEventArgs playSoundUpdateEventArgs = ReferencePool.Acquire<PlaySoundUpdateEventArgs>();

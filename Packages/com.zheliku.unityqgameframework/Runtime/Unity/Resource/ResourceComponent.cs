@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.FileSystem;
-using UnityQGameFramework.Core.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +16,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Resource")]
-    public sealed partial class ResourceComponent : FrameworkComponent
+    public sealed partial class ResourceComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
         private const int OneMegaBytes = 1024 * 1024;
@@ -152,7 +150,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取无用资源释放的等待时长，以秒为单位。
         /// </summary>
-        public float LastUnloadUnusedAssetsOperationElapseSeconds { get; private set; }
+        public float LastUnloadUnusedAssetsOperationElapseSeconds
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置无用资源释放的最小间隔时间，以秒为单位。
@@ -548,7 +549,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_ResourceManager = FrameworkEntry.GetModule<IResourceManager>();
+            m_ResourceManager = GameFrameworkEntry.GetModule<IResourceManager>();
             if (m_Settings == null)
             {
                 return;
@@ -705,7 +706,7 @@ namespace UnityQGameFramework.Runtime
         public void SetDecryptResourceCallback(DecryptResourceCallback decryptResourceCallback)
         {
             // 仅保留旧 Core 管线的调用约定，不参与 YooAsset 文件系统初始化。
-            var resourceManager = m_ResourceManager ?? FrameworkEntry.GetModule<IResourceManager>();
+            var resourceManager = m_ResourceManager ?? GameFrameworkEntry.GetModule<IResourceManager>();
             resourceManager.SetDecryptResourceCallback(decryptResourceCallback);
         }
 
@@ -1408,7 +1409,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceVerifyStart(object sender, UnityQGameFramework.Core.Resource.ResourceVerifyStartEventArgs e)
+        private void OnResourceVerifyStart(object sender, UnityQGameFramework.Core.Events.ResourceVerifyStartEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceVerifyStartEventArgs.Create(e));
         }
@@ -1418,7 +1419,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceVerifySuccess(object sender, UnityQGameFramework.Core.Resource.ResourceVerifySuccessEventArgs e)
+        private void OnResourceVerifySuccess(object sender, UnityQGameFramework.Core.Events.ResourceVerifySuccessEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceVerifySuccessEventArgs.Create(e));
         }
@@ -1428,7 +1429,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceVerifyFailure(object sender, UnityQGameFramework.Core.Resource.ResourceVerifyFailureEventArgs e)
+        private void OnResourceVerifyFailure(object sender, UnityQGameFramework.Core.Events.ResourceVerifyFailureEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceVerifyFailureEventArgs.Create(e));
         }
@@ -1438,7 +1439,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceApplyStart(object sender, UnityQGameFramework.Core.Resource.ResourceApplyStartEventArgs e)
+        private void OnResourceApplyStart(object sender, UnityQGameFramework.Core.Events.ResourceApplyStartEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceApplyStartEventArgs.Create(e));
         }
@@ -1448,7 +1449,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceApplySuccess(object sender, UnityQGameFramework.Core.Resource.ResourceApplySuccessEventArgs e)
+        private void OnResourceApplySuccess(object sender, UnityQGameFramework.Core.Events.ResourceApplySuccessEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceApplySuccessEventArgs.Create(e));
         }
@@ -1458,7 +1459,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceApplyFailure(object sender, UnityQGameFramework.Core.Resource.ResourceApplyFailureEventArgs e)
+        private void OnResourceApplyFailure(object sender, UnityQGameFramework.Core.Events.ResourceApplyFailureEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceApplyFailureEventArgs.Create(e));
         }
@@ -1468,7 +1469,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceUpdateStart(object sender, UnityQGameFramework.Core.Resource.ResourceUpdateStartEventArgs e)
+        private void OnResourceUpdateStart(object sender, UnityQGameFramework.Core.Events.ResourceUpdateStartEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceUpdateStartEventArgs.Create(e));
         }
@@ -1478,7 +1479,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceUpdateChanged(object sender, UnityQGameFramework.Core.Resource.ResourceUpdateChangedEventArgs e)
+        private void OnResourceUpdateChanged(object sender, UnityQGameFramework.Core.Events.ResourceUpdateChangedEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceUpdateChangedEventArgs.Create(e));
         }
@@ -1488,7 +1489,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceUpdateSuccess(object sender, UnityQGameFramework.Core.Resource.ResourceUpdateSuccessEventArgs e)
+        private void OnResourceUpdateSuccess(object sender, UnityQGameFramework.Core.Events.ResourceUpdateSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceUpdateSuccessEventArgs.Create(e));
         }
@@ -1498,7 +1499,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceUpdateFailure(object sender, UnityQGameFramework.Core.Resource.ResourceUpdateFailureEventArgs e)
+        private void OnResourceUpdateFailure(object sender, UnityQGameFramework.Core.Events.ResourceUpdateFailureEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceUpdateFailureEventArgs.Create(e));
         }
@@ -1508,7 +1509,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnResourceUpdateAllComplete(object sender, UnityQGameFramework.Core.Resource.ResourceUpdateAllCompleteEventArgs e)
+        private void OnResourceUpdateAllComplete(object sender, UnityQGameFramework.Core.Events.ResourceUpdateAllCompleteEventArgs e)
         {
             m_EventComponent.Fire(this, ResourceUpdateAllCompleteEventArgs.Create(e));
         }

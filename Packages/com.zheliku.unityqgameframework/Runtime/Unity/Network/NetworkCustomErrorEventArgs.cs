@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Network;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,19 +40,25 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义错误数据。
         /// </summary>
-        public object CustomErrorData { get; private set; }
+        public object CustomErrorData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建用户自定义网络错误事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的用户自定义网络错误事件。</returns>
-        public static NetworkCustomErrorEventArgs Create(UnityQGameFramework.Core.Network.NetworkCustomErrorEventArgs e)
+        public static NetworkCustomErrorEventArgs Create(UnityQGameFramework.Core.Events.NetworkCustomErrorEventArgs e)
         {
             NetworkCustomErrorEventArgs networkCustomErrorEventArgs = ReferencePool.Acquire<NetworkCustomErrorEventArgs>();
             networkCustomErrorEventArgs.NetworkChannel = e.NetworkChannel;

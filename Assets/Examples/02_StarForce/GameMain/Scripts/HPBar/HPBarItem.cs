@@ -31,7 +31,10 @@ namespace StarForce
         /// <summary>
         /// 获取血条跟随的实体。
         /// </summary>
-        public Entity Owner { get; private set; }
+        public Entity Owner
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 设置血条归属、画布和生命值变化。
@@ -134,7 +137,7 @@ namespace StarForce
                 await UniTask.Delay(TimeSpan.FromSeconds(KeepSeconds), ignoreTimeScale: true, cancellationToken: cancellation);
                 await m_CachedCanvasGroup.FadeToAlpha(0f, FadeOutSeconds, cancellation);
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

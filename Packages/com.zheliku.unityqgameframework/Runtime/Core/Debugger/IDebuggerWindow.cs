@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Debugger
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 调试器窗口接口。

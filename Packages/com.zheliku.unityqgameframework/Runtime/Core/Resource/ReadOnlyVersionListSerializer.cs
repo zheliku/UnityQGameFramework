@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 本地只读区版本资源列表序列化器。
     /// </summary>
-    public sealed class ReadOnlyVersionListSerializer : FrameworkSerializer<LocalVersionList>
+    public sealed class ReadOnlyVersionListSerializer : GameFrameworkSerializer<LocalVersionList>
     {
         private static readonly byte[] Header = new byte[] { (byte)'G', (byte)'F', (byte)'R' };
 

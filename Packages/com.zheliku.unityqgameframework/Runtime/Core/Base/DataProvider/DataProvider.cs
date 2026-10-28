@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 
 namespace UnityQGameFramework.Core
@@ -121,7 +121,7 @@ namespace UnityQGameFramework.Core
         {
             if (ensureSize < 0)
             {
-                throw new FrameworkException("Ensure size is invalid.");
+                throw new GameFrameworkException("Ensure size is invalid.");
             }
 
             if (s_CachedBytes == null || s_CachedBytes.Length < ensureSize)
@@ -146,7 +146,7 @@ namespace UnityQGameFramework.Core
         /// <param name="dataAssetName">内容资源名称。</param>
         public void ReadData(string dataAssetName)
         {
-            ReadData(dataAssetName, Constant.DefaultPriority, null);
+            ReadData(dataAssetName, ResourceConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace UnityQGameFramework.Core
         /// <param name="userData">用户自定义数据。</param>
         public void ReadData(string dataAssetName, object userData)
         {
-            ReadData(dataAssetName, Constant.DefaultPriority, userData);
+            ReadData(dataAssetName, ResourceConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -179,12 +179,12 @@ namespace UnityQGameFramework.Core
         {
             if (m_ResourceManager == null)
             {
-                throw new FrameworkException("You must set resource manager first.");
+                throw new GameFrameworkException("You must set resource manager first.");
             }
 
             if (m_DataProviderHelper == null)
             {
-                throw new FrameworkException("You must set data provider helper first.");
+                throw new GameFrameworkException("You must set data provider helper first.");
             }
 
             // 资源后端负责等待包就绪，数据提供者不再判断旧文件容器的存储位置。
@@ -211,12 +211,12 @@ namespace UnityQGameFramework.Core
         {
             if (m_DataProviderHelper == null)
             {
-                throw new FrameworkException("You must set data helper first.");
+                throw new GameFrameworkException("You must set data helper first.");
             }
 
             if (dataString == null)
             {
-                throw new FrameworkException("Data string is invalid.");
+                throw new GameFrameworkException("Data string is invalid.");
             }
 
             try
@@ -225,12 +225,12 @@ namespace UnityQGameFramework.Core
             }
             catch (Exception exception)
             {
-                if (exception is FrameworkException)
+                if (exception is GameFrameworkException)
                 {
                     throw;
                 }
 
-                throw new FrameworkException(Utility.Text.Format("Can not parse data string with exception '{0}'.", exception), exception);
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse data string with exception '{0}'.", exception), exception);
             }
         }
 
@@ -243,7 +243,7 @@ namespace UnityQGameFramework.Core
         {
             if (dataBytes == null)
             {
-                throw new FrameworkException("Data bytes is invalid.");
+                throw new GameFrameworkException("Data bytes is invalid.");
             }
 
             return ParseData(dataBytes, 0, dataBytes.Length, null);
@@ -259,7 +259,7 @@ namespace UnityQGameFramework.Core
         {
             if (dataBytes == null)
             {
-                throw new FrameworkException("Data bytes is invalid.");
+                throw new GameFrameworkException("Data bytes is invalid.");
             }
 
             return ParseData(dataBytes, 0, dataBytes.Length, userData);
@@ -289,17 +289,17 @@ namespace UnityQGameFramework.Core
         {
             if (m_DataProviderHelper == null)
             {
-                throw new FrameworkException("You must set data helper first.");
+                throw new GameFrameworkException("You must set data helper first.");
             }
 
             if (dataBytes == null)
             {
-                throw new FrameworkException("Data bytes is invalid.");
+                throw new GameFrameworkException("Data bytes is invalid.");
             }
 
             if (startIndex < 0 || length < 0 || startIndex + length > dataBytes.Length)
             {
-                throw new FrameworkException("Start index or length is invalid.");
+                throw new GameFrameworkException("Start index or length is invalid.");
             }
 
             try
@@ -308,12 +308,12 @@ namespace UnityQGameFramework.Core
             }
             catch (Exception exception)
             {
-                if (exception is FrameworkException)
+                if (exception is GameFrameworkException)
                 {
                     throw;
                 }
 
-                throw new FrameworkException(Utility.Text.Format("Can not parse data bytes with exception '{0}'.", exception), exception);
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse data bytes with exception '{0}'.", exception), exception);
             }
         }
 
@@ -325,7 +325,7 @@ namespace UnityQGameFramework.Core
         {
             if (resourceManager == null)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                throw new GameFrameworkException("Resource manager is invalid.");
             }
 
             m_ResourceManager = resourceManager;
@@ -339,7 +339,7 @@ namespace UnityQGameFramework.Core
         {
             if (dataProviderHelper == null)
             {
-                throw new FrameworkException("Data provider helper is invalid.");
+                throw new GameFrameworkException("Data provider helper is invalid.");
             }
 
             m_DataProviderHelper = dataProviderHelper;
@@ -358,7 +358,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!m_DataProviderHelper.ReadData(m_Owner, dataAssetName, dataAsset, userData))
                 {
-                    throw new FrameworkException(Utility.Text.Format("Load data failure in data provider helper, data asset name '{0}'.", dataAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Load data failure in data provider helper, data asset name '{0}'.", dataAssetName));
                 }
 
                 if (m_ReadDataSuccessEventHandler != null)
@@ -404,7 +404,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            throw new FrameworkException(appendErrorMessage);
+            throw new GameFrameworkException(appendErrorMessage);
         }
 
         /// <summary>

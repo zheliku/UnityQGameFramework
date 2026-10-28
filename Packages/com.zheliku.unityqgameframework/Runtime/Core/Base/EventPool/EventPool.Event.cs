@@ -24,12 +24,18 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取事件发送者。
             /// </summary>
-            public object Sender { get; private set; }
+            public object Sender
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取事件参数。
             /// </summary>
-            public T EventArgs { get; private set; }
+            public T EventArgs
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 从引用池获取待派发事件。

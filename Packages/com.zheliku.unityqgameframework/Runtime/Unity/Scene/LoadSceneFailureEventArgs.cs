@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,24 +41,33 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取场景资源名称。
         /// </summary>
-        public string SceneAssetName { get; private set; }
+        public string SceneAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载场景失败事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的加载场景失败事件。</returns>
-        public static LoadSceneFailureEventArgs Create(UnityQGameFramework.Core.Scene.LoadSceneFailureEventArgs e)
+        public static LoadSceneFailureEventArgs Create(UnityQGameFramework.Core.Events.LoadSceneFailureEventArgs e)
         {
             LoadSceneFailureEventArgs loadSceneFailureEventArgs = ReferencePool.Acquire<LoadSceneFailureEventArgs>();
             loadSceneFailureEventArgs.SceneAssetName = e.SceneAssetName;

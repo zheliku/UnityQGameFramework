@@ -20,7 +20,10 @@ namespace UnityQGameFramework.Editor
         /// <summary>
         /// 获取是否正在构建资源。
         /// </summary>
-        public static bool IsBuilding { get; private set; }
+        public static bool IsBuilding
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 使用原生构建选项依次构建选中的资源包。

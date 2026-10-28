@@ -24,8 +24,11 @@ public static class CurrentSampleCompatibility
         }
 
         Directory.CreateDirectory("Artifacts~/Compatibility");
+        File.Delete("Artifacts~/Compatibility/failure.json");
         try
         {
+            // executeMethod 早于 Editor 启动的 delayCall；先让编辑器完成索引等初始化，再运行场景检查。
+            await Task.Delay(1000);
             var package = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(ResourceComponent).Assembly);
             var samples = UnityEditor.PackageManager.UI.Sample.FindByPackage(package.name, package.version).ToArray();
             if (samples.Length != 3 || (File.Exists("QgfGitInstallValidation~.json")
@@ -47,7 +50,9 @@ public static class CurrentSampleCompatibility
             object modules = await ValidateModuleExamples.Run("Assets/Examples", new[]
             {
                 "LoadLubanTablesExample", "QueryRowsExample", "LoadCatalogExample", "FilterRowsExample", "TableRegistryExample", "TableModesExample",
-                "SpawnOrCreateCube", "LoadCubePrefab", "LoadResourcePackage", "ReadBinaryResource", "LoadAddressRules"
+                "SpawnOrCreateCube", "LoadCubePrefab", "LoadResourcePackage", "ReadBinaryResource", "LoadAddressRules",
+                "ShowCubeEntity", "ReuseCubeEntity", "OpenWindowExample", "SoundGroupVolumeExample", "SpatialSoundExample",
+                "LoadRoomExample", "GetWebRequestExample", "DownloadFileExample", "ConnectNetworkExample"
             });
             string report = JsonConvert.SerializeObject(modules, Formatting.Indented);
             File.WriteAllText("Artifacts~/Compatibility/module-behavior.json", report);

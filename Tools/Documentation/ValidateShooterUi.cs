@@ -17,7 +17,8 @@ public static class ValidateShooterUi
 
     public static async Task<object> Run()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (setup.Any(item => item.isLoaded && UnityEngine.SceneManagement.SceneManager.GetSceneByPath(item.path).isDirty))
             throw new Exception("Unsaved scene");
@@ -31,7 +32,8 @@ public static class ValidateShooterUi
         var errors = new List<string>();
         Application.LogCallback capture = (text, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert) errors.Add(text + "\n" + stack);
+            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert)
+                errors.Add(text + "\n" + stack);
         };
         Application.logMessageReceived += capture;
         string scene = "Assets/Examples/02_StarForce/StarForce Launcher.unity";
@@ -91,7 +93,8 @@ public static class ValidateShooterUi
             Require(plane.gameObject.layer == 0, "No custom layer required");
             await Screenshot("shooter-battle");
             // 回收检查期间隔离碰撞，避免另一发伤害重启血条动画。
-            foreach (var collider in plane.GetComponentsInChildren<Collider>()) collider.enabled = false;
+            foreach (var collider in plane.GetComponentsInChildren<Collider>())
+                collider.enabled = false;
             plane.GetType().GetMethod("ApplyDamage").Invoke(plane, new object[] { null, 1 });
             Require(ActiveBar(plane) != null, "HP bar shown");
             Time.timeScale = 0;
@@ -103,9 +106,12 @@ public static class ValidateShooterUi
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(pointer);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(pointer);
             inputSettings.backgroundBehavior = backgroundBehavior;
             inputSettings.editorInputBehaviorInPlayMode = editorInputBehavior;
             Application.logMessageReceived -= capture;
@@ -114,11 +120,25 @@ public static class ValidateShooterUi
             Time.timeScale = originalSpeed;
             if (setup.Any(item => item.isActive && item.isLoaded && !string.IsNullOrEmpty(item.path)))
                 EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
-        if (errors.Count > 0) throw new Exception(string.Join("\n", errors));
-        var result = new { passed = true, moved, nativeMouseInput = true, menu = true, battle = true,
-            aircraftMoves = true, urpMaterials = 21, hpBarPool = true, fadesWithoutGameViewFocus = true, unscaledUiAnimations = true, screenshots = 2 };
+        if (errors.Count > 0)
+            throw new Exception(string.Join("\n", errors));
+        var result = new
+        {
+            passed = true,
+            moved,
+            nativeMouseInput = true,
+            menu = true,
+            battle = true,
+            aircraftMoves = true,
+            urpMaterials = 21,
+            hpBarPool = true,
+            fadesWithoutGameViewFocus = true,
+            unscaledUiAnimations = true,
+            screenshots = 2
+        };
         File.WriteAllText("Artifacts~/Examples/shooter-ui-check.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;
     }
@@ -127,22 +147,31 @@ public static class ValidateShooterUi
     {
         string root = Path.GetDirectoryName(scene).Replace('\\', '/');
         var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/UnityQGameFramework/Config/LubanProfile.asset");
-        if (profile == null) throw new Exception("Sample profile missing");
+        if (profile == null)
+            throw new Exception("Sample profile missing");
         LubanSettings.instance.Profile = profile;
-        return new { selected = AssetDatabase.GetAssetPath(LubanSettings.instance.Profile) };
+        return new
+        {
+            selected = AssetDatabase.GetAssetPath(LubanSettings.instance.Profile)
+        };
     }
 
     private static Type FindType(string name) => AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(name)).First(type => type != null);
     private static Component Find(string name) => UnityEngine.Object.FindFirstObjectByType(FindType(name)) as Component;
     private static Component ActiveBar(Component owner) => UnityEngine.Object.FindObjectsByType(FindType("StarForce.HPBarItem"), FindObjectsSortMode.None)
         .Cast<Component>().FirstOrDefault(item => item.gameObject.activeInHierarchy && Equals(item.GetType().GetProperty("Owner").GetValue(item), owner));
-    private static void Require(bool value, string message) { if (!value) throw new Exception(message); }
+    private static void Require(bool value, string message)
+    {
+        if (!value)
+            throw new Exception(message);
+    }
     private static async Task Wait(Func<bool> condition, string step)
     {
         double start = EditorApplication.timeSinceStartup;
         while (!condition())
         {
-            if (EditorApplication.timeSinceStartup - start > 15) throw new TimeoutException(step);
+            if (EditorApplication.timeSinceStartup - start > 15)
+                throw new TimeoutException(step);
             await Task.Delay(40);
         }
     }
@@ -157,13 +186,15 @@ public static class ValidateShooterUi
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (playing ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (playing ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = playing;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(200);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

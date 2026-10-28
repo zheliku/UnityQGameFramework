@@ -15,7 +15,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制基础组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(BaseComponent))]
-    internal sealed class BaseComponentInspector : FrameworkInspector
+    internal sealed class BaseComponentInspector : GameFrameworkInspector
     {
         private const string NoneOptionName = "<None>";
         private static readonly float[] GameSpeed = new float[] { 0f, 0.01f, 0.1f, 0.25f, 0.5f, 1f, 1.5f, 2f, 4f, 8f };
@@ -242,7 +242,7 @@ namespace UnityQGameFramework.Editor
                 NoneOptionName
             };
 
-            logHelperTypeNames.AddRange(Type.GetRuntimeTypeNames(typeof(FrameworkLog.ILogHelper)));
+            logHelperTypeNames.AddRange(Type.GetRuntimeTypeNames(typeof(GameFrameworkLog.ILogHelper)));
             m_LogHelperTypeNames = logHelperTypeNames.ToArray();
             m_LogHelperTypeNameIndex = 0;
             if (!string.IsNullOrEmpty(m_LogHelperTypeName.stringValue))

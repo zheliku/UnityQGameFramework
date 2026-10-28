@@ -3,16 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Localization
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 本地化管理器。
     /// </summary>
-    internal sealed partial class LocalizationManager : FrameworkModule, ILocalizationManager
+    internal sealed partial class LocalizationManager : GameFrameworkModule, ILocalizationManager
     {
         private readonly Dictionary<string, string> m_Dictionary;
         private readonly DataProvider<ILocalizationManager> m_DataProvider;
@@ -44,7 +44,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 if (value == Language.Unspecified)
                 {
-                    throw new FrameworkException("Language is invalid.");
+                    throw new GameFrameworkException("Language is invalid.");
                 }
 
                 m_Language = value;
@@ -60,7 +60,7 @@ namespace UnityQGameFramework.Core.Localization
             {
                 if (m_LocalizationHelper == null)
                 {
-                    throw new FrameworkException("You must set localization helper first.");
+                    throw new GameFrameworkException("You must set localization helper first.");
                 }
 
                 return m_LocalizationHelper.SystemLanguage;
@@ -195,7 +195,7 @@ namespace UnityQGameFramework.Core.Localization
         {
             if (localizationHelper == null)
             {
-                throw new FrameworkException("Localization helper is invalid.");
+                throw new GameFrameworkException("Localization helper is invalid.");
             }
 
             m_LocalizationHelper = localizationHelper;
@@ -993,7 +993,7 @@ namespace UnityQGameFramework.Core.Localization
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new FrameworkException("Key is invalid.");
+                throw new GameFrameworkException("Key is invalid.");
             }
 
             return m_Dictionary.ContainsKey(key);
@@ -1008,7 +1008,7 @@ namespace UnityQGameFramework.Core.Localization
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new FrameworkException("Key is invalid.");
+                throw new GameFrameworkException("Key is invalid.");
             }
 
             string value = null;
@@ -1030,7 +1030,7 @@ namespace UnityQGameFramework.Core.Localization
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new FrameworkException("Key is invalid.");
+                throw new GameFrameworkException("Key is invalid.");
             }
 
             if (m_Dictionary.ContainsKey(key))
@@ -1051,7 +1051,7 @@ namespace UnityQGameFramework.Core.Localization
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new FrameworkException("Key is invalid.");
+                throw new GameFrameworkException("Key is invalid.");
             }
 
             return m_Dictionary.Remove(key);

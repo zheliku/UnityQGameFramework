@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 打开界面时加载依赖资源事件。
     /// </summary>
-    public sealed class OpenUIFormDependencyAssetEventArgs : FrameworkEventArgs
+    public sealed class OpenUIFormDependencyAssetEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化打开界面时加载依赖资源事件的新实例。
@@ -28,42 +28,66 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取界面序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面资源名称。
         /// </summary>
-        public string UIFormAssetName { get; private set; }
+        public string UIFormAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面组名称。
         /// </summary>
-        public string UIGroupName { get; private set; }
+        public string UIGroupName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取是否暂停被覆盖的界面。
         /// </summary>
-        public bool PauseCoveredUIForm { get; private set; }
+        public bool PauseCoveredUIForm
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被加载的依赖资源名称。
         /// </summary>
-        public string DependencyAssetName { get; private set; }
+        public string DependencyAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前已加载依赖资源数量。
         /// </summary>
-        public int LoadedCount { get; private set; }
+        public int LoadedCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取总共加载依赖资源数量。
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int TotalCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建打开界面时加载依赖资源事件。

@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using System;
 
 namespace UnityQGameFramework.Runtime
@@ -48,49 +47,73 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体编号。
         /// </summary>
-        public int EntityId { get; private set; }
+        public int EntityId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体逻辑类型。
         /// </summary>
-        public Type EntityLogicType { get; private set; }
+        public Type EntityLogicType
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体资源名称。
         /// </summary>
-        public string EntityAssetName { get; private set; }
+        public string EntityAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体组名称。
         /// </summary>
-        public string EntityGroupName { get; private set; }
+        public string EntityGroupName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被加载的依赖资源名称。
         /// </summary>
-        public string DependencyAssetName { get; private set; }
+        public string DependencyAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前已加载依赖资源数量。
         /// </summary>
-        public int LoadedCount { get; private set; }
+        public int LoadedCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取总共加载依赖资源数量。
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int TotalCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建显示实体时加载依赖资源事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的显示实体时加载依赖资源事件。</returns>
-        public static ShowEntityDependencyAssetEventArgs Create(UnityQGameFramework.Core.Entity.ShowEntityDependencyAssetEventArgs e)
+        public static ShowEntityDependencyAssetEventArgs Create(UnityQGameFramework.Core.Events.ShowEntityDependencyAssetEventArgs e)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)e.UserData;
             ShowEntityDependencyAssetEventArgs showEntityDependencyAssetEventArgs = ReferencePool.Acquire<ShowEntityDependencyAssetEventArgs>();

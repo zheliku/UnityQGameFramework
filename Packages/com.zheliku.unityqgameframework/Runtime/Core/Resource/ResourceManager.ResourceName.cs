@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源名称。
@@ -29,12 +29,12 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new FrameworkException("Resource name is invalid.");
+                    throw new GameFrameworkException("Resource name is invalid.");
                 }
 
                 if (string.IsNullOrEmpty(extension))
                 {
-                    throw new FrameworkException("Resource extension is invalid.");
+                    throw new GameFrameworkException("Resource extension is invalid.");
                 }
 
                 Name = name;
@@ -45,17 +45,26 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取变体名称。
             /// </summary>
-            public string Variant { get; }
+            public string Variant
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取扩展名称。
             /// </summary>
-            public string Extension { get; }
+            public string Extension
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取包含变体和扩展名的完整资源名称。
@@ -150,7 +159,7 @@ namespace UnityQGameFramework.Core.Resource
 
                 if (!(value is ResourceName resourceName))
                 {
-                    throw new FrameworkException("Type of value is invalid.");
+                    throw new GameFrameworkException("Type of value is invalid.");
                 }
 
                 return CompareTo(resourceName);

@@ -1,4 +1,4 @@
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 可接入替代资源后端的资源管理器。

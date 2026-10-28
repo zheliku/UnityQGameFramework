@@ -3,17 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 界面管理器。
     /// </summary>
-    internal sealed partial class UIManager : FrameworkModule, IUIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         private readonly Dictionary<string, UIGroup> m_UIGroups;
         private readonly Dictionary<int, string> m_UIFormsBeingLoaded;
@@ -242,7 +241,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (objectPoolManager == null)
             {
-                throw new FrameworkException("Object pool manager is invalid.");
+                throw new GameFrameworkException("Object pool manager is invalid.");
             }
 
             m_ObjectPoolManager = objectPoolManager;
@@ -257,7 +256,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (resourceManager == null)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                throw new GameFrameworkException("Resource manager is invalid.");
             }
 
             m_ResourceManager = resourceManager;
@@ -271,7 +270,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (uiFormHelper == null)
             {
-                throw new FrameworkException("UI form helper is invalid.");
+                throw new GameFrameworkException("UI form helper is invalid.");
             }
 
             m_UIFormHelper = uiFormHelper;
@@ -286,7 +285,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiGroupName))
             {
-                throw new FrameworkException("UI group name is invalid.");
+                throw new GameFrameworkException("UI group name is invalid.");
             }
 
             return m_UIGroups.ContainsKey(uiGroupName);
@@ -301,7 +300,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiGroupName))
             {
-                throw new FrameworkException("UI group name is invalid.");
+                throw new GameFrameworkException("UI group name is invalid.");
             }
 
             UIGroup uiGroup = null;
@@ -337,7 +336,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -369,12 +368,12 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiGroupName))
             {
-                throw new FrameworkException("UI group name is invalid.");
+                throw new GameFrameworkException("UI group name is invalid.");
             }
 
             if (uiGroupHelper == null)
             {
-                throw new FrameworkException("UI group helper is invalid.");
+                throw new GameFrameworkException("UI group helper is invalid.");
             }
 
             if (HasUIGroup(uiGroupName))
@@ -414,7 +413,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiFormAssetName))
             {
-                throw new FrameworkException("UI form asset name is invalid.");
+                throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
             foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
@@ -456,7 +455,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiFormAssetName))
             {
-                throw new FrameworkException("UI form asset name is invalid.");
+                throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
             foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
@@ -480,7 +479,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiFormAssetName))
             {
-                throw new FrameworkException("UI form asset name is invalid.");
+                throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
             List<IUIForm> results = new List<IUIForm>();
@@ -501,12 +500,12 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiFormAssetName))
             {
-                throw new FrameworkException("UI form asset name is invalid.");
+                throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -539,7 +538,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -573,7 +572,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -602,7 +601,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (string.IsNullOrEmpty(uiFormAssetName))
             {
-                throw new FrameworkException("UI form asset name is invalid.");
+                throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
             return m_UIFormsBeingLoaded.ContainsValue(uiFormAssetName);
@@ -631,7 +630,7 @@ namespace UnityQGameFramework.Core.UI
         /// <returns>界面的序列编号。</returns>
         public int OpenUIForm(string uiFormAssetName, string uiGroupName)
         {
-            return OpenUIForm(uiFormAssetName, uiGroupName, Constant.DefaultPriority, false, null);
+            return OpenUIForm(uiFormAssetName, uiGroupName, ResourceConstant.DefaultPriority, false, null);
         }
 
         /// <summary>
@@ -655,7 +654,7 @@ namespace UnityQGameFramework.Core.UI
         /// <returns>界面的序列编号。</returns>
         public int OpenUIForm(string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm)
         {
-            return OpenUIForm(uiFormAssetName, uiGroupName, Constant.DefaultPriority, pauseCoveredUIForm, null);
+            return OpenUIForm(uiFormAssetName, uiGroupName, ResourceConstant.DefaultPriority, pauseCoveredUIForm, null);
         }
 
         /// <summary>
@@ -667,7 +666,7 @@ namespace UnityQGameFramework.Core.UI
         /// <returns>界面的序列编号。</returns>
         public int OpenUIForm(string uiFormAssetName, string uiGroupName, object userData)
         {
-            return OpenUIForm(uiFormAssetName, uiGroupName, Constant.DefaultPriority, false, userData);
+            return OpenUIForm(uiFormAssetName, uiGroupName, ResourceConstant.DefaultPriority, false, userData);
         }
 
         /// <summary>
@@ -706,7 +705,7 @@ namespace UnityQGameFramework.Core.UI
         /// <returns>界面的序列编号。</returns>
         public int OpenUIForm(string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, object userData)
         {
-            return OpenUIForm(uiFormAssetName, uiGroupName, Constant.DefaultPriority, pauseCoveredUIForm, userData);
+            return OpenUIForm(uiFormAssetName, uiGroupName, ResourceConstant.DefaultPriority, pauseCoveredUIForm, userData);
         }
 
         /// <summary>
@@ -722,28 +721,28 @@ namespace UnityQGameFramework.Core.UI
         {
             if (m_ResourceManager == null)
             {
-                throw new FrameworkException("You must set resource manager first.");
+                throw new GameFrameworkException("You must set resource manager first.");
             }
 
             if (m_UIFormHelper == null)
             {
-                throw new FrameworkException("You must set UI form helper first.");
+                throw new GameFrameworkException("You must set UI form helper first.");
             }
 
             if (string.IsNullOrEmpty(uiFormAssetName))
             {
-                throw new FrameworkException("UI form asset name is invalid.");
+                throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
             if (string.IsNullOrEmpty(uiGroupName))
             {
-                throw new FrameworkException("UI group name is invalid.");
+                throw new GameFrameworkException("UI group name is invalid.");
             }
 
             UIGroup uiGroup = (UIGroup)GetUIGroup(uiGroupName);
             if (uiGroup == null)
             {
-                throw new FrameworkException(Utility.Text.Format("UI group '{0}' is not exist.", uiGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' is not exist.", uiGroupName));
             }
 
             int serialId = ++m_Serial;
@@ -787,7 +786,7 @@ namespace UnityQGameFramework.Core.UI
             IUIForm uiForm = GetUIForm(serialId);
             if (uiForm == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find UI form '{0}'.", serialId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find UI form '{0}'.", serialId));
             }
 
             CloseUIForm(uiForm, userData);
@@ -811,13 +810,13 @@ namespace UnityQGameFramework.Core.UI
         {
             if (uiForm == null)
             {
-                throw new FrameworkException("UI form is invalid.");
+                throw new GameFrameworkException("UI form is invalid.");
             }
 
             UIGroup uiGroup = (UIGroup)uiForm.UIGroup;
             if (uiGroup == null)
             {
-                throw new FrameworkException("UI group is invalid.");
+                throw new GameFrameworkException("UI group is invalid.");
             }
 
             uiGroup.RemoveUIForm(uiForm);
@@ -891,13 +890,13 @@ namespace UnityQGameFramework.Core.UI
         {
             if (uiForm == null)
             {
-                throw new FrameworkException("UI form is invalid.");
+                throw new GameFrameworkException("UI form is invalid.");
             }
 
             UIGroup uiGroup = (UIGroup)uiForm.UIGroup;
             if (uiGroup == null)
             {
-                throw new FrameworkException("UI group is invalid.");
+                throw new GameFrameworkException("UI group is invalid.");
             }
 
             uiGroup.RefocusUIForm(uiForm, userData);
@@ -914,7 +913,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (uiFormInstance == null)
             {
-                throw new FrameworkException("UI form instance is invalid.");
+                throw new GameFrameworkException("UI form instance is invalid.");
             }
 
             m_InstancePool.SetLocked(uiFormInstance, locked);
@@ -929,7 +928,7 @@ namespace UnityQGameFramework.Core.UI
         {
             if (uiFormInstance == null)
             {
-                throw new FrameworkException("UI form instance is invalid.");
+                throw new GameFrameworkException("UI form instance is invalid.");
             }
 
             m_InstancePool.SetPriority(uiFormInstance, priority);
@@ -953,7 +952,7 @@ namespace UnityQGameFramework.Core.UI
                 IUIForm uiForm = m_UIFormHelper.CreateUIForm(uiFormInstance, uiGroup, userData);
                 if (uiForm == null)
                 {
-                    throw new FrameworkException("Can not create UI form in UI form helper.");
+                    throw new GameFrameworkException("Can not create UI form in UI form helper.");
                 }
 
                 uiForm.OnInit(serialId, uiFormAssetName, uiGroup, pauseCoveredUIForm, isNewInstance, userData);
@@ -994,7 +993,7 @@ namespace UnityQGameFramework.Core.UI
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
-                throw new FrameworkException("Open UI form info is invalid.");
+                throw new GameFrameworkException("Open UI form info is invalid.");
             }
 
             if (m_UIFormsToReleaseOnLoad.Contains(openUIFormInfo.SerialId))
@@ -1025,7 +1024,7 @@ namespace UnityQGameFramework.Core.UI
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
-                throw new FrameworkException("Open UI form info is invalid.");
+                throw new GameFrameworkException("Open UI form info is invalid.");
             }
 
             if (m_UIFormsToReleaseOnLoad.Contains(openUIFormInfo.SerialId))
@@ -1044,7 +1043,7 @@ namespace UnityQGameFramework.Core.UI
                 return;
             }
 
-            throw new FrameworkException(appendErrorMessage);
+            throw new GameFrameworkException(appendErrorMessage);
         }
 
         /// <summary>
@@ -1058,7 +1057,7 @@ namespace UnityQGameFramework.Core.UI
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
-                throw new FrameworkException("Open UI form info is invalid.");
+                throw new GameFrameworkException("Open UI form info is invalid.");
             }
 
             if (m_OpenUIFormUpdateEventHandler != null)
@@ -1082,7 +1081,7 @@ namespace UnityQGameFramework.Core.UI
             OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
-                throw new FrameworkException("Open UI form info is invalid.");
+                throw new GameFrameworkException("Open UI form info is invalid.");
             }
 
             if (m_OpenUIFormDependencyAssetEventHandler != null)

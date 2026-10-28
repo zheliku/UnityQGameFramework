@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -44,34 +43,49 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取下载任务的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载后存放路径。
         /// </summary>
-        public string DownloadPath { get; private set; }
+        public string DownloadPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载地址。
         /// </summary>
-        public string DownloadUri { get; private set; }
+        public string DownloadUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前大小。
         /// </summary>
-        public long CurrentLength { get; private set; }
+        public long CurrentLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建下载成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的下载成功事件。</returns>
-        public static DownloadSuccessEventArgs Create(UnityQGameFramework.Core.Download.DownloadSuccessEventArgs e)
+        public static DownloadSuccessEventArgs Create(UnityQGameFramework.Core.Events.DownloadSuccessEventArgs e)
         {
             DownloadSuccessEventArgs downloadSuccessEventArgs = ReferencePool.Acquire<DownloadSuccessEventArgs>();
             downloadSuccessEventArgs.SerialId = e.SerialId;

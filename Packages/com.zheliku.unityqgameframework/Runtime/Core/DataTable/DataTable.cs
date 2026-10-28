@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.DataTable
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 数据表的公共查询实现。

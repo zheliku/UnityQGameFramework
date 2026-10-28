@@ -1,19 +1,15 @@
-# 模块示例
+# 运行示例
 
-Package Manager 提供三个导入项：
+Package Manager 提供三个独立 Sample。完整仓库的开发目录是 `Assets/Examples`，不要在仓库里再次导入同一 Sample。
 
-| Sample | 内容 |
-| --- | --- |
-| [00_PointPointPoint](../Samples~/00_PointPointPoint/README.md) | 从启动、菜单到游玩和结算 |
-| [01_Modules](../Samples~/01_Modules/README.md) | 各模块的常用操作，每个场景突出一个调用与结果 |
-| [02_StarForce](../Samples~/02_StarForce/README.md) | 多模块协作的射击游戏 |
+| Sample | 启动方式 | 阅读入口 |
+| --- | --- | --- |
+| 00 · PointPointPoint | 打开 PointPointPoint.unity | [说明与流程脚本](../Samples~/00_PointPointPoint/README.md) |
+| 01 · Modules | 选择模块中的任一主场景 | [完整场景清单](../Samples~/01_Modules/README.md) |
+| 02 · StarForce | 打开 StarForce Launcher.unity | [运行说明](../Samples~/02_StarForce/README.md)、[代码导读](05-starforce.md) |
 
-每个场景单独运行。先操作场景，再阅读同名 C# 文件；核心调用旁有必要的注释。WebRequest、Download 和 Network 自带本机测试服务。
+宿主启用 Input System；3D 资源使用 URP。导入后等待编译，默认 Editor Simulation 无需预构建、Fix 或 Save。只有资源更新示例需要先在脚本 Inspector 点击 **Build Remote Resources Example**，见模块 Sample README。
 
-模块示例包含一份 `Common/Prefabs/QGF.prefab` 和公共 UI 资源，内部继续按模块编号。移动或卸载时操作整个导入目录。
+模块示例共用 `Common/Prefabs/QGF.prefab` 和公共 UI 资源，每个场景只展示一项核心功能。运行场景、操作按钮、观察结果，再阅读同名脚本即可；API 按[模块用法](Modules/README.md)查阅。
 
-模块资源示例引用自己的 ResourceSettings 和 YooAsset 原生 BundleCollectorSetting，并通过 YooAsset Editor Simulation 加载。普通示例使用可读地址，句柄示例也使用可读地址。需要 Player 资源构建流程时查看点点点与 StarForce。
-
-仓库的 `Assets/Examples` 是维护入口，同样只有上述三个目录。`Tools/Packaging/sync_samples.py` 将它们原样复制到 `Samples~`，不筛选场景、不改写代码或 GUID。模块内部按功能编号，每个场景只保留必要的调用和说明。
-
-接口说明见 [模块文档](Modules/README.md)。
+修改 Excel 后生成 Luban 表；修改收集规则后在 YooAsset 原生窗口 Save。资源包构建与 Player 构建分开执行，见[资源工作流](Modules/resource-build.md)。

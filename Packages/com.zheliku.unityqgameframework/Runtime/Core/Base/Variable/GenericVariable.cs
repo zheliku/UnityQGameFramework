@@ -35,7 +35,10 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取或设置变量值。
         /// </summary>
-        public T Value { get; set; }
+        public T Value
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取变量值。

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.ObjectPool
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 对象池管理器。
@@ -16,7 +16,10 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象池数量。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 检查是否存在对象池。

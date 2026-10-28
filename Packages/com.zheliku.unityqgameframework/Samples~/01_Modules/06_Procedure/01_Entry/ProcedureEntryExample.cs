@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Fsm;
-using UnityQGameFramework.Core.Procedure;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules

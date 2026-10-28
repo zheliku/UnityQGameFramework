@@ -41,7 +41,11 @@ public static class BuildResourceAddressScene
             var previous = UnityEngine.Object.FindFirstObjectByType<LoadResourcePackage>();
             if (previous == null)
             {
-                return new { scene = output, alreadyCreated = true };
+                return new
+                {
+                    scene = output,
+                    alreadyCreated = true
+                };
             }
             var oldFields = new SerializedObject(previous);
             var state = oldFields.FindProperty("stateText").objectReferenceValue;
@@ -87,7 +91,11 @@ public static class BuildResourceAddressScene
                 }
             }
             EditorSceneManager.SaveScene(scene);
-            return new { scene = output, dropdowns = 1 };
+            return new
+            {
+                scene = output,
+                dropdowns = 1
+            };
         }
         finally
         {

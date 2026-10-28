@@ -56,14 +56,23 @@ public static class OptionalExtensionsValidation
         }
         finally
         {
-            foreach (var window in Resources.FindObjectsOfTypeAll<QgfExtensionsWindow>()) window.Close();
+            foreach (var window in Resources.FindObjectsOfTypeAll<QgfExtensionsWindow>())
+                window.Close();
         }
-        return new Result { passed = true, optionalPluginsAbsent = absent, noImplicitInstall = true,
-            noPluginAssemblyReferences = true, extensions = 2, unityVersion = Application.unityVersion };
+        return new Result
+        {
+            passed = true,
+            optionalPluginsAbsent = absent,
+            noImplicitInstall = true,
+            noPluginAssemblyReferences = true,
+            extensions = 2,
+            unityVersion = Application.unityVersion
+        };
     }
 
     private static void Require(bool value, string message)
     {
-        if (!value) throw new Exception(message);
+        if (!value)
+            throw new Exception(message);
     }
 }

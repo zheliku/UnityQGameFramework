@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 文件系统管理器。
@@ -15,7 +15,10 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取文件系统数量。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 设置文件系统辅助器。

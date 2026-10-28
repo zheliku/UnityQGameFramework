@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
@@ -60,7 +60,7 @@ namespace UnityQGameFramework.Examples.Modules
                 idleRemaining = 0;
                 QGF.Entity.ShowEntity<ReuseCubeEntityLogic>(1, AssetName, "Example", new Vector3(3, 0, 0));
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

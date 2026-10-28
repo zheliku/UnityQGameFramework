@@ -212,12 +212,18 @@ namespace StarForce
             /// <summary>
             /// 获取第一个阵营。
             /// </summary>
-            public CampType First { get; }
+            public CampType First
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取第二个阵营。
             /// </summary>
-            public CampType Second { get; }
+            public CampType Second
+            {
+                get;
+            }
         }
     }
 }

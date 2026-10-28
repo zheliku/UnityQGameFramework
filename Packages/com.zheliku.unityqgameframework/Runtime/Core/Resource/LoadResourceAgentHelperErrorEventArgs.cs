@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 加载资源代理辅助器错误事件。
     /// </summary>
-    public sealed class LoadResourceAgentHelperErrorEventArgs : FrameworkEventArgs
+    public sealed class LoadResourceAgentHelperErrorEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化加载资源代理辅助器错误事件的新实例。
@@ -22,12 +22,18 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取加载资源状态。
         /// </summary>
-        public LoadResourceStatus Status { get; private set; }
+        public LoadResourceStatus Status
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载资源代理辅助器错误事件。

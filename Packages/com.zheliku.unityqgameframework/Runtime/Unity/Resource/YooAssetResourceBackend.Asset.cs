@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
 using YooAsset;
 
 namespace UnityQGameFramework.Runtime
@@ -20,7 +19,7 @@ namespace UnityQGameFramework.Runtime
             ThrowIfShutdown();
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
             if (!m_Packages.TryGetValue(m_Settings.DefaultPackageName, out PackageInfo package) || !package.Ready || package.Destroying)
             {
@@ -46,7 +45,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (callbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
             LoadAssetCallbackAsync(assetName, assetType, priority, callbacks, userData).Forget();
         }
@@ -70,7 +69,7 @@ namespace UnityQGameFramework.Runtime
             ThrowIfShutdown();
             if (asset == null)
             {
-                throw new FrameworkException("Asset is invalid.");
+                throw new GameFrameworkException("Asset is invalid.");
             }
             if (m_Packages.TryGetValue(GetPackageName(packageName), out PackageInfo package))
             {
@@ -85,7 +84,7 @@ namespace UnityQGameFramework.Runtime
                     }
                 }
             }
-            throw new FrameworkException("The asset has no outstanding borrow in this resource package.");
+            throw new GameFrameworkException("The asset has no outstanding borrow in this resource package.");
         }
 
         /// <summary>
@@ -120,11 +119,11 @@ namespace UnityQGameFramework.Runtime
             ThrowIfShutdown();
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
             if (assetType != null && !typeof(UnityEngine.Object).IsAssignableFrom(assetType))
             {
-                throw new FrameworkException("Asset type must derive from UnityEngine.Object.");
+                throw new GameFrameworkException("Asset type must derive from UnityEngine.Object.");
             }
 
             PackageInfo package = CreatePackage(packageName);
@@ -148,7 +147,7 @@ namespace UnityQGameFramework.Runtime
                     cancellation.Token.ThrowIfCancellationRequested();
                     if (!handle.IsValid || handle.Status != EOperationStatus.Succeeded || handle.AssetObject == null)
                     {
-                        throw new FrameworkException(handle.IsValid ? handle.Error : "The resource handle was released during loading.");
+                        throw new GameFrameworkException(handle.IsValid ? handle.Error : "The resource handle was released during loading.");
                     }
                     progress?.Invoke(1f);
                     cancellation.Token.ThrowIfCancellationRequested();
@@ -213,7 +212,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (callbacks == null)
             {
-                throw new FrameworkException("Load binary callbacks is invalid.");
+                throw new GameFrameworkException("Load binary callbacks is invalid.");
             }
             LoadBinaryCallbackAsync(assetName, callbacks, userData).Forget();
         }
@@ -255,7 +254,7 @@ namespace UnityQGameFramework.Runtime
             ThrowIfShutdown();
             if (!m_Packages.TryGetValue(m_Settings.DefaultPackageName, out PackageInfo package) || !package.Ready || package.Destroying)
             {
-                throw new FrameworkException("Initialize the resource package before synchronous loading.");
+                throw new GameFrameworkException("Initialize the resource package before synchronous loading.");
             }
             Type type = IsRawPackage(package.Package) ? typeof(RawFileObject) : typeof(TextAsset);
             AssetHandle handle = package.Package.LoadAssetSync(GetAssetInfo(package.Package, assetName, type));
@@ -263,7 +262,7 @@ namespace UnityQGameFramework.Runtime
             {
                 if (handle.Status != EOperationStatus.Succeeded)
                 {
-                    throw new FrameworkException(handle.Error);
+                    throw new GameFrameworkException(handle.Error);
                 }
                 return GetBytes(handle.AssetObject);
             }
@@ -299,7 +298,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (buffer == null || offset < 0 || startIndex < 0 || length < 0 || startIndex > buffer.Length - length)
             {
-                throw new FrameworkException("Binary segment arguments are invalid.");
+                throw new GameFrameworkException("Binary segment arguments are invalid.");
             }
             byte[] bytes = LoadBinary(assetName);
             int count = Math.Min(length, Math.Max(bytes.Length - offset, 0));
@@ -352,7 +351,7 @@ namespace UnityQGameFramework.Runtime
             {
                 return textAsset.bytes;
             }
-            throw new FrameworkException("Binary assets must be TextAsset or RawFileObject.");
+            throw new GameFrameworkException("Binary assets must be TextAsset or RawFileObject.");
         }
 
         /// <summary>

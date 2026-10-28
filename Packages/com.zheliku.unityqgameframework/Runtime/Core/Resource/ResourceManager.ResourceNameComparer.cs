@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源名称比较器。

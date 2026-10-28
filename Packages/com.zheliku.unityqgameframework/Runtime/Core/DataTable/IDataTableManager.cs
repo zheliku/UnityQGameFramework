@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.DataTable
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 按实际表类型与可选名称管理数据表。
@@ -11,7 +11,10 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取数据表数量。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 添加已构造的数据表，存在冲突时不添加任何表。

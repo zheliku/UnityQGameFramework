@@ -27,7 +27,10 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取本地服务器地址。
         /// </summary>
-        public string Url { get; }
+        public string Url
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取已接收的请求数量。

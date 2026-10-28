@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class SoundComponent : FrameworkComponent
+    public sealed partial class SoundComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 声音组的序列化配置。

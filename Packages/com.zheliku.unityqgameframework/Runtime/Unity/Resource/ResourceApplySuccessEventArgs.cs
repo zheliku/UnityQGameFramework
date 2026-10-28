@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -44,34 +43,49 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源应用后存放路径。
         /// </summary>
-        public string ApplyPath { get; private set; }
+        public string ApplyPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源包路径。
         /// </summary>
-        public string ResourcePackPath { get; private set; }
+        public string ResourcePackPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源大小。
         /// </summary>
-        public int Length { get; private set; }
+        public int Length
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int CompressedLength { get; private set; }
+        public int CompressedLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源应用成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源应用成功事件。</returns>
-        public static ResourceApplySuccessEventArgs Create(UnityQGameFramework.Core.Resource.ResourceApplySuccessEventArgs e)
+        public static ResourceApplySuccessEventArgs Create(UnityQGameFramework.Core.Events.ResourceApplySuccessEventArgs e)
         {
             ResourceApplySuccessEventArgs resourceApplySuccessEventArgs = ReferencePool.Acquire<ResourceApplySuccessEventArgs>();
             resourceApplySuccessEventArgs.Name = e.Name;

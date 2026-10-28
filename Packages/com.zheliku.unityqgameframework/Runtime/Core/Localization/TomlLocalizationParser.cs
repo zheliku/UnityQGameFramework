@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Tomlyn;
 using Tomlyn.Model;
 
-namespace UnityQGameFramework.Core.Localization
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 将 TOML 语言分区展开为本地化字典键值。

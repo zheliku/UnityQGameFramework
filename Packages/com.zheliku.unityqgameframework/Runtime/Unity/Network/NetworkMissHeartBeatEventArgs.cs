@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Network;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,19 +40,25 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取心跳包已丢失次数。
         /// </summary>
-        public int MissCount { get; private set; }
+        public int MissCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建网络心跳包丢失事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的网络心跳包丢失事件。</returns>
-        public static NetworkMissHeartBeatEventArgs Create(UnityQGameFramework.Core.Network.NetworkMissHeartBeatEventArgs e)
+        public static NetworkMissHeartBeatEventArgs Create(UnityQGameFramework.Core.Events.NetworkMissHeartBeatEventArgs e)
         {
             NetworkMissHeartBeatEventArgs networkMissHeartBeatEventArgs = ReferencePool.Acquire<NetworkMissHeartBeatEventArgs>();
             networkMissHeartBeatEventArgs.NetworkChannel = e.NetworkChannel;

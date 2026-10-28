@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Network;
+using UnityQGameFramework.Core;
 
 namespace StarForce
 {
@@ -15,7 +15,10 @@ namespace StarForce
         /// <summary>
         /// 获取当前实例或消息的标识。
         /// </summary>
-        public abstract int Id { get; }
+        public abstract int Id
+        {
+            get;
+        }
 
         /// <summary>
         /// 处理收到的网络消息。

@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class SoundManager : FrameworkModule, ISoundManager
+    internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         /// <summary>
         /// 保存一次播放声音请求的参数。
@@ -26,22 +26,34 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取声音序列编号。
             /// </summary>
-            public int SerialId { get; private set; }
+            public int SerialId
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取目标声音组。
             /// </summary>
-            public SoundGroup SoundGroup { get; private set; }
+            public SoundGroup SoundGroup
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取声音播放参数。
             /// </summary>
-            public PlaySoundParams PlaySoundParams { get; private set; }
+            public PlaySoundParams PlaySoundParams
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取用户自定义数据。
             /// </summary>
-            public object UserData { get; private set; }
+            public object UserData
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 从引用池获取声音播放请求。

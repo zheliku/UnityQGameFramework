@@ -16,7 +16,6 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
 using System.Text;
-using UnityQGameFramework.Core.ObjectPool;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
@@ -29,8 +28,10 @@ public static class ValidateObjectPoolExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use the isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -40,7 +41,8 @@ public static class ValidateObjectPoolExamples
         var cases = layouts.Properties().Where(pair => new[] { "08_ObjectPool" }
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -70,7 +72,8 @@ public static class ValidateObjectPoolExamples
             {
                 string sourcePath = (string)test.layout["script"];
                 string anchor = AssetDatabase.GUIDToAssetPath("e8e1b0be9acd59a289bd6828e1bbe300");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported ObjectPool sample not found.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported ObjectPool sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
                 string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
@@ -97,31 +100,56 @@ public static class ValidateObjectPoolExamples
                 await Play(false);
                 Require(targets.All(g => g == null), "All real Cube targets cleaned after scene stop");
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, scene = script.Substring(0, script.Length - 3) + ".unity", startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown.value and InputField.text set by the test; actions use native mouse clicks",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/ObjectPoolVisual");
         string report = names == null ? "object-pool-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/ObjectPoolVisual/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
 
@@ -157,7 +185,8 @@ public static class ValidateObjectPoolExamples
                 Require(cube.transform.position.x == 2 && pool.CanSpawn() && cube.GetInstanceID() == id && cube.transform.rotation == Quaternion.identity, "Unspawn resets and retains actual Cube");
                 await Click(button("spawnButton"), mouse);
                 Require(cube.GetInstanceID() == id, "Second use reuses same GameObject");
-                if (argument == 1) await Screenshot("pool-lifecycle");
+                if (argument == 1)
+                    await Screenshot("pool-lifecycle");
                 await Click(button("returnButton"), mouse);
                 await Click(button("releaseButton"), mouse);
                 Require(cube == null && pool.Count == 0 && Field<SpawnObjectItem>(example, "item") == null, "Final Release destroys Cube and discards pooled wrapper reference");
@@ -168,7 +197,8 @@ public static class ValidateObjectPoolExamples
             var pool = Field<IObjectPool<GrowingCubeItem>>(example, "pool");
             var held = Field<List<GrowingCubeItem>>(example, "borrowed");
             Require(pool.Count == 0 && pool.Capacity == 2, "Factory starts with empty pool and capacity 2");
-            for (int i = 0; i < 4; i++) await Click(button("spawnButton"), mouse);
+            for (int i = 0; i < 4; i++)
+                await Click(button("spawnButton"), mouse);
             Require(pool.Count == 4 && held.Count == 4 && held.Select(i => i.Target).Distinct().Count() == 4 && Field<int>(example, "created") == 4, "Empty factory creates four real Cubes beyond Capacity");
             Require(((ObjectPoolBase)pool).GetAllObjectInfos().All(i => i.SpawnCount == 1), "Register(true) records exactly one borrow");
             var last = (GameObject)held[3].Target;
@@ -184,10 +214,12 @@ public static class ValidateObjectPoolExamples
             await Click(button("spawnButton"), mouse);
             Require(((GameObject)held[1].Target).GetInstanceID() == reusedId && Field<int>(example, "created") == 4 && Field<int>(example, "reused") == 1, "Factory skips Instantiate for cached target");
             slider("capacitySlider").value = 6;
-            for (int i = held.Count; i < 6; i++) await Click(button("spawnButton"), mouse);
+            for (int i = held.Count; i < 6; i++)
+                await Click(button("spawnButton"), mouse);
             Require(pool.Count == 6 && !button("spawnButton").interactable, "Scene display limit is six, capacity can be selected");
             await Screenshot("pool-factory");
-            while (held.Count > 0) await Click(button("returnButton"), mouse);
+            while (held.Count > 0)
+                await Click(button("returnButton"), mouse);
             Require(pool.Count == 6 && pool.CanReleaseCount == 6, "Capacity 6 keeps six idle targets");
             await Click(button("clearButton"), mouse);
             Require(pool.Count == 0, "Explicit release clears actual cached Cubes");
@@ -204,7 +236,8 @@ public static class ValidateObjectPoolExamples
             await Click(button("createButton"), mouse);
             var cube = Field<GameObject>(example, "cube");
             Require(pool.AllowMultiSpawn && pool.CanSpawn("Cube") && !((ObjectPoolBase)pool).GetAllObjectInfos()[0].IsInUse, "Shared entry initially idle and borrowable by name");
-            for (int i = 0; i < 3; i++) await Click(button("borrowButton"), mouse);
+            for (int i = 0; i < 3; i++)
+                await Click(button("borrowButton"), mouse);
             Require(users.All(i => ReferenceEquals(i.Target, cube)) && pool.Count == 1 && ((ObjectPoolBase)pool).GetAllObjectInfos()[0].SpawnCount == 3, "Three users share one exact Target");
             Require(pool.CanSpawn("Cube") && ((ObjectPoolBase)pool).GetAllObjectInfos()[0].IsInUse
                 && text("stateText").text.Contains("允许共享：是") && text("stateText").text.Contains("当前状态：使用中"), "In-use shared entry remains borrowable");
@@ -225,7 +258,9 @@ public static class ValidateObjectPoolExamples
             var pool = Field<IObjectPool<PolicyCubeItem>>(example, "pool");
             var items = Field<PolicyCubeItem[]>(example, "items");
             await Click(button("createButton"), mouse);
-            var a = (GameObject)items[0].Target; var b = (GameObject)items[1].Target; var keep = (GameObject)items[2].Target;
+            var a = (GameObject)items[0].Target;
+            var b = (GameObject)items[1].Target;
+            var keep = (GameObject)items[2].Target;
             Require(text("stateText").text.Contains(pool.Name) && text("stateText").text.Contains(pool.ObjectType.Name)
                 && text("stateText").text.Contains("每 0.25 秒检查"), "Live typed pool identity and check interval shown");
             Require(text("resultText").text.Contains("PolicyCubeItem.Policy")
@@ -270,22 +305,31 @@ public static class ValidateObjectPoolExamples
             dropdown("policyMode").value = 2;
             await Click(button("applyButton"), mouse);
             Require(b == null && pool.Count == 2, "Changing Target priority alters lowest-priority victim");
-            dropdown("policyMode").value = 3; await Click(button("applyButton"), mouse);
+            dropdown("policyMode").value = 3;
+            await Click(button("applyButton"), mouse);
             await Click(button("createButton"), mouse);
             keep = (GameObject)items[2].Target;
-            dropdown("policyMode").value = 5; await Click(button("applyButton"), mouse);
+            dropdown("policyMode").value = 5;
+            await Click(button("applyButton"), mouse);
             Require(pool.Count == 2 && keep != null, "Custom release one only selects temporary target");
-            dropdown("policyMode").value = 4; await Click(button("applyButton"), mouse);
+            dropdown("policyMode").value = 4;
+            await Click(button("applyButton"), mouse);
             Require(pool.Count == 1 && keep != null && ((ObjectPoolBase)pool).GetAllObjectInfos()[0].Name == "Keep", "Custom filter keeps persistent target");
             await Screenshot("pool-policy");
-            dropdown("policyMode").value = 3; await Click(button("applyButton"), mouse);
+            dropdown("policyMode").value = 3;
+            await Click(button("applyButton"), mouse);
             await Click(button("createButton"), mouse);
-            a = (GameObject)items[0].Target; b = (GameObject)items[1].Target; keep = (GameObject)items[2].Target;
-            dropdown("policyMode").value = 4; await Click(button("applyButton"), mouse);
+            a = (GameObject)items[0].Target;
+            b = (GameObject)items[1].Target;
+            keep = (GameObject)items[2].Target;
+            dropdown("policyMode").value = 4;
+            await Click(button("applyButton"), mouse);
             Require(pool.Count == 1 && a == null && b == null && keep != null, "All-Temp callback releases both matching entries in one request");
-            dropdown("policyMode").value = 3; await Click(button("applyButton"), mouse);
+            dropdown("policyMode").value = 3;
+            await Click(button("applyButton"), mouse);
             await Click(button("createButton"), mouse);
-            dropdown("policyMode").value = 1; await Click(button("applyButton"), mouse);
+            dropdown("policyMode").value = 1;
+            await Click(button("applyButton"), mouse);
             await Until(() => pool.Count == 0, 4000, "Automatic idle expiry removes Cube targets");
         }
         else if (name == "InspectObjectPools")
@@ -294,7 +338,8 @@ public static class ValidateObjectPoolExamples
             Require(QGF.ObjectPool.Count == 3 && QGF.ObjectPool.GetAllObjectPools().All(p => p.Count == 1), "Three pools own three real targets");
             for (int i = 0; i < dropdown("queryMode").options.Count; i++)
             {
-                dropdown("queryMode").value = i; await Click(button("queryButton"), mouse);
+                dropdown("queryMode").value = i;
+                await Click(button("queryButton"), mouse);
                 Require(text("resultText").text.Contains("查到"), "Manager query " + i);
                 if (i < 5)
                 {
@@ -334,7 +379,8 @@ public static class ValidateObjectPoolExamples
                 await Click(button("createButton"), mouse);
                 await Click(button("destroyButton"), mouse);
                 Require(QGF.ObjectPool.Count == 2 && text("resultText").text.Contains("目标池已销毁"), "Manager destroy overload deletes one pool " + i);
-                if (i >= 2) Require(!button("releasePoolButton").interactable, "Missing Left disables its release button " + i);
+                if (i >= 2)
+                    Require(!button("releasePoolButton").interactable, "Missing Left disables its release button " + i);
             }
             await Click(button("clearButton"), mouse);
             Require(QGF.ObjectPool.GetAllObjectPools().All(p => p.Count == 0), "Manager release clears Target contents, preserves pools");
@@ -348,26 +394,27 @@ public static class ValidateObjectPoolExamples
             var priority = new HashSet<int> { 7, 8, 10, 11, 12, 13, 14 };
             ObjectPoolBase previous = null;
             for (int route = 0; route < 4; route++)
-            for (int arguments = 0; arguments < 15; arguments++)
-            {
-                dropdown("creationKind").value = route;
-                dropdown("creationArguments").value = arguments;
-                await Click(button("compareButton"), mouse);
-                var created = Field<ObjectPoolBase>(example, "comparisonPool");
-                Require(QGF.ObjectPool.Count == baseline + 1 && created.Count == 0 && created.ObjectType == typeof(PolicyCubeItem),
-                    "Comparison adds exactly one empty typed pool " + route + ":" + arguments);
-                Require(created.Name == (named.Contains(arguments) ? "Compare" : string.Empty) && created.AllowMultiSpawn == (route >= 2),
-                    "Creation identity and spawn mode " + route + ":" + arguments);
-                Require(created.Capacity == (capacity.Contains(arguments) ? 8 : int.MaxValue)
-                    && created.Priority == (priority.Contains(arguments) ? 5 : 0), "Capacity and pool priority " + route + ":" + arguments);
-                float expectedExpiry = expiry.Contains(arguments) ? 4f : float.MaxValue;
-                Require(created.ExpireTime == expectedExpiry && created.AutoReleaseInterval == (arguments == 14 ? .25f : expectedExpiry),
-                    "Explicit/default expiry and check interval " + route + ":" + arguments);
-                Require(text("comparisonText").text.Contains("登记目标：0") && text("comparisonText").text.Contains(arguments == 14 ? "检查间隔：0.25 秒"
-                    : expiry.Contains(arguments) ? "检查间隔：4 秒" : "检查间隔：不自动检查"), "Visible creation result " + route + ":" + arguments);
-                if (previous != null) Require(!QGF.ObjectPool.GetAllObjectPools().Contains(previous), "Recreation removes previous comparison pool");
-                previous = created;
-            }
+                for (int arguments = 0; arguments < 15; arguments++)
+                {
+                    dropdown("creationKind").value = route;
+                    dropdown("creationArguments").value = arguments;
+                    await Click(button("compareButton"), mouse);
+                    var created = Field<ObjectPoolBase>(example, "comparisonPool");
+                    Require(QGF.ObjectPool.Count == baseline + 1 && created.Count == 0 && created.ObjectType == typeof(PolicyCubeItem),
+                        "Comparison adds exactly one empty typed pool " + route + ":" + arguments);
+                    Require(created.Name == (named.Contains(arguments) ? "Compare" : string.Empty) && created.AllowMultiSpawn == (route >= 2),
+                        "Creation identity and spawn mode " + route + ":" + arguments);
+                    Require(created.Capacity == (capacity.Contains(arguments) ? 8 : int.MaxValue)
+                        && created.Priority == (priority.Contains(arguments) ? 5 : 0), "Capacity and pool priority " + route + ":" + arguments);
+                    float expectedExpiry = expiry.Contains(arguments) ? 4f : float.MaxValue;
+                    Require(created.ExpireTime == expectedExpiry && created.AutoReleaseInterval == (arguments == 14 ? .25f : expectedExpiry),
+                        "Explicit/default expiry and check interval " + route + ":" + arguments);
+                    Require(text("comparisonText").text.Contains("登记目标：0") && text("comparisonText").text.Contains(arguments == 14 ? "检查间隔：0.25 秒"
+                        : expiry.Contains(arguments) ? "检查间隔：4 秒" : "检查间隔：不自动检查"), "Visible creation result " + route + ":" + arguments);
+                    if (previous != null)
+                        Require(!QGF.ObjectPool.GetAllObjectPools().Contains(previous), "Recreation removes previous comparison pool");
+                    previous = created;
+                }
             await Click(button("removeComparisonButton"), mouse);
             Require(QGF.ObjectPool.Count == baseline && !button("removeComparisonButton").interactable, "Comparison removal retains other pools");
             await Click(button("compareButton"), mouse);
@@ -381,7 +428,8 @@ public static class ValidateObjectPoolExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -399,7 +447,8 @@ public static class ValidateObjectPoolExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -408,7 +457,8 @@ public static class ValidateObjectPoolExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -447,13 +497,15 @@ public static class ValidateObjectPoolExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -461,13 +513,15 @@ public static class ValidateObjectPoolExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

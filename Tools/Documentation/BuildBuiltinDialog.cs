@@ -35,7 +35,8 @@ public static class BuildBuiltinDialog
             mask.GetComponent<Image>().color = new Color(.01f, .02f, .03f, .4f);
             var image = panel.GetComponent<Image>();
             image.sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Examples/02_StarForce/GameMain/UI/UISprites/Common/dialog-background.png");
-            if (image.sprite == null) throw new InvalidOperationException("The opaque dialog background sprite could not be loaded.");
+            if (image.sprite == null)
+                throw new InvalidOperationException("The opaque dialog background sprite could not be loaded.");
             image.type = Image.Type.Sliced;
             image.color = new Color(.025f, .07f, .1f, 1f);
             var message = (RectTransform)panel.Find("Text_Message");
@@ -43,7 +44,12 @@ public static class BuildBuiltinDialog
             message.anchoredPosition = new Vector2(0, 16);
             message.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
             PrefabUtility.SaveAsPrefabAsset(root, path);
-            return new { styled = path, maximumWidth = 680, minimumSideMargin = 24 };
+            return new
+            {
+                styled = path,
+                maximumWidth = 680,
+                minimumSideMargin = 24
+            };
         }
         finally { PrefabUtility.UnloadPrefabContents(root); }
     }
@@ -52,7 +58,8 @@ public static class BuildBuiltinDialog
     {
         if (!Application.dataPath.Contains("Artifacts~") || !File.Exists("QgfExampleConsumer~.json"))
             throw new InvalidOperationException("Use the isolated Consumer project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Stop Play first.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Stop Play first.");
         const string folder = "Assets/Examples/02_StarForce/GameMain/";
         const string path = folder + "UI/UIForms/BuiltinDialogForm.prefab";
         var source = AssetDatabase.LoadAssetAtPath<GameObject>(folder + "UI/UIForms/DialogForm.prefab");
@@ -89,7 +96,8 @@ public static class BuildBuiltinDialog
             }
             UnityEngine.Object.DestroyImmediate(original);
             var font = AssetDatabase.LoadAssetAtPath<Font>(folder + "Fonts/MainFont.ttf");
-            foreach (var text in instance.GetComponentsInChildren<Text>(true)) text.font = font;
+            foreach (var text in instance.GetComponentsInChildren<Text>(true))
+                text.font = font;
             var canvas = instance.GetComponent<Canvas>();
             canvas.sortingOrder = 30000;
             instance.AddComponent<GraphicRaycaster>();
@@ -103,7 +111,13 @@ public static class BuildBuiltinDialog
                 throw new InvalidOperationException("The dialog card must use an opaque background sprite.");
             var prefab = PrefabUtility.SaveAsPrefabAsset(instance, path);
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(prefab.GetComponent<BuiltinDialogForm>(), out string guid, out long fileId);
-            return new { path, guid, fileId, variant = PrefabUtility.GetPrefabAssetType(prefab).ToString() };
+            return new
+            {
+                path,
+                guid,
+                fileId,
+                variant = PrefabUtility.GetPrefabAssetType(prefab).ToString()
+            };
         }
         finally { EditorSceneManager.ClosePreviewScene(preview); }
     }

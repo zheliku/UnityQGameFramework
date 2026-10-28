@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.DataNode;
+using UnityQGameFramework.Core;
 using UnityEditor;
 using UnityQGameFramework.Runtime;
 
@@ -13,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制数据结点组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(DataNodeComponent))]
-    internal sealed class DataNodeComponentInspector : FrameworkInspector
+    internal sealed class DataNodeComponentInspector : GameFrameworkInspector
     {
         /// <summary>
         /// 绘制组件的 Inspector 配置和运行时信息。

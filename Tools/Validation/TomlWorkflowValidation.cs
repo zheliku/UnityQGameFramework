@@ -9,7 +9,6 @@ using UnityEditor.PackageManager.UI;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Localization;
 using UnityQGameFramework.Editor.ResourceTools;
 
 [InitializeOnLoad]
@@ -27,9 +26,11 @@ public static class TomlWorkflowValidation
 
     private static void Tick()
     {
-        if (!File.Exists(State) || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+        if (!File.Exists(State) || EditorApplication.isCompiling || EditorApplication.isUpdating)
+            return;
         string stage = File.ReadAllText(State);
-        if (stage == "done") return;
+        if (stage == "done")
+            return;
         try
         {
             Require(EditorApplication.timeSinceStartup - s_Start < 240, "Sample import timed out");
@@ -40,7 +41,8 @@ public static class TomlWorkflowValidation
                 Require(Sample.FindByPackage("com.zheliku.unityqgameframework", packageVersion).Single(s => s.displayName == "22 · StarForce").Import(Sample.ImportOptions.OverridePreviousImports), "Could not import sample");
                 return;
             }
-            if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.GetType("StarForce.MenuForm") == null)) return;
+            if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.GetType("StarForce.MenuForm") == null))
+                return;
             Validate();
             File.WriteAllText(State, "done");
             File.WriteAllText("Results/toml-result.json", "{\"passed\":true,\"translations\":120,\"scenePaths\":3,\"resourceRoundTrip\":true,\"invalidInputPreserved\":true,\"assetBundleBuild\":true}");
@@ -107,7 +109,7 @@ public static class TomlWorkflowValidation
         var scenePaths = (string[])sceneType.GetMethod("ReadScenePaths", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { true });
         Require(scenePaths.Length == 3 && scenePaths[0] == launcher, "Scene paths no longer resolve relative to sample");
 
-        var manager = FrameworkEntry.GetModule<ILocalizationManager>();
+        var manager = GameFrameworkEntry.GetModule<ILocalizationManager>();
         int translations = 0;
         foreach (string dictionary in Directory.GetFiles(sample + "/GameMain", "*.toml", SearchOption.AllDirectories).Where(p => Path.GetFileName(p) == "DefaultDictionary.toml" || Path.GetFileName(p) == "Default.toml"))
         {
@@ -119,7 +121,8 @@ public static class TomlWorkflowValidation
                 manager.RemoveAllRawStrings();
                 TomlLocalizationParser.ParseAndAdd(manager, text);
                 var expected = Flatten((TomlTable)language.Value);
-                foreach (var entry in expected) Require(manager.GetRawString(entry.Key) == entry.Value, "Lost translation: " + entry.Key);
+                foreach (var entry in expected)
+                    Require(manager.GetRawString(entry.Key) == entry.Value, "Lost translation: " + entry.Key);
                 translations += expected.Count;
             }
         }
@@ -131,11 +134,14 @@ public static class TomlWorkflowValidation
         foreach (string invalidDictionary in new[] { "[Korean]\nWrong = 42", "[English]\nName = 'Missing language'", "[Korean]\n'Game.Name' = 'duplicate'\n[Korean.Game]\nName = 'duplicate too'" })
         {
             bool rejected = false;
-            try { TomlLocalizationParser.ParseAndAdd(manager, invalidDictionary); }
+            try
+            {
+                TomlLocalizationParser.ParseAndAdd(manager, invalidDictionary);
+            }
             catch { rejected = true; }
             Require(rejected && manager.DictionaryCount == 1 && manager.GetString("Game.Name") == "게임 프레임워크", "Invalid dictionary changed published translations");
         }
-        FrameworkEntry.Shutdown();
+        GameFrameworkEntry.Shutdown();
 
         // A full Windows64 resource build covers the new collection reader and report writer.
         builder = new ResourceBuilderController(configs + "/ResourceBuilder.toml");
@@ -152,7 +158,7 @@ public static class TomlWorkflowValidation
         Require(Directory.GetFiles(builder.OutputFullPath, "*.dat", SearchOption.AllDirectories).Length > 0 &&
             !File.ReadAllText(builder.BuildReportPath + "BuildLog.txt").Contains("[ERROR]"), "Resource build produced no files or logged errors");
         Require(!File.Exists(builder.BuildReportPath + "BuildReport.xml"), "Legacy XML build report remains");
-        FrameworkEntry.Shutdown();
+        GameFrameworkEntry.Shutdown();
     }
 
     private static System.Collections.Generic.Dictionary<string, string> Flatten(TomlTable table, string prefix = "")
@@ -161,13 +167,24 @@ public static class TomlWorkflowValidation
         foreach (var entry in table)
         {
             string key = string.IsNullOrEmpty(prefix) ? entry.Key : prefix + "." + entry.Key;
-            if (entry.Value is TomlTable child) foreach (var leaf in Flatten(child, key)) result.Add(leaf.Key, leaf.Value);
-            else result.Add(key, (string)entry.Value);
+            if (entry.Value is TomlTable child)
+                foreach (var leaf in Flatten(child, key))
+                    result.Add(leaf.Key, leaf.Value);
+            else
+                result.Add(key, (string)entry.Value);
         }
         return result;
     }
 
     private static string Snapshot(ResourceCollection collection) => string.Join("\n", collection.GetResources().Select(r => r.FullName + "|" + r.FileSystem + "|" + r.LoadType + "|" + r.Packed + "|" + string.Join(",", r.GetResourceGroups().OrderBy(g => g)))) + "\n" + string.Join("\n", collection.GetAssets().Select(a => a.Guid + "|" + a.Resource.FullName));
-    private static void Require(bool value, string message) { if (!value) throw new Exception(message); }
-    [Serializable] private sealed class Failure { public bool passed; public string failure; }
+    private static void Require(bool value, string message)
+    {
+        if (!value)
+            throw new Exception(message);
+    }
+    [Serializable]
+    private sealed class Failure
+    {
+        public bool passed; public string failure;
+    }
 }

@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Debugger;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Debugger")]
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 默认调试器漂浮框大小。
@@ -169,7 +168,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_DebuggerManager = FrameworkEntry.GetModule<IDebuggerManager>();
+            m_DebuggerManager = GameFrameworkEntry.GetModule<IDebuggerManager>();
             if (m_DebuggerManager == null)
             {
                 Log.Fatal("Debugger manager is invalid.");

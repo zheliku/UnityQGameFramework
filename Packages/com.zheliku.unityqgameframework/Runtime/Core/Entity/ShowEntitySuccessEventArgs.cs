@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 显示实体成功事件。
     /// </summary>
-    public sealed class ShowEntitySuccessEventArgs : FrameworkEventArgs
+    public sealed class ShowEntitySuccessEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化显示实体成功事件的新实例。
@@ -23,17 +23,26 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取显示成功的实体。
         /// </summary>
-        public IEntity Entity { get; private set; }
+        public IEntity Entity
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载持续时间。
         /// </summary>
-        public float Duration { get; private set; }
+        public float Duration
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建显示实体成功事件。

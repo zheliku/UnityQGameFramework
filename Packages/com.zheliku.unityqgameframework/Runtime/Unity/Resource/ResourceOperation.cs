@@ -27,7 +27,7 @@ namespace UnityQGameFramework.Runtime
             cancellationToken.ThrowIfCancellationRequested();
             if (operation.Status != EOperationStatus.Succeeded)
             {
-                throw new FrameworkException(operation.Error);
+                throw new GameFrameworkException(operation.Error);
             }
         }
 
@@ -115,7 +115,7 @@ namespace UnityQGameFramework.Runtime
                 cancellationToken.ThrowIfCancellationRequested();
                 if (!handle.IsValid || handle.Status != EOperationStatus.Succeeded)
                 {
-                    throw new FrameworkException(handle.IsValid ? handle.Error : "The resource handle was released during loading.");
+                    throw new GameFrameworkException(handle.IsValid ? handle.Error : "The resource handle was released during loading.");
                 }
             }
             catch

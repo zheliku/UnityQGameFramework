@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 实体接口。
@@ -13,22 +13,34 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取实体编号。
         /// </summary>
-        int Id { get; }
+        int Id
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取实体资源名称。
         /// </summary>
-        string EntityAssetName { get; }
+        string EntityAssetName
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取实体实例。
         /// </summary>
-        object Handle { get; }
+        object Handle
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取实体所属的实体组。
         /// </summary>
-        IEntityGroup EntityGroup { get; }
+        IEntityGroup EntityGroup
+        {
+            get;
+        }
 
         /// <summary>
         /// 实体初始化。

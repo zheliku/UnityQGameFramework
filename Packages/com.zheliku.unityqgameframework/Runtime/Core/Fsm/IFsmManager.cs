@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Fsm
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 有限状态机管理器。
@@ -16,7 +16,10 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取有限状态机数量。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 检查是否存在有限状态机。

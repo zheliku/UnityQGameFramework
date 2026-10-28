@@ -14,7 +14,7 @@ namespace UnityQGameFramework.Core
     /// 游戏框架链表类。
     /// </summary>
     /// <typeparam name="T">指定链表的元素类型。</typeparam>
-    public sealed class FrameworkLinkedList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
+    public sealed class GameFrameworkLinkedList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
     {
         private readonly LinkedList<T> m_LinkedList;
         private readonly Queue<LinkedListNode<T>> m_CachedNodes;
@@ -22,7 +22,7 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 初始化游戏框架链表类的新实例。
         /// </summary>
-        public FrameworkLinkedList()
+        public GameFrameworkLinkedList()
         {
             m_LinkedList = new LinkedList<T>();
             m_CachedNodes = new Queue<LinkedListNode<T>>();
@@ -302,7 +302,7 @@ namespace UnityQGameFramework.Core
             LinkedListNode<T> first = m_LinkedList.First;
             if (first == null)
             {
-                throw new FrameworkException("First is invalid.");
+                throw new GameFrameworkException("First is invalid.");
             }
 
             m_LinkedList.RemoveFirst();
@@ -317,7 +317,7 @@ namespace UnityQGameFramework.Core
             LinkedListNode<T> last = m_LinkedList.Last;
             if (last == null)
             {
-                throw new FrameworkException("Last is invalid.");
+                throw new GameFrameworkException("Last is invalid.");
             }
 
             m_LinkedList.RemoveLast();
@@ -407,7 +407,7 @@ namespace UnityQGameFramework.Core
             {
                 if (linkedList == null)
                 {
-                    throw new FrameworkException("Linked list is invalid.");
+                    throw new GameFrameworkException("Linked list is invalid.");
                 }
 
                 m_Enumerator = linkedList.GetEnumerator();

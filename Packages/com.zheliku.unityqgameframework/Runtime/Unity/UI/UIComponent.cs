@@ -4,9 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.ObjectPool;
-using UnityQGameFramework.Core.Resource;
-using UnityQGameFramework.Core.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/UI")]
-    public sealed partial class UIComponent : FrameworkComponent
+    public sealed partial class UIComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
@@ -150,7 +147,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_UIManager = FrameworkEntry.GetModule<IUIManager>();
+            m_UIManager = GameFrameworkEntry.GetModule<IUIManager>();
             if (m_UIManager == null)
             {
                 Log.Fatal("UI manager is invalid.");
@@ -201,7 +198,7 @@ namespace UnityQGameFramework.Runtime
 
             m_UIManager.SetResourceManager(GameEntry.GetComponent<ResourceComponent>().ResourceManager);
 
-            m_UIManager.SetObjectPoolManager(FrameworkEntry.GetModule<IObjectPoolManager>());
+            m_UIManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
             m_UIManager.InstanceAutoReleaseInterval = m_InstanceAutoReleaseInterval;
             m_UIManager.InstanceCapacity = m_InstanceCapacity;
             m_UIManager.InstanceExpireTime = m_InstanceExpireTime;
@@ -698,7 +695,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnOpenUIFormSuccess(object sender, UnityQGameFramework.Core.UI.OpenUIFormSuccessEventArgs e)
+        private void OnOpenUIFormSuccess(object sender, UnityQGameFramework.Core.Events.OpenUIFormSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, OpenUIFormSuccessEventArgs.Create(e));
         }
@@ -708,7 +705,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnOpenUIFormFailure(object sender, UnityQGameFramework.Core.UI.OpenUIFormFailureEventArgs e)
+        private void OnOpenUIFormFailure(object sender, UnityQGameFramework.Core.Events.OpenUIFormFailureEventArgs e)
         {
             Log.Warning("Open UI form failure, asset name '{0}', UI group name '{1}', pause covered UI form '{2}', error message '{3}'.", e.UIFormAssetName, e.UIGroupName, e.PauseCoveredUIForm, e.ErrorMessage);
             if (m_EnableOpenUIFormFailureEvent)
@@ -722,7 +719,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnOpenUIFormUpdate(object sender, UnityQGameFramework.Core.UI.OpenUIFormUpdateEventArgs e)
+        private void OnOpenUIFormUpdate(object sender, UnityQGameFramework.Core.Events.OpenUIFormUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, OpenUIFormUpdateEventArgs.Create(e));
         }
@@ -732,7 +729,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnOpenUIFormDependencyAsset(object sender, UnityQGameFramework.Core.UI.OpenUIFormDependencyAssetEventArgs e)
+        private void OnOpenUIFormDependencyAsset(object sender, UnityQGameFramework.Core.Events.OpenUIFormDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, OpenUIFormDependencyAssetEventArgs.Create(e));
         }
@@ -742,7 +739,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnCloseUIFormComplete(object sender, UnityQGameFramework.Core.UI.CloseUIFormCompleteEventArgs e)
+        private void OnCloseUIFormComplete(object sender, UnityQGameFramework.Core.Events.CloseUIFormCompleteEventArgs e)
         {
             m_EventComponent.Fire(this, CloseUIFormCompleteEventArgs.Create(e));
         }

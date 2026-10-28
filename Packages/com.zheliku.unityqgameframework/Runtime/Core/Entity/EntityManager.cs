@@ -3,17 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 实体管理器。
     /// </summary>
-    internal sealed partial class EntityManager : FrameworkModule, IEntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         private readonly Dictionary<int, EntityInfo> m_EntityInfos;
         private readonly Dictionary<string, EntityGroup> m_EntityGroups;
@@ -166,7 +165,7 @@ namespace UnityQGameFramework.Core.Entity
                 EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
                 if (entityGroup == null)
                 {
-                    throw new FrameworkException("Entity group is invalid.");
+                    throw new GameFrameworkException("Entity group is invalid.");
                 }
 
                 entityInfo.Status = EntityStatus.WillRecycle;
@@ -203,7 +202,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (objectPoolManager == null)
             {
-                throw new FrameworkException("Object pool manager is invalid.");
+                throw new GameFrameworkException("Object pool manager is invalid.");
             }
 
             m_ObjectPoolManager = objectPoolManager;
@@ -217,7 +216,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (resourceManager == null)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                throw new GameFrameworkException("Resource manager is invalid.");
             }
 
             m_ResourceManager = resourceManager;
@@ -231,7 +230,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (entityHelper == null)
             {
-                throw new FrameworkException("Entity helper is invalid.");
+                throw new GameFrameworkException("Entity helper is invalid.");
             }
 
             m_EntityHelper = entityHelper;
@@ -246,7 +245,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityGroupName))
             {
-                throw new FrameworkException("Entity group name is invalid.");
+                throw new GameFrameworkException("Entity group name is invalid.");
             }
 
             return m_EntityGroups.ContainsKey(entityGroupName);
@@ -261,7 +260,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityGroupName))
             {
-                throw new FrameworkException("Entity group name is invalid.");
+                throw new GameFrameworkException("Entity group name is invalid.");
             }
 
             EntityGroup entityGroup = null;
@@ -297,7 +296,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -321,17 +320,17 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityGroupName))
             {
-                throw new FrameworkException("Entity group name is invalid.");
+                throw new GameFrameworkException("Entity group name is invalid.");
             }
 
             if (entityGroupHelper == null)
             {
-                throw new FrameworkException("Entity group helper is invalid.");
+                throw new GameFrameworkException("Entity group helper is invalid.");
             }
 
             if (m_ObjectPoolManager == null)
             {
-                throw new FrameworkException("You must set object pool manager first.");
+                throw new GameFrameworkException("You must set object pool manager first.");
             }
 
             if (HasEntityGroup(entityGroupName))
@@ -363,7 +362,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityAssetName))
             {
-                throw new FrameworkException("Entity asset name is invalid.");
+                throw new GameFrameworkException("Entity asset name is invalid.");
             }
 
             foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
@@ -402,7 +401,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityAssetName))
             {
-                throw new FrameworkException("Entity asset name is invalid.");
+                throw new GameFrameworkException("Entity asset name is invalid.");
             }
 
             foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
@@ -425,7 +424,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityAssetName))
             {
-                throw new FrameworkException("Entity asset name is invalid.");
+                throw new GameFrameworkException("Entity asset name is invalid.");
             }
 
             List<IEntity> results = new List<IEntity>();
@@ -449,12 +448,12 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (string.IsNullOrEmpty(entityAssetName))
             {
-                throw new FrameworkException("Entity asset name is invalid.");
+                throw new GameFrameworkException("Entity asset name is invalid.");
             }
 
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -491,7 +490,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -525,7 +524,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -568,7 +567,7 @@ namespace UnityQGameFramework.Core.Entity
         /// <param name="entityGroupName">实体组名称。</param>
         public void ShowEntity(int entityId, string entityAssetName, string entityGroupName)
         {
-            ShowEntity(entityId, entityAssetName, entityGroupName, Constant.DefaultPriority, null);
+            ShowEntity(entityId, entityAssetName, entityGroupName, ResourceConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -592,7 +591,7 @@ namespace UnityQGameFramework.Core.Entity
         /// <param name="userData">用户自定义数据。</param>
         public void ShowEntity(int entityId, string entityAssetName, string entityGroupName, object userData)
         {
-            ShowEntity(entityId, entityAssetName, entityGroupName, Constant.DefaultPriority, userData);
+            ShowEntity(entityId, entityAssetName, entityGroupName, ResourceConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -607,38 +606,38 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (m_ResourceManager == null)
             {
-                throw new FrameworkException("You must set resource manager first.");
+                throw new GameFrameworkException("You must set resource manager first.");
             }
 
             if (m_EntityHelper == null)
             {
-                throw new FrameworkException("You must set entity helper first.");
+                throw new GameFrameworkException("You must set entity helper first.");
             }
 
             if (string.IsNullOrEmpty(entityAssetName))
             {
-                throw new FrameworkException("Entity asset name is invalid.");
+                throw new GameFrameworkException("Entity asset name is invalid.");
             }
 
             if (string.IsNullOrEmpty(entityGroupName))
             {
-                throw new FrameworkException("Entity group name is invalid.");
+                throw new GameFrameworkException("Entity group name is invalid.");
             }
 
             if (HasEntity(entityId))
             {
-                throw new FrameworkException(Utility.Text.Format("Entity id '{0}' is already exist.", entityId));
+                throw new GameFrameworkException(Utility.Text.Format("Entity id '{0}' is already exist.", entityId));
             }
 
             if (IsLoadingEntity(entityId))
             {
-                throw new FrameworkException(Utility.Text.Format("Entity '{0}' is already being loaded.", entityId));
+                throw new GameFrameworkException(Utility.Text.Format("Entity '{0}' is already being loaded.", entityId));
             }
 
             EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
             if (entityGroup == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Entity group '{0}' is not exist.", entityGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Entity group '{0}' is not exist.", entityGroupName));
             }
 
             EntityInstanceObject entityInstanceObject = entityGroup.SpawnEntityInstanceObject(entityAssetName);
@@ -679,7 +678,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo entityInfo = GetEntityInfo(entityId);
             if (entityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find entity '{0}'.", entityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find entity '{0}'.", entityId));
             }
 
             InternalHideEntity(entityInfo, userData);
@@ -703,7 +702,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (entity == null)
             {
-                throw new FrameworkException("Entity is invalid.");
+                throw new GameFrameworkException("Entity is invalid.");
             }
 
             HideEntity(entity.Id, userData);
@@ -756,7 +755,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId));
             }
 
             return childEntityInfo.ParentEntity;
@@ -771,7 +770,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (childEntity == null)
             {
-                throw new FrameworkException("Child entity is invalid.");
+                throw new GameFrameworkException("Child entity is invalid.");
             }
 
             return GetParentEntity(childEntity.Id);
@@ -787,7 +786,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
             return parentEntityInfo.ChildEntityCount;
@@ -803,7 +802,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
             return parentEntityInfo.GetChildEntity();
@@ -818,7 +817,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (parentEntity == null)
             {
-                throw new FrameworkException("Parent entity is invalid.");
+                throw new GameFrameworkException("Parent entity is invalid.");
             }
 
             return GetChildEntity(parentEntity.Id);
@@ -834,7 +833,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
             return parentEntityInfo.GetChildEntities();
@@ -850,7 +849,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
             parentEntityInfo.GetChildEntitiesNonAlloc(results);
@@ -865,7 +864,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (parentEntity == null)
             {
-                throw new FrameworkException("Parent entity is invalid.");
+                throw new GameFrameworkException("Parent entity is invalid.");
             }
 
             return GetChildEntities(parentEntity.Id);
@@ -880,7 +879,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (parentEntity == null)
             {
-                throw new FrameworkException("Parent entity is invalid.");
+                throw new GameFrameworkException("Parent entity is invalid.");
             }
 
             GetChildEntitiesNonAlloc(parentEntity.Id, results);
@@ -906,29 +905,29 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (childEntityId == parentEntityId)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not attach entity when child entity id equals to parent entity id '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not attach entity when child entity id equals to parent entity id '{0}'.", parentEntityId));
             }
 
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId));
             }
 
             if (childEntityInfo.Status >= EntityStatus.WillHide)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not attach entity when child entity status is '{0}'.", childEntityInfo.Status));
+                throw new GameFrameworkException(Utility.Text.Format("Can not attach entity when child entity status is '{0}'.", childEntityInfo.Status));
             }
 
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
             if (parentEntityInfo.Status >= EntityStatus.WillHide)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not attach entity when parent entity status is '{0}'.", parentEntityInfo.Status));
+                throw new GameFrameworkException(Utility.Text.Format("Can not attach entity when parent entity status is '{0}'.", parentEntityInfo.Status));
             }
 
             IEntity childEntity = childEntityInfo.Entity;
@@ -960,7 +959,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (parentEntity == null)
             {
-                throw new FrameworkException("Parent entity is invalid.");
+                throw new GameFrameworkException("Parent entity is invalid.");
             }
 
             AttachEntity(childEntityId, parentEntity.Id, userData);
@@ -986,7 +985,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (childEntity == null)
             {
-                throw new FrameworkException("Child entity is invalid.");
+                throw new GameFrameworkException("Child entity is invalid.");
             }
 
             AttachEntity(childEntity.Id, parentEntityId, userData);
@@ -1012,12 +1011,12 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (childEntity == null)
             {
-                throw new FrameworkException("Child entity is invalid.");
+                throw new GameFrameworkException("Child entity is invalid.");
             }
 
             if (parentEntity == null)
             {
-                throw new FrameworkException("Parent entity is invalid.");
+                throw new GameFrameworkException("Parent entity is invalid.");
             }
 
             AttachEntity(childEntity.Id, parentEntity.Id, userData);
@@ -1042,7 +1041,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId));
             }
 
             IEntity parentEntity = childEntityInfo.ParentEntity;
@@ -1054,7 +1053,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntity.Id);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntity.Id));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntity.Id));
             }
 
             IEntity childEntity = childEntityInfo.Entity;
@@ -1082,7 +1081,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (childEntity == null)
             {
-                throw new FrameworkException("Child entity is invalid.");
+                throw new GameFrameworkException("Child entity is invalid.");
             }
 
             DetachEntity(childEntity.Id, userData);
@@ -1107,7 +1106,7 @@ namespace UnityQGameFramework.Core.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
             while (parentEntityInfo.ChildEntityCount > 0)
@@ -1135,7 +1134,7 @@ namespace UnityQGameFramework.Core.Entity
         {
             if (parentEntity == null)
             {
-                throw new FrameworkException("Parent entity is invalid.");
+                throw new GameFrameworkException("Parent entity is invalid.");
             }
 
             DetachChildEntities(parentEntity.Id, userData);
@@ -1174,7 +1173,7 @@ namespace UnityQGameFramework.Core.Entity
                 IEntity entity = m_EntityHelper.CreateEntity(entityInstance, entityGroup, userData);
                 if (entity == null)
                 {
-                    throw new FrameworkException("Can not create entity in entity helper.");
+                    throw new GameFrameworkException("Can not create entity in entity helper.");
                 }
 
                 EntityInfo entityInfo = EntityInfo.Create(entity);
@@ -1235,13 +1234,13 @@ namespace UnityQGameFramework.Core.Entity
             EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
             if (entityGroup == null)
             {
-                throw new FrameworkException("Entity group is invalid.");
+                throw new GameFrameworkException("Entity group is invalid.");
             }
 
             entityGroup.RemoveEntity(entity);
             if (!m_EntityInfos.Remove(entity.Id))
             {
-                throw new FrameworkException("Entity info is unmanaged.");
+                throw new GameFrameworkException("Entity info is unmanaged.");
             }
 
             if (m_HideEntityCompleteEventHandler != null)
@@ -1266,7 +1265,7 @@ namespace UnityQGameFramework.Core.Entity
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
-                throw new FrameworkException("Show entity info is invalid.");
+                throw new GameFrameworkException("Show entity info is invalid.");
             }
 
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
@@ -1297,7 +1296,7 @@ namespace UnityQGameFramework.Core.Entity
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
-                throw new FrameworkException("Show entity info is invalid.");
+                throw new GameFrameworkException("Show entity info is invalid.");
             }
 
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
@@ -1316,7 +1315,7 @@ namespace UnityQGameFramework.Core.Entity
                 return;
             }
 
-            throw new FrameworkException(appendErrorMessage);
+            throw new GameFrameworkException(appendErrorMessage);
         }
 
         /// <summary>
@@ -1330,7 +1329,7 @@ namespace UnityQGameFramework.Core.Entity
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
-                throw new FrameworkException("Show entity info is invalid.");
+                throw new GameFrameworkException("Show entity info is invalid.");
             }
 
             if (m_ShowEntityUpdateEventHandler != null)
@@ -1354,7 +1353,7 @@ namespace UnityQGameFramework.Core.Entity
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
-                throw new FrameworkException("Show entity info is invalid.");
+                throw new GameFrameworkException("Show entity info is invalid.");
             }
 
             if (m_ShowEntityDependencyAssetEventHandler != null)

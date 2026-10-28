@@ -19,7 +19,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体。
         /// </summary>
-        public Entity Entity { get; private set; }
+        public Entity Entity
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置实体名称。
@@ -39,7 +42,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体是否可用。
         /// </summary>
-        public bool Available { get; private set; }
+        public bool Available
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置实体是否可见。
@@ -71,7 +77,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取已缓存的 Transform。
         /// </summary>
-        public Transform CachedTransform { get; private set; }
+        public Transform CachedTransform
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 实体初始化。

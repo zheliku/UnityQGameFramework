@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,24 +41,33 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取打开成功的界面。
         /// </summary>
-        public UIForm UIForm { get; private set; }
+        public UIForm UIForm
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载持续时间。
         /// </summary>
-        public float Duration { get; private set; }
+        public float Duration
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建打开界面成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的打开界面成功事件。</returns>
-        public static OpenUIFormSuccessEventArgs Create(UnityQGameFramework.Core.UI.OpenUIFormSuccessEventArgs e)
+        public static OpenUIFormSuccessEventArgs Create(UnityQGameFramework.Core.Events.OpenUIFormSuccessEventArgs e)
         {
             OpenUIFormSuccessEventArgs openUIFormSuccessEventArgs = ReferencePool.Acquire<OpenUIFormSuccessEventArgs>();
             openUIFormSuccessEventArgs.UIForm = (UIForm)e.UIForm;

@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 /// <summary>
 /// Luban 生成的数据表。
 /// </summary>
-public partial class TbItem : UnityQGameFramework.Core.DataTable.DataTable<DRItem>
+public partial class TbItem : UnityQGameFramework.Core.DataTable<DRItem>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

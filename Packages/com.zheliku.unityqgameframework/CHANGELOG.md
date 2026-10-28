@@ -2,67 +2,30 @@
 
 ## [Unreleased]
 
-### Added
+### Changed
 
-- Added a VS Code review workspace generator at `Tools/Review/compare_ugf.py`. It aligns the locked UGF and GameFramework sources to current QGF paths so moved files remain one `M` diff; the generated inventory records upstream commits and hashes.
-
-- ResourceSettings 使用英文 Inspector 和 YooAsset 原生 EPlayMode；每包只保留一个 Play Mode，编辑器与 Player 统一读取。旧双字段配置保留原 Player 模式，示例默认模拟，构建应用前明确选择离线或联机等模式。
-- 指定 Collector 后同步原生窗口、包列表和默认包；原生 Save 后同步包增删并保留同名包的运行参数。
-- YooAsset 原生 Builder 增加 Batch Build，多选或全选包后使用每个包的原生设置依次构建，首包复制目录与原生单包构建一致；保留刷新后的构建结果。
-- 资源入门示例直接 await LoadAssetAsync，文档以 UniTask 和资产归还为主要流程；旧 UGF 兼容成员保留签名并从常用代码提示隐藏。
-- 资源模式补充 Custom 初始化扩展，直接返回 YooAsset 官方初始化选项；缓存和有效的 UGF 清理间隔统一放到资源配置的高级选项。
-- 移除运行面板中的 Windows 专用 Player 构建区和不生效的旧加载代理配置；首包与应用构建使用 YooAsset、Unity 原生面板。
-- 自有框架和示例补齐中文 XML 文档、参数与返回值，表达式主体和紧凑代码块统一为 UGF 写法；增加基于 Roslyn 的代码规范检查，覆盖内部类型中的公开成员、内部方法、运算符和条件编译分支。
-- 统一 Luban 表加载器与 QGF DataTable 入口；生成的 `Tables` 实现 `IDataTableLoader`，业务统一通过 `GetDataTable<TbXxx>()` 查询。
-- 模块 DataTable 示例增加官方 Excel schema 的字符串键、复合索引、单例表、无主键列表、跨表引用和具名表登记示例。
-- 增加 `QGF > Resource > Packages` 入口，复用 YooAsset 原生收集与构建窗口，并支持在 Project 中选择 Collector 资产切换 Sample 配置。
-- 资源构建改为读取 YooAsset 原生 Builder 的管线、压缩、首包复制、缓存和加密选项；离线 Player 仅对当前构建临时覆盖首包复制方式。
-- 移除重复的 ResourceBuildProfile 配置；每个 Sample 只保留运行配置和官方 Collector，收集与构建统一使用 YooAsset 窗口，组件 Inspector 保留运行设置及快捷入口。
-- Luban 的 Profile 和 luban.conf 放在 Config 根目录；Profile 直接引用配置文件，源表目录由 dataDir 指定，保留 Source、Generated、Data，不再预建空目录。
-- 点点点和 StarForce Sample 移除专用 Editor 打包脚本；应用构建使用 Unity 原生面板，DataTable Inspector 可直接展开编辑 Profile。
-- 资源示例分别展示路径和 YooAsset 地址定位；关闭扩展名别名，避免同目录资源产生重复位置警告。
-- QGF 编辑器日志显示调用方法及可点击的文件行号；四个等级使用更明亮的深浅主题色，正文沿用 Console 原生颜色，不再重复输出时间。Player 保留纯文本时间，异常直接保留原类型和堆栈。
+- Moved Core module and helper notifications to `UnityQGameFramework.Core.Events`, while keeping foundational types and manager interfaces in Core. Runtime game event names stay unchanged; examples now use ordinary Core/Runtime imports without per-event aliases. No assembly split was added.
+- Restored UGF foundational type names, including `GameFrameworkEntry`, `GameFrameworkLinkedList`, `GameFrameworkComponent` and `GameFrameworkLog`. Core modules now share `UnityQGameFramework.Core`; update old module-level using directives accordingly.
+- Kept Core, Unity runtime and Editor assembly boundaries. Each Sample now has one root assembly named `UnityQGameFramework.Examples.*`; StarForce serialized UI bindings and linker settings use its dedicated assembly.
+- Rewrote documentation around installation, focused module calls, Luban tables and the native YooAsset workflow. Added whole-project formatting through `.editorconfig` and condensed the contributor conventions.
+- Unified Luban access through DataTableComponent and generated typed tables. Added primary-key and composite-key indexers, `NonAlloc` list queries and map/list/one/reference examples; removed the unused keyed table interface and old TXT generation.
+- Simplified Luban workspaces to Profile, luban.conf, Source, Generated and Data. The pinned compiler downloads to Library automatically; local compiler-path configuration was removed.
+- Made ResourceSettings the single source for runtime package settings, with one YooAsset Play Mode per package shared by Editor and Player. Collector and Builder retain their native configuration and build preferences; QGF adds configuration selection and batch actions without editing vendor source.
+- Used UniTask for asset, table and download waits. Shared initialization, cancellation, package shutdown and resource ownership are handled by the QGF adapter; custom initialization accepts native YooAsset options.
+- Kept three independently importable Samples with uGUI, URP and Input System. Sample operations do not change host project settings; build resources with YooAsset and applications with Unity.
+- Standardized English UI/runtime messages and Chinese XML documentation. Extensions now provide descriptions and copyable Git URLs, leaving installation to Package Manager.
 
 ### Fixed
 
-- Removed `QgfProjectAssets` and the QGF uninstall/backup menus. Samples are ordinary Package Manager imports and can be removed from the Project window without framework-owned project-asset tracking.
-- Removed local Luban compiler selection. The pinned compiler is downloaded and cached automatically in `Library`; the project no longer stores a machine-specific compiler path.
-- Translated framework and Sample runtime/editor strings to English while retaining Chinese source XML documentation and explanatory comments.
-- Simplified the Extensions window to descriptions and copyable Git URLs. Dependency installation, updates and removal remain in Package Manager.
-- Merged editor log initialization and formatting into DefaultLogHelper; removed the delegate bridge, empty LogRedirection file and single-file editor logging folder.
-- Added typed Luban key indexers for primary-key and composite-key tables, and renamed list-filling APIs with `NonAlloc` suffixes to distinguish reusable result buffers from array-returning methods.
-- Kept key indexers directly on generated tables and removed the unused keyed `IDataTable<TKey, T>` interface. The table-mode example now demonstrates string, integer and composite-key indexers alongside resolved references.
-- Kept reflection-based `Utility.Assembly.GetTypes(List<Type>)` under its original name: reusing the output list does not avoid reflection's temporary arrays.
-- Renamed DataTable operations to `CreateTables`, `AddDataTables`, `RemoveDataTable` and `LoadTablesFromCatalog`; the names now describe construction, manager ownership and Catalog loading separately.
-- Removed the QGF UI input adapter and UI link file. Samples use Unity Input System's `InputSystemUIInputModule` directly.
-- Migrated Debugger input pages and StarForce mouse controls to Input System; removed the remaining legacy input calls and fallback branch.
+- Preserved resource and UI ownership during cancellation, retries and shutdown; prevented late callbacks from accessing closed services.
+- Fixed Collector/Builder theme contrast and package-list synchronization. Removed the third-party Collector Inspector override and duplicate resource build profiles.
+- Improved QGF log colors and clickable caller locations without intercepting Unity's global log handler.
+- Removed project-asset uninstall tracking, unused editor files and the legacy UI input adapter. Debugger and StarForce use Input System directly.
 
-- 移除 QGF 对 YooAsset Collector 的自定义 Inspector，恢复原生配置字段显示；保留双击打开官方收集窗口的入口。
-- YooAsset 原生收集与构建窗口的背景按 Unity 深浅主题适配，修复浅色主题下深底深字和黑色边框。
-- DataTable Inspector 区分生成 Profile 与运行时 Catalog，补充示例和 README 的初始化时序、加载方式及数据清单说明。
-- 修复资源后端在退出和销毁包时把 YooAsset 正常终止任务记录为运行时警告的问题。
-- 资源更新示例的构建入口移到 `UpdateRemoteResources` Inspector，并使用 `UNITY_EDITOR` 条件编译。
-- 修复模块示例编号、表目录序号和发布 Sample 同步后的场景绑定。
-- 补齐模块示例的实际行为检查，覆盖数据节点、事件、流程、所有权、复用、下载、网络、声音和调试器生命周期。
-- 多个 Sample 各自拥有 Luban Profile 时，编辑器启动等待 QGF Settings 的全局选择，不再输出误导性的初始化警告。
-- 修复资源示例在框架退出后清理资产借用时重复访问已关闭资源服务的问题。
+### Development
 
-### Validation
-
-- Unity 2022.3、6.0、6.3 的 YooAsset、Luban、TOML、取消和重试集成检查通过；Unity 6.3 的 62 个模块场景、点点点和 StarForce 启动检查通过。
-
-- 内置 YooAsset 3.0.6 源码、许可证和版本锁定；增加资源配置、构建 Profile、模拟构建与 Player 资源包构建入口。
-- 增加 UniTask 资源等待与取消处理；旧 Resource 模块的整体迁移尚在进行。
-- ResourceComponent 可指定 ResourceSettings，接入 YooAsset 资产借用、原生文件与场景加载；增加异步加载、独立句柄、包初始化和安全销毁入口。
-- 增加 `LoadDataTablesAsync<T>`，与原有表集事件入口共用请求记录，支持取消、失败异常及重试。
-- 增加 `DownloadResourcesAsync`，统一 YooAsset 下载的 UniTask 等待、失败异常和取消；StarForce 增加下载确认、进度、重试及更新后缓存清理流程。
-- StarForce 预载 Luban 表集与主字体改用 UniTask，启动失败提示不依赖资源包；修复内置对话框同帧连续打开时丢失重试提示。
-- 示例改用资产 GUID 作为 Bundle 名，缩短按 Profile 隔离的构建缓存路径，修复 Windows 深层目录下的资源构建路径过长错误。
-- 联机包可关闭内置文件系统，支持没有 StreamingAssets 首包的纯远端下载；修正 HTTP 更新示例强制读取缺失的 BuiltinCatalog 的问题。
-- 重载启动场景时等待 QGF 上一实例完成资源包关闭，修复 StarForce 切换语言后同名包仍被占用、停在初始化的问题。
-- Player 资源构建现在同步生成首包目录并部署 `BuiltinCatalog.bytes`，修复离线 Player 启动时缺少内置资源目录的问题。
-- 同一 Profile 和版本可重复构建，只覆盖该版本产物并保留增量缓存。
-- 打包器支持排除内置 UniTask 或 YooAsset，供已安装官方依赖的项目使用；默认分发继续内置源码。
+- Added an aligned UGF/QGF Git review workspace with locked upstream commits and hashes; renamed or moved counterparts remain comparable as modified files.
+- Added source-style, Sample synchronization, package-content and runtime verification tools. Removed obsolete Unity-generated project files after regenerating the solution.
 
 ## [0.1.0-exp.8] - 2026-10-24
 

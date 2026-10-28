@@ -62,7 +62,10 @@ namespace StarForce
         /// <summary>
         /// 最大生命。
         /// </summary>
-        public abstract int MaxHP { get; }
+        public abstract int MaxHP
+        {
+            get;
+        }
 
         /// <summary>
         /// 生命百分比。

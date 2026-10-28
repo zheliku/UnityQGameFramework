@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Sound;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
-using PlaySoundSuccessEventArgs = UnityQGameFramework.Runtime.PlaySoundSuccessEventArgs;
 
 namespace UnityQGameFramework.Examples.Modules
 {

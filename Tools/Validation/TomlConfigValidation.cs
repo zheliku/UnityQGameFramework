@@ -3,13 +3,13 @@ using System.Globalization;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityQGameFramework.Core.Config;
+using UnityQGameFramework.Core;
 
 public static class TomlConfigValidation
 {
     public static object Run()
     {
-        Type type = typeof(IConfigManager).Assembly.GetType("UnityQGameFramework.Core.Config.ConfigManager");
+        Type type = typeof(IConfigManager).Assembly.GetType("UnityQGameFramework.Core.ConfigManager");
         var manager = (IConfigManager)Activator.CreateInstance(type, true);
         CultureInfo previous = CultureInfo.CurrentCulture;
         try
@@ -32,7 +32,10 @@ public static class TomlConfigValidation
             })
             {
                 bool rejected = false;
-                try { TomlConfigParser.ParseAndAdd(manager, invalid); }
+                try
+                {
+                    TomlConfigParser.ParseAndAdd(manager, invalid);
+                }
                 catch (Exception) { rejected = true; }
                 Require(rejected && manager.Count == count && !manager.HasConfig("New"), "An invalid document changed existing settings.");
             }
@@ -43,7 +46,15 @@ public static class TomlConfigValidation
             manager.RemoveAllConfigs();
             TomlConfigParser.ParseAndAdd(manager, asset.text);
             Require(manager.Count == 3 && manager.GetString("Game.Id") == "Star Force" && manager.GetInt("Scene.Main") == 2, "StarForce settings changed.");
-            var result = new { passed = true, settings = manager.Count, rejectedDocuments = 7, cultureIndependent = true, importer = true, guidPreserved = true };
+            var result = new
+            {
+                passed = true,
+                settings = manager.Count,
+                rejectedDocuments = 7,
+                cultureIndependent = true,
+                importer = true,
+                guidPreserved = true
+            };
             Directory.CreateDirectory("Artifacts~/Toml");
             File.WriteAllText("Artifacts~/Toml/editor-validation.json", JsonUtility.ToJson(new Summary { passed = true, settings = manager.Count }, true));
             return result;
@@ -51,6 +62,14 @@ public static class TomlConfigValidation
         finally { CultureInfo.CurrentCulture = previous; }
     }
 
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
-    [Serializable] private sealed class Summary { public bool passed; public int settings; }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
+    [Serializable]
+    private sealed class Summary
+    {
+        public bool passed; public int settings;
+    }
 }

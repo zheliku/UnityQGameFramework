@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -45,17 +44,26 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取 Web 请求任务的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取 Web 请求地址。
         /// </summary>
-        public string WebRequestUri { get; private set; }
+        public string WebRequestUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取 Web 响应的数据流。
@@ -71,7 +79,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的 Web 请求成功事件。</returns>
-        public static WebRequestSuccessEventArgs Create(UnityQGameFramework.Core.WebRequest.WebRequestSuccessEventArgs e)
+        public static WebRequestSuccessEventArgs Create(UnityQGameFramework.Core.Events.WebRequestSuccessEventArgs e)
         {
             WWWFormInfo wwwFormInfo = (WWWFormInfo)e.UserData;
             WebRequestSuccessEventArgs webRequestSuccessEventArgs = ReferencePool.Acquire<WebRequestSuccessEventArgs>();

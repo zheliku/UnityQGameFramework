@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源信息。
@@ -38,7 +38,10 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源名称。
             /// </summary>
-            public ResourceName ResourceName { get; }
+            public ResourceName ResourceName
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源是否使用文件系统。
@@ -54,7 +57,10 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取文件系统名称。
             /// </summary>
-            public string FileSystemName { get; }
+            public string FileSystemName
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源是否通过二进制方式加载。
@@ -70,32 +76,50 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源加载方式。
             /// </summary>
-            public LoadType LoadType { get; }
+            public LoadType LoadType
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源大小。
             /// </summary>
-            public int Length { get; }
+            public int Length
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源哈希值。
             /// </summary>
-            public int HashCode { get; }
+            public int HashCode
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取压缩后资源大小。
             /// </summary>
-            public int CompressedLength { get; }
+            public int CompressedLength
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源是否在只读区。
             /// </summary>
-            public bool StorageInReadOnly { get; }
+            public bool StorageInReadOnly
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源是否准备完毕。
             /// </summary>
-            public bool Ready { get; private set; }
+            public bool Ready
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 标记资源准备完毕。

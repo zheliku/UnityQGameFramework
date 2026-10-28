@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 隐藏实体完成事件。
     /// </summary>
-    public sealed class HideEntityCompleteEventArgs : FrameworkEventArgs
+    public sealed class HideEntityCompleteEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化隐藏实体完成事件的新实例。
@@ -24,22 +24,34 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取实体编号。
         /// </summary>
-        public int EntityId { get; private set; }
+        public int EntityId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体资源名称。
         /// </summary>
-        public string EntityAssetName { get; private set; }
+        public string EntityAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体所属的实体组。
         /// </summary>
-        public IEntityGroup EntityGroup { get; private set; }
+        public IEntityGroup EntityGroup
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建隐藏实体完成事件。

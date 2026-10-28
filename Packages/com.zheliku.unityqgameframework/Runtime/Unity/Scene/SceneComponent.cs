@@ -4,9 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
-using UnityQGameFramework.Core.Scene;
-using UnityQGameFramework.Core.Event;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -22,14 +19,14 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Scene")]
-    public sealed class SceneComponent : FrameworkComponent
+    public sealed class SceneComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
         private ISceneManager m_SceneManager = null;
         private EventComponent m_EventComponent = null;
         private readonly SortedDictionary<string, int> m_SceneOrder = new SortedDictionary<string, int>(StringComparer.Ordinal);
-        private Scene m_FrameworkScene = default(Scene);
+        private Scene m_GameFrameworkScene = default(Scene);
 
         [SerializeField]
         private bool m_EnableLoadSceneUpdateEvent = true;
@@ -40,7 +37,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取当前场景主摄像机。
         /// </summary>
-        public Camera MainCamera { get; private set; }
+        public Camera MainCamera
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -49,7 +49,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_SceneManager = FrameworkEntry.GetModule<ISceneManager>();
+            m_SceneManager = GameFrameworkEntry.GetModule<ISceneManager>();
             if (m_SceneManager == null)
             {
                 Log.Fatal("Scene manager is invalid.");
@@ -72,8 +72,8 @@ namespace UnityQGameFramework.Runtime
             m_SceneManager.UnloadSceneSuccess += OnUnloadSceneSuccess;
             m_SceneManager.UnloadSceneFailure += OnUnloadSceneFailure;
 
-            m_FrameworkScene = SceneManager.GetSceneAt(GameEntry.FrameworkSceneId);
-            if (!m_FrameworkScene.IsValid())
+            m_GameFrameworkScene = SceneManager.GetSceneAt(GameEntry.GameFrameworkSceneId);
+            if (!m_GameFrameworkScene.IsValid())
             {
                 Log.Fatal("Unity Q Game Framework scene is invalid.");
                 return;
@@ -347,7 +347,7 @@ namespace UnityQGameFramework.Runtime
                 cancellation.Dispose();
                 if (!request.Cancelled)
                 {
-                    request.Completion.TrySetException(new FrameworkException(args.ErrorMessage));
+                    request.Completion.TrySetException(new GameFrameworkException(args.ErrorMessage));
                 }
             };
 
@@ -453,7 +453,7 @@ namespace UnityQGameFramework.Runtime
                 cancellation.Dispose();
                 if (!request.Cancelled)
                 {
-                    request.Completion.TrySetException(new FrameworkException("Unload scene failure: " + args.SceneAssetName));
+                    request.Completion.TrySetException(new GameFrameworkException("Unload scene failure: " + args.SceneAssetName));
                 }
             };
 
@@ -606,7 +606,7 @@ namespace UnityQGameFramework.Runtime
 
                 if (maxSceneName == null)
                 {
-                    SetActiveScene(m_FrameworkScene);
+                    SetActiveScene(m_GameFrameworkScene);
                     return;
                 }
 
@@ -629,7 +629,7 @@ namespace UnityQGameFramework.Runtime
             }
             else
             {
-                SetActiveScene(m_FrameworkScene);
+                SetActiveScene(m_GameFrameworkScene);
             }
         }
 
@@ -654,7 +654,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnLoadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.LoadSceneSuccessEventArgs e)
+        private void OnLoadSceneSuccess(object sender, UnityQGameFramework.Core.Events.LoadSceneSuccessEventArgs e)
         {
             if (!m_SceneOrder.ContainsKey(e.SceneAssetName))
             {
@@ -670,7 +670,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnLoadSceneFailure(object sender, UnityQGameFramework.Core.Scene.LoadSceneFailureEventArgs e)
+        private void OnLoadSceneFailure(object sender, UnityQGameFramework.Core.Events.LoadSceneFailureEventArgs e)
         {
             Log.Warning("Load scene failure, scene asset name '{0}', error message '{1}'.", e.SceneAssetName, e.ErrorMessage);
             m_EventComponent.Fire(this, LoadSceneFailureEventArgs.Create(e));
@@ -681,7 +681,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnLoadSceneUpdate(object sender, UnityQGameFramework.Core.Scene.LoadSceneUpdateEventArgs e)
+        private void OnLoadSceneUpdate(object sender, UnityQGameFramework.Core.Events.LoadSceneUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadSceneUpdateEventArgs.Create(e));
         }
@@ -691,7 +691,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnLoadSceneDependencyAsset(object sender, UnityQGameFramework.Core.Scene.LoadSceneDependencyAssetEventArgs e)
+        private void OnLoadSceneDependencyAsset(object sender, UnityQGameFramework.Core.Events.LoadSceneDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, LoadSceneDependencyAssetEventArgs.Create(e));
         }
@@ -701,7 +701,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnUnloadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.UnloadSceneSuccessEventArgs e)
+        private void OnUnloadSceneSuccess(object sender, UnityQGameFramework.Core.Events.UnloadSceneSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, UnloadSceneSuccessEventArgs.Create(e));
             m_SceneOrder.Remove(e.SceneAssetName);
@@ -713,7 +713,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnUnloadSceneFailure(object sender, UnityQGameFramework.Core.Scene.UnloadSceneFailureEventArgs e)
+        private void OnUnloadSceneFailure(object sender, UnityQGameFramework.Core.Events.UnloadSceneFailureEventArgs e)
         {
             Log.Warning("Unload scene failure, scene asset name '{0}'.", e.SceneAssetName);
             m_EventComponent.Fire(this, UnloadSceneFailureEventArgs.Create(e));

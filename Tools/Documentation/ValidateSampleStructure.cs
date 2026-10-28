@@ -26,7 +26,11 @@ public static class ValidateSampleStructure
         const string path = "Assets/Examples/01_Modules/UnityQGameFramework/Config/LubanProfile.asset";
         var profile = AssetDatabase.LoadAssetAtPath<UnityQGameFramework.Editor.LubanProfile>(path);
         await UnityQGameFramework.Editor.LubanGenerator.GenerateAsync(profile);
-        return new { generated = true, profile = path };
+        return new
+        {
+            generated = true,
+            profile = path
+        };
     }
 
     /// <summary>
@@ -101,7 +105,14 @@ public static class ValidateSampleStructure
             }
         }
 
-        var result = new { passed = errors.Count == 0, scenes, prefabs, dependencies, errors };
+        var result = new
+        {
+            passed = errors.Count == 0,
+            scenes,
+            prefabs,
+            dependencies,
+            errors
+        };
         Directory.CreateDirectory("Artifacts~/ExamplesAlignment");
         File.WriteAllText("Artifacts~/ExamplesAlignment/structure.json", JsonConvert.SerializeObject(result, Formatting.Indented));
         return result;

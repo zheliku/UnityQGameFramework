@@ -12,7 +12,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制声音组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(SoundComponent))]
-    internal sealed class SoundComponentInspector : FrameworkInspector
+    internal sealed class SoundComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_EnablePlaySoundUpdateEvent = null;
         private SerializedProperty m_EnablePlaySoundDependencyAssetEvent = null;

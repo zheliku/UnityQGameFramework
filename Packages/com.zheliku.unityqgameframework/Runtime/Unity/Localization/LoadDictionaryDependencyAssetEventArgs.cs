@@ -4,7 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core.Events;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -44,27 +44,42 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取字典资源名称。
         /// </summary>
-        public string DictionaryAssetName { get; private set; }
+        public string DictionaryAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被加载的依赖资源名称。
         /// </summary>
-        public string DependencyAssetName { get; private set; }
+        public string DependencyAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前已加载依赖资源数量。
         /// </summary>
-        public int LoadedCount { get; private set; }
+        public int LoadedCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取总共加载依赖资源数量。
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int TotalCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载字典时加载依赖资源事件。

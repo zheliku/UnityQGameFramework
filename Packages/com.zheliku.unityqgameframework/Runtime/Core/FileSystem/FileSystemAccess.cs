@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 文件系统访问方式。

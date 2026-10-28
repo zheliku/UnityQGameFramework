@@ -28,7 +28,8 @@ public static class ValidateAdvancedUtilityExamples
             throw new Exception("Use the isolated idle validation project.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
-            .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty)) throw new Exception("Unsaved scene.");
+            .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
+            throw new Exception("Unsaved scene.");
         assertions.Clear();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
@@ -36,7 +37,8 @@ public static class ValidateAdvancedUtilityExamples
         var errors = new List<string>();
         Application.LogCallback capture = (message, stack, type) =>
         {
-            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         var completed = new List<object>();
         bool enabled = EditorSettings.enterPlayModeOptionsEnabled, background = Application.runInBackground;
@@ -48,9 +50,16 @@ public static class ValidateAdvancedUtilityExamples
         Mouse mouse = null;
         // 保存临时选项，连接或程序集重载中断验证时可据此恢复。
         Directory.CreateDirectory("Artifacts~/AdvancedUtilityExamples");
-        File.WriteAllText("Artifacts~/AdvancedUtilityExamples/active-run.json", JsonConvert.SerializeObject(new {
-            active = true, startedUtc = DateTime.UtcNow, enabled, options, background,
-            inputBackground = oldBackground, inputEditor = oldEditorInput, originalScene = setup
+        File.WriteAllText("Artifacts~/AdvancedUtilityExamples/active-run.json", JsonConvert.SerializeObject(new
+        {
+            active = true,
+            startedUtc = DateTime.UtcNow,
+            enabled,
+            options,
+            background,
+            inputBackground = oldBackground,
+            inputEditor = oldEditorInput,
+            originalScene = setup
         }, Formatting.Indented));
         Application.logMessageReceived += capture;
         try
@@ -63,7 +72,8 @@ public static class ValidateAdvancedUtilityExamples
             foreach (string name in Names)
             {
                 string anchor = AssetDatabase.GUIDToAssetPath("e638c6e0da015f4d99bdc5c5491facc0");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Base sample not imported.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Base sample not imported.");
                 string script = Path.GetDirectoryName(anchor).Replace('\\', '/') + ((string)layouts[name]["script"]).Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
@@ -85,30 +95,59 @@ public static class ValidateAdvancedUtilityExamples
                 await Check(name, owner, data, mouse);
                 await Play(false);
                 Require(errors.Count == 0, name + " no runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { name, scene = script.Substring(0, script.Length - 3) + ".unity", assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = oldBackground;
             inputSettings.editorInputBehaviorInPlayMode = oldEditorInput;
             EditorSettings.enterPlayModeOptionsEnabled = enabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = background;
             Application.logMessageReceived -= capture;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            File.WriteAllText("Artifacts~/AdvancedUtilityExamples/active-run.json", JsonConvert.SerializeObject(new { active = false, stoppedUtc = DateTime.UtcNow }, Formatting.Indented));
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            File.WriteAllText("Artifacts~/AdvancedUtilityExamples/active-run.json", JsonConvert.SerializeObject(new
+            {
+                active = false,
+                stoppedUtc = DateTime.UtcNow
+            }, Formatting.Indented));
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, assertionCount = assertions.Count, scenes = completed,
-            nativeButtons = true, testInputs = "Dropdown and InputField values assigned by test; Global random seed explicitly applied; shared native cache reserve/free explicitly clicked", settingsUnchanged = true };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            assertionCount = assertions.Count,
+            scenes = completed,
+            nativeButtons = true,
+            testInputs = "Dropdown and InputField values assigned by test; Global random seed explicitly applied; shared native cache reserve/free explicitly clicked",
+            settingsUnchanged = true
+        };
         Directory.CreateDirectory("Artifacts~/AdvancedUtilityExamples");
         File.WriteAllText("Artifacts~/AdvancedUtilityExamples/advanced-utility-check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, result.assertionCount, scenes = completed.Count, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            result.assertionCount,
+            scenes = completed.Count,
+            result.settingsUnchanged
+        };
     }
 
     private static async Task Check(string name, MonoBehaviour owner, SerializedObject data, Mouse mouse)
@@ -132,17 +171,20 @@ public static class ValidateAdvancedUtilityExamples
                 var expected = new System.Random(123);
                 for (int draw = 0; draw < 3; draw++)
                 {
-                    if (draw > 0) await Click(button("drawButton"), mouse);
+                    if (draw > 0)
+                        await Click(button("drawButton"), mouse);
                     string result = text("resultText").text;
                     string value;
-                    if (mode == 3) value = expected.NextDouble().ToString("R", System.Globalization.CultureInfo.InvariantCulture);
+                    if (mode == 3)
+                        value = expected.NextDouble().ToString("R", System.Globalization.CultureInfo.InvariantCulture);
                     else if (mode == 4)
                     {
                         var bytes = new byte[8];
                         expected.NextBytes(bytes);
                         value = BitConverter.ToString(bytes);
                     }
-                    else value = (mode == 0 ? expected.Next() : mode == 1 ? expected.Next(7) : expected.Next(1, 7)).ToString();
+                    else
+                        value = (mode == 0 ? expected.Next() : mode == 1 ? expected.Next(7) : expected.Next(1, 7)).ToString();
                     Require(result.Contains(mode == 3 ? "GetRandomDouble()：" + value : mode == 4 ? "GetRandomBytes(buffer)：" + value : "GetRandom：" + value + "\n"), "Known seeded sequence mode=" + mode + " draw=" + draw);
                     var marker = Field<RectTransform>(owner, "markerRect");
                     var track = (RectTransform)marker.parent;
@@ -246,7 +288,8 @@ public static class ValidateAdvancedUtilityExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -264,7 +307,8 @@ public static class ValidateAdvancedUtilityExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -273,7 +317,8 @@ public static class ValidateAdvancedUtilityExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -311,13 +356,15 @@ public static class ValidateAdvancedUtilityExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -325,13 +372,15 @@ public static class ValidateAdvancedUtilityExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

@@ -27,7 +27,8 @@ public static class BuildExampleScenes
 
     private static object RunSelected(string[] folders, string[] names)
     {
-        if (Application.isPlaying) throw new InvalidOperationException("Stop Play Mode first.");
+        if (Application.isPlaying)
+            throw new InvalidOperationException("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
             if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty)
@@ -66,7 +67,8 @@ public static class BuildExampleScenes
                         .Single(entry => Root + "/" + (string)entry["folder"] == moduleRoot);
                     var modules = configuration["frameworkModules"].Values<string>().ToArray();
                     foreach (Transform child in sceneFramework.transform.Cast<Transform>().ToArray())
-                        if (!modules.Contains(child.name)) UnityEngine.Object.DestroyImmediate(child.gameObject);
+                        if (!modules.Contains(child.name))
+                            UnityEngine.Object.DestroyImmediate(child.gameObject);
                     // 资源模块随 frameworkModules 保留或移除；运行模式来自 Sample 的 ResourceSettings。
                     if ((int?)layouts[type.Name]["downloadAgentCount"] > 0)
                     {
@@ -191,7 +193,8 @@ public static class BuildExampleScenes
                     bool compareRooms = (bool?)layouts[type.Name]["compareRooms"] == true;
                     string blue = CreateRoom(artPath, "BlueRoom", new Color(0.12f, 0.65f, 1f), compareRooms ? 2.5f : 3f);
                     var room = serialized.FindProperty("roomGuid");
-                    if (room != null) room.stringValue = AssetDatabase.AssetPathToGUID(blue);
+                    if (room != null)
+                        room.stringValue = AssetDatabase.AssetPathToGUID(blue);
                     else
                     {
                         serialized.FindProperty("blueRoomGuid").stringValue = AssetDatabase.AssetPathToGUID(blue);
@@ -215,8 +218,10 @@ public static class BuildExampleScenes
                     {
                         Shader shader = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color");
                         material = new Material(shader);
-                        if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", new Color(0.12f, 0.65f, 1f));
-                        if (material.HasProperty("_Color")) material.SetColor("_Color", new Color(0.12f, 0.65f, 1f));
+                        if (material.HasProperty("_BaseColor"))
+                            material.SetColor("_BaseColor", new Color(0.12f, 0.65f, 1f));
+                        if (material.HasProperty("_Color"))
+                            material.SetColor("_Color", new Color(0.12f, 0.65f, 1f));
                         AssetDatabase.CreateAsset(material, materialPath);
                     }
                     var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -231,7 +236,8 @@ public static class BuildExampleScenes
                 foreach (string field in new[] { "config", "dictionary", "invalidDictionary" })
                 {
                     var property = serialized.FindProperty(field);
-                    if (property == null) continue;
+                    if (property == null)
+                        continue;
                     string sharedGuid = (string)layouts[type.Name][field + "Guid"];
                     string asset = sharedGuid != null ? AssetDatabase.GUIDToAssetPath(sharedGuid)
                         : AssetDatabase.FindAssets("t:TextAsset", new[] { folder })
@@ -241,18 +247,22 @@ public static class BuildExampleScenes
                 foreach (var entry in new[] { new[] { "json", "Player.json" }, new[] { "response", "status.json" }, new[] { "payload", "Payload.txt" } })
                 {
                     var property = serialized.FindProperty(entry[0]);
-                    if (property == null) continue;
+                    if (property == null)
+                        continue;
                     if (entry[0] == "payload" && layouts[type.Name]["payloadGuid"] != null)
                     {
                         string shared = AssetDatabase.GUIDToAssetPath((string)layouts[type.Name]["payloadGuid"]);
                         property.objectReferenceValue = AssetDatabase.LoadAssetAtPath<TextAsset>(shared);
-                        if (property.objectReferenceValue == null) throw new Exception("Missing shared payload: " + shared);
+                        if (property.objectReferenceValue == null)
+                            throw new Exception("Missing shared payload: " + shared);
                         continue;
                     }
                     string asset = folder + "/" + entry[1];
-                    if (!File.Exists(asset) && entry[0] == "payload") asset = folder + "/Payload.bytes";
+                    if (!File.Exists(asset) && entry[0] == "payload")
+                        asset = folder + "/Payload.bytes";
                     property.objectReferenceValue = AssetDatabase.LoadAssetAtPath<TextAsset>(asset);
-                    if (property.objectReferenceValue == null) throw new Exception("Missing example asset: " + asset);
+                    if (property.objectReferenceValue == null)
+                        throw new Exception("Missing example asset: " + asset);
                 }
                 serialized.ApplyModifiedPropertiesWithoutUndo();
                 if ((bool?)definitions.Single(entry => Root + "/" + (string)entry["folder"] == moduleRoot)["responsiveLayout"] == true)
@@ -297,12 +307,17 @@ public static class BuildExampleScenes
             else
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
-        return new { scenes = count, independentFrameworks = true };
+        return new
+        {
+            scenes = count,
+            independentFrameworks = true
+        };
     }
 
     private static void BuildPanel(Component example, JObject layout, string moduleRoot)
     {
-        if (layout == null) throw new Exception("Missing uGUI layout: " + example.name);
+        if (layout == null)
+            throw new Exception("Missing uGUI layout: " + example.name);
         var canvas = new GameObject("Canvas_Example", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         var scaler = canvas.GetComponent<CanvasScaler>();
@@ -357,14 +372,36 @@ public static class BuildExampleScenes
             Component value;
             switch (kind)
             {
-                case "Button": go = DefaultControls.CreateButton(resources); value = go.GetComponent<Button>(); break;
-                case "Toggle": go = DefaultControls.CreateToggle(resources); value = go.GetComponent<Toggle>(); break;
-                case "Slider": go = DefaultControls.CreateSlider(resources); value = go.GetComponent<Slider>(); break;
-                case "InputField": go = DefaultControls.CreateInputField(resources); value = go.GetComponent<InputField>(); break;
-                case "Dropdown": go = DefaultControls.CreateDropdown(resources); value = go.GetComponent<Dropdown>(); break;
-                case "Image": go = new GameObject("Image", typeof(RectTransform), typeof(Image)); value = (bool?)control["marker"] == true ? (Component)go.GetComponent<RectTransform>() : go.GetComponent<Image>(); break;
-                case "Text": go = new GameObject("Text", typeof(RectTransform), typeof(Text)); value = go.GetComponent<Text>(); break;
-                default: throw new Exception("Unknown uGUI control: " + kind);
+                case "Button":
+                    go = DefaultControls.CreateButton(resources);
+                    value = go.GetComponent<Button>();
+                    break;
+                case "Toggle":
+                    go = DefaultControls.CreateToggle(resources);
+                    value = go.GetComponent<Toggle>();
+                    break;
+                case "Slider":
+                    go = DefaultControls.CreateSlider(resources);
+                    value = go.GetComponent<Slider>();
+                    break;
+                case "InputField":
+                    go = DefaultControls.CreateInputField(resources);
+                    value = go.GetComponent<InputField>();
+                    break;
+                case "Dropdown":
+                    go = DefaultControls.CreateDropdown(resources);
+                    value = go.GetComponent<Dropdown>();
+                    break;
+                case "Image":
+                    go = new GameObject("Image", typeof(RectTransform), typeof(Image));
+                    value = (bool?)control["marker"] == true ? (Component)go.GetComponent<RectTransform>() : go.GetComponent<Image>();
+                    break;
+                case "Text":
+                    go = new GameObject("Text", typeof(RectTransform), typeof(Text));
+                    value = go.GetComponent<Text>();
+                    break;
+                default:
+                    throw new Exception("Unknown uGUI control: " + kind);
             }
             go.name = (string)control["objectName"];
             Transform parent = content.transform;
@@ -433,7 +470,8 @@ public static class BuildExampleScenes
                 statusRect.offsetMin = new Vector2(12, 12);
                 statusRect.offsetMax = new Vector2(-12, -12);
             }
-            foreach (var image in go.GetComponentsInChildren<Image>(true)) image.color = new Color(0.16f, 0.23f, 0.32f);
+            foreach (var image in go.GetComponentsInChildren<Image>(true))
+                image.color = new Color(0.16f, 0.23f, 0.32f);
             foreach (var label in go.GetComponentsInChildren<Text>(true))
             {
                 label.font = font;
@@ -442,10 +480,13 @@ public static class BuildExampleScenes
                 label.supportRichText = false;
             }
             var element = go.AddComponent<LayoutElement>();
-            if (rowName != null) element.flexibleWidth = 1;
+            if (rowName != null)
+                element.flexibleWidth = 1;
             element.minHeight = kind == "Text" ? 28 : 38;
-            if (kind != "Text") element.preferredHeight = element.minHeight;
-            if (control["height"] != null) element.preferredHeight = (float)control["height"];
+            if (kind != "Text")
+                element.preferredHeight = element.minHeight;
+            if (control["height"] != null)
+                element.preferredHeight = (float)control["height"];
             string caption = (string)control["text"] ?? (string)control["label"] ?? string.Empty;
             if (kind == "Text")
             {
@@ -453,9 +494,14 @@ public static class BuildExampleScenes
                 label.text = caption;
                 label.raycastTarget = false;
                 label.verticalOverflow = VerticalWrapMode.Overflow;
-                if ((bool?)control["title"] == true) { label.fontSize = 28; element.minHeight = 42; }
+                if ((bool?)control["title"] == true)
+                {
+                    label.fontSize = 28;
+                    element.minHeight = 42;
+                }
             }
-            else if (kind == "Button") go.GetComponentInChildren<Text>().text = caption;
+            else if (kind == "Button")
+                go.GetComponentInChildren<Text>().text = caption;
             else if (kind == "Toggle")
             {
                 var toggle = (Toggle)value;
@@ -468,12 +514,14 @@ public static class BuildExampleScenes
                 var input = (InputField)value;
                 input.text = (string)control["value"] ?? string.Empty;
                 input.placeholder.GetComponent<Text>().text = (string)control["label"] ?? "Enter Text";
-                if ((string)control["contentType"] == "IntegerNumber") input.contentType = InputField.ContentType.IntegerNumber;
+                if ((string)control["contentType"] == "IntegerNumber")
+                    input.contentType = InputField.ContentType.IntegerNumber;
                 if ((string)control["multiline"] == "true")
                 {
                     input.lineType = InputField.LineType.MultiLineNewline;
                     element.preferredHeight = 110;
-                    if (control["height"] != null) element.preferredHeight = (float)control["height"];
+                    if (control["height"] != null)
+                        element.preferredHeight = (float)control["height"];
                 }
                 input.customCaretColor = true;
                 input.caretColor = Color.white;
@@ -485,7 +533,11 @@ public static class BuildExampleScenes
                 slider.maxValue = (float?)control["high-value"] ?? 1;
                 slider.value = (float?)control["value"] ?? 0;
                 slider.fillRect.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.9f);
-                if ((bool?)control["interactable"] == false) { slider.interactable = false; slider.handleRect.gameObject.SetActive(false); }
+                if ((bool?)control["interactable"] == false)
+                {
+                    slider.interactable = false;
+                    slider.handleRect.gameObject.SetActive(false);
+                }
             }
             else if (kind == "Dropdown")
             {
@@ -524,7 +576,8 @@ public static class BuildExampleScenes
             if (field != null)
             {
                 var property = serialized.FindProperty(field);
-                if (property == null) throw new Exception(example.name + " has no field " + field);
+                if (property == null)
+                    throw new Exception(example.name + " has no field " + field);
                 property.objectReferenceValue = value;
             }
         }
@@ -544,21 +597,25 @@ public static class BuildExampleScenes
         foreach (string name in new[] { "Listener", "Source" })
         {
             var property = example.FindProperty(name == "Listener" ? "listenerMarker" : "sourceMarker");
-            if (property == null) continue;
+            if (property == null)
+                continue;
             bool listener = name == "Listener";
             var marker = GameObject.CreatePrimitive(listener ? PrimitiveType.Sphere : PrimitiveType.Cube);
             marker.name = name;
             marker.transform.position = new Vector3(listener ? 4 : 7, 0, 0);
             marker.transform.localScale = Vector3.one * 0.6f;
-            if (listener) marker.AddComponent<AudioListener>();
+            if (listener)
+                marker.AddComponent<AudioListener>();
             string path = art + "/" + name + ".mat";
             var material = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (material == null)
             {
                 material = new Material(Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color"));
                 var color = listener ? new Color(1, .65f, .18f) : new Color(.12f, .65f, 1);
-                if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
-                if (material.HasProperty("_Color")) material.SetColor("_Color", color);
+                if (material.HasProperty("_BaseColor"))
+                    material.SetColor("_BaseColor", color);
+                if (material.HasProperty("_Color"))
+                    material.SetColor("_Color", color);
                 AssetDatabase.CreateAsset(material, path);
             }
             marker.GetComponent<Renderer>().sharedMaterial = material;
@@ -617,8 +674,10 @@ public static class BuildExampleScenes
         if (material == null)
         {
             material = new Material(Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color"));
-            if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
-            if (material.HasProperty("_Color")) material.SetColor("_Color", color);
+            if (material.HasProperty("_BaseColor"))
+                material.SetColor("_BaseColor", color);
+            if (material.HasProperty("_Color"))
+                material.SetColor("_Color", color);
             AssetDatabase.CreateAsset(material, materialPath);
         }
         cube.GetComponent<Renderer>().sharedMaterial = material;

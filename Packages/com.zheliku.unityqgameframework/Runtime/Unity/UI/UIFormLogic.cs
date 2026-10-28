@@ -18,7 +18,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取界面。
         /// </summary>
-        public UIForm UIForm { get; private set; }
+        public UIForm UIForm
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置界面名称。
@@ -38,7 +41,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取界面是否可用。
         /// </summary>
-        public bool Available { get; private set; }
+        public bool Available
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置界面是否可见。
@@ -70,7 +76,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取已缓存的 Transform。
         /// </summary>
-        public Transform CachedTransform { get; private set; }
+        public Transform CachedTransform
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 界面初始化。

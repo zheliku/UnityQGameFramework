@@ -9,8 +9,6 @@ using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataTable;
-using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Luban;
 using UnityQGameFramework.Runtime;
 
@@ -19,13 +17,15 @@ public static class StarForceLubanValidation
 {
     public static async Task<object> Run()
     {
-        if (!Application.isPlaying) throw new Exception("Start StarForce Launcher first.");
+        if (!Application.isPlaying)
+            throw new Exception("Start StarForce Launcher first.");
         bool wasPaused = EditorApplication.isPaused;
         EditorApplication.isPaused = true;
         int errors = 0;
         Application.LogCallback capture = (message, stack, type) =>
         {
-            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) ++errors;
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                ++errors;
         };
         Application.logMessageReceived += capture;
         try
@@ -69,12 +69,12 @@ public static class StarForceLubanValidation
         entities.GetDataRowsNonAlloc(row => row.Id >= 70000, (a, b) => b.Id.CompareTo(a.Id), resultList);
         Require(resultList.Count == 3 && resultList[0].Id == 70002, "List overload clears and sorts.");
         Require(entities.Count() == entities.Count && component.HasDataTable(typeof(StarForce.TbEntity)), "Enumeration and type lookup.");
-        var manager = FrameworkEntry.GetModule<IDataTableManager>();
+        var manager = GameFrameworkEntry.GetModule<IDataTableManager>();
         var named = new StarForce.TbEntity(new ByteBuf(component.Catalog.GetAssets()["tbentity"].bytes), "Validation");
         manager.AddDataTables(new[] { named });
         Require(ReferenceEquals(component.GetDataTable<StarForce.TbEntity>("Validation"), named), "Named table lookup.");
         var pending = new StarForce.TbEntity(new ByteBuf(component.Catalog.GetAssets()["tbentity"].bytes), "Pending");
-        Expect<FrameworkException>(() => manager.AddDataTables(new DataTableBase[] { pending, named }));
+        Expect<GameFrameworkException>(() => manager.AddDataTables(new DataTableBase[] { pending, named }));
         Require(!component.HasDataTable<StarForce.TbEntity>("Pending"), "Duplicate registration must be atomic.");
         component.RemoveDataTable((DataTableBase)named);
 
@@ -91,14 +91,26 @@ public static class StarForceLubanValidation
         {
             component.LoadDataTables<StarForce.Tables>(path, component);
             component.CancelLoadDataTables();
-            for (int i = 0; i < 10; ++i) { EditorApplication.Step(); await Task.Delay(30); }
+            for (int i = 0; i < 10; ++i)
+            {
+                EditorApplication.Step();
+                await Task.Delay(30);
+            }
             Require(component.Count == 0 && successes == 0 && failures == 0, "Cancelled request must not publish or emit events.");
             component.LoadDataTables<StarForce.Tables>(path, component);
-            for (int i = 0; i < 100 && (component.IsLoading || successes == 0); ++i) { EditorApplication.Step(); await Task.Delay(30); }
+            for (int i = 0; i < 100 && (component.IsLoading || successes == 0); ++i)
+            {
+                EditorApplication.Step();
+                await Task.Delay(30);
+            }
             Require(!component.IsLoading && successes == 1 && component.Count == 11, "Resource catalog loading and success event.");
             component.UnloadDataTables();
             component.LoadDataTables<FailingTableLoader>(path, component);
-            for (int i = 0; i < 100 && (component.IsLoading || failures == 0); ++i) { EditorApplication.Step(); await Task.Delay(30); }
+            for (int i = 0; i < 100 && (component.IsLoading || failures == 0); ++i)
+            {
+                EditorApplication.Step();
+                await Task.Delay(30);
+            }
             Require(!component.IsLoading && failures == 1 && component.Count == 0, "Load failure must not publish partial tables.");
             // Restore the complete table set for the running sample.
             component.LoadDataTables<StarForce.Tables>();
@@ -108,8 +120,17 @@ public static class StarForceLubanValidation
             StarForce.GameEntry.Event.Unsubscribe(LoadDataTableSuccessEventArgs.EventId, success);
             StarForce.GameEntry.Event.Unsubscribe(LoadDataTableFailureEventArgs.EventId, failure);
         }
-        var result = new { passed = true, tables = component.Count, originalValuesCompared = checkedValues,
-            sharedRecords = true, cancelledLoad = true, atomicFailure = true, resourceLoad = true, unityVersion = Application.unityVersion };
+        var result = new
+        {
+            passed = true,
+            tables = component.Count,
+            originalValuesCompared = checkedValues,
+            sharedRecords = true,
+            cancelledLoad = true,
+            atomicFailure = true,
+            resourceLoad = true,
+            unityVersion = Application.unityVersion
+        };
         Directory.CreateDirectory("Artifacts~/Luban");
         File.WriteAllText("Artifacts~/Luban/runtime-validation.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;
@@ -165,10 +186,18 @@ public static class StarForceLubanValidation
         return values;
     }
 
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
     private static void Expect<T>(Action action) where T : Exception
     {
-        try { action(); } catch (T) { return; }
+        try
+        {
+            action();
+        }
+        catch (T) { return; }
         throw new Exception("Expected " + typeof(T).Name);
     }
 }

@@ -3,12 +3,11 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class EntityManager : FrameworkModule, IEntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         /// <summary>
         /// 实体组。
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Core.Entity
         private sealed class EntityGroup : IEntityGroup
         {
             private readonly IObjectPool<EntityInstanceObject> m_InstancePool;
-            private readonly FrameworkLinkedList<IEntity> m_Entities;
+            private readonly GameFrameworkLinkedList<IEntity> m_Entities;
             private LinkedListNode<IEntity> m_CachedNode;
 
             /// <summary>
@@ -33,26 +32,29 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new FrameworkException("Entity group name is invalid.");
+                    throw new GameFrameworkException("Entity group name is invalid.");
                 }
 
                 if (entityGroupHelper == null)
                 {
-                    throw new FrameworkException("Entity group helper is invalid.");
+                    throw new GameFrameworkException("Entity group helper is invalid.");
                 }
 
                 Name = name;
                 Helper = entityGroupHelper;
                 m_InstancePool = objectPoolManager.CreateSingleSpawnObjectPool<EntityInstanceObject>(Utility.Text.Format("Entity Instance Pool ({0})", name), instanceCapacity, instanceExpireTime, instancePriority);
                 m_InstancePool.AutoReleaseInterval = instanceAutoReleaseInterval;
-                m_Entities = new FrameworkLinkedList<IEntity>();
+                m_Entities = new GameFrameworkLinkedList<IEntity>();
                 m_CachedNode = null;
             }
 
             /// <summary>
             /// 获取实体组名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取实体组中实体数量。
@@ -128,7 +130,10 @@ namespace UnityQGameFramework.Core.Entity
             /// <summary>
             /// 获取实体组辅助器。
             /// </summary>
-            public IEntityGroupHelper Helper { get; }
+            public IEntityGroupHelper Helper
+            {
+                get;
+            }
 
             /// <summary>
             /// 实体组轮询。
@@ -174,7 +179,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (string.IsNullOrEmpty(entityAssetName))
                 {
-                    throw new FrameworkException("Entity asset name is invalid.");
+                    throw new GameFrameworkException("Entity asset name is invalid.");
                 }
 
                 foreach (IEntity entity in m_Entities)
@@ -215,7 +220,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (string.IsNullOrEmpty(entityAssetName))
                 {
-                    throw new FrameworkException("Entity asset name is invalid.");
+                    throw new GameFrameworkException("Entity asset name is invalid.");
                 }
 
                 foreach (IEntity entity in m_Entities)
@@ -238,7 +243,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (string.IsNullOrEmpty(entityAssetName))
                 {
-                    throw new FrameworkException("Entity asset name is invalid.");
+                    throw new GameFrameworkException("Entity asset name is invalid.");
                 }
 
                 List<IEntity> results = new List<IEntity>();
@@ -262,12 +267,12 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (string.IsNullOrEmpty(entityAssetName))
                 {
-                    throw new FrameworkException("Entity asset name is invalid.");
+                    throw new GameFrameworkException("Entity asset name is invalid.");
                 }
 
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();
@@ -303,7 +308,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();
@@ -335,7 +340,7 @@ namespace UnityQGameFramework.Core.Entity
 
                 if (!m_Entities.Remove(entity))
                 {
-                    throw new FrameworkException(Utility.Text.Format("Entity group '{0}' not exists specified entity '[{1}]{2}'.", Name, entity.Id, entity.EntityAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Entity group '{0}' not exists specified entity '[{1}]{2}'.", Name, entity.Id, entity.EntityAssetName));
                 }
             }
 
@@ -377,7 +382,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (entityInstance == null)
                 {
-                    throw new FrameworkException("Entity instance is invalid.");
+                    throw new GameFrameworkException("Entity instance is invalid.");
                 }
 
                 m_InstancePool.SetLocked(entityInstance, locked);
@@ -392,7 +397,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (entityInstance == null)
                 {
-                    throw new FrameworkException("Entity instance is invalid.");
+                    throw new GameFrameworkException("Entity instance is invalid.");
                 }
 
                 m_InstancePool.SetPriority(entityInstance, priority);

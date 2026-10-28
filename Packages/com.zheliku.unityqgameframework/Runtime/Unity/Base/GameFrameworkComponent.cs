@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,7 +10,7 @@ namespace UnityQGameFramework.Runtime
     /// <summary>
     /// 游戏框架组件抽象类。
     /// </summary>
-    public abstract class FrameworkComponent : MonoBehaviour
+    public abstract class GameFrameworkComponent : MonoBehaviour
     {
         /// <summary>
         /// 游戏框架组件初始化。

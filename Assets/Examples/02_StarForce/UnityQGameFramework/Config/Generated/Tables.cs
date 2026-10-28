@@ -10,7 +10,7 @@
 
 using UnityQGameFramework.Luban;
 using Luban = UnityQGameFramework.Luban;
-using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 namespace StarForce
@@ -72,7 +72,7 @@ public partial class Tables : IDataTableLoader
     {
         get
         {
-            return "545e32bf65f2994b276ce315374891875f8e8aa4813542dfc7647d6c953d5ca6";
+            return "9881b8a91eb0ee6fe6b8b373252341421d0935e17a2dbaa950904475e61b3db7";
         }
     }
     /// <summary>

@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +18,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制对象池组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(ObjectPoolComponent))]
-    internal sealed class ObjectPoolComponentInspector : FrameworkInspector
+    internal sealed class ObjectPoolComponentInspector : GameFrameworkInspector
     {
         private readonly HashSet<string> m_OpenedItems = new HashSet<string>();
 

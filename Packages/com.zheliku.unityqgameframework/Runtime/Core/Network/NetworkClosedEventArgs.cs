@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 网络连接关闭事件。
     /// </summary>
-    public sealed class NetworkClosedEventArgs : FrameworkEventArgs
+    public sealed class NetworkClosedEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化网络连接关闭事件的新实例。
@@ -21,7 +21,10 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建网络连接关闭事件。

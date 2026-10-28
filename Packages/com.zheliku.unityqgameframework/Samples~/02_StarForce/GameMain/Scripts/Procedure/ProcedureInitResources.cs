@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityQGameFramework.Runtime;
-using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
+using ProcedureOwner = UnityQGameFramework.Core.IFsm<UnityQGameFramework.Core.IProcedureManager>;
 
 namespace StarForce
 {

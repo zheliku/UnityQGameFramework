@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -10,7 +10,7 @@ namespace UnityQGameFramework.Runtime
     /// <summary>
     /// 默认游戏配置序列化器。
     /// </summary>
-    public sealed class DefaultSettingSerializer : FrameworkSerializer<DefaultSetting>
+    public sealed class DefaultSettingSerializer : GameFrameworkSerializer<DefaultSetting>
     {
         private static readonly byte[] Header = new byte[] { (byte)'G', (byte)'F', (byte)'S' };
 

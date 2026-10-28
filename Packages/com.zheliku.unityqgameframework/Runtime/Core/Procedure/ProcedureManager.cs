@@ -3,15 +3,14 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Fsm;
 using System;
 
-namespace UnityQGameFramework.Core.Procedure
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 流程管理器。
     /// </summary>
-    internal sealed class ProcedureManager : FrameworkModule, IProcedureManager
+    internal sealed class ProcedureManager : GameFrameworkModule, IProcedureManager
     {
         private IFsmManager m_FsmManager;
         private IFsm<IProcedureManager> m_ProcedureFsm;
@@ -46,7 +45,7 @@ namespace UnityQGameFramework.Core.Procedure
             {
                 if (m_ProcedureFsm == null)
                 {
-                    throw new FrameworkException("You must initialize procedure first.");
+                    throw new GameFrameworkException("You must initialize procedure first.");
                 }
 
                 return (ProcedureBase)m_ProcedureFsm.CurrentState;
@@ -62,7 +61,7 @@ namespace UnityQGameFramework.Core.Procedure
             {
                 if (m_ProcedureFsm == null)
                 {
-                    throw new FrameworkException("You must initialize procedure first.");
+                    throw new GameFrameworkException("You must initialize procedure first.");
                 }
 
                 return m_ProcedureFsm.CurrentStateTime;
@@ -104,7 +103,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (fsmManager == null)
             {
-                throw new FrameworkException("FSM manager is invalid.");
+                throw new GameFrameworkException("FSM manager is invalid.");
             }
 
             m_FsmManager = fsmManager;
@@ -119,7 +118,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (m_ProcedureFsm == null)
             {
-                throw new FrameworkException("You must initialize procedure first.");
+                throw new GameFrameworkException("You must initialize procedure first.");
             }
 
             m_ProcedureFsm.Start<T>();
@@ -133,7 +132,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (m_ProcedureFsm == null)
             {
-                throw new FrameworkException("You must initialize procedure first.");
+                throw new GameFrameworkException("You must initialize procedure first.");
             }
 
             m_ProcedureFsm.Start(procedureType);
@@ -148,7 +147,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (m_ProcedureFsm == null)
             {
-                throw new FrameworkException("You must initialize procedure first.");
+                throw new GameFrameworkException("You must initialize procedure first.");
             }
 
             return m_ProcedureFsm.HasState<T>();
@@ -163,7 +162,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (m_ProcedureFsm == null)
             {
-                throw new FrameworkException("You must initialize procedure first.");
+                throw new GameFrameworkException("You must initialize procedure first.");
             }
 
             return m_ProcedureFsm.HasState(procedureType);
@@ -178,7 +177,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (m_ProcedureFsm == null)
             {
-                throw new FrameworkException("You must initialize procedure first.");
+                throw new GameFrameworkException("You must initialize procedure first.");
             }
 
             return m_ProcedureFsm.GetState<T>();
@@ -193,7 +192,7 @@ namespace UnityQGameFramework.Core.Procedure
         {
             if (m_ProcedureFsm == null)
             {
-                throw new FrameworkException("You must initialize procedure first.");
+                throw new GameFrameworkException("You must initialize procedure first.");
             }
 
             return (ProcedureBase)m_ProcedureFsm.GetState(procedureType);

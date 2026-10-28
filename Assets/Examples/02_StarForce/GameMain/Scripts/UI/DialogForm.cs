@@ -28,9 +28,9 @@ namespace StarForce
         [SerializeField]
         private Text[] m_OtherTexts = null;
         private int m_DialogMode = 1;
-        private FrameworkAction<object> m_OnClickConfirm = null;
-        private FrameworkAction<object> m_OnClickCancel = null;
-        private FrameworkAction<object> m_OnClickOther = null;
+        private GameFrameworkAction<object> m_OnClickConfirm = null;
+        private GameFrameworkAction<object> m_OnClickCancel = null;
+        private GameFrameworkAction<object> m_OnClickOther = null;
         private bool m_Answered;
         private bool m_PausedByDialog;
 
@@ -48,12 +48,18 @@ namespace StarForce
         /// <summary>
         /// 获取打开对话框时是否暂停游戏。
         /// </summary>
-        public bool PauseGame { get; private set; }
+        public bool PauseGame
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取对话框回调的业务数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 确认对话框选择。
@@ -79,7 +85,7 @@ namespace StarForce
             Answer(m_OnClickOther);
         }
 
-        private void Answer(FrameworkAction<object> callback)
+        private void Answer(GameFrameworkAction<object> callback)
         {
             // 淡出期间仍可能收到点击，同一次打开只处理一个选择。
             if (m_Answered)

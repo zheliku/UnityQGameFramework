@@ -3,12 +3,11 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private sealed partial class ResourceLoader
         {
@@ -56,12 +55,12 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (resourceHelper == null)
                     {
-                        throw new FrameworkException("Resource helper is invalid.");
+                        throw new GameFrameworkException("Resource helper is invalid.");
                     }
 
                     if (resourceLoader == null)
                     {
-                        throw new FrameworkException("Resource loader is invalid.");
+                        throw new GameFrameworkException("Resource loader is invalid.");
                     }
 
                     ResourceObject resourceObject = ReferencePool.Acquire<ResourceObject>();
@@ -122,7 +121,7 @@ namespace UnityQGameFramework.Core.Resource
                         int targetReferenceCount = 0;
                         if (m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
                         {
-                            throw new FrameworkException(Utility.Text.Format("Resource target '{0}' reference count is '{1}' larger than 0.", Name, targetReferenceCount));
+                            throw new GameFrameworkException(Utility.Text.Format("Resource target '{0}' reference count is '{1}' larger than 0.", Name, targetReferenceCount));
                         }
 
                         foreach (object dependencyResource in m_DependencyResources)
@@ -134,7 +133,7 @@ namespace UnityQGameFramework.Core.Resource
                             }
                             else
                             {
-                                throw new FrameworkException(Utility.Text.Format("Resource target '{0}' dependency asset reference count is invalid.", Name));
+                                throw new GameFrameworkException(Utility.Text.Format("Resource target '{0}' dependency asset reference count is invalid.", Name));
                             }
                         }
                     }

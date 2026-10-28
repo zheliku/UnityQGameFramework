@@ -1,10 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Localization;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
@@ -17,7 +16,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取系统语言。
         /// </summary>
-        public abstract Language SystemLanguage { get; }
+        public abstract Language SystemLanguage
+        {
+            get;
+        }
 
         /// <summary>
         /// 读取字典。

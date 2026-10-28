@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 /// <summary>
 /// 单例表
 /// </summary>
-public partial class TbRules : UnityQGameFramework.Core.DataTable.DataTable<DRRules>
+public partial class TbRules : UnityQGameFramework.Core.DataTable<DRRules>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

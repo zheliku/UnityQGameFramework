@@ -31,7 +31,10 @@ namespace StarForce
         /// <summary>
         /// 获取缓存的动画组件。
         /// </summary>
-        public Animation CachedAnimation { get; private set; }
+        public Animation CachedAnimation
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 初始化实例。

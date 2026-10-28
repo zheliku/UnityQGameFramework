@@ -16,37 +16,58 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取遮挡回调次数。
         /// </summary>
-        public int CoverCalls { get; private set; }
+        public int CoverCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取重新显示回调次数。
         /// </summary>
-        public int RevealCalls { get; private set; }
+        public int RevealCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取暂停回调次数。
         /// </summary>
-        public int PauseCalls { get; private set; }
+        public int PauseCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取恢复回调次数。
         /// </summary>
-        public int ResumeCalls { get; private set; }
+        public int ResumeCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取重新聚焦回调次数。
         /// </summary>
-        public int RefocusCalls { get; private set; }
+        public int RefocusCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取重新聚焦时传入的数据。
         /// </summary>
-        public string RefocusData { get; private set; }
+        public string RefocusData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面未暂停时累计的更新秒数。
         /// </summary>
-        public float ActiveSeconds { get; private set; }
+        public float ActiveSeconds
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 初始化实例。

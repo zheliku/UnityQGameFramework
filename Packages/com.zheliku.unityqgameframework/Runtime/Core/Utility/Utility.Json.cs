@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace UnityQGameFramework.Core
             {
                 if (s_JsonHelper == null)
                 {
-                    throw new FrameworkException("JSON helper is invalid.");
+                    throw new GameFrameworkException("JSON helper is invalid.");
                 }
 
                 try
@@ -43,12 +43,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not convert to JSON with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not convert to JSON with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace UnityQGameFramework.Core
             {
                 if (s_JsonHelper == null)
                 {
-                    throw new FrameworkException("JSON helper is invalid.");
+                    throw new GameFrameworkException("JSON helper is invalid.");
                 }
 
                 try
@@ -71,12 +71,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -90,12 +90,12 @@ namespace UnityQGameFramework.Core
             {
                 if (s_JsonHelper == null)
                 {
-                    throw new FrameworkException("JSON helper is invalid.");
+                    throw new GameFrameworkException("JSON helper is invalid.");
                 }
 
                 if (objectType == null)
                 {
-                    throw new FrameworkException("Object type is invalid.");
+                    throw new GameFrameworkException("Object type is invalid.");
                 }
 
                 try
@@ -104,12 +104,12 @@ namespace UnityQGameFramework.Core
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception), exception);
                 }
             }
         }

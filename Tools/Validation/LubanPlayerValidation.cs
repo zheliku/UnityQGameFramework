@@ -25,7 +25,8 @@ namespace Luban.Validation
                 var package = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(DataTableComponent).Assembly);
                 if (package.source != UnityEditor.PackageManager.PackageSource.LocalTarball && package.source != UnityEditor.PackageManager.PackageSource.Git)
                     throw new Exception("Expected a cached UPM tarball or Git package.");
-                if (Directory.Exists(workspace)) throw new Exception("Temporary workspace is occupied.");
+                if (Directory.Exists(workspace))
+                    throw new Exception("Temporary workspace is occupied.");
                 var profile = LubanWorkspace.Create(workspace);
                 created = true;
                 await LubanGenerator.GenerateAsync(profile);
@@ -37,12 +38,17 @@ namespace Luban.Validation
             catch (Exception exception) { failure = exception.ToString(); Debug.LogException(exception); }
             finally
             {
-                if (created) AssetDatabase.DeleteAsset(workspace);
+                if (created)
+                    AssetDatabase.DeleteAsset(workspace);
                 EditorApplication.UnlockReloadAssemblies();
             }
             Directory.CreateDirectory("Results");
             File.WriteAllText("Results/generator-cache-result.json", JsonUtility.ToJson(new Summary
-            { success = success, unityVersion = Application.unityVersion, failure = failure }, true));
+            {
+                success = success,
+                unityVersion = Application.unityVersion,
+                failure = failure
+            }, true));
             EditorApplication.Exit(success ? 0 : 1);
         }
 
@@ -77,18 +83,29 @@ namespace Luban.Validation
                 var manifest = BuildPipeline.BuildAssetBundles("Assets/StreamingAssets", new[] { new AssetBundleBuild
                 { assetBundleName = "luban", assetNames = new[] { "Assets/LubanValidation/Data/Catalog.asset", "Assets/LubanValidation/GameConfig.toml" } } },
                     BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
-                if (manifest == null) throw new Exception("Luban catalog AssetBundle build failed.");
+                if (manifest == null)
+                    throw new Exception("Luban catalog AssetBundle build failed.");
                 AssetDatabase.Refresh();
                 var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
-                { scenes = new[] { "Assets/LubanPlayer.unity" }, locationPathName = "Results/Player/LubanValidation.exe",
-                  target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development });
-                if (report.summary.result != BuildResult.Succeeded) throw new Exception("Luban Player build failed.");
+                {
+                    scenes = new[] { "Assets/LubanPlayer.unity" },
+                    locationPathName = "Results/Player/LubanValidation.exe",
+                    target = BuildTarget.StandaloneWindows64,
+                    options = BuildOptions.Development
+                });
+                if (report.summary.result != BuildResult.Succeeded)
+                    throw new Exception("Luban Player build failed.");
                 string result = Path.GetFullPath("Results/player-result.json");
                 using (var process = Process.Start(new ProcessStartInfo(Path.GetFullPath(report.summary.outputPath))
-                { Arguments = "-batchmode -nographics -logFile \"" + Path.GetFullPath("Results/player.log") + "\" -luban-result \"" + result + "\"",
-                  UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden }))
                 {
-                    if (process == null || !process.WaitForExit(45000)) throw new Exception("Luban Player validation timed out.");
+                    Arguments = "-batchmode -nographics -logFile \"" + Path.GetFullPath("Results/player.log") + "\" -luban-result \"" + result + "\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }))
+                {
+                    if (process == null || !process.WaitForExit(45000))
+                        throw new Exception("Luban Player validation timed out.");
                     if (process.ExitCode != 0 || !File.Exists(result) || !JsonUtility.FromJson<Summary>(File.ReadAllText(result)).success)
                         throw new Exception("Luban Player reported a failure. Inspect Results/player.log.");
                 }
@@ -96,9 +113,17 @@ namespace Luban.Validation
             }
             catch (Exception exception) { failure = exception.ToString(); Debug.LogException(exception); }
             File.WriteAllText("Results/editor-result.json", JsonUtility.ToJson(new Summary
-            { success = success, unityVersion = Application.unityVersion, failure = failure }, true));
+            {
+                success = success,
+                unityVersion = Application.unityVersion,
+                failure = failure
+            }, true));
             EditorApplication.Exit(success ? 0 : 1);
         }
-        [Serializable] private sealed class Summary { public bool success; public string unityVersion; public string failure; }
+        [Serializable]
+        private sealed class Summary
+        {
+            public bool success; public string unityVersion; public string failure;
+        }
     }
 }

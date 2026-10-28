@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 网络消息包处理器接口。
@@ -13,7 +13,10 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取网络消息包协议编号。
         /// </summary>
-        int Id { get; }
+        int Id
+        {
+            get;
+        }
 
         /// <summary>
         /// 网络消息包处理函数。

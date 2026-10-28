@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 声音组接口。
@@ -13,32 +13,50 @@ namespace UnityQGameFramework.Core.Sound
         /// <summary>
         /// 获取声音组名称。
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取声音代理数。
         /// </summary>
-        int SoundAgentCount { get; }
+        int SoundAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取或设置声音组中的声音是否避免被同优先级声音替换。
         /// </summary>
-        bool AvoidBeingReplacedBySamePriority { get; set; }
+        bool AvoidBeingReplacedBySamePriority
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音组静音。
         /// </summary>
-        bool Mute { get; set; }
+        bool Mute
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音组音量。
         /// </summary>
-        float Volume { get; set; }
+        float Volume
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取声音组辅助器。
         /// </summary>
-        ISoundGroupHelper Helper { get; }
+        ISoundGroupHelper Helper
+        {
+            get;
+        }
 
         /// <summary>
         /// 停止所有已加载的声音。

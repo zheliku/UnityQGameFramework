@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.WebRequest
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class WebRequestManager : FrameworkModule, IWebRequestManager
+    internal sealed partial class WebRequestManager : GameFrameworkModule, IWebRequestManager
     {
         /// <summary>
         /// Web 请求任务。
@@ -30,17 +30,26 @@ namespace UnityQGameFramework.Core.WebRequest
             /// <summary>
             /// 获取或设置 Web 请求任务的状态。
             /// </summary>
-            public WebRequestTaskStatus Status { get; set; }
+            public WebRequestTaskStatus Status
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取要发送的远程地址。
             /// </summary>
-            public string WebRequestUri { get; private set; }
+            public string WebRequestUri
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取 Web 请求超时时长，以秒为单位。
             /// </summary>
-            public float Timeout { get; private set; }
+            public float Timeout
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取 Web 请求任务的描述。

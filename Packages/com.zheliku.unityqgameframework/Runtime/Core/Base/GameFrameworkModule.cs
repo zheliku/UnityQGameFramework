@@ -8,7 +8,7 @@ namespace UnityQGameFramework.Core
     /// <summary>
     /// 游戏框架模块抽象类。
     /// </summary>
-    internal abstract class FrameworkModule
+    internal abstract class GameFrameworkModule
     {
         /// <summary>
         /// 获取游戏框架模块优先级。

@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制下载组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(DownloadComponent))]
-    internal sealed class DownloadComponentInspector : FrameworkInspector
+    internal sealed class DownloadComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_InstanceRoot = null;
         private SerializedProperty m_DownloadAgentHelperCount = null;

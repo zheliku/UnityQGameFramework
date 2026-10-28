@@ -13,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制游戏设置组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(SettingComponent))]
-    internal sealed class SettingComponentInspector : FrameworkInspector
+    internal sealed class SettingComponentInspector : GameFrameworkInspector
     {
         private HelperInfo<SettingHelperBase> m_SettingHelperInfo = new HelperInfo<SettingHelperBase>("Setting");
 

@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 卸载场景回调函数集。
@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (unloadSceneSuccessCallback == null)
             {
-                throw new FrameworkException("Unload scene success callback is invalid.");
+                throw new GameFrameworkException("Unload scene success callback is invalid.");
             }
 
             UnloadSceneSuccessCallback = unloadSceneSuccessCallback;
@@ -38,11 +38,17 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取卸载场景成功回调函数。
         /// </summary>
-        public UnloadSceneSuccessCallback UnloadSceneSuccessCallback { get; }
+        public UnloadSceneSuccessCallback UnloadSceneSuccessCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取卸载场景失败回调函数。
         /// </summary>
-        public UnloadSceneFailureCallback UnloadSceneFailureCallback { get; }
+        public UnloadSceneFailureCallback UnloadSceneFailureCallback
+        {
+            get;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -54,7 +54,7 @@ namespace UnityQGameFramework.Core
             {
                 if (string.IsNullOrEmpty(directoryName))
                 {
-                    throw new FrameworkException("Directory name is invalid.");
+                    throw new GameFrameworkException("Directory name is invalid.");
                 }
 
                 try

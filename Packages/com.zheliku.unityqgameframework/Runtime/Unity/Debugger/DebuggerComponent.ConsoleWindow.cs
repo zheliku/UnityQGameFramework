@@ -4,14 +4,13 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Debugger;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 显示、筛选并查看运行日志。

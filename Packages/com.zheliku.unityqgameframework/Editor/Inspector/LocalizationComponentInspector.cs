@@ -12,7 +12,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制本地化组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(LocalizationComponent))]
-    internal sealed class LocalizationComponentInspector : FrameworkInspector
+    internal sealed class LocalizationComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_EnableLoadDictionaryUpdateEvent = null;
         private SerializedProperty m_EnableLoadDictionaryDependencyAssetEvent = null;

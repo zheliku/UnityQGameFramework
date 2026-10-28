@@ -14,18 +14,18 @@ namespace UnityQGameFramework.Core
     /// </summary>
     /// <typeparam name="T">指定链表范围的元素类型。</typeparam>
     [StructLayout(LayoutKind.Auto)]
-    public struct FrameworkLinkedListRange<T> : IEnumerable<T>, IEnumerable
+    public struct GameFrameworkLinkedListRange<T> : IEnumerable<T>, IEnumerable
     {
         /// <summary>
         /// 初始化游戏框架链表范围的新实例。
         /// </summary>
         /// <param name="first">链表范围的开始结点。</param>
         /// <param name="terminal">链表范围的终结标记结点。</param>
-        public FrameworkLinkedListRange(LinkedListNode<T> first, LinkedListNode<T> terminal)
+        public GameFrameworkLinkedListRange(LinkedListNode<T> first, LinkedListNode<T> terminal)
         {
             if (first == null || terminal == null || first == terminal)
             {
-                throw new FrameworkException("Range is invalid.");
+                throw new GameFrameworkException("Range is invalid.");
             }
 
             First = first;
@@ -46,12 +46,18 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取链表范围的开始结点。
         /// </summary>
-        public LinkedListNode<T> First { get; }
+        public LinkedListNode<T> First
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取链表范围的终结标记结点。
         /// </summary>
-        public LinkedListNode<T> Terminal { get; }
+        public LinkedListNode<T> Terminal
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取链表范围的结点数量。
@@ -126,29 +132,32 @@ namespace UnityQGameFramework.Core
         [StructLayout(LayoutKind.Auto)]
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
-            private readonly FrameworkLinkedListRange<T> m_FrameworkLinkedListRange;
+            private readonly GameFrameworkLinkedListRange<T> m_GameFrameworkLinkedListRange;
             private LinkedListNode<T> m_Current;
 
             /// <summary>
             /// 初始化链表范围枚举器。
             /// </summary>
             /// <param name="range">要遍历的链表范围。</param>
-            internal Enumerator(FrameworkLinkedListRange<T> range)
+            internal Enumerator(GameFrameworkLinkedListRange<T> range)
             {
                 if (!range.IsValid)
                 {
-                    throw new FrameworkException("Range is invalid.");
+                    throw new GameFrameworkException("Range is invalid.");
                 }
 
-                m_FrameworkLinkedListRange = range;
-                m_Current = m_FrameworkLinkedListRange.First;
+                m_GameFrameworkLinkedListRange = range;
+                m_Current = m_GameFrameworkLinkedListRange.First;
                 Current = default(T);
             }
 
             /// <summary>
             /// 获取枚举器当前位置的元素。
             /// </summary>
-            public T Current { get; private set; }
+            public T Current
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取枚举器当前位置的元素。
@@ -174,7 +183,7 @@ namespace UnityQGameFramework.Core
             /// <returns>成功移到下一个元素时返回真；已到集合末尾时返回假。</returns>
             public bool MoveNext()
             {
-                if (m_Current == null || m_Current == m_FrameworkLinkedListRange.Terminal)
+                if (m_Current == null || m_Current == m_GameFrameworkLinkedListRange.Terminal)
                 {
                     return false;
                 }
@@ -189,7 +198,7 @@ namespace UnityQGameFramework.Core
             /// </summary>
             void IEnumerator.Reset()
             {
-                m_Current = m_FrameworkLinkedListRange.First;
+                m_Current = m_GameFrameworkLinkedListRange.First;
                 Current = default(T);
             }
         }

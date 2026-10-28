@@ -3,14 +3,13 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源校验器。
@@ -30,22 +29,22 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 资源校验开始回调。
             /// </summary>
-            public FrameworkAction<int, long> ResourceVerifyStart;
+            public GameFrameworkAction<int, long> ResourceVerifyStart;
 
             /// <summary>
             /// 单个资源校验成功回调。
             /// </summary>
-            public FrameworkAction<ResourceName, int> ResourceVerifySuccess;
+            public GameFrameworkAction<ResourceName, int> ResourceVerifySuccess;
 
             /// <summary>
             /// 单个资源校验失败回调。
             /// </summary>
-            public FrameworkAction<ResourceName> ResourceVerifyFailure;
+            public GameFrameworkAction<ResourceName> ResourceVerifyFailure;
 
             /// <summary>
             /// 资源校验完成回调。
             /// </summary>
-            public FrameworkAction<bool> ResourceVerifyComplete;
+            public GameFrameworkAction<bool> ResourceVerifyComplete;
 
             /// <summary>
             /// 初始化资源校验器的新实例。
@@ -140,17 +139,17 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (verifyResourceLengthPerFrame < 0)
                 {
-                    throw new FrameworkException("Verify resource count per frame is invalid.");
+                    throw new GameFrameworkException("Verify resource count per frame is invalid.");
                 }
 
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
-                    throw new FrameworkException("Resource helper is invalid.");
+                    throw new GameFrameworkException("Resource helper is invalid.");
                 }
 
                 if (string.IsNullOrEmpty(m_ResourceManager.ReadWritePath))
                 {
-                    throw new FrameworkException("Read-write path is invalid.");
+                    throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
                 m_VerifyResourceLengthPerFrame = verifyResourceLengthPerFrame;
@@ -168,7 +167,7 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     IFileSystem fileSystem = m_ResourceManager.GetFileSystem(verifyInfo.FileSystemName, false);
                     string fileName = verifyInfo.ResourceName.FullName;
-                    FileSystem.FileInfo fileInfo = fileSystem.GetFileInfo(fileName);
+                    UnityQGameFramework.Core.FileInfo fileInfo = fileSystem.GetFileInfo(fileName);
                     if (!fileInfo.IsValid)
                     {
                         return false;
@@ -305,7 +304,7 @@ namespace UnityQGameFramework.Core.Resource
                     LocalVersionList versionList = new LocalVersionList(resources, fileSystems);
                     if (!m_ResourceManager.ReadWriteVersionListSerializer.Serialize(fileStream, versionList))
                     {
-                        throw new FrameworkException("Serialize read-write version list failure.");
+                        throw new GameFrameworkException("Serialize read-write version list failure.");
                     }
 
                     if (fileStream != null)
@@ -327,7 +326,7 @@ namespace UnityQGameFramework.Core.Resource
                         File.Delete(readWriteVersionListTempFileName);
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception), exception);
                 }
 
                 if (File.Exists(readWriteVersionListFileName))
@@ -354,7 +353,7 @@ namespace UnityQGameFramework.Core.Resource
                     LocalVersionList versionList = m_ResourceManager.ReadWriteVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new FrameworkException("Deserialize read write version list failure.");
+                        throw new GameFrameworkException("Deserialize read write version list failure.");
                     }
 
                     LocalVersionList.Resource[] resources = versionList.GetResources();
@@ -388,12 +387,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Parse read-write version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-write version list exception '{0}'.", exception), exception);
                 }
                 finally
                 {

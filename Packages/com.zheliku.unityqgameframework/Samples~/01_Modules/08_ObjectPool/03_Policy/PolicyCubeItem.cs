@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.ObjectPool;
 
 namespace UnityQGameFramework.Examples.Modules
 {

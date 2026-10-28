@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制Web 请求组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(WebRequestComponent))]
-    internal sealed class WebRequestComponentInspector : FrameworkInspector
+    internal sealed class WebRequestComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_InstanceRoot = null;
         private SerializedProperty m_WebRequestAgentHelperCount = null;

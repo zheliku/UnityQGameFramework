@@ -1,8 +1,6 @@
 # UnityQGameFramework
 
-QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制作数据表、Tomlyn 读取 TOML，内置 UniTask。兼容目标为 Unity 2022.3、6.0、6.3；示例的 3D 资源使用 URP。
-
-[入门](Documentation~/01-getting-started.md) · [模块](Documentation~/Modules/README.md) · [Luban](Documentation~/02-data-tables.md) · [变更记录](CHANGELOG.md)
+QGF 基于 UnityGameFramework，使用 Luban 制作数据表、Tomlyn 读取 TOML、YooAsset 管理资源、UniTask 处理异步。支持目标为 Unity 2022.3、6.0、6.3，示例使用 uGUI、Input System 和 URP。
 
 ## 安装
 
@@ -12,20 +10,20 @@ QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-编译完成后，可从 Samples 导入点点点、模块示例或 StarForce。模块示例包含一份公共资源；完整清单见[示例目录](Documentation~/06-module-examples.md)。
+默认内置 UniTask 和 YooAsset，请勿重复安装。游戏脚本、Excel 和资源放在 `Assets`；框架放在 `Packages`。
 
-游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
+## 示例与文档
 
-## 文档
+从 Package Manager 导入一个 Sample，打开启动场景并运行。宿主需启用 Input System；示例不会替你修改项目设置。编辑器模拟模式无需预先打包资源或点击 YooAsset 的 Fix。
 
-DataTableComponent 自动初始化；在业务 `Start` 或启动流程中用 `LoadDataTables<Tables>()` 加载一次，再用 `GetDataTable<TbXxx>()` 查询。全局 Luban Profile 决定生成目标，组件的 Catalog 决定运行时数据；Catalog 是数据清单，不是缓存。配置与完整步骤见[模块 Sample README](Samples~/01_Modules/README.md#datatable-从哪里开始)。
+| Sample | 内容 |
+| --- | --- |
+| 00 · PointPointPoint | 用流程、UI、事件和设置完成一个小游戏 |
+| 01 · Modules | 按模块查看核心调用和运行结果 |
+| 02 · StarForce | 飞机、武器、数据表、资源和界面的协作 |
 
-- [框架运行](Documentation~/00-runtime.md)：初始化、更新、关闭和异步调用。
-- [模块示例](Documentation~/06-module-examples.md)：运行场景、编辑代码和资源。
-- [项目约定](Documentation~/03-conventions.md)：生命周期与资源归还。
-- [StarForce](Documentation~/05-starforce.md)：从启动流程读到飞机、武器和血条。
-- [UGF 到 QGF](Documentation~/04-changes-from-ugf.md)：当前改动与架构迁移进度。
+[开始使用](Documentation~/01-getting-started.md) · [模块用法](Documentation~/Modules/README.md) · [Luban](Documentation~/02-data-tables.md) · [资源构建](Documentation~/Modules/resource-build.md) · [更新记录](CHANGELOG.md)
 
-`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的用途与 Git URL，复制后通过 Package Manager 安装。
+基于 [UnityGameFramework](https://github.com/EllanJiang/UnityGameFramework) 和 [GameFramework](https://github.com/EllanJiang/GameFramework)，示例与架构设计参考 [QFramework](https://github.com/liangxiegame/QFramework)。目前尚未移植 QFramework 的 Architecture、Model、System。
 
 源码采用 [MIT](LICENSE.md)，第三方内容见 [许可声明](<Third%20Party%20Notices.md>)。

@@ -1,5 +1,4 @@
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Examples.PointPointPoint
 {
@@ -27,7 +26,10 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         /// <summary>
         /// 获取本次是否命中目标。
         /// </summary>
-        public bool Hit { get; private set; }
+        public bool Hit
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 从引用池获取并填写事件参数。

@@ -1,5 +1,5 @@
 {
-  "name": "UnityQGameFramework.PointPointPoint",
+  "name": "UnityQGameFramework.Examples.PointPointPoint",
   "rootNamespace": "UnityQGameFramework.Examples.PointPointPoint",
   "references": [
     "UnityQGameFramework.Core",

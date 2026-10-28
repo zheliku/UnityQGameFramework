@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Network;
 
 namespace UnityQGameFramework.Examples.Modules
 {
@@ -31,7 +30,10 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取或设置消息文本。
         /// </summary>
-        public string Text { get; set; }
+        public string Text
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 重置数据，供引用池复用。
@@ -93,7 +95,10 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取已发送的心跳数量。
         /// </summary>
-        public int HeartBeatsSent { get; private set; }
+        public int HeartBeatsSent
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取已收到的心跳数量。
@@ -114,7 +119,10 @@ namespace UnityQGameFramework.Examples.Modules
             /// <summary>
             /// 获取消息包体的字节数。
             /// </summary>
-            public int PacketLength { get; }
+            public int PacketLength
+            {
+                get;
+            }
 
             /// <summary>
             /// 保存包体长度的网络消息头。

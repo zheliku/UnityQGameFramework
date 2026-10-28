@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.ObjectPool
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ObjectPoolManager : FrameworkModule, IObjectPoolManager
+    internal sealed partial class ObjectPoolManager : GameFrameworkModule, IObjectPoolManager
     {
         /// <summary>
         /// 对象池。
@@ -16,7 +16,7 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <typeparam name="T">对象类型。</typeparam>
         private sealed class ObjectPool<T> : ObjectPoolBase, IObjectPool<T> where T : ObjectBase
         {
-            private readonly FrameworkMultiDictionary<string, Object<T>> m_Objects;
+            private readonly GameFrameworkMultiDictionary<string, Object<T>> m_Objects;
             private readonly Dictionary<object, Object<T>> m_ObjectMap;
             private readonly ReleaseObjectFilterCallback<T> m_DefaultReleaseObjectFilterCallback;
             private readonly List<T> m_CachedCanReleaseObjects;
@@ -40,7 +40,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             public ObjectPool(string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
                 : base(name)
             {
-                m_Objects = new FrameworkMultiDictionary<string, Object<T>>();
+                m_Objects = new GameFrameworkMultiDictionary<string, Object<T>>();
                 m_ObjectMap = new Dictionary<object, Object<T>>();
                 m_DefaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
                 m_CachedCanReleaseObjects = new List<T>();
@@ -126,7 +126,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 {
                     if (value < 0)
                     {
-                        throw new FrameworkException("Capacity is invalid.");
+                        throw new GameFrameworkException("Capacity is invalid.");
                     }
 
                     if (m_Capacity == value)
@@ -153,7 +153,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 {
                     if (value < 0f)
                     {
-                        throw new FrameworkException("ExpireTime is invalid.");
+                        throw new GameFrameworkException("ExpireTime is invalid.");
                     }
 
                     if (ExpireTime == value)
@@ -190,7 +190,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (obj == null)
                 {
-                    throw new FrameworkException("Object is invalid.");
+                    throw new GameFrameworkException("Object is invalid.");
                 }
 
                 Object<T> internalObject = Object<T>.Create(obj, spawned);
@@ -221,10 +221,10 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (name == null)
                 {
-                    throw new FrameworkException("Name is invalid.");
+                    throw new GameFrameworkException("Name is invalid.");
                 }
 
-                FrameworkLinkedListRange<Object<T>> objectRange = default(FrameworkLinkedListRange<Object<T>>);
+                GameFrameworkLinkedListRange<Object<T>> objectRange = default(GameFrameworkLinkedListRange<Object<T>>);
                 if (m_Objects.TryGetValue(name, out objectRange))
                 {
                     foreach (Object<T> internalObject in objectRange)
@@ -257,10 +257,10 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (name == null)
                 {
-                    throw new FrameworkException("Name is invalid.");
+                    throw new GameFrameworkException("Name is invalid.");
                 }
 
-                FrameworkLinkedListRange<Object<T>> objectRange = default(FrameworkLinkedListRange<Object<T>>);
+                GameFrameworkLinkedListRange<Object<T>> objectRange = default(GameFrameworkLinkedListRange<Object<T>>);
                 if (m_Objects.TryGetValue(name, out objectRange))
                 {
                     foreach (Object<T> internalObject in objectRange)
@@ -283,7 +283,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (obj == null)
                 {
-                    throw new FrameworkException("Object is invalid.");
+                    throw new GameFrameworkException("Object is invalid.");
                 }
 
                 Unspawn(obj.Target);
@@ -297,7 +297,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (target == null)
                 {
-                    throw new FrameworkException("Target is invalid.");
+                    throw new GameFrameworkException("Target is invalid.");
                 }
 
                 Object<T> internalObject = GetObject(target);
@@ -311,7 +311,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 }
                 else
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.", new TypeNamePair(typeof(T), Name), target.GetType().FullName, target));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.", new TypeNamePair(typeof(T), Name), target.GetType().FullName, target));
                 }
             }
 
@@ -324,7 +324,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (obj == null)
                 {
-                    throw new FrameworkException("Object is invalid.");
+                    throw new GameFrameworkException("Object is invalid.");
                 }
 
                 SetLocked(obj.Target, locked);
@@ -339,7 +339,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (target == null)
                 {
-                    throw new FrameworkException("Target is invalid.");
+                    throw new GameFrameworkException("Target is invalid.");
                 }
 
                 Object<T> internalObject = GetObject(target);
@@ -349,7 +349,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 }
                 else
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.", new TypeNamePair(typeof(T), Name), target.GetType().FullName, target));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.", new TypeNamePair(typeof(T), Name), target.GetType().FullName, target));
                 }
             }
 
@@ -362,7 +362,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (obj == null)
                 {
-                    throw new FrameworkException("Object is invalid.");
+                    throw new GameFrameworkException("Object is invalid.");
                 }
 
                 SetPriority(obj.Target, priority);
@@ -377,7 +377,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (target == null)
                 {
-                    throw new FrameworkException("Target is invalid.");
+                    throw new GameFrameworkException("Target is invalid.");
                 }
 
                 Object<T> internalObject = GetObject(target);
@@ -387,7 +387,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 }
                 else
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.", new TypeNamePair(typeof(T), Name), target.GetType().FullName, target));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.", new TypeNamePair(typeof(T), Name), target.GetType().FullName, target));
                 }
             }
 
@@ -400,7 +400,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (obj == null)
                 {
-                    throw new FrameworkException("Object is invalid.");
+                    throw new GameFrameworkException("Object is invalid.");
                 }
 
                 return ReleaseObject(obj.Target);
@@ -415,7 +415,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (target == null)
                 {
-                    throw new FrameworkException("Target is invalid.");
+                    throw new GameFrameworkException("Target is invalid.");
                 }
 
                 Object<T> internalObject = GetObject(target);
@@ -472,7 +472,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (releaseObjectFilterCallback == null)
                 {
-                    throw new FrameworkException("Release object filter callback is invalid.");
+                    throw new GameFrameworkException("Release object filter callback is invalid.");
                 }
 
                 if (toReleaseCount < 0)
@@ -520,7 +520,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             public override ObjectInfo[] GetAllObjectInfos()
             {
                 List<ObjectInfo> results = new List<ObjectInfo>();
-                foreach (KeyValuePair<string, FrameworkLinkedListRange<Object<T>>> objectRanges in m_Objects)
+                foreach (KeyValuePair<string, GameFrameworkLinkedListRange<Object<T>>> objectRanges in m_Objects)
                 {
                     foreach (Object<T> internalObject in objectRanges.Value)
                     {
@@ -573,7 +573,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (target == null)
                 {
-                    throw new FrameworkException("Target is invalid.");
+                    throw new GameFrameworkException("Target is invalid.");
                 }
 
                 Object<T> internalObject = null;
@@ -593,7 +593,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();

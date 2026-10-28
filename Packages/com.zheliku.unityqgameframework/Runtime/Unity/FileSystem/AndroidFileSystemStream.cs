@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.FileSystem;
 using System;
 using System.IO;
 using UnityEngine;
@@ -33,19 +32,19 @@ namespace UnityQGameFramework.Runtime
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             if (unityPlayer == null)
             {
-                throw new FrameworkException("Unity player is invalid.");
+                throw new GameFrameworkException("Unity player is invalid.");
             }
 
             AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             if (currentActivity == null)
             {
-                throw new FrameworkException("Current activity is invalid.");
+                throw new GameFrameworkException("Current activity is invalid.");
             }
 
             AndroidJavaObject assetManager = currentActivity.Call<AndroidJavaObject>("getAssets");
             if (assetManager == null)
             {
-                throw new FrameworkException("Asset manager is invalid.");
+                throw new GameFrameworkException("Asset manager is invalid.");
             }
 
             s_AssetManager = assetManager;
@@ -69,30 +68,30 @@ namespace UnityQGameFramework.Runtime
         {
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             if (access != FileSystemAccess.Read)
             {
-                throw new FrameworkException(Utility.Text.Format("'{0}' is not supported in AndroidFileSystemStream.", access));
+                throw new GameFrameworkException(Utility.Text.Format("'{0}' is not supported in AndroidFileSystemStream.", access));
             }
 
             if (createNew)
             {
-                throw new FrameworkException("Create new is not supported in AndroidFileSystemStream.");
+                throw new GameFrameworkException("Create new is not supported in AndroidFileSystemStream.");
             }
 
             int position = fullPath.LastIndexOf(SplitFlag, StringComparison.Ordinal);
             if (position < 0)
             {
-                throw new FrameworkException("Can not find split flag in full path.");
+                throw new GameFrameworkException("Can not find split flag in full path.");
             }
 
             string fileName = fullPath.Substring(position + SplitFlagLength);
             m_FileStream = InternalOpen(fileName);
             if (m_FileStream == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Open file '{0}' from Android asset manager failure.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("Open file '{0}' from Android asset manager failure.", fullPath));
             }
 
             m_FileStreamRawObject = m_FileStream.GetRawObject();
@@ -105,7 +104,7 @@ namespace UnityQGameFramework.Runtime
         {
             get
             {
-                throw new FrameworkException("Get position is not supported in AndroidFileSystemStream.");
+                throw new GameFrameworkException("Get position is not supported in AndroidFileSystemStream.");
             }
             set
             {
@@ -130,7 +129,7 @@ namespace UnityQGameFramework.Runtime
         /// <param name="length">要设置的文件系统流的长度。</param>
         protected override void SetLength(long length)
         {
-            throw new FrameworkException("SetLength is not supported in AndroidFileSystemStream.");
+            throw new GameFrameworkException("SetLength is not supported in AndroidFileSystemStream.");
         }
 
         /// <summary>
@@ -193,7 +192,7 @@ namespace UnityQGameFramework.Runtime
         /// <param name="value">要写入的字节。</param>
         protected override void WriteByte(byte value)
         {
-            throw new FrameworkException("WriteByte is not supported in AndroidFileSystemStream.");
+            throw new GameFrameworkException("WriteByte is not supported in AndroidFileSystemStream.");
         }
 
         /// <summary>
@@ -204,7 +203,7 @@ namespace UnityQGameFramework.Runtime
         /// <param name="length">存储写入文件内容的二进制流的长度。</param>
         protected override void Write(byte[] buffer, int startIndex, int length)
         {
-            throw new FrameworkException("Write is not supported in AndroidFileSystemStream.");
+            throw new GameFrameworkException("Write is not supported in AndroidFileSystemStream.");
         }
 
         /// <summary>
@@ -212,7 +211,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         protected override void Flush()
         {
-            throw new FrameworkException("Flush is not supported in AndroidFileSystemStream.");
+            throw new GameFrameworkException("Flush is not supported in AndroidFileSystemStream.");
         }
 
         /// <summary>

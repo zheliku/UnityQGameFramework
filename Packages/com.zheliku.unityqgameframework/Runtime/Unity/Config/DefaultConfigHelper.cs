@@ -6,7 +6,7 @@
 using System;
 using System.Text;
 using UnityEngine;
-using UnityQGameFramework.Core.Config;
+using UnityQGameFramework.Core;
 using YooAsset;
 
 namespace UnityQGameFramework.Runtime

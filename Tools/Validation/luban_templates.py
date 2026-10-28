@@ -81,7 +81,6 @@ using System.Linq;
 using System.Collections.Generic;
 using QgfFixture;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataTable;
 using UnityQGameFramework.Luban;
 using UnityQGameFramework.Runtime;
 class Program
@@ -98,7 +97,7 @@ class Program
     {
         var tables = new Tables();
         var loaded = ((IDataTableLoader)tables).CreateTables(Load);
-        var manager = FrameworkEntry.GetModule<IDataTableManager>();
+        var manager = GameFrameworkEntry.GetModule<IDataTableManager>();
         manager.AddDataTables(loaded);
         Check(manager.Count == 12, "All map/list/one/struct tables must be registered.");
         Check(ReferenceEquals(manager.GetDataTable<TbItem>(), tables.TbItem), "The registry holds the generated table itself.");
@@ -134,13 +133,13 @@ class Program
         manager.AddDataTables(new[] { named });
         Check(ReferenceEquals(manager.GetDataTable<TbItem>("Named"), named), "Named generated instance.");
         var pending = new TbItem(Load("tbitem"), "Pending");
-        Reject<FrameworkException>(() => manager.AddDataTables(new DataTableBase[] { pending, named }));
+        Reject<GameFrameworkException>(() => manager.AddDataTables(new DataTableBase[] { pending, named }));
         Check(!manager.HasDataTable<TbItem>("Pending"), "Registration is atomic.");
         Check(!manager.RemoveDataTable(new TbItem(Load("tbitem"), "Named")), "A different instance cannot remove a registered table.");
         Check(manager.RemoveDataTable(named) && !manager.HasDataTable<TbItem>("Named"), "Instance removal.");
         Check(manager.GetAllDataTables().All(table => table.Count > 0 && table.Type != table.RowType), "Complete metadata and row enumeration.");
         Reject<ArgumentException>(() => manager.GetDataTable(typeof(Item)));
-        FrameworkEntry.Shutdown();
+        GameFrameworkEntry.Shutdown();
         Check(manager.Count == 0 && tables.TbUse.Get(10).ItemId_Ref.Name == "First", "Unload drops registry ownership without corrupting retained records.");
         File.WriteAllText("result.json", "{\\"passed\\":true,\\"tables\\":12,\\"checks\\":" + checks + "}");
         Console.WriteLine("Passed: " + checks + " unified table checks.");

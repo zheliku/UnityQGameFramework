@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         /// <summary>
         /// 下载任务的状态。

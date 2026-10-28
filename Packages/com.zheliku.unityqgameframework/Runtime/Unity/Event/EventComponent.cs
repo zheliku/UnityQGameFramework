@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using System;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Event")]
-    public sealed class EventComponent : FrameworkComponent
+    public sealed class EventComponent : GameFrameworkComponent
     {
         private IEventManager m_EventManager = null;
 
@@ -49,7 +48,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_EventManager = FrameworkEntry.GetModule<IEventManager>();
+            m_EventManager = GameFrameworkEntry.GetModule<IEventManager>();
             if (m_EventManager == null)
             {
                 Log.Fatal("Event manager is invalid.");

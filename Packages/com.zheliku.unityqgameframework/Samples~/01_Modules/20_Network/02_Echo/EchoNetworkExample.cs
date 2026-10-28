@@ -2,12 +2,8 @@ using System;
 using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Network;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
-using ConnectedArgs = UnityQGameFramework.Runtime.NetworkConnectedEventArgs;
-using ClosedArgs = UnityQGameFramework.Runtime.NetworkClosedEventArgs;
-using ErrorArgs = UnityQGameFramework.Runtime.NetworkErrorEventArgs;
 
 namespace UnityQGameFramework.Examples.Modules
 {
@@ -36,9 +32,9 @@ namespace UnityQGameFramework.Examples.Modules
         {
             server = new NetworkEchoServer();
             // Runtime 事件在主线程分发；先订阅，再建立连接。
-            QGF.Event.Subscribe(ConnectedArgs.EventId, OnEvent);
-            QGF.Event.Subscribe(ClosedArgs.EventId, OnEvent);
-            QGF.Event.Subscribe(ErrorArgs.EventId, OnEvent);
+            QGF.Event.Subscribe(NetworkConnectedEventArgs.EventId, OnEvent);
+            QGF.Event.Subscribe(NetworkClosedEventArgs.EventId, OnEvent);
+            QGF.Event.Subscribe(NetworkErrorEventArgs.EventId, OnEvent);
             connectButton.onClick.AddListener(Connect);
             sendButton.onClick.AddListener(Send);
             noticeButton.onClick.AddListener(() => channel.Send(new NetworkTextPacket { MessageId = 3, Text = "Notification for the default handler" }));
@@ -90,17 +86,17 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void OnEvent(object sender, GameEventArgs args)
         {
-            if (args is ConnectedArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
+            if (args is NetworkConnectedEventArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
             {
                 connecting = false;
                 state = "Connected. Ready to send.";
             }
-            else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
+            else if (args is NetworkClosedEventArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
             {
                 connecting = false;
                 state = "Connection closed";
             }
-            else if (args is ErrorArgs error && ReferenceEquals(error.NetworkChannel, channel))
+            else if (args is NetworkErrorEventArgs error && ReferenceEquals(error.NetworkChannel, channel))
             {
                 connecting = false;
                 state = error.ErrorCode + "：" + error.SocketErrorCode;
@@ -128,19 +124,19 @@ namespace UnityQGameFramework.Examples.Modules
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(ConnectedArgs.EventId, OnEvent))
+                if (events.Check(NetworkConnectedEventArgs.EventId, OnEvent))
                 {
-                    events.Unsubscribe(ConnectedArgs.EventId, OnEvent);
+                    events.Unsubscribe(NetworkConnectedEventArgs.EventId, OnEvent);
                 }
 
-                if (events.Check(ClosedArgs.EventId, OnEvent))
+                if (events.Check(NetworkClosedEventArgs.EventId, OnEvent))
                 {
-                    events.Unsubscribe(ClosedArgs.EventId, OnEvent);
+                    events.Unsubscribe(NetworkClosedEventArgs.EventId, OnEvent);
                 }
 
-                if (events.Check(ErrorArgs.EventId, OnEvent))
+                if (events.Check(NetworkErrorEventArgs.EventId, OnEvent))
                 {
-                    events.Unsubscribe(ErrorArgs.EventId, OnEvent);
+                    events.Unsubscribe(NetworkErrorEventArgs.EventId, OnEvent);
                 }
             }
 

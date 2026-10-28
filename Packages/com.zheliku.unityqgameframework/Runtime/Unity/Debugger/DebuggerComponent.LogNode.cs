@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 日志记录结点。
@@ -31,27 +31,42 @@ namespace UnityQGameFramework.Runtime
             /// <summary>
             /// 获取日志时间。
             /// </summary>
-            public DateTime LogTime { get; private set; }
+            public DateTime LogTime
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取日志帧计数。
             /// </summary>
-            public int LogFrameCount { get; private set; }
+            public int LogFrameCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取日志类型。
             /// </summary>
-            public LogType LogType { get; private set; }
+            public LogType LogType
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取日志内容。
             /// </summary>
-            public string LogMessage { get; private set; }
+            public string LogMessage
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取日志堆栈信息。
             /// </summary>
-            public string StackTrack { get; private set; }
+            public string StackTrack
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 创建日志记录结点。

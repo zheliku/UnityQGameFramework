@@ -48,7 +48,10 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取本地更新示例的构建记录。
         /// </summary>
-        public static ResourceFixtureManifest Fixture { get; private set; }
+        public static ResourceFixtureManifest Fixture
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取尚未构建资源时的提示。

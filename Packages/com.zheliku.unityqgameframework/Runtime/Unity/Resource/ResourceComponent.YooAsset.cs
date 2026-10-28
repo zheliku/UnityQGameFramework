@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
 using YooAsset;
 
 namespace UnityQGameFramework.Runtime
@@ -51,7 +50,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取或设置编辑器资源包的构建方法。
         /// </summary>
-        public static Func<ResourceSettings, string, bool, string> EditorPackageBuilder { get; set; }
+        public static Func<ResourceSettings, string, bool, string> EditorPackageBuilder
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取资源管理器。
@@ -60,7 +62,7 @@ namespace UnityQGameFramework.Runtime
         {
             get
             {
-                return FrameworkEntry.GetModule<IResourceManager>();
+                return GameFrameworkEntry.GetModule<IResourceManager>();
             }
         }
 
@@ -221,7 +223,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (m_YooAssetBackend == null)
             {
-                throw new FrameworkException("Assign ResourceSettings to the Resource component before using YooAsset APIs.");
+                throw new GameFrameworkException("Assign ResourceSettings to the Resource component before using YooAsset APIs.");
             }
             return m_YooAssetBackend;
         }

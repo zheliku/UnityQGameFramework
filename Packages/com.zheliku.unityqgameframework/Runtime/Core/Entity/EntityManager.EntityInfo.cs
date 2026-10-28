@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class EntityManager : FrameworkModule, IEntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         /// <summary>
         /// 实体信息。
@@ -30,17 +30,26 @@ namespace UnityQGameFramework.Core.Entity
             /// <summary>
             /// 获取当前实体。
             /// </summary>
-            public IEntity Entity { get; private set; }
+            public IEntity Entity
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取或设置实体生命周期状态。
             /// </summary>
-            public EntityStatus Status { get; set; }
+            public EntityStatus Status
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取或设置父实体。
             /// </summary>
-            public IEntity ParentEntity { get; set; }
+            public IEntity ParentEntity
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取当前子实体数量。
@@ -62,7 +71,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (entity == null)
                 {
-                    throw new FrameworkException("Entity is invalid.");
+                    throw new GameFrameworkException("Entity is invalid.");
                 }
 
                 EntityInfo entityInfo = ReferencePool.Acquire<EntityInfo>();
@@ -108,7 +117,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();
@@ -126,7 +135,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (m_ChildEntities.Contains(childEntity))
                 {
-                    throw new FrameworkException("Can not add child entity which is already exist.");
+                    throw new GameFrameworkException("Can not add child entity which is already exist.");
                 }
 
                 m_ChildEntities.Add(childEntity);
@@ -140,7 +149,7 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (!m_ChildEntities.Remove(childEntity))
                 {
-                    throw new FrameworkException("Can not remove child entity which is not exist.");
+                    throw new GameFrameworkException("Can not remove child entity which is not exist.");
                 }
             }
         }

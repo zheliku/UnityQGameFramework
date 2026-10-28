@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 加载资源回调函数集。
@@ -82,7 +82,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (loadAssetSuccessCallback == null)
             {
-                throw new FrameworkException("Load asset success callback is invalid.");
+                throw new GameFrameworkException("Load asset success callback is invalid.");
             }
 
             LoadAssetSuccessCallback = loadAssetSuccessCallback;
@@ -94,21 +94,33 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取加载资源成功回调函数。
         /// </summary>
-        public LoadAssetSuccessCallback LoadAssetSuccessCallback { get; }
+        public LoadAssetSuccessCallback LoadAssetSuccessCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取加载资源失败回调函数。
         /// </summary>
-        public LoadAssetFailureCallback LoadAssetFailureCallback { get; }
+        public LoadAssetFailureCallback LoadAssetFailureCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取加载资源更新回调函数。
         /// </summary>
-        public LoadAssetUpdateCallback LoadAssetUpdateCallback { get; }
+        public LoadAssetUpdateCallback LoadAssetUpdateCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取加载资源时加载依赖资源回调函数。
         /// </summary>
-        public LoadAssetDependencyAssetCallback LoadAssetDependencyAssetCallback { get; }
+        public LoadAssetDependencyAssetCallback LoadAssetDependencyAssetCallback
+        {
+            get;
+        }
     }
 }

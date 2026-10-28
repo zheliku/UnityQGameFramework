@@ -20,7 +20,7 @@ public static class AuditCoreForwarding
 
     public static object Run()
     {
-        Assembly core = typeof(FrameworkEntry).Assembly, runtime = typeof(BaseComponent).Assembly;
+        Assembly core = typeof(GameFrameworkEntry).Assembly, runtime = typeof(BaseComponent).Assembly;
         var calls = new List<object>();
         var localCalls = new List<object>();
         var implementations = new List<object>();
@@ -30,38 +30,45 @@ public static class AuditCoreForwarding
         var managerImplementations = new List<object>();
         var managerImplementationCalls = new List<object>();
         var errors = new List<string>();
-        var components = runtime.GetExportedTypes().Where(type => type.BaseType == typeof(FrameworkComponent)).ToArray();
+        var components = runtime.GetExportedTypes().Where(type => type.BaseType == typeof(GameFrameworkComponent)).ToArray();
         foreach (Type component in components)
-        foreach (MethodInfo method in component.GetMethods(Declared))
-        {
-            Scan(component, method, method, core, calls, localCalls, errors);
-            var state = method.GetCustomAttribute<IteratorStateMachineAttribute>()?.StateMachineType
-                ?? method.GetCustomAttribute<AsyncStateMachineAttribute>()?.StateMachineType;
-            if (state != null)
-            foreach (MethodInfo generated in state.GetMethods(Declared))
-                Scan(component, method, generated, core, calls, localCalls, errors);
-        }
+            foreach (MethodInfo method in component.GetMethods(Declared))
+            {
+                Scan(component, method, method, core, calls, localCalls, errors);
+                var state = method.GetCustomAttribute<IteratorStateMachineAttribute>()?.StateMachineType
+                    ?? method.GetCustomAttribute<AsyncStateMachineAttribute>()?.StateMachineType;
+                if (state != null)
+                    foreach (MethodInfo generated in state.GetMethods(Declared))
+                        Scan(component, method, generated, core, calls, localCalls, errors);
+            }
 
         foreach (Type implementation in runtime.GetExportedTypes().Where(type => type.IsClass && !type.IsAbstract))
-        foreach (Type contract in implementation.GetInterfaces().Where(type => type.Assembly == core))
-        {
-            var map = implementation.GetInterfaceMap(contract);
-            Type definition = contract.IsGenericType ? contract.GetGenericTypeDefinition() : contract;
-            implementationTypes.Add(new { contract = definition.FullName, implementation = implementation.FullName,
-                members = map.InterfaceMethods.Length });
-            for (int index = 0; index < map.InterfaceMethods.Length; index++)
+            foreach (Type contract in implementation.GetInterfaces().Where(type => type.Assembly == core))
             {
-                MethodInfo member = Definition(map.InterfaceMethods[index]);
-                implementations.Add(new
+                var map = implementation.GetInterfaceMap(contract);
+                Type definition = contract.IsGenericType ? contract.GetGenericTypeDefinition() : contract;
+                implementationTypes.Add(new
                 {
-                    contract = member.DeclaringType.FullName, member = member.ToString(), memberName = member.Name,
+                    contract = definition.FullName,
                     implementation = implementation.FullName,
-                    declaringType = map.TargetMethods[index].DeclaringType.FullName,
-                    target = map.TargetMethods[index].ToString(), member.IsSpecialName
+                    members = map.InterfaceMethods.Length
                 });
+                for (int index = 0; index < map.InterfaceMethods.Length; index++)
+                {
+                    MethodInfo member = Definition(map.InterfaceMethods[index]);
+                    implementations.Add(new
+                    {
+                        contract = member.DeclaringType.FullName,
+                        member = member.ToString(),
+                        memberName = member.Name,
+                        implementation = implementation.FullName,
+                        declaringType = map.TargetMethods[index].DeclaringType.FullName,
+                        target = map.TargetMethods[index].ToString(),
+                        member.IsSpecialName
+                    });
+                }
             }
-        }
-        Type moduleBase = core.GetType("UnityQGameFramework.Core.FrameworkModule", true);
+        Type moduleBase = core.GetType("UnityQGameFramework.Core.GameFrameworkModule", true);
         foreach (Type manager in core.GetTypes().Where(type => type.IsClass && !type.IsAbstract
             && moduleBase.IsAssignableFrom(type)))
         {
@@ -75,32 +82,54 @@ public static class AuditCoreForwarding
                     MethodInfo member = Definition(map.InterfaceMethods[index]);
                     managerImplementations.Add(new
                     {
-                        contract = member.DeclaringType.FullName, member = member.ToString(), memberName = member.Name,
-                        implementation = manager.FullName, target = map.TargetMethods[index].ToString(), member.IsSpecialName
+                        contract = member.DeclaringType.FullName,
+                        member = member.ToString(),
+                        memberName = member.Name,
+                        implementation = manager.FullName,
+                        target = map.TargetMethods[index].ToString(),
+                        member.IsSpecialName
                     });
                 }
             }
         }
-        if (errors.Count != 0) throw new Exception(string.Join("\n", errors));
+        if (errors.Count != 0)
+            throw new Exception(string.Join("\n", errors));
         var report = new
         {
             scope = "Compiled component/manager call sites, shared Core implementation endpoints and Unity interface implementations; not runtime behavior coverage.",
-            coreModuleId = core.ManifestModule.ModuleVersionId, runtimeModuleId = runtime.ManifestModule.ModuleVersionId,
+            coreModuleId = core.ManifestModule.ModuleVersionId,
+            runtimeModuleId = runtime.ManifestModule.ModuleVersionId,
             components = components.Select(type => type.FullName).OrderBy(name => name).ToArray(),
-            calls, localCalls, implementations, implementationTypes, managerCalls, managerLocalCalls, managerImplementations, managerImplementationCalls
+            calls,
+            localCalls,
+            implementations,
+            implementationTypes,
+            managerCalls,
+            managerLocalCalls,
+            managerImplementations,
+            managerImplementationCalls
         };
         Directory.CreateDirectory("Artifacts~/CoreForwardingExamples");
         File.WriteAllText("Artifacts~/CoreForwardingExamples/compiled-forwarding.json", JsonConvert.SerializeObject(report, Formatting.Indented));
-        return new { components = components.Length, coreCallSites = calls.Count, componentCallSites = localCalls.Count,
-            interfaceImplementations = implementations.Count, managerCallSites = managerCalls.Count,
-            managerLocalCallSites = managerLocalCalls.Count, managerInterfaceImplementations = managerImplementations.Count,
-            managerImplementationCallSites = managerImplementationCalls.Count, errors };
+        return new
+        {
+            components = components.Length,
+            coreCallSites = calls.Count,
+            componentCallSites = localCalls.Count,
+            interfaceImplementations = implementations.Count,
+            managerCallSites = managerCalls.Count,
+            managerLocalCallSites = managerLocalCalls.Count,
+            managerInterfaceImplementations = managerImplementations.Count,
+            managerImplementationCallSites = managerImplementationCalls.Count,
+            errors
+        };
     }
 
     private static MethodInfo Definition(MethodInfo method)
     {
         Type owner = method.DeclaringType;
-        if (owner.IsGenericType) owner = owner.GetGenericTypeDefinition();
+        if (owner.IsGenericType)
+            owner = owner.GetGenericTypeDefinition();
         return owner.GetMethods(Declared).Single(candidate => candidate.MetadataToken == method.MetadataToken);
     }
 
@@ -108,13 +137,15 @@ public static class AuditCoreForwarding
         List<object> calls, List<object> localCalls, List<string> errors, List<object> implementationCalls = null)
     {
         byte[] il = caller.GetMethodBody()?.GetILAsByteArray();
-        if (il == null) return;
+        if (il == null)
+            return;
         try
         {
             for (int offset = 0; offset < il.Length;)
             {
                 int start = offset, value = il[offset++];
-                if (value == 0xfe) value = 0xfe00 | il[offset++];
+                if (value == 0xfe)
+                    value = 0xfe00 | il[offset++];
                 OpCode code = Codes[value];
                 if (code.OperandType == OperandType.InlineMethod)
                 {
@@ -127,24 +158,38 @@ public static class AuditCoreForwarding
                         MethodInfo member = Definition(target);
                         var record = new
                         {
-                            component = component.FullName, entry = entry.ToString(), entryName = entry.Name, entry.IsPublic,
+                            component = component.FullName,
+                            entry = entry.ToString(),
+                            entryName = entry.Name,
+                            entry.IsPublic,
                             caller = caller.DeclaringType.FullName + "." + caller.Name,
-                            targetType = member.DeclaringType.FullName, target = member.ToString(), targetName = member.Name,
-                            member.IsSpecialName, instruction = code.Name, offset = start
+                            targetType = member.DeclaringType.FullName,
+                            target = member.ToString(),
+                            targetName = member.Name,
+                            member.IsSpecialName,
+                            instruction = code.Name,
+                            offset = start
                         };
-                        if (target.DeclaringType.Assembly == core && target.DeclaringType.IsInterface) calls.Add(record);
-                        else if (target.DeclaringType == component) localCalls.Add(record);
+                        if (target.DeclaringType.Assembly == core && target.DeclaringType.IsInterface)
+                            calls.Add(record);
+                        else if (target.DeclaringType == component)
+                            localCalls.Add(record);
                         if (!target.DeclaringType.IsInterface && target.DeclaringType.Assembly == core)
                             implementationCalls?.Add(record);
                     }
                 }
                 switch (code.OperandType)
                 {
-                    case OperandType.InlineNone: break;
+                    case OperandType.InlineNone:
+                        break;
                     case OperandType.ShortInlineBrTarget:
                     case OperandType.ShortInlineI:
-                    case OperandType.ShortInlineVar: offset++; break;
-                    case OperandType.InlineVar: offset += 2; break;
+                    case OperandType.ShortInlineVar:
+                        offset++;
+                        break;
+                    case OperandType.InlineVar:
+                        offset += 2;
+                        break;
                     case OperandType.InlineI:
                     case OperandType.InlineBrTarget:
                     case OperandType.InlineField:
@@ -153,11 +198,18 @@ public static class AuditCoreForwarding
                     case OperandType.InlineString:
                     case OperandType.InlineTok:
                     case OperandType.InlineType:
-                    case OperandType.ShortInlineR: offset += 4; break;
+                    case OperandType.ShortInlineR:
+                        offset += 4;
+                        break;
                     case OperandType.InlineI8:
-                    case OperandType.InlineR: offset += 8; break;
-                    case OperandType.InlineSwitch: offset += 4 + BitConverter.ToInt32(il, offset) * 4; break;
-                    default: throw new Exception("Unsupported operand " + code.OperandType);
+                    case OperandType.InlineR:
+                        offset += 8;
+                        break;
+                    case OperandType.InlineSwitch:
+                        offset += 4 + BitConverter.ToInt32(il, offset) * 4;
+                        break;
+                    default:
+                        throw new Exception("Unsupported operand " + code.OperandType);
                 }
             }
         }

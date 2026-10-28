@@ -5,9 +5,9 @@
 
 using System.Net.Sockets;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         /// <summary>
         /// 保存网络连接中的异步状态。
@@ -28,12 +28,18 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取发起连接的套接字。
             /// </summary>
-            public Socket Socket { get; }
+            public Socket Socket
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取用户自定义数据。
             /// </summary>
-            public object UserData { get; }
+            public object UserData
+            {
+                get;
+            }
         }
     }
 }

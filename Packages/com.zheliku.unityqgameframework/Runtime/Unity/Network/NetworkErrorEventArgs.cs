@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Network;
 using System.Net.Sockets;
 
 namespace UnityQGameFramework.Runtime
@@ -44,29 +42,41 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误码。
         /// </summary>
-        public NetworkErrorCode ErrorCode { get; private set; }
+        public NetworkErrorCode ErrorCode
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取 Socket 错误码。
         /// </summary>
-        public SocketError SocketErrorCode { get; private set; }
+        public SocketError SocketErrorCode
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建网络错误事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的网络错误事件。</returns>
-        public static NetworkErrorEventArgs Create(UnityQGameFramework.Core.Network.NetworkErrorEventArgs e)
+        public static NetworkErrorEventArgs Create(UnityQGameFramework.Core.Events.NetworkErrorEventArgs e)
         {
             NetworkErrorEventArgs networkErrorEventArgs = ReferencePool.Acquire<NetworkErrorEventArgs>();
             networkErrorEventArgs.NetworkChannel = e.NetworkChannel;

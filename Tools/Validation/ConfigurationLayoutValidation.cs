@@ -74,7 +74,17 @@ public static class ConfigurationLayoutValidation
             legacy = AssetDatabase.LoadAssetAtPath<LubanProfile>(legacyPath);
             Require(LubanGenerator.ConfigurationPath(legacy) == moved + "/Source/luban.conf", "Legacy SourceFolder did not migrate to a configuration file.");
             Require(legacy.ConfigurationFile != null && File.ReadAllText(legacyPath).Contains("ConfigurationFile: {fileID: 102900000"), "Legacy upgrade was not saved.");
-            return new { passed = true, existingProfiles = 3, identicalOutputs = true, rootConfiguration = true, freshWorkspace = true, workspaceMove = true, schemaRepair = true, legacyUpgrade = true };
+            return new
+            {
+                passed = true,
+                existingProfiles = 3,
+                identicalOutputs = true,
+                rootConfiguration = true,
+                freshWorkspace = true,
+                workspaceMove = true,
+                schemaRepair = true,
+                legacyUpgrade = true
+            };
         }
         finally
         {

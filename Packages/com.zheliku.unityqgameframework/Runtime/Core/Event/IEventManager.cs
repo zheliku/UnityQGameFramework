@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System;
 
-namespace UnityQGameFramework.Core.Event
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 事件管理器接口。
@@ -15,12 +15,18 @@ namespace UnityQGameFramework.Core.Event
         /// <summary>
         /// 获取事件处理函数的数量。
         /// </summary>
-        int EventHandlerCount { get; }
+        int EventHandlerCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取事件数量。
         /// </summary>
-        int EventCount { get; }
+        int EventCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取事件处理函数的数量。

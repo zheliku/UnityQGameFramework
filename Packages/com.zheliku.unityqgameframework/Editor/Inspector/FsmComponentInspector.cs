@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Fsm;
 using UnityEditor;
 using UnityQGameFramework.Runtime;
 
@@ -14,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制有限状态机组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(FsmComponent))]
-    internal sealed class FsmComponentInspector : FrameworkInspector
+    internal sealed class FsmComponentInspector : GameFrameworkInspector
     {
         /// <summary>
         /// 绘制组件的 Inspector 配置和运行时信息。

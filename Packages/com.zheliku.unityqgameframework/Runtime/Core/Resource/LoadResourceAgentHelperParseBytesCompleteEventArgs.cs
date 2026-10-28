@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件。
     /// </summary>
-    public sealed class LoadResourceAgentHelperParseBytesCompleteEventArgs : FrameworkEventArgs
+    public sealed class LoadResourceAgentHelperParseBytesCompleteEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件的新实例。
@@ -21,7 +21,10 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取加载对象。
         /// </summary>
-        public object Resource { get; private set; }
+        public object Resource
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件。

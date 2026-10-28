@@ -11,7 +11,7 @@ using UnityEngine.Profiling;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 显示运行时内存采样结果。

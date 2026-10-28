@@ -3,15 +3,14 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Download;
-using UnityQGameFramework.Core.FileSystem;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源更新器。
@@ -42,52 +41,52 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 资源包应用开始回调。
             /// </summary>
-            public FrameworkAction<string, int, long> ResourceApplyStart;
+            public GameFrameworkAction<string, int, long> ResourceApplyStart;
 
             /// <summary>
             /// 单个资源应用成功回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, string, int, int> ResourceApplySuccess;
+            public GameFrameworkAction<ResourceName, string, string, int, int> ResourceApplySuccess;
 
             /// <summary>
             /// 单个资源应用失败回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, string> ResourceApplyFailure;
+            public GameFrameworkAction<ResourceName, string, string> ResourceApplyFailure;
 
             /// <summary>
             /// 资源包应用完成回调。
             /// </summary>
-            public FrameworkAction<string, bool> ResourceApplyComplete;
+            public GameFrameworkAction<string, bool> ResourceApplyComplete;
 
             /// <summary>
             /// 资源下载开始回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
+            public GameFrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
 
             /// <summary>
             /// 资源下载进度回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
+            public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
 
             /// <summary>
             /// 资源下载成功回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, string, int, int> ResourceUpdateSuccess;
+            public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateSuccess;
 
             /// <summary>
             /// 资源下载失败回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, int, int, string> ResourceUpdateFailure;
+            public GameFrameworkAction<ResourceName, string, int, int, string> ResourceUpdateFailure;
 
             /// <summary>
             /// 资源组更新完成回调。
             /// </summary>
-            public FrameworkAction<ResourceGroup, bool> ResourceUpdateComplete;
+            public GameFrameworkAction<ResourceGroup, bool> ResourceUpdateComplete;
 
             /// <summary>
             /// 所有资源更新完成回调。
             /// </summary>
-            public FrameworkAction ResourceUpdateAllComplete;
+            public GameFrameworkAction ResourceUpdateAllComplete;
 
             /// <summary>
             /// 初始化资源更新器的新实例。
@@ -131,12 +130,18 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取或设置每更新多少字节的资源，重新生成一次版本资源列表。
             /// </summary>
-            public int GenerateReadWriteVersionListLength { get; set; }
+            public int GenerateReadWriteVersionListLength
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取正在应用的资源包路径。
             /// </summary>
-            public string ApplyingResourcePackPath { get; private set; }
+            public string ApplyingResourcePackPath
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取等待应用资源数量。
@@ -152,7 +157,10 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取或设置资源更新重试次数。
             /// </summary>
-            public int UpdateRetryCount { get; set; }
+            public int UpdateRetryCount
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取正在更新的资源组。
@@ -278,7 +286,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (downloadManager == null)
                 {
-                    throw new FrameworkException("Download manager is invalid.");
+                    throw new GameFrameworkException("Download manager is invalid.");
                 }
 
                 m_DownloadManager = downloadManager;
@@ -325,22 +333,22 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (!m_CheckResourcesComplete)
                 {
-                    throw new FrameworkException("You must check resources complete first.");
+                    throw new GameFrameworkException("You must check resources complete first.");
                 }
 
                 if (m_ApplyingResourcePackStream != null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
                 }
 
                 if (m_UpdatingResourceGroup != null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("There is already a resource group '{0}' being updated.", m_UpdatingResourceGroup.Name));
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource group '{0}' being updated.", m_UpdatingResourceGroup.Name));
                 }
 
                 if (m_UpdateWaitingInfoWhilePlaying.Count > 0)
                 {
-                    throw new FrameworkException("There are already some resources being updated while playing.");
+                    throw new GameFrameworkException("There are already some resources being updated while playing.");
                 }
 
                 try
@@ -355,12 +363,12 @@ namespace UnityQGameFramework.Core.Resource
 
                     if (!versionList.IsValid)
                     {
-                        throw new FrameworkException("Deserialize resource pack version list failure.");
+                        throw new GameFrameworkException("Deserialize resource pack version list failure.");
                     }
 
                     if (versionList.Offset + versionList.Length != length)
                     {
-                        throw new FrameworkException("Resource pack length is invalid.");
+                        throw new GameFrameworkException("Resource pack length is invalid.");
                     }
 
                     ApplyingResourcePackPath = resourcePackPath;
@@ -399,7 +407,7 @@ namespace UnityQGameFramework.Core.Resource
                         m_ApplyingResourcePackStream = null;
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Apply resources '{0}' with exception '{1}'.", resourcePackPath, exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Apply resources '{0}' with exception '{1}'.", resourcePackPath, exception), exception);
                 }
             }
 
@@ -411,22 +419,22 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_DownloadManager == null)
                 {
-                    throw new FrameworkException("You must set download manager first.");
+                    throw new GameFrameworkException("You must set download manager first.");
                 }
 
                 if (!m_CheckResourcesComplete)
                 {
-                    throw new FrameworkException("You must check resources complete first.");
+                    throw new GameFrameworkException("You must check resources complete first.");
                 }
 
                 if (m_ApplyingResourcePackStream != null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
                 }
 
                 if (m_UpdatingResourceGroup != null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("There is already a resource group '{0}' being updated.", m_UpdatingResourceGroup.Name));
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource group '{0}' being updated.", m_UpdatingResourceGroup.Name));
                 }
 
                 if (string.IsNullOrEmpty(resourceGroup.Name))
@@ -464,22 +472,22 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_DownloadManager == null)
                 {
-                    throw new FrameworkException("You must set download manager first.");
+                    throw new GameFrameworkException("You must set download manager first.");
                 }
 
                 if (!m_CheckResourcesComplete)
                 {
-                    throw new FrameworkException("You must check resources complete first.");
+                    throw new GameFrameworkException("You must check resources complete first.");
                 }
 
                 if (m_ApplyingResourcePackStream != null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
                 }
 
                 if (m_UpdatingResourceGroup == null)
                 {
-                    throw new FrameworkException("There is no resource group being updated.");
+                    throw new GameFrameworkException("There is no resource group being updated.");
                 }
 
                 m_UpdateWaitingInfo.Clear();
@@ -494,17 +502,17 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_DownloadManager == null)
                 {
-                    throw new FrameworkException("You must set download manager first.");
+                    throw new GameFrameworkException("You must set download manager first.");
                 }
 
                 if (!m_CheckResourcesComplete)
                 {
-                    throw new FrameworkException("You must check resources complete first.");
+                    throw new GameFrameworkException("You must check resources complete first.");
                 }
 
                 if (m_ApplyingResourcePackStream != null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", ApplyingResourcePackPath));
                 }
 
                 UpdateInfo updateInfo = null;
@@ -742,7 +750,7 @@ namespace UnityQGameFramework.Core.Resource
                     LocalVersionList versionList = new LocalVersionList(resources, fileSystems);
                     if (!m_ResourceManager.ReadWriteVersionListSerializer.Serialize(fileStream, versionList))
                     {
-                        throw new FrameworkException("Serialize read-write version list failure.");
+                        throw new GameFrameworkException("Serialize read-write version list failure.");
                     }
 
                     if (fileStream != null)
@@ -764,7 +772,7 @@ namespace UnityQGameFramework.Core.Resource
                         File.Delete(m_ReadWriteVersionListTempFileName);
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception), exception);
                 }
 
                 if (File.Exists(m_ReadWriteVersionListFileName))
@@ -791,12 +799,12 @@ namespace UnityQGameFramework.Core.Resource
 
                 if (m_DownloadManager == null)
                 {
-                    throw new FrameworkException("You must set download manager first.");
+                    throw new GameFrameworkException("You must set download manager first.");
                 }
 
                 if (e.CurrentLength > int.MaxValue)
                 {
-                    throw new FrameworkException(Utility.Text.Format("File '{0}' is too large.", e.DownloadPath));
+                    throw new GameFrameworkException(Utility.Text.Format("File '{0}' is too large.", e.DownloadPath));
                 }
 
                 if (ResourceUpdateStart != null)
@@ -820,7 +828,7 @@ namespace UnityQGameFramework.Core.Resource
 
                 if (m_DownloadManager == null)
                 {
-                    throw new FrameworkException("You must set download manager first.");
+                    throw new GameFrameworkException("You must set download manager first.");
                 }
 
                 if (e.CurrentLength > updateInfo.CompressedLength)

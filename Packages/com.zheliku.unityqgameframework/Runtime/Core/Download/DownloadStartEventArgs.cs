@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 下载开始事件。
     /// </summary>
-    public sealed class DownloadStartEventArgs : FrameworkEventArgs
+    public sealed class DownloadStartEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化下载开始事件的新实例。
@@ -25,27 +25,42 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取下载任务的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载后存放路径。
         /// </summary>
-        public string DownloadPath { get; private set; }
+        public string DownloadPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载地址。
         /// </summary>
-        public string DownloadUri { get; private set; }
+        public string DownloadUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前大小。
         /// </summary>
-        public long CurrentLength { get; private set; }
+        public long CurrentLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建下载开始事件。

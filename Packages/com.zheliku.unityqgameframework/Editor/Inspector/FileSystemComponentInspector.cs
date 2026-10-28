@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.FileSystem;
 using UnityEditor;
 using UnityQGameFramework.Runtime;
 
@@ -14,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制文件系统组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(FileSystemComponent))]
-    internal sealed class FileSystemComponentInspector : FrameworkInspector
+    internal sealed class FileSystemComponentInspector : GameFrameworkInspector
     {
         private HelperInfo<FileSystemHelperBase> m_FileSystemHelperInfo = new HelperInfo<FileSystemHelperBase>("FileSystem");
 

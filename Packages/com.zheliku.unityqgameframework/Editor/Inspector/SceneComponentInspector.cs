@@ -13,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制场景组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(SceneComponent))]
-    internal sealed class SceneComponentInspector : FrameworkInspector
+    internal sealed class SceneComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_EnableLoadSceneUpdateEvent = null;
         private SerializedProperty m_EnableLoadSceneDependencyAssetEvent = null;

@@ -63,7 +63,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // 每次打开都会产生新序号；是否复用旧 GameObject 由实例池的缓存状态决定。
                 serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"Open #{++openCount}");
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

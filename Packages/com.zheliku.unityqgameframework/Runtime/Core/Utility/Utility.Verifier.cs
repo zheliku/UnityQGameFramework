@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 return GetCrc32(bytes, 0, bytes.Length);
@@ -45,12 +45,12 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Bytes is invalid.");
+                    throw new GameFrameworkException("Bytes is invalid.");
                 }
 
                 if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
-                    throw new FrameworkException("Offset or length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 s_Algorithm.HashCore(bytes, offset, length);
@@ -68,7 +68,7 @@ namespace UnityQGameFramework.Core
             {
                 if (stream == null)
                 {
-                    throw new FrameworkException("Stream is invalid.");
+                    throw new GameFrameworkException("Stream is invalid.");
                 }
 
                 while (true)
@@ -120,12 +120,12 @@ namespace UnityQGameFramework.Core
             {
                 if (bytes == null)
                 {
-                    throw new FrameworkException("Result is invalid.");
+                    throw new GameFrameworkException("Result is invalid.");
                 }
 
                 if (offset < 0 || offset + 4 > bytes.Length)
                 {
-                    throw new FrameworkException("Offset or length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 bytes[offset] = (byte)((crc32 >> 24) & 0xff);
@@ -145,18 +145,18 @@ namespace UnityQGameFramework.Core
             {
                 if (stream == null)
                 {
-                    throw new FrameworkException("Stream is invalid.");
+                    throw new GameFrameworkException("Stream is invalid.");
                 }
 
                 if (code == null)
                 {
-                    throw new FrameworkException("Code is invalid.");
+                    throw new GameFrameworkException("Code is invalid.");
                 }
 
                 int codeLength = code.Length;
                 if (codeLength <= 0)
                 {
-                    throw new FrameworkException("Code length is invalid.");
+                    throw new GameFrameworkException("Code length is invalid.");
                 }
 
                 int bytesLength = (int)stream.Length;

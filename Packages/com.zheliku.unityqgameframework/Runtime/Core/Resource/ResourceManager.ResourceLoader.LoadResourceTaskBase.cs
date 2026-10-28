@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private sealed partial class ResourceLoader
         {
@@ -40,32 +40,50 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资产名称。
                 /// </summary>
-                public string AssetName { get; private set; }
+                public string AssetName
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取资产类型。
                 /// </summary>
-                public Type AssetType { get; private set; }
+                public Type AssetType
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取资产所属的资源记录。
                 /// </summary>
-                public ResourceInfo ResourceInfo { get; private set; }
+                public ResourceInfo ResourceInfo
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取已加载的资源登记条目。
                 /// </summary>
-                public ResourceObject ResourceObject { get; private set; }
+                public ResourceObject ResourceObject
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取当前任务是否加载场景。
                 /// </summary>
-                public abstract bool IsScene { get; }
+                public abstract bool IsScene
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取或设置任务开始时间。
                 /// </summary>
-                public DateTime StartTime { get; set; }
+                public DateTime StartTime
+                {
+                    get; set;
+                }
 
                 /// <summary>
                 /// 获取已加载依赖资产数量。
@@ -81,7 +99,10 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取或设置依赖资产总数量。
                 /// </summary>
-                public int TotalDependencyAssetCount { get; set; }
+                public int TotalDependencyAssetCount
+                {
+                    get; set;
+                }
 
                 /// <summary>
                 /// 获取任务描述。

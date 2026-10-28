@@ -4,12 +4,11 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Network;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 显示网络通道和连接状态。

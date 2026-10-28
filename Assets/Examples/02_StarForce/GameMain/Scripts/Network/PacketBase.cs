@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Network;
+using UnityQGameFramework.Core;
 using ProtoBuf;
 
 namespace StarForce
@@ -26,7 +26,10 @@ namespace StarForce
         /// <summary>
         /// 获取消息的发送方向。
         /// </summary>
-        public abstract PacketType PacketType { get; }
+        public abstract PacketType PacketType
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取 Protobuf 扩展数据。

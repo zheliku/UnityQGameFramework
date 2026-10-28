@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 加载数据流回调函数集。
@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (loadBytesSuccessCallback == null)
             {
-                throw new FrameworkException("Load bytes success callback is invalid.");
+                throw new GameFrameworkException("Load bytes success callback is invalid.");
             }
 
             LoadBytesSuccessCallback = loadBytesSuccessCallback;
@@ -38,11 +38,17 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取加载数据流成功回调函数。
         /// </summary>
-        public LoadBytesSuccessCallback LoadBytesSuccessCallback { get; }
+        public LoadBytesSuccessCallback LoadBytesSuccessCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取加载数据流失败回调函数。
         /// </summary>
-        public LoadBytesFailureCallback LoadBytesFailureCallback { get; }
+        public LoadBytesFailureCallback LoadBytesFailureCallback
+        {
+            get;
+        }
     }
 }

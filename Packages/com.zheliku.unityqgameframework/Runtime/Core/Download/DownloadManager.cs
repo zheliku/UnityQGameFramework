@@ -3,15 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 下载管理器。
     /// </summary>
-    internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         private const int OneMegaBytes = 1024 * 1024;
 
@@ -111,12 +112,18 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取或设置刷新文件流的字节阈值。入队时保存到任务。
         /// </summary>
-        public int FlushSize { get; set; }
+        public int FlushSize
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置连续没有收到数据的超时时长，以秒为单位。收到数据后重新计时。
         /// </summary>
-        public float Timeout { get; set; }
+        public float Timeout
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取所有下载任务的汇总速度，以字节每秒为单位。
@@ -280,7 +287,7 @@ namespace UnityQGameFramework.Core.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri)
         {
-            return AddDownload(downloadPath, downloadUri, null, Constant.DefaultPriority, null);
+            return AddDownload(downloadPath, downloadUri, null, DownloadConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -292,7 +299,7 @@ namespace UnityQGameFramework.Core.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, string tag)
         {
-            return AddDownload(downloadPath, downloadUri, tag, Constant.DefaultPriority, null);
+            return AddDownload(downloadPath, downloadUri, tag, DownloadConstant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -316,7 +323,7 @@ namespace UnityQGameFramework.Core.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, object userData)
         {
-            return AddDownload(downloadPath, downloadUri, null, Constant.DefaultPriority, userData);
+            return AddDownload(downloadPath, downloadUri, null, DownloadConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -342,7 +349,7 @@ namespace UnityQGameFramework.Core.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, string tag, object userData)
         {
-            return AddDownload(downloadPath, downloadUri, tag, Constant.DefaultPriority, userData);
+            return AddDownload(downloadPath, downloadUri, tag, DownloadConstant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -371,17 +378,17 @@ namespace UnityQGameFramework.Core.Download
         {
             if (string.IsNullOrEmpty(downloadPath))
             {
-                throw new FrameworkException("Download path is invalid.");
+                throw new GameFrameworkException("Download path is invalid.");
             }
 
             if (string.IsNullOrEmpty(downloadUri))
             {
-                throw new FrameworkException("Download uri is invalid.");
+                throw new GameFrameworkException("Download uri is invalid.");
             }
 
             if (TotalAgentCount <= 0)
             {
-                throw new FrameworkException("You must add download agent first.");
+                throw new GameFrameworkException("You must add download agent first.");
             }
 
             DownloadTask downloadTask = DownloadTask.Create(downloadPath, downloadUri, tag, priority, FlushSize, Timeout, userData);

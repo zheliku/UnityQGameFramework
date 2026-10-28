@@ -15,7 +15,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.ObjectPool;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
@@ -28,7 +27,8 @@ public static class ValidateUiExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -38,7 +38,8 @@ public static class ValidateUiExamples
         var cases = layouts.Properties().Where(pair => new[] { "14_UI" }
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -68,7 +69,8 @@ public static class ValidateUiExamples
             {
                 string sourcePath = (string)test.layout["script"];
                 string anchor = AssetDatabase.GUIDToAssetPath("7706eaef9f335c84a3ac20756fdea0de");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported UI sample not found.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported UI sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
                 string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
@@ -93,31 +95,56 @@ public static class ValidateUiExamples
                 await Check(test.name, test.mode, example, data, mouse);
                 await Play(false);
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, scene = script.Substring(0, script.Length - 3) + ".unity", startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown.value and InputField.text set by the test; actions use native mouse clicks",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/UiExamples");
         string report = names == null ? "ui-examples-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/UiExamples/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
 
@@ -152,9 +179,11 @@ public static class ValidateUiExamples
                 Require(view.InitCalls == 1 && view.OpenCalls == i + 1, "One init and one open per request " + i);
                 Require(view.HasOpenData == new[] { 3, 5, 6, 7 }.Contains(i), "Open user data " + i);
                 Require(form.PauseCoveredUIForm == new[] { 2, 4, 6, 7 }.Contains(i), "Pause-covered parameter " + i);
-                if (firstInstance == 0) firstInstance = form.gameObject.GetInstanceID();
+                if (firstInstance == 0)
+                    firstInstance = form.gameObject.GetInstanceID();
                 Require(form.gameObject.GetInstanceID() == firstInstance, "Closed window reused " + i);
-                if (i == 7) await Screenshot("01-open");
+                if (i == 7)
+                    await Screenshot("01-open");
                 await Click(button("closeButton"), mouse);
                 Require(!QGF.UI.HasUIForm(previousSerial) && !QGF.UI.IsValidUIForm(form), "Close removes identity " + i);
                 Require(!view.Available && !view.Visible && view.CloseData == (i % 2 == 1 ? "保存背包" : null), "Close lifecycle data " + i);
@@ -250,12 +279,17 @@ public static class ValidateUiExamples
                 dropdown("queryMode").value = i;
                 await Click(button("queryButton"), mouse);
                 string result = text("queryText").text;
-                if (i < 4) Require(result.Contains("Hud") && result.Contains("Popup"), "Array/List loaded query " + i);
-                else if (i == 4 || i == 11) Require(result.Contains("已打开") && result.Contains((i == 4 ? hud : popup).ToString()), "Identity and asset queries " + i);
-                else if (i < 7) Require(result.Contains("Hud：1") && result.Contains("Popup：1")
+                if (i < 4)
+                    Require(result.Contains("Hud") && result.Contains("Popup"), "Array/List loaded query " + i);
+                else if (i == 4 || i == 11)
+                    Require(result.Contains("已打开") && result.Contains((i == 4 ? hud : popup).ToString()), "Identity and asset queries " + i);
+                else if (i < 7)
+                    Require(result.Contains("Hud：1") && result.Contains("Popup：1")
                     && result.Contains("DefaultUIGroupHelper"), "Array/List group query and actual helper " + i);
-                else if (i < 11) Require(result.Contains("Popup") && !result.Contains("Hud"), "Group-scoped query " + i);
-                else Require(result == "待加载：无", "Empty loading snapshot " + i);
+                else if (i < 11)
+                    Require(result.Contains("Popup") && !result.Contains("Hud"), "Group-scoped query " + i);
+                else
+                    Require(result == "待加载：无", "Empty loading snapshot " + i);
             }
             await Click(toggle("pauseToggle"), mouse);
             Require(!upper.Logic.Visible && lower.Logic.Visible, "Pause affects only Popup group");
@@ -284,7 +318,8 @@ public static class ValidateUiExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -302,7 +337,8 @@ public static class ValidateUiExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -311,7 +347,8 @@ public static class ValidateUiExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -342,13 +379,15 @@ public static class ValidateUiExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -356,13 +395,15 @@ public static class ValidateUiExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class EntityComponent : FrameworkComponent
+    public sealed partial class EntityComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 实体组的序列化配置。

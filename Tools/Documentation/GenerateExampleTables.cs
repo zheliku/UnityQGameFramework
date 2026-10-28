@@ -14,11 +14,16 @@ public static class GenerateExampleTables
         {
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(root + "/LubanProfile.asset");
-            if (profile == null) throw new IOException("Shared DataTable profile is missing.");
+            if (profile == null)
+                throw new IOException("Shared DataTable profile is missing.");
             await LubanGenerator.GenerateAsync(profile);
-            if (!File.Exists(root + "/Data/Catalog.asset")) throw new IOException("Catalog missing: " + root);
+            if (!File.Exists(root + "/Data/Catalog.asset"))
+                throw new IOException("Catalog missing: " + root);
             AssetDatabase.SaveAssets();
-            return new { generated = 1 };
+            return new
+            {
+                generated = 1
+            };
         }
         finally { EditorApplication.UnlockReloadAssemblies(); }
     }

@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 读取数据失败事件。
     /// </summary>
-    public sealed class ReadDataFailureEventArgs : FrameworkEventArgs
+    public sealed class ReadDataFailureEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化读取数据失败事件的新实例。
@@ -23,17 +23,26 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取内容资源名称。
         /// </summary>
-        public string DataAssetName { get; private set; }
+        public string DataAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建读取数据失败事件。

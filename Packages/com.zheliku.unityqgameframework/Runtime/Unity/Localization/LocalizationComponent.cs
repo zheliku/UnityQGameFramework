@@ -4,8 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Localization;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Localization")]
-    public sealed class LocalizationComponent : FrameworkComponent
+    public sealed class LocalizationComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
@@ -93,7 +92,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_LocalizationManager = FrameworkEntry.GetModule<ILocalizationManager>();
+            m_LocalizationManager = GameFrameworkEntry.GetModule<ILocalizationManager>();
             if (m_LocalizationManager == null)
             {
                 Log.Fatal("Localization manager is invalid.");

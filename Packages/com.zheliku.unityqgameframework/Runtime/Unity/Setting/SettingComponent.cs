@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Setting;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +16,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Setting")]
-    public sealed class SettingComponent : FrameworkComponent
+    public sealed class SettingComponent : GameFrameworkComponent
     {
         private ISettingManager m_SettingManager = null;
 
@@ -45,7 +44,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_SettingManager = FrameworkEntry.GetModule<ISettingManager>();
+            m_SettingManager = GameFrameworkEntry.GetModule<ISettingManager>();
             if (m_SettingManager == null)
             {
                 Log.Fatal("Setting manager is invalid.");

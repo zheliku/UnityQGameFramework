@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -45,39 +44,57 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源下载后存放路径。
         /// </summary>
-        public string DownloadPath { get; private set; }
+        public string DownloadPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载地址。
         /// </summary>
-        public string DownloadUri { get; private set; }
+        public string DownloadUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前下载大小。
         /// </summary>
-        public int CurrentLength { get; private set; }
+        public int CurrentLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int CompressedLength { get; private set; }
+        public int CompressedLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取已重试下载次数。
         /// </summary>
-        public int RetryCount { get; private set; }
+        public int RetryCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源更新开始事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源更新开始事件。</returns>
-        public static ResourceUpdateStartEventArgs Create(UnityQGameFramework.Core.Resource.ResourceUpdateStartEventArgs e)
+        public static ResourceUpdateStartEventArgs Create(UnityQGameFramework.Core.Events.ResourceUpdateStartEventArgs e)
         {
             ResourceUpdateStartEventArgs resourceUpdateStartEventArgs = ReferencePool.Acquire<ResourceUpdateStartEventArgs>();
             resourceUpdateStartEventArgs.Name = e.Name;

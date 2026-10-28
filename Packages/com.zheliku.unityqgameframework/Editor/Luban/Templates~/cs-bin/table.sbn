@@ -39,7 +39,7 @@ using Luban = UnityQGameFramework.Luban;
 /// Luban 生成的数据表。
 /// </summary>
 {{~end~}}
-public partial class {{__name}} : UnityQGameFramework.Core.DataTable.DataTable<{{declaring_type_name value_type}}>
+public partial class {{__name}} : UnityQGameFramework.Core.DataTable<{{declaring_type_name value_type}}>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

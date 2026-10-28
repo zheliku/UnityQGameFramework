@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,17 +41,26 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取数据表资源名称。
         /// </summary>
-        public string DataTableAssetName { get; private set; }
+        public string DataTableAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载持续时间。
         /// </summary>
-        public float Duration { get; private set; }
+        public float Duration
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载数据表成功事件。

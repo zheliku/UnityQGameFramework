@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     public partial struct UpdatableVersionList
     {
@@ -35,7 +35,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new FrameworkException("Name is invalid.");
+                    throw new GameFrameworkException("Name is invalid.");
                 }
 
                 Name = name;
@@ -52,42 +52,66 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源变体名称。
             /// </summary>
-            public string Variant { get; }
+            public string Variant
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源扩展名称。
             /// </summary>
-            public string Extension { get; }
+            public string Extension
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源加载方式。
             /// </summary>
-            public byte LoadType { get; }
+            public byte LoadType
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源长度。
             /// </summary>
-            public int Length { get; }
+            public int Length
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源哈希值。
             /// </summary>
-            public int HashCode { get; }
+            public int HashCode
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源压缩后长度。
             /// </summary>
-            public int CompressedLength { get; }
+            public int CompressedLength
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源压缩后哈希值。
             /// </summary>
-            public int CompressedHashCode { get; }
+            public int CompressedHashCode
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取资源包含的资源索引集合。

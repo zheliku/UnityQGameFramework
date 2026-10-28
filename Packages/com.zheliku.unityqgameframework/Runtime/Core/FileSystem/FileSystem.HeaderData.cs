@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     internal sealed partial class FileSystem : IFileSystem
     {

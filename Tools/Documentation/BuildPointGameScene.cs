@@ -14,10 +14,12 @@ public static class BuildPointGameScene
 {
     public static object Run()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Stop Play Mode first.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
-            if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty) throw new Exception("Unsaved scene");
+            if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty)
+                throw new Exception("Unsaved scene");
         const string root = "Assets/Examples/00_PointPointPoint/GameMain";
         try
         {
@@ -27,7 +29,7 @@ public static class BuildPointGameScene
             PrefabUtility.UnpackPrefabInstance(framework, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
             framework.name = "QGF";
             framework.AddComponent<PointGameResources>();
-            foreach (var component in framework.GetComponentsInChildren<FrameworkComponent>(true))
+            foreach (var component in framework.GetComponentsInChildren<GameFrameworkComponent>(true))
                 if (!(component is BaseComponent || component is ConfigComponent || component is EventComponent
                     || component is FsmComponent || component is ProcedureComponent || component is SettingComponent
                     || component is ResourceComponent || component is UIComponent || component is ObjectPoolComponent))
@@ -37,7 +39,8 @@ public static class BuildPointGameScene
             string[] names = { typeof(PointGameLaunch).FullName, typeof(PointGameMenu).FullName,
                 typeof(PointGamePlay).FullName, typeof(PointGameResult).FullName };
             types.arraySize = names.Length;
-            for (int i = 0; i < names.Length; i++) types.GetArrayElementAtIndex(i).stringValue = names[i];
+            for (int i = 0; i < names.Length; i++)
+                types.GetArrayElementAtIndex(i).stringValue = names[i];
             procedures.FindProperty("m_EntranceProcedureTypeName").stringValue = names[0];
             procedures.ApplyModifiedPropertiesWithoutUndo();
             var settings = new SerializedObject(framework.GetComponentInChildren<SettingComponent>());
@@ -55,13 +58,19 @@ public static class BuildPointGameScene
             camera.clearFlags = CameraClearFlags.Skybox;
             EditorSceneManager.SaveScene(scene, root + "/Scenes/PointPointPoint.unity");
             AssetDatabase.SaveAssets();
-            return new { passed = true, scene = root + "/Scenes/PointPointPoint.unity", procedures = names };
+            return new
+            {
+                passed = true,
+                scene = root + "/Scenes/PointPointPoint.unity",
+                procedures = names
+            };
         }
         finally
         {
             if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
                 EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
     }
 
@@ -112,7 +121,8 @@ public static class BuildPointGameScene
             "startButton", "targetButton", "missButton", "menuButton", "board", "target" };
         UnityEngine.Object[] values = { menu.gameObject, play.gameObject, result.gameObject, phase, rules, record, status,
             resultTitle, resultScore, start, target, miss, back, board, target.transform };
-        for (int i = 0; i < names.Length; i++) serialized.FindProperty(names[i]).objectReferenceValue = values[i];
+        for (int i = 0; i < names.Length; i++)
+            serialized.FindProperty(names[i]).objectReferenceValue = values[i];
         serialized.ApplyModifiedPropertiesWithoutUndo();
         PrefabUtility.SaveAsPrefabAsset(form, path);
         UnityEngine.Object.DestroyImmediate(form);

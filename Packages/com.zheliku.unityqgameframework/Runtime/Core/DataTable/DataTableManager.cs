@@ -6,12 +6,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.DataTable
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 管理已登记的数据表及其加载状态。
     /// </summary>
-    internal sealed class DataTableManager : FrameworkModule, IDataTableManager
+    internal sealed class DataTableManager : GameFrameworkModule, IDataTableManager
     {
         private readonly Dictionary<TypeNamePair, DataTableBase> m_DataTables = new Dictionary<TypeNamePair, DataTableBase>();
 
@@ -63,7 +63,7 @@ namespace UnityQGameFramework.Core.DataTable
                 var key = new TypeNamePair(table.Type, table.Name);
                 if (m_DataTables.ContainsKey(key) || pending.ContainsKey(key))
                 {
-                    throw new FrameworkException("Data table already exists: " + key);
+                    throw new GameFrameworkException("Data table already exists: " + key);
                 }
                 pending.Add(key, table);
             }

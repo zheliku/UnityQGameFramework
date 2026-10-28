@@ -18,7 +18,10 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取或设置是否开启强制检查。
         /// </summary>
-        public static bool EnableStrictCheck { get; set; }
+        public static bool EnableStrictCheck
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取引用池的数量。
@@ -97,7 +100,7 @@ namespace UnityQGameFramework.Core
         {
             if (reference == null)
             {
-                throw new FrameworkException("Reference is invalid.");
+                throw new GameFrameworkException("Reference is invalid.");
             }
 
             Type referenceType = reference.GetType();
@@ -179,17 +182,17 @@ namespace UnityQGameFramework.Core
 
             if (referenceType == null)
             {
-                throw new FrameworkException("Reference type is invalid.");
+                throw new GameFrameworkException("Reference type is invalid.");
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                throw new FrameworkException("Reference type is not a non-abstract class type.");
+                throw new GameFrameworkException("Reference type is not a non-abstract class type.");
             }
 
             if (!typeof(IReference).IsAssignableFrom(referenceType))
             {
-                throw new FrameworkException(Utility.Text.Format("Reference type '{0}' is invalid.", referenceType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
         }
 
@@ -202,7 +205,7 @@ namespace UnityQGameFramework.Core
         {
             if (referenceType == null)
             {
-                throw new FrameworkException("ReferenceType is invalid.");
+                throw new GameFrameworkException("ReferenceType is invalid.");
             }
 
             ReferenceCollection referenceCollection = null;

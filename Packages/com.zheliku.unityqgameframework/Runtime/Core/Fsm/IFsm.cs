@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Fsm
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 有限状态机接口。
@@ -17,42 +17,66 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取有限状态机名称。
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取有限状态机完整名称。
         /// </summary>
-        string FullName { get; }
+        string FullName
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取有限状态机持有者。
         /// </summary>
-        T Owner { get; }
+        T Owner
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取有限状态机中状态的数量。
         /// </summary>
-        int FsmStateCount { get; }
+        int FsmStateCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取有限状态机是否正在运行。
         /// </summary>
-        bool IsRunning { get; }
+        bool IsRunning
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取有限状态机是否被销毁。
         /// </summary>
-        bool IsDestroyed { get; }
+        bool IsDestroyed
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取当前有限状态机状态。
         /// </summary>
-        FsmState<T> CurrentState { get; }
+        FsmState<T> CurrentState
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取当前有限状态机状态持续时间。
         /// </summary>
-        float CurrentStateTime { get; }
+        float CurrentStateTime
+        {
+            get;
+        }
 
         /// <summary>
         /// 开始有限状态机。

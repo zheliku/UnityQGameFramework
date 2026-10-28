@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -32,7 +32,7 @@ namespace UnityQGameFramework.Core
         {
             if (type == null)
             {
-                throw new FrameworkException("Type is invalid.");
+                throw new GameFrameworkException("Type is invalid.");
             }
 
             Type = type;
@@ -42,12 +42,18 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取类型。
         /// </summary>
-        public Type Type { get; }
+        public Type Type
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取名称。
         /// </summary>
-        public string Name { get; }
+        public string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取类型和名称的组合值字符串。
@@ -57,7 +63,7 @@ namespace UnityQGameFramework.Core
         {
             if (Type == null)
             {
-                throw new FrameworkException("Type is invalid.");
+                throw new GameFrameworkException("Type is invalid.");
             }
 
             string typeName = Type.FullName;

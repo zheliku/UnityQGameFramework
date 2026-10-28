@@ -8,7 +8,8 @@ public static class ExcelSchemaMigrationValidation
 {
     public static async Task<object> Run()
     {
-        if (EditorApplication.isPlaying) throw new Exception("Stop Play Mode first.");
+        if (EditorApplication.isPlaying)
+            throw new Exception("Stop Play Mode first.");
         EditorApplication.LockReloadAssemblies();
         try
         {
@@ -18,9 +19,15 @@ public static class ExcelSchemaMigrationValidation
                 await LubanGenerator.GenerateAsync(profile);
                 var catalog = AssetDatabase.LoadAssetAtPath<LubanDataTableCatalog>(root + "/Data/Catalog.asset");
                 int expected = root.Contains("StarForce") ? 11 : 1;
-                if (catalog.Entries.Count != expected) throw new Exception("Unexpected table count at " + root);
+                if (catalog.Entries.Count != expected)
+                    throw new Exception("Unexpected table count at " + root);
             }
-            return new { passed = true, defaultTables = 1, starForceTables = 11 };
+            return new
+            {
+                passed = true,
+                defaultTables = 1,
+                starForceTables = 11
+            };
         }
         finally { EditorApplication.UnlockReloadAssemblies(); }
     }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 
 namespace UnityQGameFramework.Examples.Modules
 {

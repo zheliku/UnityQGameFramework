@@ -17,15 +17,24 @@ public static class ValidateExampleDropdowns
 {
     public static object AuditSavedAssets()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated authoring project.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use the isolated authoring project.");
         var modules = JArray.Parse(File.ReadAllText("Tools/Documentation/examples-layout.json"));
         var samples = modules.Select(module => new
         {
             name = (string)module["folder"],
             roots = new[] { "Assets/Examples/" + (string)module["folder"], "Assets/Examples/01_Modules/Common" }
         }).ToList();
-        samples.Insert(0, new { name = "00_PointPointPoint", roots = new[] { "Assets/Examples/00_PointPointPoint" } });
-        samples.Add(new { name = "02_StarForce", roots = new[] { "Assets/Examples/02_StarForce" } });
+        samples.Insert(0, new
+        {
+            name = "00_PointPointPoint",
+            roots = new[] { "Assets/Examples/00_PointPointPoint" }
+        });
+        samples.Add(new
+        {
+            name = "02_StarForce",
+            roots = new[] { "Assets/Examples/02_StarForce" }
+        });
         var completed = new List<object>();
         foreach (var sample in samples)
         {
@@ -34,9 +43,18 @@ public static class ValidateExampleDropdowns
                 .Where(p => p.StartsWith("Assets/", StringComparison.Ordinal)
                     && !sample.roots.Any(root => p.StartsWith(root + "/", StringComparison.Ordinal))).ToArray();
             Require(external.Length == 0, "Cross-sample references: " + sample.name + " -> " + string.Join(", ", external));
-            completed.Add(new { sample = sample.name, assets = assets.Length, independent = true });
+            completed.Add(new
+            {
+                sample = sample.name,
+                assets = assets.Length,
+                independent = true
+            });
         }
-        var result = new { passed = true, samples = completed };
+        var result = new
+        {
+            passed = true,
+            samples = completed
+        };
         Directory.CreateDirectory("Artifacts~/SciFiStyle");
         File.WriteAllText("Artifacts~/SciFiStyle/dependencies-check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
         return result;
@@ -44,8 +62,10 @@ public static class ValidateExampleDropdowns
 
     public static async Task<object> Run()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated authoring project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use the isolated authoring project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount).Any(i => UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty))
             throw new Exception("Unsaved scene.");
@@ -60,7 +80,8 @@ public static class ValidateExampleDropdowns
         Mouse mouse = null;
         Application.LogCallback capture = (message, stack, type) =>
         {
-            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         Application.logMessageReceived += capture;
         try
@@ -84,11 +105,13 @@ public static class ValidateExampleDropdowns
                 }
                 await Task.Delay(400);
                 // 这一个示例故意延迟两秒加载，成功提示从一行变成三行后再定位控件。
-                if (pair.Name == "ShowCubeEntity") await Task.Delay(2200);
+                if (pair.Name == "ShowCubeEntity")
+                    await Task.Delay(2200);
                 foreach (var dropdown in UnityEngine.Object.FindObjectsByType<Dropdown>(FindObjectsSortMode.None))
                 {
                     var deadline = DateTime.UtcNow.AddSeconds(8);
-                    while (!dropdown.interactable && DateTime.UtcNow < deadline) await Task.Delay(50);
+                    while (!dropdown.interactable && DateTime.UtcNow < deadline)
+                        await Task.Delay(50);
                     Require(dropdown.interactable, pair.Name + ": dropdown ready");
                     Require(dropdown.itemText.rectTransform.rect.height >= 30, pair.Name + ": item height");
                     await Reveal(dropdown);
@@ -122,26 +145,44 @@ public static class ValidateExampleDropdowns
                     await Click(chosen.GetComponentInParent<Toggle>().transform as RectTransform, mouse);
                     Require(dropdown.captionText.text == expected, pair.Name + ": native selection updates caption");
                     Require(dropdown.transform.Find("Dropdown List") == null, pair.Name + ": selection closes list");
-                    completed.Add(new { example = pair.Name, control = dropdown.name, options = labels.Length, selected = expected });
+                    completed.Add(new
+                    {
+                        example = pair.Name,
+                        control = dropdown.name,
+                        options = labels.Length,
+                        selected = expected
+                    });
                 }
                 await Play(false);
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var pointer in disabled.Where(d => d.added && !d.enabled)) InputSystem.EnableDevice(pointer);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var pointer in disabled.Where(d => d.added && !d.enabled))
+                InputSystem.EnableDevice(pointer);
             settings.backgroundBehavior = oldBackground;
             settings.editorInputBehaviorInPlayMode = oldEditorInput;
             EditorSettings.enterPlayModeOptionsEnabled = oldEnabled;
             EditorSettings.enterPlayModeOptions = oldOptions;
             Application.logMessageReceived -= capture;
-            if (setup.Any(s => s.isActive && s.isLoaded && !string.IsNullOrEmpty(s.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(s => s.isActive && s.isLoaded && !string.IsNullOrEmpty(s.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(errors.Count == 0, string.Join("\n", errors));
-        var result = new { passed = true, unity = Application.unityVersion, nativeMouseSelection = true, completed, errors };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeMouseSelection = true,
+            completed,
+            errors
+        };
         Directory.CreateDirectory("Artifacts~/SciFiStyle");
         File.WriteAllText("Artifacts~/SciFiStyle/dropdowns-check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
         return result;
@@ -152,12 +193,14 @@ public static class ValidateExampleDropdowns
         Canvas.ForceUpdateCanvases();
         await Task.Delay(100);
         var scroll = dropdown.GetComponentInParent<ScrollRect>();
-        if (scroll == null) return;
+        if (scroll == null)
+            return;
         scroll.StopMovement();
         var rect = (RectTransform)dropdown.transform;
         var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
         float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
-        if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01((scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y) / overflow);
+        if (overflow > 0)
+            scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01((scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y) / overflow);
         Canvas.ForceUpdateCanvases();
         await Task.Delay(100);
     }
@@ -178,17 +221,23 @@ public static class ValidateExampleDropdowns
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = s =>
         {
-            if (s == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (s == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }
     }
 
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
 }

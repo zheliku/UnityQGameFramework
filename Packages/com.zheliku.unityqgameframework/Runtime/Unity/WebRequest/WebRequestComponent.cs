@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.WebRequest;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Web Request")]
-    public sealed class WebRequestComponent : FrameworkComponent
+    public sealed class WebRequestComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
         private IWebRequestManager m_WebRequestManager = null;
@@ -99,7 +98,7 @@ namespace UnityQGameFramework.Runtime
         protected override void Awake()
         {
             base.Awake();
-            m_WebRequestManager = FrameworkEntry.GetModule<IWebRequestManager>();
+            m_WebRequestManager = GameFrameworkEntry.GetModule<IWebRequestManager>();
             if (m_WebRequestManager == null)
             {
                 Log.Fatal("Web request manager is invalid.");
@@ -609,7 +608,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnWebRequestStart(object sender, UnityQGameFramework.Core.WebRequest.WebRequestStartEventArgs e)
+        private void OnWebRequestStart(object sender, UnityQGameFramework.Core.Events.WebRequestStartEventArgs e)
         {
             m_EventComponent.Fire(this, WebRequestStartEventArgs.Create(e));
         }
@@ -619,7 +618,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnWebRequestSuccess(object sender, UnityQGameFramework.Core.WebRequest.WebRequestSuccessEventArgs e)
+        private void OnWebRequestSuccess(object sender, UnityQGameFramework.Core.Events.WebRequestSuccessEventArgs e)
         {
             m_TaskData.Remove(e.SerialId);
             m_EventComponent.Fire(this, WebRequestSuccessEventArgs.Create(e));
@@ -630,7 +629,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnWebRequestFailure(object sender, UnityQGameFramework.Core.WebRequest.WebRequestFailureEventArgs e)
+        private void OnWebRequestFailure(object sender, UnityQGameFramework.Core.Events.WebRequestFailureEventArgs e)
         {
             m_TaskData.Remove(e.SerialId);
             Log.Warning("Web request failure, web request serial id '{0}', web request uri '{1}', error message '{2}'.", e.SerialId, e.WebRequestUri, e.ErrorMessage);

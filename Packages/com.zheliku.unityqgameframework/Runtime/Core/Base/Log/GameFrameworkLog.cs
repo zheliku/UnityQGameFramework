@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -8,7 +8,7 @@ namespace UnityQGameFramework.Core
     /// <summary>
     /// 游戏框架日志类。
     /// </summary>
-    public static partial class FrameworkLog
+    public static partial class GameFrameworkLog
     {
         private static ILogHelper s_LogHelper = null;
 
@@ -32,7 +32,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg));
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2));
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3));
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
         }
 
         /// <summary>
@@ -496,7 +496,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
         }
 
         /// <summary>
@@ -542,7 +542,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
         }
 
         /// <summary>
@@ -556,7 +556,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, message);
         }
 
         /// <summary>
@@ -570,7 +570,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, message);
         }
 
         /// <summary>
@@ -586,7 +586,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg));
         }
 
         /// <summary>
@@ -604,7 +604,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2));
         }
 
         /// <summary>
@@ -624,7 +624,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3));
         }
 
         /// <summary>
@@ -646,7 +646,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
         }
 
         /// <summary>
@@ -670,7 +670,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
         }
 
         /// <summary>
@@ -696,7 +696,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         /// <summary>
@@ -724,7 +724,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         /// <summary>
@@ -754,7 +754,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         /// <summary>
@@ -786,7 +786,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         /// <summary>
@@ -820,7 +820,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         /// <summary>
@@ -856,7 +856,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
         }
 
         /// <summary>
@@ -894,7 +894,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
         }
 
         /// <summary>
@@ -934,7 +934,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
         }
 
         /// <summary>
@@ -976,7 +976,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
         }
 
         /// <summary>
@@ -1020,7 +1020,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
         }
 
         /// <summary>
@@ -1066,7 +1066,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
         }
 
         /// <summary>
@@ -1080,7 +1080,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, message);
         }
 
         /// <summary>
@@ -1094,7 +1094,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, message);
         }
 
         /// <summary>
@@ -1110,7 +1110,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg));
         }
 
         /// <summary>
@@ -1128,7 +1128,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2));
         }
 
         /// <summary>
@@ -1148,7 +1148,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3));
         }
 
         /// <summary>
@@ -1170,7 +1170,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
         }
 
         /// <summary>
@@ -1194,7 +1194,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
         }
 
         /// <summary>
@@ -1220,7 +1220,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         /// <summary>
@@ -1248,7 +1248,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         /// <summary>
@@ -1278,7 +1278,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         /// <summary>
@@ -1310,7 +1310,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         /// <summary>
@@ -1344,7 +1344,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         /// <summary>
@@ -1380,7 +1380,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
         }
 
         /// <summary>
@@ -1418,7 +1418,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
         }
 
         /// <summary>
@@ -1458,7 +1458,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
         }
 
         /// <summary>
@@ -1500,7 +1500,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
         }
 
         /// <summary>
@@ -1544,7 +1544,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
         }
 
         /// <summary>
@@ -1590,7 +1590,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
         }
 
         /// <summary>
@@ -1604,7 +1604,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, message);
         }
 
         /// <summary>
@@ -1618,7 +1618,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, message);
         }
 
         /// <summary>
@@ -1634,7 +1634,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg));
         }
 
         /// <summary>
@@ -1652,7 +1652,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2));
         }
 
         /// <summary>
@@ -1672,7 +1672,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3));
         }
 
         /// <summary>
@@ -1694,7 +1694,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
         }
 
         /// <summary>
@@ -1718,7 +1718,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
         }
 
         /// <summary>
@@ -1744,7 +1744,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         /// <summary>
@@ -1772,7 +1772,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         /// <summary>
@@ -1802,7 +1802,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         /// <summary>
@@ -1834,7 +1834,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         /// <summary>
@@ -1868,7 +1868,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         /// <summary>
@@ -1904,7 +1904,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
         }
 
         /// <summary>
@@ -1942,7 +1942,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
         }
 
         /// <summary>
@@ -1982,7 +1982,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
         }
 
         /// <summary>
@@ -2024,7 +2024,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
         }
 
         /// <summary>
@@ -2068,7 +2068,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
         }
 
         /// <summary>
@@ -2114,7 +2114,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
         }
 
         /// <summary>
@@ -2128,7 +2128,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
         }
 
         /// <summary>
@@ -2142,7 +2142,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
         }
 
         /// <summary>
@@ -2158,7 +2158,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg));
         }
 
         /// <summary>
@@ -2176,7 +2176,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2));
         }
 
         /// <summary>
@@ -2196,7 +2196,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3));
         }
 
         /// <summary>
@@ -2218,7 +2218,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4));
         }
 
         /// <summary>
@@ -2242,7 +2242,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5));
         }
 
         /// <summary>
@@ -2268,7 +2268,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         /// <summary>
@@ -2296,7 +2296,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         /// <summary>
@@ -2326,7 +2326,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         /// <summary>
@@ -2358,7 +2358,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         /// <summary>
@@ -2392,7 +2392,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         /// <summary>
@@ -2428,7 +2428,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
         }
 
         /// <summary>
@@ -2466,7 +2466,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
         }
 
         /// <summary>
@@ -2506,7 +2506,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
         }
 
         /// <summary>
@@ -2548,7 +2548,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
         }
 
         /// <summary>
@@ -2592,7 +2592,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
         }
 
         /// <summary>
@@ -2638,7 +2638,7 @@ namespace UnityQGameFramework.Core
                 return;
             }
 
-            s_LogHelper.Log(FrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
         }
     }
 }

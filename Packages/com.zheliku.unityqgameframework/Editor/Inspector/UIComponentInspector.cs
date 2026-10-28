@@ -12,7 +12,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制界面组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(UIComponent))]
-    internal sealed class UIComponentInspector : FrameworkInspector
+    internal sealed class UIComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_EnableOpenUIFormSuccessEvent = null;
         private SerializedProperty m_EnableOpenUIFormFailureEvent = null;

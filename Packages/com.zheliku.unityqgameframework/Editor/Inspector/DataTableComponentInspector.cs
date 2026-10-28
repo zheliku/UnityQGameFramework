@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
-using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core;
 
 namespace UnityQGameFramework.Editor
 {
@@ -11,7 +11,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制数据表的生成配置、运行时数据与已加载记录。
     /// </summary>
     [CustomEditor(typeof(DataTableComponent))]
-    internal sealed class DataTableComponentInspector : FrameworkInspector
+    internal sealed class DataTableComponentInspector : GameFrameworkInspector
     {
         private string m_Filter = string.Empty;
         private int m_Selected;

@@ -5,7 +5,7 @@
 
 using System;
 
-namespace UnityQGameFramework.Core.ObjectPool
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 对象池登记条目。保存 Target 及借还、释放策略，本身不是被管理的业务对象。
@@ -27,23 +27,35 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取登记的业务对象，例如 GameObject、AudioClip 或普通 C# 实例。
         /// 业务负责创建 Target，条目回调负责借用、归还和释放时的行为。
         /// </summary>
-        public object Target { get; private set; }
+        public object Target
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置对象是否被加锁。
         /// </summary>
-        public bool Locked { get; set; }
+        public bool Locked
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置对象的优先级。
         /// </summary>
-        public int Priority { get; set; }
+        public int Priority
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取自定义释放检查标记。
@@ -59,7 +71,10 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象上次使用时间。
         /// </summary>
-        public DateTime LastUseTime { get; internal set; }
+        public DateTime LastUseTime
+        {
+            get; internal set;
+        }
 
         /// <summary>
         /// 初始化对象基类。
@@ -113,7 +128,7 @@ namespace UnityQGameFramework.Core.ObjectPool
         {
             if (target == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Target '{0}' is invalid.", name));
+                throw new GameFrameworkException(Utility.Text.Format("Target '{0}' is invalid.", name));
             }
 
             Name = name ?? string.Empty;

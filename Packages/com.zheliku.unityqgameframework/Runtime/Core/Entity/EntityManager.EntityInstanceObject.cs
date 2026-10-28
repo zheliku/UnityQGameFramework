@@ -3,11 +3,10 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class EntityManager : FrameworkModule, IEntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         /// <summary>
         /// 实体实例对象。
@@ -38,12 +37,12 @@ namespace UnityQGameFramework.Core.Entity
             {
                 if (entityAsset == null)
                 {
-                    throw new FrameworkException("Entity asset is invalid.");
+                    throw new GameFrameworkException("Entity asset is invalid.");
                 }
 
                 if (entityHelper == null)
                 {
-                    throw new FrameworkException("Entity helper is invalid.");
+                    throw new GameFrameworkException("Entity helper is invalid.");
                 }
 
                 EntityInstanceObject entityInstanceObject = ReferencePool.Acquire<EntityInstanceObject>();

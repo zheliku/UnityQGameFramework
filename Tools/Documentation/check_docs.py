@@ -79,7 +79,8 @@ def main():
         prose = content
         for language, line, code in code_blocks:
             prose = prose.replace(code, "")
-            if language != "csharp" or not re.search(r"\b(?:class|struct|interface)\s+\w+", code):
+            declarations = re.sub(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"', '', code, flags=re.S)
+            if language != "csharp" or not re.search(r"\b(?:class|struct|interface)\s+\w+", declarations):
                 continue
             record = {"file": relative, "line": line,
                       "types": re.findall(r"\b(?:class|struct|interface)\s+(\w+)", code)}

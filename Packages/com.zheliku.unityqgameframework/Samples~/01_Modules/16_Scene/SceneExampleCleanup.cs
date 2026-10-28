@@ -37,7 +37,7 @@ namespace UnityQGameFramework.Examples.Modules
                     await scenes.UnloadSceneAsync(assetName, cancellation);
                 }
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

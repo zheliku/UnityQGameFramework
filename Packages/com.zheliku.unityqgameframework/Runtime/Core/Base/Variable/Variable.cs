@@ -22,7 +22,10 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取变量类型。
         /// </summary>
-        public abstract Type Type { get; }
+        public abstract Type Type
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取变量值。

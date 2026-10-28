@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         /// <summary>
         /// 下载任务。
@@ -29,27 +29,42 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 获取或设置下载任务的状态。
             /// </summary>
-            public DownloadTaskStatus Status { get; set; }
+            public DownloadTaskStatus Status
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取下载后存放路径。
             /// </summary>
-            public string DownloadPath { get; private set; }
+            public string DownloadPath
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取原始下载地址。
             /// </summary>
-            public string DownloadUri { get; private set; }
+            public string DownloadUri
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取将缓冲区写入磁盘的临界大小。
             /// </summary>
-            public int FlushSize { get; private set; }
+            public int FlushSize
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取下载超时时长，以秒为单位。
             /// </summary>
-            public float Timeout { get; private set; }
+            public float Timeout
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取下载任务的描述。

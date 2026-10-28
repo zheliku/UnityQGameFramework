@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.WebRequest
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// Web 请求成功事件。
     /// </summary>
-    public sealed class WebRequestSuccessEventArgs : FrameworkEventArgs
+    public sealed class WebRequestSuccessEventArgs : GameFrameworkEventArgs
     {
         private byte[] m_WebResponseBytes;
 
@@ -26,17 +26,26 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <summary>
         /// 获取 Web 请求任务的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取 Web 请求地址。
         /// </summary>
-        public string WebRequestUri { get; private set; }
+        public string WebRequestUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建 Web 请求成功事件。

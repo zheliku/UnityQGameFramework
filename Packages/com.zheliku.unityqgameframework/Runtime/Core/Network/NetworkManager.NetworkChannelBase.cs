@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         /// <summary>
         /// 网络频道基类。
@@ -88,27 +88,27 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 网络连接成功回调。
             /// </summary>
-            public FrameworkAction<NetworkChannelBase, object> NetworkChannelConnected;
+            public GameFrameworkAction<NetworkChannelBase, object> NetworkChannelConnected;
 
             /// <summary>
             /// 网络连接关闭回调。
             /// </summary>
-            public FrameworkAction<NetworkChannelBase> NetworkChannelClosed;
+            public GameFrameworkAction<NetworkChannelBase> NetworkChannelClosed;
 
             /// <summary>
             /// 网络心跳丢失回调。
             /// </summary>
-            public FrameworkAction<NetworkChannelBase, int> NetworkChannelMissHeartBeat;
+            public GameFrameworkAction<NetworkChannelBase, int> NetworkChannelMissHeartBeat;
 
             /// <summary>
             /// 网络错误回调。
             /// </summary>
-            public FrameworkAction<NetworkChannelBase, NetworkErrorCode, SocketError, string> NetworkChannelError;
+            public GameFrameworkAction<NetworkChannelBase, NetworkErrorCode, SocketError, string> NetworkChannelError;
 
             /// <summary>
             /// 网络自定义错误回调。
             /// </summary>
-            public FrameworkAction<NetworkChannelBase, object> NetworkChannelCustomError;
+            public GameFrameworkAction<NetworkChannelBase, object> NetworkChannelCustomError;
 
             /// <summary>
             /// 初始化网络频道基类的新实例。
@@ -143,7 +143,10 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取网络频道名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取网络频道所使用的 Socket。
@@ -175,7 +178,10 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取网络服务类型。
             /// </summary>
-            public abstract ServiceType ServiceType { get; }
+            public abstract ServiceType ServiceType
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取网络地址类型。
@@ -355,7 +361,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 if (handler == null)
                 {
-                    throw new FrameworkException("Packet handler is invalid.");
+                    throw new GameFrameworkException("Packet handler is invalid.");
                 }
 
                 m_ReceivePacketPool.Subscribe(handler.Id, handler.Handle);
@@ -410,7 +416,7 @@ namespace UnityQGameFramework.Core.Network
                             return;
                         }
 
-                        throw new FrameworkException(errorMessage);
+                        throw new GameFrameworkException(errorMessage);
                 }
 
                 m_SendState.Reset();
@@ -479,7 +485,7 @@ namespace UnityQGameFramework.Core.Network
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (!m_Active)
@@ -491,7 +497,7 @@ namespace UnityQGameFramework.Core.Network
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 if (packet == null)
@@ -503,7 +509,7 @@ namespace UnityQGameFramework.Core.Network
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 lock (m_SendPacketPool)
@@ -588,7 +594,7 @@ namespace UnityQGameFramework.Core.Network
                             return false;
                         }
 
-                        throw new FrameworkException(errorMessage);
+                        throw new GameFrameworkException(errorMessage);
                     }
 
                     m_SendState.PacketCount++;
@@ -629,7 +635,7 @@ namespace UnityQGameFramework.Core.Network
                             return false;
                         }
 
-                        throw new FrameworkException(errorMessage);
+                        throw new GameFrameworkException(errorMessage);
                     }
 
                     m_ReceiveState.PrepareForPacket(packetHeader);

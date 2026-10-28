@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 加载二进制资源回调函数集。
@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (loadBinarySuccessCallback == null)
             {
-                throw new FrameworkException("Load binary success callback is invalid.");
+                throw new GameFrameworkException("Load binary success callback is invalid.");
             }
 
             LoadBinarySuccessCallback = loadBinarySuccessCallback;
@@ -38,11 +38,17 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取加载二进制资源成功回调函数。
         /// </summary>
-        public LoadBinarySuccessCallback LoadBinarySuccessCallback { get; }
+        public LoadBinarySuccessCallback LoadBinarySuccessCallback
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取加载二进制资源失败回调函数。
         /// </summary>
-        public LoadBinaryFailureCallback LoadBinaryFailureCallback { get; }
+        public LoadBinaryFailureCallback LoadBinaryFailureCallback
+        {
+            get;
+        }
     }
 }

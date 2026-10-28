@@ -5,9 +5,9 @@
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private sealed partial class ResourceChecker
         {
@@ -42,7 +42,10 @@ namespace UnityQGameFramework.Core.Resource
                     /// <summary>
                     /// 获取该版本记录是否存在。
                     /// </summary>
-                    public bool Exist { get; }
+                    public bool Exist
+                    {
+                        get;
+                    }
 
                     /// <summary>
                     /// 获取资源是否保存在文件系统中。
@@ -58,32 +61,50 @@ namespace UnityQGameFramework.Core.Resource
                     /// <summary>
                     /// 获取文件系统名称。
                     /// </summary>
-                    public string FileSystemName { get; }
+                    public string FileSystemName
+                    {
+                        get;
+                    }
 
                     /// <summary>
                     /// 获取资源加载方式。
                     /// </summary>
-                    public LoadType LoadType { get; }
+                    public LoadType LoadType
+                    {
+                        get;
+                    }
 
                     /// <summary>
                     /// 获取资源字节数。
                     /// </summary>
-                    public int Length { get; }
+                    public int Length
+                    {
+                        get;
+                    }
 
                     /// <summary>
                     /// 获取资源 CRC32 校验值。
                     /// </summary>
-                    public int HashCode { get; }
+                    public int HashCode
+                    {
+                        get;
+                    }
 
                     /// <summary>
                     /// 获取压缩后的资源字节数。
                     /// </summary>
-                    public int CompressedLength { get; }
+                    public int CompressedLength
+                    {
+                        get;
+                    }
 
                     /// <summary>
                     /// 获取压缩后的资源 CRC32 校验值。
                     /// </summary>
-                    public int CompressedHashCode { get; }
+                    public int CompressedHashCode
+                    {
+                        get;
+                    }
                 }
             }
         }

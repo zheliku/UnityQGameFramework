@@ -14,7 +14,7 @@ namespace UnityQGameFramework.Core
     /// <typeparam name="T">事件类型。</typeparam>
     internal sealed partial class EventPool<T> where T : BaseEventArgs
     {
-        private readonly FrameworkMultiDictionary<int, EventHandler<T>> m_EventHandlers;
+        private readonly GameFrameworkMultiDictionary<int, EventHandler<T>> m_EventHandlers;
         private readonly Queue<Event> m_Events;
         private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> m_CachedNodes;
         private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> m_TempNodes;
@@ -27,7 +27,7 @@ namespace UnityQGameFramework.Core
         /// <param name="mode">事件池模式。</param>
         public EventPool(EventPoolMode mode)
         {
-            m_EventHandlers = new FrameworkMultiDictionary<int, EventHandler<T>>();
+            m_EventHandlers = new GameFrameworkMultiDictionary<int, EventHandler<T>>();
             m_Events = new Queue<Event>();
             m_CachedNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
             m_TempNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
@@ -111,7 +111,7 @@ namespace UnityQGameFramework.Core
         /// <returns>事件处理函数的数量。</returns>
         public int Count(int id)
         {
-            FrameworkLinkedListRange<EventHandler<T>> range = default(FrameworkLinkedListRange<EventHandler<T>>);
+            GameFrameworkLinkedListRange<EventHandler<T>> range = default(GameFrameworkLinkedListRange<EventHandler<T>>);
             if (m_EventHandlers.TryGetValue(id, out range))
             {
                 return range.Count;
@@ -130,7 +130,7 @@ namespace UnityQGameFramework.Core
         {
             if (handler == null)
             {
-                throw new FrameworkException("Event handler is invalid.");
+                throw new GameFrameworkException("Event handler is invalid.");
             }
 
             return m_EventHandlers.Contains(id, handler);
@@ -145,7 +145,7 @@ namespace UnityQGameFramework.Core
         {
             if (handler == null)
             {
-                throw new FrameworkException("Event handler is invalid.");
+                throw new GameFrameworkException("Event handler is invalid.");
             }
 
             if (!m_EventHandlers.Contains(id))
@@ -154,11 +154,11 @@ namespace UnityQGameFramework.Core
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowMultiHandler) != EventPoolMode.AllowMultiHandler)
             {
-                throw new FrameworkException(Utility.Text.Format("Event '{0}' not allow multi handler.", id));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow multi handler.", id));
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowDuplicateHandler) != EventPoolMode.AllowDuplicateHandler && Check(id, handler))
             {
-                throw new FrameworkException(Utility.Text.Format("Event '{0}' not allow duplicate handler.", id));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow duplicate handler.", id));
             }
             else
             {
@@ -175,7 +175,7 @@ namespace UnityQGameFramework.Core
         {
             if (handler == null)
             {
-                throw new FrameworkException("Event handler is invalid.");
+                throw new GameFrameworkException("Event handler is invalid.");
             }
 
             if (m_CachedNodes.Count > 0)
@@ -201,7 +201,7 @@ namespace UnityQGameFramework.Core
 
             if (!m_EventHandlers.Remove(id, handler))
             {
-                throw new FrameworkException(Utility.Text.Format("Event '{0}' not exists specified handler.", id));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists specified handler.", id));
             }
         }
 
@@ -223,7 +223,7 @@ namespace UnityQGameFramework.Core
         {
             if (e == null)
             {
-                throw new FrameworkException("Event is invalid.");
+                throw new GameFrameworkException("Event is invalid.");
             }
 
             Event eventNode = Event.Create(sender, e);
@@ -242,7 +242,7 @@ namespace UnityQGameFramework.Core
         {
             if (e == null)
             {
-                throw new FrameworkException("Event is invalid.");
+                throw new GameFrameworkException("Event is invalid.");
             }
 
             HandleEvent(sender, e);
@@ -256,7 +256,7 @@ namespace UnityQGameFramework.Core
         private void HandleEvent(object sender, T e)
         {
             bool noHandlerException = false;
-            FrameworkLinkedListRange<EventHandler<T>> range = default(FrameworkLinkedListRange<EventHandler<T>>);
+            GameFrameworkLinkedListRange<EventHandler<T>> range = default(GameFrameworkLinkedListRange<EventHandler<T>>);
             if (m_EventHandlers.TryGetValue(e.Id, out range))
             {
                 LinkedListNode<EventHandler<T>> current = range.First;
@@ -282,7 +282,7 @@ namespace UnityQGameFramework.Core
 
             if (noHandlerException)
             {
-                throw new FrameworkException(Utility.Text.Format("Event '{0}' not allow no handler.", e.Id));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow no handler.", e.Id));
             }
         }
     }

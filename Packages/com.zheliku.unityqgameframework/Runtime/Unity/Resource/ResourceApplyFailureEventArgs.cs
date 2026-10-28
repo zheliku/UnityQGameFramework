@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,24 +41,33 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源包路径。
         /// </summary>
-        public string ResourcePackPath { get; private set; }
+        public string ResourcePackPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源应用失败事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源应用失败事件。</returns>
-        public static ResourceApplyFailureEventArgs Create(UnityQGameFramework.Core.Resource.ResourceApplyFailureEventArgs e)
+        public static ResourceApplyFailureEventArgs Create(UnityQGameFramework.Core.Events.ResourceApplyFailureEventArgs e)
         {
             ResourceApplyFailureEventArgs resourceApplyFailureEventArgs = ReferencePool.Acquire<ResourceApplyFailureEventArgs>();
             resourceApplyFailureEventArgs.Name = e.Name;

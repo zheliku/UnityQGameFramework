@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -41,19 +40,25 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源大小。
         /// </summary>
-        public int Length { get; private set; }
+        public int Length
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源校验成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源校验成功事件。</returns>
-        public static ResourceVerifySuccessEventArgs Create(UnityQGameFramework.Core.Resource.ResourceVerifySuccessEventArgs e)
+        public static ResourceVerifySuccessEventArgs Create(UnityQGameFramework.Core.Events.ResourceVerifySuccessEventArgs e)
         {
             ResourceVerifySuccessEventArgs resourceVerifySuccessEventArgs = ReferencePool.Acquire<ResourceVerifySuccessEventArgs>();
             resourceVerifySuccessEventArgs.Name = e.Name;

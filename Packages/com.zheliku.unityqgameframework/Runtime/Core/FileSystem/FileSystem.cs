@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 文件系统。
@@ -27,7 +27,7 @@ namespace UnityQGameFramework.Core.FileSystem
         private readonly FileSystemStream m_Stream;
         private readonly Dictionary<string, int> m_FileDatas;
         private readonly List<BlockData> m_BlockDatas;
-        private readonly FrameworkMultiDictionary<int, int> m_FreeBlockIndexes;
+        private readonly GameFrameworkMultiDictionary<int, int> m_FreeBlockIndexes;
         private readonly SortedDictionary<int, StringData> m_StringDatas;
         private readonly Queue<int> m_FreeStringIndexes;
         private readonly Queue<StringData> m_FreeStringDatas;
@@ -46,17 +46,17 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             if (access == FileSystemAccess.Unspecified)
             {
-                throw new FrameworkException("Access is invalid.");
+                throw new GameFrameworkException("Access is invalid.");
             }
 
             if (stream == null)
             {
-                throw new FrameworkException("Stream is invalid.");
+                throw new GameFrameworkException("Stream is invalid.");
             }
 
             FullPath = fullPath;
@@ -64,7 +64,7 @@ namespace UnityQGameFramework.Core.FileSystem
             m_Stream = stream;
             m_FileDatas = new Dictionary<string, int>(StringComparer.Ordinal);
             m_BlockDatas = new List<BlockData>();
-            m_FreeBlockIndexes = new FrameworkMultiDictionary<int, int>();
+            m_FreeBlockIndexes = new GameFrameworkMultiDictionary<int, int>();
             m_StringDatas = new SortedDictionary<int, StringData>();
             m_FreeStringIndexes = new Queue<int>();
             m_FreeStringDatas = new Queue<StringData>();
@@ -78,12 +78,18 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取文件系统完整路径。
         /// </summary>
-        public string FullPath { get; }
+        public string FullPath
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取文件系统访问方式。
         /// </summary>
-        public FileSystemAccess Access { get; }
+        public FileSystemAccess Access
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取文件数量。
@@ -120,17 +126,17 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (maxFileCount <= 0)
             {
-                throw new FrameworkException("Max file count is invalid.");
+                throw new GameFrameworkException("Max file count is invalid.");
             }
 
             if (maxBlockCount <= 0)
             {
-                throw new FrameworkException("Max block count is invalid.");
+                throw new GameFrameworkException("Max block count is invalid.");
             }
 
             if (maxFileCount > maxBlockCount)
             {
-                throw new FrameworkException("Max file count can not larger than max block count.");
+                throw new GameFrameworkException("Max file count can not larger than max block count.");
             }
 
             FileSystem fileSystem = new FileSystem(fullPath, access, stream);
@@ -235,7 +241,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             int blockIndex = 0;
@@ -273,7 +279,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -293,7 +299,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             return m_FileDatas.ContainsKey(name);
@@ -308,12 +314,12 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -343,7 +349,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             return ReadFile(name, buffer, 0, buffer.Length);
@@ -360,7 +366,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             return ReadFile(name, buffer, startIndex, buffer.Length - startIndex);
@@ -378,22 +384,22 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (startIndex < 0 || length < 0 || startIndex + length > buffer.Length)
             {
-                throw new FrameworkException("Start index or length is invalid.");
+                throw new GameFrameworkException("Start index or length is invalid.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -426,22 +432,22 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (stream == null)
             {
-                throw new FrameworkException("Stream is invalid.");
+                throw new GameFrameworkException("Stream is invalid.");
             }
 
             if (!stream.CanWrite)
             {
-                throw new FrameworkException("Stream is not writable.");
+                throw new GameFrameworkException("Stream is not writable.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -482,22 +488,22 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (offset < 0)
             {
-                throw new FrameworkException("Index is invalid.");
+                throw new GameFrameworkException("Index is invalid.");
             }
 
             if (length < 0)
             {
-                throw new FrameworkException("Length is invalid.");
+                throw new GameFrameworkException("Length is invalid.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -537,7 +543,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             return ReadFileSegment(name, 0, buffer, 0, buffer.Length);
@@ -579,7 +585,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             return ReadFileSegment(name, offset, buffer, 0, buffer.Length);
@@ -611,27 +617,27 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (offset < 0)
             {
-                throw new FrameworkException("Index is invalid.");
+                throw new GameFrameworkException("Index is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (startIndex < 0 || length < 0 || startIndex + length > buffer.Length)
             {
-                throw new FrameworkException("Start index or length is invalid.");
+                throw new GameFrameworkException("Start index or length is invalid.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -684,32 +690,32 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (offset < 0)
             {
-                throw new FrameworkException("Index is invalid.");
+                throw new GameFrameworkException("Index is invalid.");
             }
 
             if (stream == null)
             {
-                throw new FrameworkException("Stream is invalid.");
+                throw new GameFrameworkException("Stream is invalid.");
             }
 
             if (!stream.CanWrite)
             {
-                throw new FrameworkException("Stream is not writable.");
+                throw new GameFrameworkException("Stream is not writable.");
             }
 
             if (length < 0)
             {
-                throw new FrameworkException("Length is invalid.");
+                throw new GameFrameworkException("Length is invalid.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -748,7 +754,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             return WriteFile(name, buffer, 0, buffer.Length);
@@ -765,7 +771,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             return WriteFile(name, buffer, startIndex, buffer.Length - startIndex);
@@ -783,27 +789,27 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Write && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not writable.");
+                throw new GameFrameworkException("File system is not writable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (name.Length > byte.MaxValue)
             {
-                throw new FrameworkException(Utility.Text.Format("Name '{0}' is too long.", name));
+                throw new GameFrameworkException(Utility.Text.Format("Name '{0}' is too long.", name));
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (startIndex < 0 || length < 0 || startIndex + length > buffer.Length)
             {
-                throw new FrameworkException("Start index or length is invalid.");
+                throw new GameFrameworkException("Start index or length is invalid.");
             }
 
             bool hasFile = false;
@@ -845,27 +851,27 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Write && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not writable.");
+                throw new GameFrameworkException("File system is not writable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (name.Length > byte.MaxValue)
             {
-                throw new FrameworkException(Utility.Text.Format("Name '{0}' is too long.", name));
+                throw new GameFrameworkException(Utility.Text.Format("Name '{0}' is too long.", name));
             }
 
             if (stream == null)
             {
-                throw new FrameworkException("Stream is invalid.");
+                throw new GameFrameworkException("Stream is invalid.");
             }
 
             if (!stream.CanRead)
             {
-                throw new FrameworkException("Stream is not readable.");
+                throw new GameFrameworkException("Stream is not readable.");
             }
 
             bool hasFile = false;
@@ -908,7 +914,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(filePath))
             {
-                throw new FrameworkException("File path is invalid");
+                throw new GameFrameworkException("File path is invalid");
             }
 
             if (!File.Exists(filePath))
@@ -932,17 +938,17 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Read && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not readable.");
+                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (string.IsNullOrEmpty(filePath))
             {
-                throw new FrameworkException("File path is invalid");
+                throw new GameFrameworkException("File path is invalid");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -985,22 +991,22 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Write && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not writable.");
+                throw new GameFrameworkException("File system is not writable.");
             }
 
             if (string.IsNullOrEmpty(oldName))
             {
-                throw new FrameworkException("Old name is invalid.");
+                throw new GameFrameworkException("Old name is invalid.");
             }
 
             if (string.IsNullOrEmpty(newName))
             {
-                throw new FrameworkException("New name is invalid.");
+                throw new GameFrameworkException("New name is invalid.");
             }
 
             if (newName.Length > byte.MaxValue)
             {
-                throw new FrameworkException(Utility.Text.Format("New name '{0}' is too long.", newName));
+                throw new GameFrameworkException(Utility.Text.Format("New name '{0}' is too long.", newName));
             }
 
             if (oldName == newName)
@@ -1038,12 +1044,12 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (Access != FileSystemAccess.Write && Access != FileSystemAccess.ReadWrite)
             {
-                throw new FrameworkException("File system is not writable.");
+                throw new GameFrameworkException("File system is not writable.");
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             int blockIndex = 0;
@@ -1131,7 +1137,7 @@ namespace UnityQGameFramework.Core.FileSystem
             int previousFreeBlockIndex = -1;
             int nextFreeBlockIndex = -1;
             int nextBlockDataClusterIndex = freeBlockData.ClusterIndex + GetUpBoundClusterCount(freeBlockData.Length);
-            foreach (KeyValuePair<int, FrameworkLinkedListRange<int>> blockIndexes in m_FreeBlockIndexes)
+            foreach (KeyValuePair<int, GameFrameworkLinkedListRange<int>> blockIndexes in m_FreeBlockIndexes)
             {
                 if (blockIndexes.Key <= 0)
                 {
@@ -1191,7 +1197,7 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <returns>空块索引；已达到记录上限时返回 -1。</returns>
         private int GetEmptyBlockIndex()
         {
-            FrameworkLinkedListRange<int> lengthRange = default(FrameworkLinkedListRange<int>);
+            GameFrameworkLinkedListRange<int> lengthRange = default(GameFrameworkLinkedListRange<int>);
             if (m_FreeBlockIndexes.TryGetValue(0, out lengthRange))
             {
                 int blockIndex = lengthRange.First.Value;
@@ -1224,8 +1230,8 @@ namespace UnityQGameFramework.Core.FileSystem
 
             length = (int)GetUpBoundClusterOffset(length);
             int lengthFound = -1;
-            FrameworkLinkedListRange<int> lengthRange = default(FrameworkLinkedListRange<int>);
-            foreach (KeyValuePair<int, FrameworkLinkedListRange<int>> i in m_FreeBlockIndexes)
+            GameFrameworkLinkedListRange<int> lengthRange = default(GameFrameworkLinkedListRange<int>);
+            foreach (KeyValuePair<int, GameFrameworkLinkedListRange<int>> i in m_FreeBlockIndexes)
             {
                 if (i.Key < length)
                 {

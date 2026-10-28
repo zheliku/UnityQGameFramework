@@ -3,12 +3,12 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Debugger
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 调试器管理器。
     /// </summary>
-    internal sealed partial class DebuggerManager : FrameworkModule, IDebuggerManager
+    internal sealed partial class DebuggerManager : GameFrameworkModule, IDebuggerManager
     {
         private readonly DebuggerWindowGroup m_DebuggerWindowRoot;
 
@@ -36,7 +36,10 @@ namespace UnityQGameFramework.Core.Debugger
         /// <summary>
         /// 获取或设置调试器窗口是否激活。
         /// </summary>
-        public bool ActiveWindow { get; set; }
+        public bool ActiveWindow
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 调试器窗口根结点。
@@ -83,12 +86,12 @@ namespace UnityQGameFramework.Core.Debugger
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new FrameworkException("Path is invalid.");
+                throw new GameFrameworkException("Path is invalid.");
             }
 
             if (debuggerWindow == null)
             {
-                throw new FrameworkException("Debugger window is invalid.");
+                throw new GameFrameworkException("Debugger window is invalid.");
             }
 
             m_DebuggerWindowRoot.RegisterDebuggerWindow(path, debuggerWindow);

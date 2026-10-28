@@ -7,12 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 文件系统管理器。
     /// </summary>
-    internal sealed class FileSystemManager : FrameworkModule, IFileSystemManager
+    internal sealed class FileSystemManager : GameFrameworkModule, IFileSystemManager
     {
         private readonly Dictionary<string, FileSystem> m_FileSystems;
         private IFileSystemHelper m_FileSystemHelper;
@@ -81,7 +81,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (fileSystemHelper == null)
             {
-                throw new FrameworkException("File system helper is invalid.");
+                throw new GameFrameworkException("File system helper is invalid.");
             }
 
             m_FileSystemHelper = fileSystemHelper;
@@ -96,7 +96,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             return m_FileSystems.ContainsKey(Utility.Path.GetRegularPath(fullPath));
@@ -111,7 +111,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             FileSystem fileSystem = null;
@@ -135,40 +135,40 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (m_FileSystemHelper == null)
             {
-                throw new FrameworkException("File system helper is invalid.");
+                throw new GameFrameworkException("File system helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             if (access == FileSystemAccess.Unspecified)
             {
-                throw new FrameworkException("Access is invalid.");
+                throw new GameFrameworkException("Access is invalid.");
             }
 
             if (access == FileSystemAccess.Read)
             {
-                throw new FrameworkException("Access read is invalid.");
+                throw new GameFrameworkException("Access read is invalid.");
             }
 
             fullPath = Utility.Path.GetRegularPath(fullPath);
             if (m_FileSystems.ContainsKey(fullPath))
             {
-                throw new FrameworkException(Utility.Text.Format("File system '{0}' is already exist.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is already exist.", fullPath));
             }
 
             FileSystemStream fileSystemStream = m_FileSystemHelper.CreateFileSystemStream(fullPath, access, true);
             if (fileSystemStream == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Create file system stream for '{0}' failure.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("Create file system stream for '{0}' failure.", fullPath));
             }
 
             FileSystem fileSystem = FileSystem.Create(fullPath, access, fileSystemStream, maxFileCount, maxBlockCount);
             if (fileSystem == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Create file system '{0}' failure.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("Create file system '{0}' failure.", fullPath));
             }
 
             m_FileSystems.Add(fullPath, fileSystem);
@@ -185,36 +185,36 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (m_FileSystemHelper == null)
             {
-                throw new FrameworkException("File system helper is invalid.");
+                throw new GameFrameworkException("File system helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             if (access == FileSystemAccess.Unspecified)
             {
-                throw new FrameworkException("Access is invalid.");
+                throw new GameFrameworkException("Access is invalid.");
             }
 
             fullPath = Utility.Path.GetRegularPath(fullPath);
             if (m_FileSystems.ContainsKey(fullPath))
             {
-                throw new FrameworkException(Utility.Text.Format("File system '{0}' is already exist.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is already exist.", fullPath));
             }
 
             FileSystemStream fileSystemStream = m_FileSystemHelper.CreateFileSystemStream(fullPath, access, false);
             if (fileSystemStream == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Create file system stream for '{0}' failure.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("Create file system stream for '{0}' failure.", fullPath));
             }
 
             FileSystem fileSystem = FileSystem.Load(fullPath, access, fileSystemStream);
             if (fileSystem == null)
             {
                 fileSystemStream.Close();
-                throw new FrameworkException(Utility.Text.Format("Load file system '{0}' failure.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("Load file system '{0}' failure.", fullPath));
             }
 
             m_FileSystems.Add(fullPath, fileSystem);
@@ -230,7 +230,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (fileSystem == null)
             {
-                throw new FrameworkException("File system is invalid.");
+                throw new GameFrameworkException("File system is invalid.");
             }
 
             string fullPath = fileSystem.FullPath;
@@ -266,7 +266,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();

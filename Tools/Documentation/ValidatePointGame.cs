@@ -24,11 +24,14 @@ public static class ValidatePointGame
 
     public static async Task<object> Run()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
-            if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty) throw new Exception("Unsaved scene");
+            if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty)
+                throw new Exception("Unsaved scene");
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
         var options = EditorSettings.enterPlayModeOptions;
         var inputSettings = InputSystem.settings;
@@ -43,7 +46,8 @@ public static class ValidatePointGame
         var errors = new List<string>();
         Application.LogCallback capture = (message, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Assert || kind == LogType.Exception) errors.Add(message + "\n" + stack);
+            if (kind == LogType.Error || kind == LogType.Assert || kind == LogType.Exception)
+                errors.Add(message + "\n" + stack);
         };
         Application.logMessageReceived += capture;
         int record;
@@ -129,9 +133,12 @@ public static class ValidatePointGame
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (testMouse != null && testMouse.added) InputSystem.RemoveDevice(testMouse);
-            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(pointer);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (testMouse != null && testMouse.added)
+                InputSystem.RemoveDevice(testMouse);
+            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(pointer);
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
@@ -139,14 +146,32 @@ public static class ValidatePointGame
             inputSettings.editorInputBehaviorInPlayMode = oldEditorInputBehavior;
             if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
                 EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            if (savedRecord != null) File.WriteAllBytes(PointGameSettingHelper.SavePath, savedRecord);
-            else if (File.Exists(PointGameSettingHelper.SavePath)) File.Delete(PointGameSettingHelper.SavePath);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (savedRecord != null)
+                File.WriteAllBytes(PointGameSettingHelper.SavePath, savedRecord);
+            else if (File.Exists(PointGameSettingHelper.SavePath))
+                File.Delete(PointGameSettingHelper.SavePath);
         }
-        if (errors.Count != 0) throw new Exception(string.Join("\n", errors));
-        var result = new { passed = true, record, rounds = 3, win = true, miss = true, timeout = true,
-            persistedAcrossPlaySessions = true, handlersRemoved = true, screenshots = 3, nativeMouseInput = true, uiModule = true,
-            formInstances = FormInstances.Count, formOpenSerials = FormSerials.Count, reusedForms = true };
+        if (errors.Count != 0)
+            throw new Exception(string.Join("\n", errors));
+        var result = new
+        {
+            passed = true,
+            record,
+            rounds = 3,
+            win = true,
+            miss = true,
+            timeout = true,
+            persistedAcrossPlaySessions = true,
+            handlersRemoved = true,
+            screenshots = 3,
+            nativeMouseInput = true,
+            uiModule = true,
+            formInstances = FormInstances.Count,
+            formOpenSerials = FormSerials.Count,
+            reusedForms = true
+        };
         Directory.CreateDirectory("Artifacts~/Examples");
         File.WriteAllText("Artifacts~/Examples/point-game-check.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;
@@ -159,12 +184,18 @@ public static class ValidatePointGame
         var view = UnityEngine.Object.FindFirstObjectByType<PointGameView>();
         FormInstances.Add(view.GetInstanceID());
         FormSerials.Add(view.UIForm.SerialId);
-        if (FirstFormSerial.TryGetValue(view.GetInstanceID(), out int first)) reusedForm |= first != view.UIForm.SerialId;
-        else FirstFormSerial.Add(view.GetInstanceID(), view.UIForm.SerialId);
+        if (FirstFormSerial.TryGetValue(view.GetInstanceID(), out int first))
+            reusedForm |= first != view.UIForm.SerialId;
+        else
+            FirstFormSerial.Add(view.GetInstanceID(), view.UIForm.SerialId);
         return (Button)Get(view, name);
     }
     private static void Set(object target, string name, object value) => target.GetType().GetField(name, Fields).SetValue(target, value);
-    private static void Require(bool condition, string step) { if (!condition) throw new Exception(step); }
+    private static void Require(bool condition, string step)
+    {
+        if (!condition)
+            throw new Exception(step);
+    }
     private static async Task Click(Component element, bool emptyCorner = false)
     {
         var rect = (RectTransform)element.transform;
@@ -188,7 +219,8 @@ public static class ValidatePointGame
         double started = EditorApplication.timeSinceStartup;
         while (!condition())
         {
-            if (EditorApplication.timeSinceStartup - started > 10) throw new TimeoutException(step);
+            if (EditorApplication.timeSinceStartup - started > 10)
+                throw new TimeoutException(step);
             await Task.Delay(30);
         }
     }
@@ -210,7 +242,8 @@ public static class ValidatePointGame
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

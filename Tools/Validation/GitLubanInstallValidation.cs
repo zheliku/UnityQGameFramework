@@ -17,8 +17,10 @@ public static class GitLubanInstallValidation
 
     private static void BeginWhenReady()
     {
-        if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
-        if (LubanSettings.instance.Profile == null && Timer.Elapsed.TotalSeconds < 30) return;
+        if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+            return;
+        if (LubanSettings.instance.Profile == null && Timer.Elapsed.TotalSeconds < 30)
+            return;
         EditorApplication.update -= BeginWhenReady;
         Validate();
     }
@@ -62,8 +64,13 @@ public static class GitLubanInstallValidation
         EditorApplication.Exit(result.success ? 0 : 1);
     }
 
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
-    [Serializable] private sealed class Result
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
+    [Serializable]
+    private sealed class Result
     {
         public bool success;
         public string unityVersion;

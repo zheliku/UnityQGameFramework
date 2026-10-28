@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Network;
 
 namespace StarForce
 {
@@ -16,17 +15,26 @@ namespace StarForce
         /// <summary>
         /// 消息的发送方向。
         /// </summary>
-        public abstract PacketType PacketType { get; }
+        public abstract PacketType PacketType
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取当前实例或消息的标识。
         /// </summary>
-        public int Id { get; set; }
+        public int Id
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取包体字节数。
         /// </summary>
-        public int PacketLength { get; set; }
+        public int PacketLength
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取消息头是否有效。

@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private sealed partial class ResourceChecker
         {
@@ -51,22 +51,34 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源检查状态。
                 /// </summary>
-                public CheckStatus Status { get; private set; }
+                public CheckStatus Status
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取是否需要移除读写区的资源。
                 /// </summary>
-                public bool NeedRemove { get; private set; }
+                public bool NeedRemove
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取是否需要将读写区的资源移动到磁盘。
                 /// </summary>
-                public bool NeedMoveToDisk { get; private set; }
+                public bool NeedMoveToDisk
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取是否需要将读写区的资源移动到文件系统。
                 /// </summary>
-                public bool NeedMoveToFileSystem { get; private set; }
+                public bool NeedMoveToFileSystem
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取资源所在的文件系统名称。
@@ -177,7 +189,7 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (m_VersionInfo.Exist)
                     {
-                        throw new FrameworkException(Utility.Text.Format("You must set version info of '{0}' only once.", m_ResourceName.FullName));
+                        throw new GameFrameworkException(Utility.Text.Format("You must set version info of '{0}' only once.", m_ResourceName.FullName));
                     }
 
                     m_VersionInfo = new RemoteVersionInfo(m_CachedFileSystemName, loadType, length, hashCode, compressedLength, compressedHashCode);
@@ -194,7 +206,7 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (m_ReadOnlyInfo.Exist)
                     {
-                        throw new FrameworkException(Utility.Text.Format("You must set read-only info of '{0}' only once.", m_ResourceName.FullName));
+                        throw new GameFrameworkException(Utility.Text.Format("You must set read-only info of '{0}' only once.", m_ResourceName.FullName));
                     }
 
                     m_ReadOnlyInfo = new LocalVersionInfo(m_CachedFileSystemName, loadType, length, hashCode);
@@ -211,7 +223,7 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (m_ReadWriteInfo.Exist)
                     {
-                        throw new FrameworkException(Utility.Text.Format("You must set read-write info of '{0}' only once.", m_ResourceName.FullName));
+                        throw new GameFrameworkException(Utility.Text.Format("You must set read-write info of '{0}' only once.", m_ResourceName.FullName));
                     }
 
                     m_ReadWriteInfo = new LocalVersionInfo(m_CachedFileSystemName, loadType, length, hashCode);

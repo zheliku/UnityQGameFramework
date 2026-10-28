@@ -6,7 +6,7 @@
 using System;
 using System.IO;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 通用文件系统流。
@@ -25,7 +25,7 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(fullPath))
             {
-                throw new FrameworkException("Full path is invalid.");
+                throw new GameFrameworkException("Full path is invalid.");
             }
 
             switch (access)
@@ -44,7 +44,7 @@ namespace UnityQGameFramework.Core.FileSystem
                     break;
 
                 default:
-                    throw new FrameworkException("Access is invalid.");
+                    throw new GameFrameworkException("Access is invalid.");
             }
         }
 

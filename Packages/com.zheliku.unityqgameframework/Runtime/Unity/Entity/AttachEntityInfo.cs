@@ -25,12 +25,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取附加实体的父变换。
         /// </summary>
-        public Transform ParentTransform { get; private set; }
+        public Transform ParentTransform
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 从引用池获取请求数据。

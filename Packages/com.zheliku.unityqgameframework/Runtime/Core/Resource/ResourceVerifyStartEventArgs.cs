@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 资源校验开始事件。
     /// </summary>
-    public sealed class ResourceVerifyStartEventArgs : FrameworkEventArgs
+    public sealed class ResourceVerifyStartEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化资源校验开始事件的新实例。
@@ -22,12 +22,18 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取要校验资源的数量。
         /// </summary>
-        public int Count { get; private set; }
+        public int Count
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取要校验资源的总大小。
         /// </summary>
-        public long TotalLength { get; private set; }
+        public long TotalLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源校验开始事件。

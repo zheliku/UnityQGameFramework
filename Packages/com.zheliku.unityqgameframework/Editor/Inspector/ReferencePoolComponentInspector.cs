@@ -18,7 +18,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制引用池组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(ReferencePoolComponent))]
-    internal sealed class ReferencePoolComponentInspector : FrameworkInspector
+    internal sealed class ReferencePoolComponentInspector : GameFrameworkInspector
     {
         private readonly Dictionary<string, List<ReferencePoolInfo>> m_ReferencePoolInfos = new Dictionary<string, List<ReferencePoolInfo>>(StringComparer.Ordinal);
         private readonly HashSet<string> m_OpenedItems = new HashSet<string>();

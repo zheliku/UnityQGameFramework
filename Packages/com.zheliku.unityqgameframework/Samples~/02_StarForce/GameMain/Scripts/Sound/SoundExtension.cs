@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataTable;
-using UnityQGameFramework.Core.Sound;
 using UnityQGameFramework.Runtime;
 
 namespace StarForce

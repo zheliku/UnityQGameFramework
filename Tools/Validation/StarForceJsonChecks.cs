@@ -41,7 +41,7 @@ public static class StarForceJsonChecks
             Utility.Json.ToObject(typeof(JsonData), "{");
             throw new Exception("Invalid JSON was accepted");
         }
-        catch (FrameworkException exception)
+        catch (GameFrameworkException exception)
         {
             Require(exception.InnerException is ArgumentException, "Parsing error retains the original exception");
         }
@@ -72,7 +72,8 @@ public static class StarForceJsonChecks
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception("StarForce JSON: " + message);
+        if (!condition)
+            throw new Exception("StarForce JSON: " + message);
         checks++;
     }
 

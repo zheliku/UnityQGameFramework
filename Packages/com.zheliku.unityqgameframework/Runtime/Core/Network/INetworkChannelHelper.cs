@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.IO;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 网络频道辅助器接口。
@@ -15,7 +15,10 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取消息包头长度。
         /// </summary>
-        int PacketHeaderLength { get; }
+        int PacketHeaderLength
+        {
+            get;
+        }
 
         /// <summary>
         /// 初始化网络频道辅助器。

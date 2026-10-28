@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 /// <summary>
 /// 无主键列表
 /// </summary>
-public partial class TbMessage : UnityQGameFramework.Core.DataTable.DataTable<DRMessage>
+public partial class TbMessage : UnityQGameFramework.Core.DataTable<DRMessage>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

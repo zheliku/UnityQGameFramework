@@ -35,7 +35,10 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取引用对象类型。
             /// </summary>
-            public Type ReferenceType { get; }
+            public Type ReferenceType
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取闲置引用数量。
@@ -51,27 +54,42 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取正在使用的引用数量。
             /// </summary>
-            public int UsingReferenceCount { get; private set; }
+            public int UsingReferenceCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取累计获取引用次数。
             /// </summary>
-            public int AcquireReferenceCount { get; private set; }
+            public int AcquireReferenceCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取累计归还引用次数。
             /// </summary>
-            public int ReleaseReferenceCount { get; private set; }
+            public int ReleaseReferenceCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取累计创建引用数量。
             /// </summary>
-            public int AddReferenceCount { get; private set; }
+            public int AddReferenceCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取累计移除引用数量。
             /// </summary>
-            public int RemoveReferenceCount { get; private set; }
+            public int RemoveReferenceCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取引用，集合为空时创建新引用。
@@ -82,7 +100,7 @@ namespace UnityQGameFramework.Core
             {
                 if (typeof(T) != ReferenceType)
                 {
-                    throw new FrameworkException("Type is invalid.");
+                    throw new GameFrameworkException("Type is invalid.");
                 }
 
                 UsingReferenceCount++;
@@ -130,7 +148,7 @@ namespace UnityQGameFramework.Core
                 {
                     if (EnableStrictCheck && m_References.Contains(reference))
                     {
-                        throw new FrameworkException("The reference has been released.");
+                        throw new GameFrameworkException("The reference has been released.");
                     }
 
                     m_References.Enqueue(reference);
@@ -149,7 +167,7 @@ namespace UnityQGameFramework.Core
             {
                 if (typeof(T) != ReferenceType)
                 {
-                    throw new FrameworkException("Type is invalid.");
+                    throw new GameFrameworkException("Type is invalid.");
                 }
 
                 lock (m_References)

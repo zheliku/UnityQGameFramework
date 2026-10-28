@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 显示运行环境与设备信息。
@@ -43,7 +43,7 @@ namespace UnityQGameFramework.Runtime
                     DrawItem("Product Name", Application.productName);
                     DrawItem("Company Name", Application.companyName);
                     DrawItem("Game Identifier", Application.identifier);
-                    DrawItem("Unity Q Game Framework Version", Version.FrameworkVersion);
+                    DrawItem("Unity Q Game Framework Version", Version.GameFrameworkVersion);
                     DrawItem("Game Version", Utility.Text.Format("{0} ({1})", Version.GameVersion, Version.InternalGameVersion));
                     DrawItem("Resource Version", m_ResourceComponent.Settings == null ? "Resource Settings missing" : (string.IsNullOrEmpty(m_ResourceComponent.ApplicableGameVersion) ? "Unknown" : Utility.Text.Format("{0} ({1})", m_ResourceComponent.ApplicableGameVersion, m_ResourceComponent.InternalResourceVersion)));
                     DrawItem("Application Version", Application.version);

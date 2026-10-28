@@ -5,9 +5,9 @@
 
 using System;
 
-namespace UnityQGameFramework.Core.ObjectPool
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ObjectPoolManager : FrameworkModule, IObjectPoolManager
+    internal sealed partial class ObjectPoolManager : GameFrameworkModule, IObjectPoolManager
     {
         /// <summary>
         /// 内部对象。
@@ -103,7 +103,10 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// <summary>
             /// 获取对象的获取计数。
             /// </summary>
-            public int SpawnCount { get; private set; }
+            public int SpawnCount
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 创建内部对象。
@@ -115,7 +118,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 if (obj == null)
                 {
-                    throw new FrameworkException("Object is invalid.");
+                    throw new GameFrameworkException("Object is invalid.");
                 }
 
                 Object<T> internalObject = ReferencePool.Acquire<Object<T>>();
@@ -169,7 +172,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 SpawnCount--;
                 if (SpawnCount < 0)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Object '{0}' spawn count is less than 0.", Name));
+                    throw new GameFrameworkException(Utility.Text.Format("Object '{0}' spawn count is less than 0.", Name));
                 }
             }
 

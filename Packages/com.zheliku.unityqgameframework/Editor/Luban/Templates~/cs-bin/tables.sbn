@@ -1,6 +1,6 @@
 using UnityQGameFramework.Luban;
 using Luban = UnityQGameFramework.Luban;
-using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 {{namespace_with_grace_begin __namespace}}

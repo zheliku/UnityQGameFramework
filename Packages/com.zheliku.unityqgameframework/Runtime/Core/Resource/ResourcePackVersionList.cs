@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 资源包版本资源列表。
@@ -39,7 +39,10 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源包版本资源列表是否有效。
         /// </summary>
-        public bool IsValid { get; }
+        public bool IsValid
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源数据偏移。
@@ -50,7 +53,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_Offset;
@@ -66,7 +69,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_Length;
@@ -82,7 +85,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_HashCode;
@@ -97,7 +100,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (!IsValid)
             {
-                throw new FrameworkException("Data is invalid.");
+                throw new GameFrameworkException("Data is invalid.");
             }
 
             return m_Resources;

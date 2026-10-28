@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -11,10 +11,10 @@ namespace UnityQGameFramework.Core
     /// <summary>
     /// 游戏框架入口。
     /// </summary>
-    public static class FrameworkEntry
+    public static class GameFrameworkEntry
     {
-        private static readonly FrameworkLinkedList<FrameworkModule> s_FrameworkModules = new FrameworkLinkedList<FrameworkModule>();
-        private static readonly Dictionary<Type, FrameworkModule> s_ModuleCache = new Dictionary<Type, FrameworkModule>();
+        private static readonly GameFrameworkLinkedList<GameFrameworkModule> s_GameFrameworkModules = new GameFrameworkLinkedList<GameFrameworkModule>();
+        private static readonly Dictionary<Type, GameFrameworkModule> s_ModuleCache = new Dictionary<Type, GameFrameworkModule>();
 
         /// <summary>
         /// 所有游戏框架模块轮询。
@@ -23,7 +23,7 @@ namespace UnityQGameFramework.Core
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public static void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (FrameworkModule module in s_FrameworkModules)
+            foreach (GameFrameworkModule module in s_GameFrameworkModules)
             {
                 module.Update(elapseSeconds, realElapseSeconds);
             }
@@ -34,16 +34,16 @@ namespace UnityQGameFramework.Core
         /// </summary>
         public static void Shutdown()
         {
-            for (LinkedListNode<FrameworkModule> current = s_FrameworkModules.Last; current != null; current = current.Previous)
+            for (LinkedListNode<GameFrameworkModule> current = s_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
                 current.Value.Shutdown();
             }
 
-            s_FrameworkModules.Clear();
+            s_GameFrameworkModules.Clear();
             s_ModuleCache.Clear();
             ReferencePool.ClearAll();
             Utility.Marshal.FreeCachedHGlobal();
-            FrameworkLog.SetLogHelper(null);
+            GameFrameworkLog.SetLogHelper(null);
         }
 
         /// <summary>
@@ -57,28 +57,28 @@ namespace UnityQGameFramework.Core
             Type interfaceType = typeof(T);
             if (!interfaceType.IsInterface)
             {
-                throw new FrameworkException(Utility.Text.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
             }
 
-            if (s_ModuleCache.TryGetValue(interfaceType, out FrameworkModule cachedModule))
+            if (s_ModuleCache.TryGetValue(interfaceType, out GameFrameworkModule cachedModule))
             {
                 return (T)(object)cachedModule;
             }
 
             if (!interfaceType.FullName.StartsWith("UnityQGameFramework.Core.", StringComparison.Ordinal))
             {
-                throw new FrameworkException(Utility.Text.Format("You must get a Unity Q Game Framework module, but '{0}' is not.", interfaceType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("You must get a Unity Q Game Framework module, but '{0}' is not.", interfaceType.FullName));
             }
 
             string moduleName = Utility.Text.Format("{0}.{1}", interfaceType.Namespace, interfaceType.Name.Substring(1));
             Type moduleType = Type.GetType(moduleName);
             if (moduleType == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find Unity Q Game Framework module type '{0}'.", moduleName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find Unity Q Game Framework module type '{0}'.", moduleName));
             }
 
             T module = GetModule(moduleType) as T;
-            s_ModuleCache.Add(interfaceType, (FrameworkModule)(object)module);
+            s_ModuleCache.Add(interfaceType, (GameFrameworkModule)(object)module);
             return module;
         }
 
@@ -88,9 +88,9 @@ namespace UnityQGameFramework.Core
         /// <param name="moduleType">要获取的游戏框架模块类型。</param>
         /// <returns>要获取的游戏框架模块。</returns>
         /// <remarks>如果要获取的游戏框架模块不存在，则自动创建该游戏框架模块。</remarks>
-        private static FrameworkModule GetModule(Type moduleType)
+        private static GameFrameworkModule GetModule(Type moduleType)
         {
-            return s_ModuleCache.TryGetValue(moduleType, out FrameworkModule module) ? module : CreateModule(moduleType);
+            return s_ModuleCache.TryGetValue(moduleType, out GameFrameworkModule module) ? module : CreateModule(moduleType);
         }
 
         /// <summary>
@@ -98,15 +98,15 @@ namespace UnityQGameFramework.Core
         /// </summary>
         /// <param name="moduleType">要创建的游戏框架模块类型。</param>
         /// <returns>要创建的游戏框架模块。</returns>
-        private static FrameworkModule CreateModule(Type moduleType)
+        private static GameFrameworkModule CreateModule(Type moduleType)
         {
-            FrameworkModule module = (FrameworkModule)Activator.CreateInstance(moduleType);
+            GameFrameworkModule module = (GameFrameworkModule)Activator.CreateInstance(moduleType);
             if (module == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not create module '{0}'.", moduleType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not create module '{0}'.", moduleType.FullName));
             }
 
-            LinkedListNode<FrameworkModule> current = s_FrameworkModules.First;
+            LinkedListNode<GameFrameworkModule> current = s_GameFrameworkModules.First;
             while (current != null)
             {
                 if (module.Priority > current.Value.Priority)
@@ -119,11 +119,11 @@ namespace UnityQGameFramework.Core
 
             if (current != null)
             {
-                s_FrameworkModules.AddBefore(current, module);
+                s_GameFrameworkModules.AddBefore(current, module);
             }
             else
             {
-                s_FrameworkModules.AddLast(module);
+                s_GameFrameworkModules.AddLast(module);
             }
 
             s_ModuleCache.Add(moduleType, module);

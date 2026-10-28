@@ -26,17 +26,26 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取声音绑定的实体。
         /// </summary>
-        public Entity BindingEntity { get; private set; }
+        public Entity BindingEntity
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音播放的世界坐标。
         /// </summary>
-        public Vector3 WorldPosition { get; private set; }
+        public Vector3 WorldPosition
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 从引用池获取请求数据。

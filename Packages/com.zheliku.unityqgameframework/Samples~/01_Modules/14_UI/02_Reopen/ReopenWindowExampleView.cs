@@ -15,22 +15,34 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取初始化回调次数。
         /// </summary>
-        public int InitCalls { get; private set; }
+        public int InitCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取打开回调次数。
         /// </summary>
-        public int OpenCalls { get; private set; }
+        public int OpenCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取关闭回调次数。
         /// </summary>
-        public int CloseCalls { get; private set; }
+        public int CloseCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取回收回调次数。
         /// </summary>
-        public int RecycleCalls { get; private set; }
+        public int RecycleCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 初始化实例。

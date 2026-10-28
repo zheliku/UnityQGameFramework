@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private sealed partial class ResourceUpdater
         {
@@ -42,7 +42,10 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源名称。
                 /// </summary>
-                public ResourceName ResourceName { get; }
+                public ResourceName ResourceName
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取资源是否使用文件系统。
@@ -58,47 +61,74 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源所在的文件系统名称。
                 /// </summary>
-                public string FileSystemName { get; }
+                public string FileSystemName
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取资源加载方式。
                 /// </summary>
-                public LoadType LoadType { get; }
+                public LoadType LoadType
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取资源大小。
                 /// </summary>
-                public int Length { get; }
+                public int Length
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取资源哈希值。
                 /// </summary>
-                public int HashCode { get; }
+                public int HashCode
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取压缩后大小。
                 /// </summary>
-                public int CompressedLength { get; }
+                public int CompressedLength
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取压缩后哈希值。
                 /// </summary>
-                public int CompressedHashCode { get; }
+                public int CompressedHashCode
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取资源路径。
                 /// </summary>
-                public string ResourcePath { get; }
+                public string ResourcePath
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取或设置下载状态。
                 /// </summary>
-                public bool Downloading { get; set; }
+                public bool Downloading
+                {
+                    get; set;
+                }
 
                 /// <summary>
                 /// 获取或设置已重试次数。
                 /// </summary>
-                public int RetryCount { get; set; }
+                public int RetryCount
+                {
+                    get; set;
+                }
             }
         }
     }

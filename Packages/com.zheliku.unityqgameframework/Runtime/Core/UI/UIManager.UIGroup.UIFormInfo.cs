@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class UIManager : FrameworkModule, IUIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         private sealed partial class UIGroup : IUIGroup
         {
@@ -27,17 +27,26 @@ namespace UnityQGameFramework.Core.UI
                 /// <summary>
                 /// 获取对应的界面。
                 /// </summary>
-                public IUIForm UIForm { get; private set; }
+                public IUIForm UIForm
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 获取或设置界面是否已暂停。
                 /// </summary>
-                public bool Paused { get; set; }
+                public bool Paused
+                {
+                    get; set;
+                }
 
                 /// <summary>
                 /// 获取或设置界面是否已被覆盖。
                 /// </summary>
-                public bool Covered { get; set; }
+                public bool Covered
+                {
+                    get; set;
+                }
 
                 /// <summary>
                 /// 从引用池获取界面状态记录。
@@ -48,7 +57,7 @@ namespace UnityQGameFramework.Core.UI
                 {
                     if (uiForm == null)
                     {
-                        throw new FrameworkException("UI form is invalid.");
+                        throw new GameFrameworkException("UI form is invalid.");
                     }
 
                     UIFormInfo uiFormInfo = ReferencePool.Acquire<UIFormInfo>();

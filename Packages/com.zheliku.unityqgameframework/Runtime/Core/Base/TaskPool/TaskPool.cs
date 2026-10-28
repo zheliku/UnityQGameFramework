@@ -14,8 +14,8 @@ namespace UnityQGameFramework.Core
     internal sealed class TaskPool<T> where T : TaskBase
     {
         private readonly Stack<ITaskAgent<T>> m_FreeAgents;
-        private readonly FrameworkLinkedList<ITaskAgent<T>> m_WorkingAgents;
-        private readonly FrameworkLinkedList<T> m_WaitingTasks;
+        private readonly GameFrameworkLinkedList<ITaskAgent<T>> m_WorkingAgents;
+        private readonly GameFrameworkLinkedList<T> m_WaitingTasks;
 
         /// <summary>
         /// 初始化任务池的新实例。
@@ -23,15 +23,18 @@ namespace UnityQGameFramework.Core
         public TaskPool()
         {
             m_FreeAgents = new Stack<ITaskAgent<T>>();
-            m_WorkingAgents = new FrameworkLinkedList<ITaskAgent<T>>();
-            m_WaitingTasks = new FrameworkLinkedList<T>();
+            m_WorkingAgents = new GameFrameworkLinkedList<ITaskAgent<T>>();
+            m_WaitingTasks = new GameFrameworkLinkedList<T>();
             Paused = false;
         }
 
         /// <summary>
         /// 获取或设置任务池是否被暂停。
         /// </summary>
-        public bool Paused { get; set; }
+        public bool Paused
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取任务代理总数量。
@@ -114,7 +117,7 @@ namespace UnityQGameFramework.Core
         {
             if (agent == null)
             {
-                throw new FrameworkException("Task agent is invalid.");
+                throw new GameFrameworkException("Task agent is invalid.");
             }
 
             agent.Initialize();
@@ -169,7 +172,7 @@ namespace UnityQGameFramework.Core
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -221,7 +224,7 @@ namespace UnityQGameFramework.Core
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();

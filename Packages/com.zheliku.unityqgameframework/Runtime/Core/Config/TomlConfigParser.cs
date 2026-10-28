@@ -4,7 +4,7 @@ using System.Globalization;
 using Tomlyn;
 using Tomlyn.Model;
 
-namespace UnityQGameFramework.Core.Config
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 将 TOML 标量映射为配置模块的键值数据。
@@ -158,22 +158,34 @@ namespace UnityQGameFramework.Core.Config
             /// <summary>
             /// 获取布尔值。
             /// </summary>
-            public bool Boolean { get; }
+            public bool Boolean
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取整数值。
             /// </summary>
-            public int Integer { get; }
+            public int Integer
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取浮点数值。
             /// </summary>
-            public float Float { get; }
+            public float Float
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取字符串值。
             /// </summary>
-            public string Text { get; }
+            public string Text
+            {
+                get;
+            }
         }
     }
 }

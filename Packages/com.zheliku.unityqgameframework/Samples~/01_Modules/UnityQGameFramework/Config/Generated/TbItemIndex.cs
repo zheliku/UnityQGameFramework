@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 /// <summary>
 /// 同一行结构的独立索引
 /// </summary>
-public partial class TbItemIndex : UnityQGameFramework.Core.DataTable.DataTable<DRItem>
+public partial class TbItemIndex : UnityQGameFramework.Core.DataTable<DRItem>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

@@ -6,12 +6,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Fsm
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 有限状态机管理器。
     /// </summary>
-    internal sealed class FsmManager : FrameworkModule, IFsmManager
+    internal sealed class FsmManager : GameFrameworkModule, IFsmManager
     {
         private readonly Dictionary<TypeNamePair, FsmBase> m_Fsms;
         private readonly List<FsmBase> m_TempFsms;
@@ -111,7 +111,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (ownerType == null)
             {
-                throw new FrameworkException("Owner type is invalid.");
+                throw new GameFrameworkException("Owner type is invalid.");
             }
 
             return InternalHasFsm(new TypeNamePair(ownerType));
@@ -139,7 +139,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (ownerType == null)
             {
-                throw new FrameworkException("Owner type is invalid.");
+                throw new GameFrameworkException("Owner type is invalid.");
             }
 
             return InternalHasFsm(new TypeNamePair(ownerType, name));
@@ -165,7 +165,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (ownerType == null)
             {
-                throw new FrameworkException("Owner type is invalid.");
+                throw new GameFrameworkException("Owner type is invalid.");
             }
 
             return InternalGetFsm(new TypeNamePair(ownerType));
@@ -193,7 +193,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (ownerType == null)
             {
-                throw new FrameworkException("Owner type is invalid.");
+                throw new GameFrameworkException("Owner type is invalid.");
             }
 
             return InternalGetFsm(new TypeNamePair(ownerType, name));
@@ -223,7 +223,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -260,7 +260,7 @@ namespace UnityQGameFramework.Core.Fsm
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
-                throw new FrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair));
             }
 
             Fsm<T> fsm = Fsm<T>.Create(name, owner, states);
@@ -295,7 +295,7 @@ namespace UnityQGameFramework.Core.Fsm
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
-                throw new FrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair));
             }
 
             Fsm<T> fsm = Fsm<T>.Create(name, owner, states);
@@ -323,7 +323,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (ownerType == null)
             {
-                throw new FrameworkException("Owner type is invalid.");
+                throw new GameFrameworkException("Owner type is invalid.");
             }
 
             return InternalDestroyFsm(new TypeNamePair(ownerType));
@@ -351,7 +351,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (ownerType == null)
             {
-                throw new FrameworkException("Owner type is invalid.");
+                throw new GameFrameworkException("Owner type is invalid.");
             }
 
             return InternalDestroyFsm(new TypeNamePair(ownerType, name));
@@ -368,7 +368,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (fsm == null)
             {
-                throw new FrameworkException("FSM is invalid.");
+                throw new GameFrameworkException("FSM is invalid.");
             }
 
             return InternalDestroyFsm(new TypeNamePair(typeof(T), fsm.Name));
@@ -383,7 +383,7 @@ namespace UnityQGameFramework.Core.Fsm
         {
             if (fsm == null)
             {
-                throw new FrameworkException("FSM is invalid.");
+                throw new GameFrameworkException("FSM is invalid.");
             }
 
             return InternalDestroyFsm(new TypeNamePair(fsm.OwnerType, fsm.Name));

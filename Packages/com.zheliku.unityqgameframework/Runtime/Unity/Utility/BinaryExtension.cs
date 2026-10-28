@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -28,7 +28,7 @@ public static class BinaryExtension
         {
             if (shift >= 35)
             {
-                throw new FrameworkException("7 bit encoded int is invalid.");
+                throw new GameFrameworkException("7 bit encoded int is invalid.");
             }
 
             b = binaryReader.ReadByte();
@@ -90,7 +90,7 @@ public static class BinaryExtension
         {
             if (shift >= 70)
             {
-                throw new FrameworkException("7 bit encoded int is invalid.");
+                throw new GameFrameworkException("7 bit encoded int is invalid.");
             }
 
             b = binaryReader.ReadByte();
@@ -154,7 +154,7 @@ public static class BinaryExtension
 
         if (length > byte.MaxValue)
         {
-            throw new FrameworkException("String is too long.");
+            throw new GameFrameworkException("String is too long.");
         }
 
         for (byte i = 0; i < length; i++)
@@ -185,7 +185,7 @@ public static class BinaryExtension
         int length = Utility.Converter.GetBytes(value, s_CachedBytes);
         if (length > byte.MaxValue)
         {
-            throw new FrameworkException(Utility.Text.Format("String '{0}' is too long.", value));
+            throw new GameFrameworkException(Utility.Text.Format("String '{0}' is too long.", value));
         }
 
         Utility.Encryption.GetSelfXorBytes(s_CachedBytes, encryptBytes);

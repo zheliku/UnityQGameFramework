@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 文件信息。
@@ -23,17 +23,17 @@ namespace UnityQGameFramework.Core.FileSystem
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FrameworkException("Name is invalid.");
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             if (offset < 0L)
             {
-                throw new FrameworkException("Offset is invalid.");
+                throw new GameFrameworkException("Offset is invalid.");
             }
 
             if (length < 0)
             {
-                throw new FrameworkException("Length is invalid.");
+                throw new GameFrameworkException("Length is invalid.");
             }
 
             Name = name;
@@ -55,16 +55,25 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取文件名称。
         /// </summary>
-        public string Name { get; }
+        public string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取文件偏移。
         /// </summary>
-        public long Offset { get; }
+        public long Offset
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取文件长度。
         /// </summary>
-        public int Length { get; }
+        public int Length
+        {
+            get;
+        }
     }
 }

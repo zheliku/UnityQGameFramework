@@ -1,15 +1,17 @@
 # QGF 文档
 
-| 从这里开始 | 内容 |
+先运行一个示例，再按需要查模块。
+
+| 内容 | 入口 |
 | --- | --- |
-| [安装与第一个流程](01-getting-started.md) | Git URL 安装、Assets/Packages 分工、创建启动流程、更新与卸载 |
-| [从 Play 到战斗](00-runtime.md) | Core / Unity / 业务三层，Awake、Start、Update、关闭与异步调用链 |
-| [用 Luban 制作与读取配置表](02-data-tables.md) | Excel 定义、生成、Profile、Catalog、查询、扩展、命名空间与目录迁移 |
-| [项目约定](03-conventions.md) | 生命周期、事件、异步、所有权、池对象与代码组织 |
-| [UGF 到 QGF 的改动](04-changes-from-ugf.md) | 保留的机制、替换内容和后续迁移边界 |
-| [StarForce 导读](05-starforce.md) | 截图、鼠标操作、启动、飞机、武器、血条和业务扩展 |
-| [模块 API](Modules/README.md) | Runtime 模块职责、接口和调用示例 |
-| [可运行模块示例](06-module-examples.md) | 模块 Sample 中按模块组织的可运行场景 |
+| 安装、创建游戏启动流程 | [开始使用](01-getting-started.md) |
+| 组件初始化、更新、关闭 | [运行机制](00-runtime.md) |
+| Excel、生成、加载与查询 | [Luban 数据表](02-data-tables.md) |
+| 资源收集、打包与运行模式 | [YooAsset 工作流](Modules/resource-build.md) |
+| 各模块的最小调用与示例 | [模块用法](Modules/README.md) |
+| 生命周期与所有权 | [代码约定](03-conventions.md) |
+| 完整游戏的阅读顺序 | [StarForce](05-starforce.md) |
+| 三个 Sample 的入口 | [运行示例](06-module-examples.md) |
+| 与原版 UGF 的关系 | [UGF 到 QGF](04-changes-from-ugf.md) |
 
-
-版本记录见 [Changelog](../CHANGELOG.md)。
+版本变化见 [Changelog](../CHANGELOG.md)。

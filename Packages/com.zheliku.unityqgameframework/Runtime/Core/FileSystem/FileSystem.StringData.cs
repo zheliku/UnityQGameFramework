@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.FileSystem
+namespace UnityQGameFramework.Core
 {
     internal sealed partial class FileSystem : IFileSystem
     {
@@ -67,7 +67,7 @@ namespace UnityQGameFramework.Core.FileSystem
                 int length = Utility.Converter.GetBytes(value, s_CachedBytes);
                 if (length > byte.MaxValue)
                 {
-                    throw new FrameworkException(Utility.Text.Format("String '{0}' is too long.", value));
+                    throw new GameFrameworkException(Utility.Text.Format("String '{0}' is too long.", value));
                 }
 
                 Utility.Encryption.GetSelfXorBytes(s_CachedBytes, encryptBytes);

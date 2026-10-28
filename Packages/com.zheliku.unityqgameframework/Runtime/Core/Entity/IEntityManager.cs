@@ -1,14 +1,13 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 实体管理器接口。
@@ -18,12 +17,18 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取实体数量。
         /// </summary>
-        int EntityCount { get; }
+        int EntityCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取实体组数量。
         /// </summary>
-        int EntityGroupCount { get; }
+        int EntityGroupCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 显示实体成功事件。

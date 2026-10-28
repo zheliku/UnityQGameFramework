@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
@@ -22,10 +22,13 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
         var args = Environment.GetCommandLineArgs();
         for (int i = 0; i < args.Length - 1; i++)
         {
-            if (args[i] == "-qgf-point-result") resultPath = args[++i];
-            else if (args[i] == "-qgf-point-run") run = args[++i];
+            if (args[i] == "-qgf-point-result")
+                resultPath = args[++i];
+            else if (args[i] == "-qgf-point-run")
+                run = args[++i];
         }
-        if (!string.IsNullOrEmpty(resultPath)) new GameObject("Point Player Probe").AddComponent<PointGamePlayerProbe>();
+        if (!string.IsNullOrEmpty(resultPath))
+            new GameObject("Point Player Probe").AddComponent<PointGamePlayerProbe>();
     }
 
     private async void Start()
@@ -87,7 +90,8 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
                     "Timeout result and event cleanup");
                 result.timeout = true;
             }
-            else throw new Exception("Unknown Point Player probe run.");
+            else
+                throw new Exception("Unknown Point Player probe run.");
             Require(result.errors == 0, "Player runtime errors");
             result.passed = true;
         }
@@ -104,7 +108,8 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
 
     private void OnLog(string message, string stack, LogType kind)
     {
-        if (kind != LogType.Error && kind != LogType.Exception && kind != LogType.Assert) return;
+        if (kind != LogType.Error && kind != LogType.Exception && kind != LogType.Assert)
+            return;
         result.errors++;
         result.lastError = message + "\n" + stack;
     }
@@ -118,13 +123,18 @@ public sealed class PointGamePlayerProbe : MonoBehaviour
         ?? value.GetType().GetProperty(name, Fields)?.GetValue(value);
     private static void Set(object value, string name, object data) => value.GetType().GetField(name, Fields).SetValue(value, data);
     private static void Click(string name) => ((Button)Get(UnityEngine.Object.FindFirstObjectByType<PointGameView>(), name)).onClick.Invoke();
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
     private static async Task Until(Func<bool> condition, string message)
     {
         double start = Time.realtimeSinceStartupAsDouble;
         while (!condition())
         {
-            if (Time.realtimeSinceStartupAsDouble - start > 15) throw new TimeoutException(message);
+            if (Time.realtimeSinceStartupAsDouble - start > 15)
+                throw new TimeoutException(message);
             await Task.Delay(25);
         }
     }

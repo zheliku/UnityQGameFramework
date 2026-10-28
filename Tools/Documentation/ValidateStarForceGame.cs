@@ -11,11 +11,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Localization;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 using Entry = StarForce.GameEntry;
-using FrameworkEntry = UnityQGameFramework.Runtime.GameEntry;
+using GameFrameworkEntry = UnityQGameFramework.Runtime.GameEntry;
 
 // 只在隔离工程运行。菜单和飞行通过 Input System 鼠标输入；伤害由测试注入。
 public static class ValidateStarForceGame
@@ -25,11 +24,14 @@ public static class ValidateStarForceGame
 
     public static async Task<object> Run()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (setup.Any(scene => scene.isLoaded && !string.IsNullOrEmpty(scene.path)
-            && UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scene.path).isDirty)) throw new Exception("Unsaved scene.");
+            && UnityEngine.SceneManagement.SceneManager.GetSceneByPath(scene.path).isDirty))
+            throw new Exception("Unsaved scene.");
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
         var options = EditorSettings.enterPlayModeOptions;
         var input = InputSystem.settings;
@@ -43,8 +45,10 @@ public static class ValidateStarForceGame
         var warnings = new List<string>();
         Application.LogCallback capture = (message, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Assert || kind == LogType.Exception) errors.Add(message + "\n" + stack);
-            else if (kind == LogType.Warning) warnings.Add(message);
+            if (kind == LogType.Error || kind == LogType.Assert || kind == LogType.Exception)
+                errors.Add(message + "\n" + stack);
+            else if (kind == LogType.Warning)
+                warnings.Add(message);
         };
         Application.logMessageReceived += capture;
         bullets = 0;
@@ -149,30 +153,54 @@ public static class ValidateStarForceGame
         }
         finally
         {
-            if (subscribed && Entry.Event != null) Entry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnEntity);
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(pointer);
+            if (subscribed && Entry.Event != null)
+                Entry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnEntity);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(pointer);
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             input.backgroundBehavior = background;
             input.editorInputBehaviorInPlayMode = editorInput;
             Application.runInBackground = runInBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            if (saved != null) File.WriteAllBytes(savePath, saved);
-            else if (File.Exists(savePath)) File.Delete(savePath);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (saved != null)
+                File.WriteAllBytes(savePath, saved);
+            else if (File.Exists(savePath))
+                File.Delete(savePath);
         }
-        if (errors.Count != 0) throw new Exception(string.Join("\n", errors));
-        return new { passed = true, nativeMouseInput = true, settings = true, about = true, quitCancel = true,
-            battleRounds = 2, bullets, damageInjection = true, pooledHpBar = true, secondAircraftIdle, languageRestart = true, jsonChecks,
-            screenshots = 3, warnings = warnings.Distinct().ToArray() };
+        if (errors.Count != 0)
+            throw new Exception(string.Join("\n", errors));
+        return new
+        {
+            passed = true,
+            nativeMouseInput = true,
+            settings = true,
+            about = true,
+            quitCancel = true,
+            battleRounds = 2,
+            bullets,
+            damageInjection = true,
+            pooledHpBar = true,
+            secondAircraftIdle,
+            languageRestart = true,
+            jsonChecks,
+            screenshots = 3,
+            warnings = warnings.Distinct().ToArray()
+        };
     }
 
     private static void OnEntity(object sender, GameEventArgs args)
     {
-        if (((ShowEntitySuccessEventArgs)args).EntityLogicType == typeof(Bullet)) bullets++;
+        if (((ShowEntitySuccessEventArgs)args).EntityLogicType == typeof(Bullet))
+            bullets++;
     }
     private static T Find<T>() where T : UnityEngine.Object
     {
@@ -187,7 +215,8 @@ public static class ValidateStarForceGame
         for (var type = instance.GetType(); type != null; type = type.BaseType)
         {
             var field = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly);
-            if (field != null) return field.GetValue(instance);
+            if (field != null)
+                return field.GetValue(instance);
         }
         throw new Exception("Missing field " + name);
     }
@@ -210,13 +239,18 @@ public static class ValidateStarForceGame
         InputSystem.QueueStateEvent(mouse, new MouseState { position = position, buttons = 0 });
         await Task.Delay(160);
     }
-    private static void Require(bool condition, string step) { if (!condition) throw new Exception(step); }
+    private static void Require(bool condition, string step)
+    {
+        if (!condition)
+            throw new Exception(step);
+    }
     private static async Task Wait(Func<bool> condition, string step)
     {
         double started = EditorApplication.timeSinceStartup;
         while (!condition())
         {
-            if (EditorApplication.timeSinceStartup - started > 20) throw new TimeoutException(step + "; procedure=" + Entry.Procedure?.CurrentProcedure?.GetType().Name
+            if (EditorApplication.timeSinceStartup - started > 20)
+                throw new TimeoutException(step + "; procedure=" + Entry.Procedure?.CurrentProcedure?.GetType().Name
                 + "; timeScale=" + Time.timeScale + "; frame=" + Time.frameCount + "; playing=" + EditorApplication.isPlaying);
             await Task.Delay(30);
         }
@@ -233,13 +267,15 @@ public static class ValidateStarForceGame
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

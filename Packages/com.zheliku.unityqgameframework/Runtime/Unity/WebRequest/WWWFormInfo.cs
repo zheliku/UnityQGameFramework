@@ -25,12 +25,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取 Web 请求表单。
         /// </summary>
-        public WWWForm WWWForm { get; private set; }
+        public WWWForm WWWForm
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 从引用池获取请求数据。

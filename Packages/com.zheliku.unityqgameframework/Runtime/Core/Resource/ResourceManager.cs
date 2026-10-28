@@ -3,19 +3,17 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Download;
-using UnityQGameFramework.Core.FileSystem;
-using UnityQGameFramework.Core.ObjectPool;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 资源管理器。
     /// </summary>
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager, IResourceBackendHost
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager, IResourceBackendHost
     {
         private const string RemoteVersionListFileName = "GameFrameworkVersion.dat";
         private const string LocalVersionListFileName = "GameFrameworkList.dat";
@@ -178,42 +176,66 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取当前变体。
         /// </summary>
-        public string CurrentVariant { get; private set; }
+        public string CurrentVariant
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取单机模式版本资源列表序列化器。
         /// </summary>
-        public PackageVersionListSerializer PackageVersionListSerializer { get; private set; }
+        public PackageVersionListSerializer PackageVersionListSerializer
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取可更新模式版本资源列表序列化器。
         /// </summary>
-        public UpdatableVersionListSerializer UpdatableVersionListSerializer { get; private set; }
+        public UpdatableVersionListSerializer UpdatableVersionListSerializer
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取本地只读区版本资源列表序列化器。
         /// </summary>
-        public ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer { get; private set; }
+        public ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取本地读写区版本资源列表序列化器。
         /// </summary>
-        public ReadWriteVersionListSerializer ReadWriteVersionListSerializer { get; private set; }
+        public ReadWriteVersionListSerializer ReadWriteVersionListSerializer
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源包版本资源列表序列化器。
         /// </summary>
-        public ResourcePackVersionListSerializer ResourcePackVersionListSerializer { get; private set; }
+        public ResourcePackVersionListSerializer ResourcePackVersionListSerializer
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前资源适用的游戏版本号。
         /// </summary>
-        public string ApplicableGameVersion { get; private set; }
+        public string ApplicableGameVersion
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前内部资源版本号。
         /// </summary>
-        public int InternalResourceVersion { get; private set; }
+        public int InternalResourceVersion
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源数量。
@@ -251,7 +273,10 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取或设置资源更新下载地址前缀。
         /// </summary>
-        public string UpdatePrefixUri { get; set; }
+        public string UpdatePrefixUri
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置每更新多少字节的资源，重新生成一次版本资源列表。
@@ -266,7 +291,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ResourceUpdater == null)
                 {
-                    throw new FrameworkException("You can not use GenerateReadWriteVersionListLength at this time.");
+                    throw new GameFrameworkException("You can not use GenerateReadWriteVersionListLength at this time.");
                 }
 
                 m_ResourceUpdater.GenerateReadWriteVersionListLength = value;
@@ -308,7 +333,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ResourceUpdater == null)
                 {
-                    throw new FrameworkException("You can not use UpdateRetryCount at this time.");
+                    throw new GameFrameworkException("You can not use UpdateRetryCount at this time.");
                 }
 
                 m_ResourceUpdater.UpdateRetryCount = value;
@@ -812,12 +837,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (resourceBackend == null)
             {
-                throw new FrameworkException("Resource backend is invalid.");
+                throw new GameFrameworkException("Resource backend is invalid.");
             }
 
             if (m_ResourceBackend != null || m_RefuseSetFlag || m_ResourceLoader.TotalAgentCount > 0)
             {
-                throw new FrameworkException("You must set the resource backend before loading resources.");
+                throw new GameFrameworkException("You must set the resource backend before loading resources.");
             }
 
             m_ResourceBackend = resourceBackend;
@@ -831,7 +856,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(readOnlyPath))
             {
-                throw new FrameworkException("Read-only path is invalid.");
+                throw new GameFrameworkException("Read-only path is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -842,12 +867,12 @@ namespace UnityQGameFramework.Core.Resource
 
             if (m_RefuseSetFlag)
             {
-                throw new FrameworkException("You can not set read-only path at this time.");
+                throw new GameFrameworkException("You can not set read-only path at this time.");
             }
 
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
-                throw new FrameworkException("You must set read-only path before add load resource agent helper.");
+                throw new GameFrameworkException("You must set read-only path before add load resource agent helper.");
             }
 
             ReadOnlyPath = readOnlyPath;
@@ -861,7 +886,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(readWritePath))
             {
-                throw new FrameworkException("Read-write path is invalid.");
+                throw new GameFrameworkException("Read-write path is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -872,12 +897,12 @@ namespace UnityQGameFramework.Core.Resource
 
             if (m_RefuseSetFlag)
             {
-                throw new FrameworkException("You can not set read-write path at this time.");
+                throw new GameFrameworkException("You can not set read-write path at this time.");
             }
 
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
-                throw new FrameworkException("You must set read-write path before add load resource agent helper.");
+                throw new GameFrameworkException("You must set read-write path before add load resource agent helper.");
             }
 
             ReadWritePath = readWritePath;
@@ -893,18 +918,18 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (resourceMode != m_ResourceBackend.ResourceMode)
                 {
-                    throw new FrameworkException("Set the YooAsset play mode in ResourceSettings.");
+                    throw new GameFrameworkException("Set the YooAsset play mode in ResourceSettings.");
                 }
                 return;
             }
             if (resourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("Resource mode is invalid.");
+                throw new GameFrameworkException("Resource mode is invalid.");
             }
 
             if (m_RefuseSetFlag)
             {
-                throw new FrameworkException("You can not set resource mode at this time.");
+                throw new GameFrameworkException("You can not set resource mode at this time.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
@@ -948,7 +973,7 @@ namespace UnityQGameFramework.Core.Resource
             }
             else if (ResourceMode != resourceMode)
             {
-                throw new FrameworkException("You can not change resource mode at this time.");
+                throw new GameFrameworkException("You can not change resource mode at this time.");
             }
         }
 
@@ -960,7 +985,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (m_RefuseSetFlag)
             {
-                throw new FrameworkException("You can not set current variant at this time.");
+                throw new GameFrameworkException("You can not set current variant at this time.");
             }
 
             CurrentVariant = currentVariant;
@@ -974,7 +999,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (objectPoolManager == null)
             {
-                throw new FrameworkException("Object pool manager is invalid.");
+                throw new GameFrameworkException("Object pool manager is invalid.");
             }
 
             m_ResourceLoader.SetObjectPoolManager(objectPoolManager);
@@ -988,7 +1013,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (fileSystemManager == null)
             {
-                throw new FrameworkException("File system manager is invalid.");
+                throw new GameFrameworkException("File system manager is invalid.");
             }
 
             m_FileSystemManager = fileSystemManager;
@@ -1002,7 +1027,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (downloadManager == null)
             {
-                throw new FrameworkException("Download manager is invalid.");
+                throw new GameFrameworkException("Download manager is invalid.");
             }
 
             if (m_VersionListProcessor != null)
@@ -1025,7 +1050,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
-                throw new FrameworkException("You must set decrypt resource callback before add load resource agent helper.");
+                throw new GameFrameworkException("You must set decrypt resource callback before add load resource agent helper.");
             }
 
             m_DecryptResourceCallback = decryptResourceCallback;
@@ -1039,12 +1064,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (resourceHelper == null)
             {
-                throw new FrameworkException("Resource helper is invalid.");
+                throw new GameFrameworkException("Resource helper is invalid.");
             }
 
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
-                throw new FrameworkException("You must set resource helper before add load resource agent helper.");
+                throw new GameFrameworkException("You must set resource helper before add load resource agent helper.");
             }
 
             m_ResourceHelper = resourceHelper;
@@ -1058,17 +1083,17 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (m_ResourceHelper == null)
             {
-                throw new FrameworkException("Resource helper is invalid.");
+                throw new GameFrameworkException("Resource helper is invalid.");
             }
 
             if (string.IsNullOrEmpty(ReadOnlyPath))
             {
-                throw new FrameworkException("Read-only path is invalid.");
+                throw new GameFrameworkException("Read-only path is invalid.");
             }
 
             if (string.IsNullOrEmpty(ReadWritePath))
             {
-                throw new FrameworkException("Read-write path is invalid.");
+                throw new GameFrameworkException("Read-write path is invalid.");
             }
 
             m_ResourceLoader.AddLoadResourceAgentHelper(loadResourceAgentHelper, m_ResourceHelper, ReadOnlyPath, ReadWritePath, m_DecryptResourceCallback);
@@ -1088,22 +1113,22 @@ namespace UnityQGameFramework.Core.Resource
 
             if (initResourcesCompleteCallback == null)
             {
-                throw new FrameworkException("Init resources complete callback is invalid.");
+                throw new GameFrameworkException("Init resources complete callback is invalid.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Package)
             {
-                throw new FrameworkException("You can not use InitResources without package resource mode.");
+                throw new GameFrameworkException("You can not use InitResources without package resource mode.");
             }
 
             if (m_ResourceIniter == null)
             {
-                throw new FrameworkException("You can not use InitResources at this time.");
+                throw new GameFrameworkException("You can not use InitResources at this time.");
             }
 
             m_RefuseSetFlag = true;
@@ -1120,17 +1145,17 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use CheckVersionList without updatable resource mode.");
+                throw new GameFrameworkException("You can not use CheckVersionList without updatable resource mode.");
             }
 
             if (m_VersionListProcessor == null)
             {
-                throw new FrameworkException("You can not use CheckVersionList at this time.");
+                throw new GameFrameworkException("You can not use CheckVersionList at this time.");
             }
 
             return m_VersionListProcessor.CheckVersionList(latestInternalResourceVersion);
@@ -1148,22 +1173,22 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (updateVersionListCallbacks == null)
             {
-                throw new FrameworkException("Update version list callbacks is invalid.");
+                throw new GameFrameworkException("Update version list callbacks is invalid.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use UpdateVersionList without updatable resource mode.");
+                throw new GameFrameworkException("You can not use UpdateVersionList without updatable resource mode.");
             }
 
             if (m_VersionListProcessor == null)
             {
-                throw new FrameworkException("You can not use UpdateVersionList at this time.");
+                throw new GameFrameworkException("You can not use UpdateVersionList at this time.");
             }
 
             m_UpdateVersionListCallbacks = updateVersionListCallbacks;
@@ -1179,22 +1204,22 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (verifyResourcesCompleteCallback == null)
             {
-                throw new FrameworkException("Verify resources complete callback is invalid.");
+                throw new GameFrameworkException("Verify resources complete callback is invalid.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use VerifyResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use VerifyResources without updatable resource mode.");
             }
 
             if (m_RefuseSetFlag)
             {
-                throw new FrameworkException("You can not verify resources at this time.");
+                throw new GameFrameworkException("You can not verify resources at this time.");
             }
 
             m_ResourceVerifier = new ResourceVerifier(this);
@@ -1215,22 +1240,22 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (checkResourcesCompleteCallback == null)
             {
-                throw new FrameworkException("Check resources complete callback is invalid.");
+                throw new GameFrameworkException("Check resources complete callback is invalid.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use CheckResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use CheckResources without updatable resource mode.");
             }
 
             if (m_ResourceChecker == null)
             {
-                throw new FrameworkException("You can not use CheckResources at this time.");
+                throw new GameFrameworkException("You can not use CheckResources at this time.");
             }
 
             m_RefuseSetFlag = true;
@@ -1247,32 +1272,32 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(resourcePackPath))
             {
-                throw new FrameworkException("Resource pack path is invalid.");
+                throw new GameFrameworkException("Resource pack path is invalid.");
             }
 
             if (!File.Exists(resourcePackPath))
             {
-                throw new FrameworkException(Utility.Text.Format("Resource pack '{0}' is not exist.", resourcePackPath));
+                throw new GameFrameworkException(Utility.Text.Format("Resource pack '{0}' is not exist.", resourcePackPath));
             }
 
             if (applyResourcesCompleteCallback == null)
             {
-                throw new FrameworkException("Apply resources complete callback is invalid.");
+                throw new GameFrameworkException("Apply resources complete callback is invalid.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use ApplyResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use ApplyResources without updatable resource mode.");
             }
 
             if (m_ResourceUpdater == null)
             {
-                throw new FrameworkException("You can not use ApplyResources at this time.");
+                throw new GameFrameworkException("You can not use ApplyResources at this time.");
             }
 
             m_ApplyResourcesCompleteCallback = applyResourcesCompleteCallback;
@@ -1297,28 +1322,28 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (updateResourcesCompleteCallback == null)
             {
-                throw new FrameworkException("Update resources complete callback is invalid.");
+                throw new GameFrameworkException("Update resources complete callback is invalid.");
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use UpdateResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use UpdateResources without updatable resource mode.");
             }
 
             if (m_ResourceUpdater == null)
             {
-                throw new FrameworkException("You can not use UpdateResources at this time.");
+                throw new GameFrameworkException("You can not use UpdateResources at this time.");
             }
 
             ResourceGroup resourceGroup = (ResourceGroup)GetResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             m_UpdateResourcesCompleteCallback = updateResourcesCompleteCallback;
@@ -1332,17 +1357,17 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use StopUpdateResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use StopUpdateResources without updatable resource mode.");
             }
 
             if (m_ResourceUpdater == null)
             {
-                throw new FrameworkException("You can not use StopUpdateResources at this time.");
+                throw new GameFrameworkException("You can not use StopUpdateResources at this time.");
             }
 
             m_ResourceUpdater.StopUpdateResources();
@@ -1358,27 +1383,27 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(resourcePackPath))
             {
-                throw new FrameworkException("Resource pack path is invalid.");
+                throw new GameFrameworkException("Resource pack path is invalid.");
             }
 
             if (!File.Exists(resourcePackPath))
             {
-                throw new FrameworkException(Utility.Text.Format("Resource pack '{0}' is not exist.", resourcePackPath));
+                throw new GameFrameworkException(Utility.Text.Format("Resource pack '{0}' is not exist.", resourcePackPath));
             }
 
             if (ResourceMode == ResourceMode.Unspecified)
             {
-                throw new FrameworkException("You must set resource mode first.");
+                throw new GameFrameworkException("You must set resource mode first.");
             }
 
             if (ResourceMode != ResourceMode.Updatable && ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new FrameworkException("You can not use VerifyResourcePack without updatable resource mode.");
+                throw new GameFrameworkException("You can not use VerifyResourcePack without updatable resource mode.");
             }
 
             if (ResourcePackVersionListSerializer == null)
             {
-                throw new FrameworkException("You can not use VerifyResourcePack at this time.");
+                throw new GameFrameworkException("You can not use VerifyResourcePack at this time.");
             }
 
             try
@@ -1448,7 +1473,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1468,21 +1493,21 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
             {
-                m_ResourceBackend.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, null);
+                m_ResourceBackend.LoadAsset(assetName, null, ResourceConstant.DefaultPriority, loadAssetCallbacks, null);
                 return;
             }
 
-            m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, null);
+            m_ResourceLoader.LoadAsset(assetName, null, ResourceConstant.DefaultPriority, loadAssetCallbacks, null);
         }
 
         /// <summary>
@@ -1495,21 +1520,21 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
             {
-                m_ResourceBackend.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, null);
+                m_ResourceBackend.LoadAsset(assetName, assetType, ResourceConstant.DefaultPriority, loadAssetCallbacks, null);
                 return;
             }
 
-            m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, null);
+            m_ResourceLoader.LoadAsset(assetName, assetType, ResourceConstant.DefaultPriority, loadAssetCallbacks, null);
         }
 
         /// <summary>
@@ -1522,12 +1547,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1549,21 +1574,21 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
             {
-                m_ResourceBackend.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, userData);
+                m_ResourceBackend.LoadAsset(assetName, null, ResourceConstant.DefaultPriority, loadAssetCallbacks, userData);
                 return;
             }
 
-            m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, userData);
+            m_ResourceLoader.LoadAsset(assetName, null, ResourceConstant.DefaultPriority, loadAssetCallbacks, userData);
         }
 
         /// <summary>
@@ -1577,12 +1602,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1605,21 +1630,21 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
             {
-                m_ResourceBackend.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, userData);
+                m_ResourceBackend.LoadAsset(assetName, assetType, ResourceConstant.DefaultPriority, loadAssetCallbacks, userData);
                 return;
             }
 
-            m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, userData);
+            m_ResourceLoader.LoadAsset(assetName, assetType, ResourceConstant.DefaultPriority, loadAssetCallbacks, userData);
         }
 
         /// <summary>
@@ -1633,12 +1658,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1662,12 +1687,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (loadAssetCallbacks == null)
             {
-                throw new FrameworkException("Load asset callbacks is invalid.");
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1687,7 +1712,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (asset == null)
             {
-                throw new FrameworkException("Asset is invalid.");
+                throw new GameFrameworkException("Asset is invalid.");
             }
 
             if (m_ResourceLoader == null)
@@ -1713,21 +1738,21 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (loadSceneCallbacks == null)
             {
-                throw new FrameworkException("Load scene callbacks is invalid.");
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
             {
-                m_ResourceBackend.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, null);
+                m_ResourceBackend.LoadScene(sceneAssetName, ResourceConstant.DefaultPriority, loadSceneCallbacks, null);
                 return;
             }
 
-            m_ResourceLoader.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, null);
+            m_ResourceLoader.LoadScene(sceneAssetName, ResourceConstant.DefaultPriority, loadSceneCallbacks, null);
         }
 
         /// <summary>
@@ -1740,12 +1765,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (loadSceneCallbacks == null)
             {
-                throw new FrameworkException("Load scene callbacks is invalid.");
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1767,21 +1792,21 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (loadSceneCallbacks == null)
             {
-                throw new FrameworkException("Load scene callbacks is invalid.");
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
             {
-                m_ResourceBackend.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, userData);
+                m_ResourceBackend.LoadScene(sceneAssetName, ResourceConstant.DefaultPriority, loadSceneCallbacks, userData);
                 return;
             }
 
-            m_ResourceLoader.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, userData);
+            m_ResourceLoader.LoadScene(sceneAssetName, ResourceConstant.DefaultPriority, loadSceneCallbacks, userData);
         }
 
         /// <summary>
@@ -1795,12 +1820,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (loadSceneCallbacks == null)
             {
-                throw new FrameworkException("Load scene callbacks is invalid.");
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1821,12 +1846,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (unloadSceneCallbacks == null)
             {
-                throw new FrameworkException("Unload scene callbacks is invalid.");
+                throw new GameFrameworkException("Unload scene callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1848,12 +1873,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
 
             if (unloadSceneCallbacks == null)
             {
-                throw new FrameworkException("Unload scene callbacks is invalid.");
+                throw new GameFrameworkException("Unload scene callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1875,7 +1900,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1929,12 +1954,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (loadBinaryCallbacks == null)
             {
-                throw new FrameworkException("Load binary callbacks is invalid.");
+                throw new GameFrameworkException("Load binary callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1956,12 +1981,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (loadBinaryCallbacks == null)
             {
-                throw new FrameworkException("Load binary callbacks is invalid.");
+                throw new GameFrameworkException("Load binary callbacks is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -1982,7 +2007,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2003,12 +2028,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2030,12 +2055,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2058,12 +2083,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2084,7 +2109,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2106,7 +2131,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2127,12 +2152,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2154,12 +2179,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2182,12 +2207,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2209,12 +2234,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2237,12 +2262,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2266,12 +2291,12 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(binaryAssetName))
             {
-                throw new FrameworkException("Binary asset name is invalid.");
+                throw new GameFrameworkException("Binary asset name is invalid.");
             }
 
             if (buffer == null)
             {
-                throw new FrameworkException("Buffer is invalid.");
+                throw new GameFrameworkException("Buffer is invalid.");
             }
 
             if (m_ResourceBackend != null)
@@ -2341,7 +2366,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -2360,7 +2385,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (resourceGroupNames == null || resourceGroupNames.Length < 1)
             {
-                throw new FrameworkException("Resource group names is invalid.");
+                throw new GameFrameworkException("Resource group names is invalid.");
             }
 
             ResourceGroup[] resourceGroups = new ResourceGroup[resourceGroupNames.Length];
@@ -2368,13 +2393,13 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (string.IsNullOrEmpty(resourceGroupNames[i]))
                 {
-                    throw new FrameworkException("Resource group name is invalid.");
+                    throw new GameFrameworkException("Resource group name is invalid.");
                 }
 
                 resourceGroups[i] = (ResourceGroup)GetResourceGroup(resourceGroupNames[i]);
                 if (resourceGroups[i] == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Resource group '{0}' is not exist.", resourceGroupNames[i]));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource group '{0}' is not exist.", resourceGroupNames[i]));
                 }
             }
 
@@ -2390,7 +2415,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (resourceGroupNames == null || resourceGroupNames.Count < 1)
             {
-                throw new FrameworkException("Resource group names is invalid.");
+                throw new GameFrameworkException("Resource group names is invalid.");
             }
 
             ResourceGroup[] resourceGroups = new ResourceGroup[resourceGroupNames.Count];
@@ -2398,13 +2423,13 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (string.IsNullOrEmpty(resourceGroupNames[i]))
                 {
-                    throw new FrameworkException("Resource group name is invalid.");
+                    throw new GameFrameworkException("Resource group name is invalid.");
                 }
 
                 resourceGroups[i] = (ResourceGroup)GetResourceGroup(resourceGroupNames[i]);
                 if (resourceGroups[i] == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Resource group '{0}' is not exist.", resourceGroupNames[i]));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource group '{0}' is not exist.", resourceGroupNames[i]));
                 }
             }
 
@@ -2451,7 +2476,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                throw new FrameworkException("Asset name is invalid.");
+                throw new GameFrameworkException("Asset name is invalid.");
             }
 
             if (m_AssetInfos == null)
@@ -2499,7 +2524,7 @@ namespace UnityQGameFramework.Core.Resource
         {
             if (string.IsNullOrEmpty(fileSystemName))
             {
-                throw new FrameworkException("File system name is invalid.");
+                throw new GameFrameworkException("File system name is invalid.");
             }
 
             IFileSystem fileSystem = null;

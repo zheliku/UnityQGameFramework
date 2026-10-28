@@ -12,7 +12,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制事件组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(EventComponent))]
-    internal sealed class EventComponentInspector : FrameworkInspector
+    internal sealed class EventComponentInspector : GameFrameworkInspector
     {
         /// <summary>
         /// 绘制组件的 Inspector 配置和运行时信息。

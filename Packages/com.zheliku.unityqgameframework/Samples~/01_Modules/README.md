@@ -1,70 +1,22 @@
-# 01 · 模块示例
+# 模块示例
 
-每个场景只演示一项核心功能。运行场景，再阅读同名 C# 脚本。
-
-模块 Sample 使用独立 ResourceSettings 和 YooAsset 原生 BundleCollectorSetting；导入时不会修改项目设置。Player 构建流程见点点点和 StarForce。
+打开下表任一场景并运行，操作按钮观察结果，再阅读同名 C#。全部模块共用 Common/Prefabs/QGF.prefab 和公共 UI，不需要逐场景配置框架。
 
 ## 运行前准备
 
-宿主需启用 Input System：在 Player Settings 的 Active Input Handling 选择 Input System Package (New) 或 Both。示例不会替项目修改该设置。
+- 宿主使用 URP，Active Input Handling 选择 Input System Package (New) 或 Both；Sample 不修改项目设置。
+- 等待编译完成，普通场景直接 Play。默认 YooAsset Editor Simulation 无需预先打包，也无需 Fix 或 Save；修改收集规则后才 Save，路径失效时才 Fix。
+- `12_Resource/05_Update` 需先停止 Play，在 UpdateRemoteResources 脚本 Inspector 点击 **Build Remote Resources Example**，准备本地 HTTP 更新资源；更换 Unity 版本后重新构建。
 
-等待 Unity 编译完成后，打开表格中的场景并点击 Play。普通模块场景不需要手动构建资源包，也不需要在 YooAsset 收集器窗口点击 `Fix` 或 `Save`；QGF 会使用本 Sample 的原生配置自动生成 Editor Simulation。
+资源配置在 `UnityQGameFramework/Resource`。通过 ResourceComponent 的 Open Collector / Open Builder 打开官方窗口；02_AddressRules 对比三个寻址规则，05_Update 展示 Host 下载。
 
-`11_DataTable` 的生成 C#、Catalog 和二进制表已随示例提供，直接运行即可。修改 Excel 后，在 `QGF > Settings` 选择本 Sample 的 Luban Profile，再执行 `QGF > Generate Tables`。
+## DataTable
 
-`12_Resource/01_LoadPrefab`、`02_AddressRules`、`03_Package` 和 `04_Binary` 可直接运行。运行 `05_Update` 前先停止 Play，选中场景中的 `UpdateRemoteResources` 对象，在 Inspector 点击 `Build Remote Resources Example`；该按钮会构建本地 HTTP 示例需要的资源并写入 `Library/QgfExamples/YooAsset/<Unity版本>`。构建记录与当前 Unity 版本不一致时需要重新执行。
+先运行 [01_LoadTables](11_DataTable/01_LoadTables/LoadLubanTablesExample.cs)：组件自动初始化，`LoadDataTables<Tables>()` 同步加载指定 Catalog，随后用 `GetDataTable<TbItem>()` 查询。生成类型位于 `UnityQGameFramework.Examples.Modules.TableData`。
 
-`QGF > Resource > Packages` 打开 YooAsset 原生窗口，选择或双击本 Sample 的 `UnityQGameFramework/Resource/YooAssetCollector.asset` 切换到对应面板；其中的寻址规则、分组和构建选项就是实际使用的配置。修改后用窗口自己的 `Save` 保存，`Fix` 只在 GUID 路径失效时使用。
+02_LoadCatalog 按资源地址异步加载，成功后查询；03～06 分别展示按键、筛选、具名登记、索引与表模式。切换整组表前调用 UnloadDataTables，业务丢弃旧引用。
 
-## DataTable 从哪里开始
-
-先运行 [01_LoadTables](11_DataTable/01_LoadTables/LoadLubanTablesExample.unity)，再看同名脚本。这个场景演示最常用的“启动时加载一次，后续只查询”。示例已经带有生成结果，不需要先安装编译器或重新生成。
-
-### Profile、Catalog 和生成代码
-
-| 文件或设置 | 用途 | 游戏运行时是否读取 |
-| --- | --- | --- |
-| [LubanProfile.asset](UnityQGameFramework/Config/LubanProfile.asset) | 引用 luban.conf、指定代码和数据输出目录、target | 否，只用于编辑器生成 |
-| `QGF > Settings` 中的全局 Profile | 指定“生成表格”菜单使用哪份 Profile；只是对上述资产的选择 | 否 |
-| [Catalog.asset](UnityQGameFramework/Config/Data/Catalog.asset) | 生成的文件名 → bytes 引用清单，并记录结构版本 | 是，由 DataTableComponent 加载 |
-| `Generated/Tables.cs`、`TbItem.cs`、`DRItem.cs` | 生成的加载器、表类型和行类型 | 编译进游戏，负责解析和查询 |
-| `Data/*.bytes` | Excel 导出的具体记录值 | 是，由生成代码反序列化 |
-
-Catalog 不是缓存，不能当作临时文件删除；它与 bytes 一起构成运行时数据。全局 Profile 只决定生成目标，不会自动替换场景组件的 Catalog。因此你切换全局 Profile 后，当前场景仍可使用原来指定的示例数据。
-
-编辑 Excel 时：在 `QGF > Settings` 选择上表的 Profile，执行 `QGF > Generate Tables`，等待 Unity 编译完成。要让场景改用另一份生成结果，再把那份 `Data/Catalog.asset` 拖到场景 QGF 对象的 DataTableComponent，或点 **Use Global Catalog**。加载器 `Tables` 必须来自同一套生成代码；结构不匹配时会拒绝加载。
-
-### 需要 Initialize 吗
-
-不需要手动调用 Initialize。场景中启用的 QGF 组件会自动完成初始化；普通业务脚本在 `Start` 中即可调用：
-
-```csharp
-// 使用本 Sample 的生成类型：UnityQGameFramework.Examples.Modules.TableData。
-private void Start()
-{
-    // 从组件上指定的 Catalog 同步读取 bytes；返回 true 时整组表已经可以查询。
-    if (!QGF.DataTable.LoadDataTables<Tables>())
-    {
-        return;
-    }
-
-    TbItem items = QGF.DataTable.GetDataTable<TbItem>();
-    DRItem item = items.GetDataRow(1);
-    Log.Info("道具：{0}，价格：{1}", item.Name, item.Price);
-}
-```
-
-同步方式要求场景中有 DataTable、Event 组件，并已指定 Catalog。通用 QGF prefab 不带游戏专属 Catalog，本示例在场景实例上指定。不要在 `Awake`/`OnEnable` 调用加载；若运行时才创建 QGF 对象，也要先让它完成 `Start`。
-
-`GetDataTable<TbItem>()` 只查询已经登记的表，不会自动加载。实际项目应由启动流程先完成加载，再进入使用表的业务流程；不要依赖多个普通脚本 `Start` 的执行先后。每次查询不用再加载，`Update` 中也不要重复加载。
-
-### 同步和异步示例有什么区别
-
-- `01_LoadTables`：`LoadDataTables<Tables>()` 使用组件上的 Catalog，同步返回是否成功，成功后可紧接着查询。
-- `02_LoadCatalog`：`LoadDataTables<Tables>("Tables_Catalog", this)` 按资源地址异步加载另一份 Catalog，不使用组件上的 Catalog。先订阅结果，收到成功事件后查询；也可用 `await LoadDataTablesAsync<Tables>(address, cancellationToken: token)`。此方式还需要配置 ResourceComponent 和 YooAsset 收集规则，本示例已配置好。
-- `03`～`06`：在同一套已加载表对象上展示按键查询、条件筛选、具名登记、索引、表模式与跨表引用。
-
-同一组件同时只加载一组表，切换前调用 `UnloadDataTables()`；这会移除登记，业务也应丢弃旧表和旧行引用。修改 Excel 并生成不会自动刷新内存中的记录，需重新进入运行或明确卸载、重载。
+Excel、Profile、生成代码与 bytes 已提供。改表时在 DataTable Inspector 选择 `UnityQGameFramework/Config/LubanProfile.asset` 后 Generate；Set Global 只切换编辑器生成目标，组件 Catalog 才决定运行时数据。完整说明见包内 `Documentation~/02-data-tables.md`。
 
 ## 场景清单
 

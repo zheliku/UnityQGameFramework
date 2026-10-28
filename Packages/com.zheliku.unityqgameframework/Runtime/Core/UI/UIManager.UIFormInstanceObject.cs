@@ -3,11 +3,10 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.ObjectPool;
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class UIManager : FrameworkModule, IUIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         /// <summary>
         /// 界面实例对象。
@@ -38,12 +37,12 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (uiFormAsset == null)
                 {
-                    throw new FrameworkException("UI form asset is invalid.");
+                    throw new GameFrameworkException("UI form asset is invalid.");
                 }
 
                 if (uiFormHelper == null)
                 {
-                    throw new FrameworkException("UI form helper is invalid.");
+                    throw new GameFrameworkException("UI form helper is invalid.");
                 }
 
                 UIFormInstanceObject uiFormInstanceObject = ReferencePool.Acquire<UIFormInstanceObject>();

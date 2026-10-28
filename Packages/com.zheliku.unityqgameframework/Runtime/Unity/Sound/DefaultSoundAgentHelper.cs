@@ -4,7 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Sound;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections;
 using UnityEngine;

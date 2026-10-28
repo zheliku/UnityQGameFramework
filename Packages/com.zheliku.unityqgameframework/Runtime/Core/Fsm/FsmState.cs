@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System;
 
-namespace UnityQGameFramework.Core.Fsm
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 有限状态机状态基类。
@@ -73,7 +73,7 @@ namespace UnityQGameFramework.Core.Fsm
             Fsm<T> fsmImplement = (Fsm<T>)fsm;
             if (fsmImplement == null)
             {
-                throw new FrameworkException("FSM is invalid.");
+                throw new GameFrameworkException("FSM is invalid.");
             }
 
             fsmImplement.ChangeState<TState>();
@@ -89,17 +89,17 @@ namespace UnityQGameFramework.Core.Fsm
             Fsm<T> fsmImplement = (Fsm<T>)fsm;
             if (fsmImplement == null)
             {
-                throw new FrameworkException("FSM is invalid.");
+                throw new GameFrameworkException("FSM is invalid.");
             }
 
             if (stateType == null)
             {
-                throw new FrameworkException("State type is invalid.");
+                throw new GameFrameworkException("State type is invalid.");
             }
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new FrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             fsmImplement.ChangeState(stateType);

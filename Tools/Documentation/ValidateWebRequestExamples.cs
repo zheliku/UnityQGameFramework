@@ -16,7 +16,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
@@ -29,8 +28,10 @@ public static class ValidateWebRequestExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use the isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -40,7 +41,8 @@ public static class ValidateWebRequestExamples
         var cases = layouts.Properties().Where(pair => new[] { "18_WebRequest" }
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -69,7 +71,8 @@ public static class ValidateWebRequestExamples
             {
                 string sourcePath = (string)test.layout["script"];
                 string anchor = AssetDatabase.GUIDToAssetPath("4db2bf82437d5556b15f973d14498ab1");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported WebRequest sample not found.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported WebRequest sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
                 string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
@@ -93,30 +96,55 @@ public static class ValidateWebRequestExamples
                 await Check(test.name, test.mode, example, data, mouse);
                 await Play(false);
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, scene = script.Substring(0, script.Length - 3) + ".unity", startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown.value and InputField.text set by the test; actions use native mouse clicks",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/WebRequestExamples");
         string report = names == null ? "web-request-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/WebRequestExamples/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
 
@@ -152,9 +180,11 @@ public static class ValidateWebRequestExamples
                 await Until(() => Field<int>(example, "serial") == 0, 5000, "Failure/retry completes " + i);
                 Require(QGF.WebRequest.Timeout == original, "Global timeout restored " + i);
                 Require(text("resultText").text.Contains(i == 0 ? "404" : i == 1 ? "Timeout" : "服务器已响应"), "Actual HTTP/timeout/retry result " + i);
-                if (i == 1) Require(Field<float>(example, "elapsed") >= .9f && Field<float>(example, "elapsed") < 4, "Timeout uses one second of actual waiting");
+                if (i == 1)
+                    Require(Field<float>(example, "elapsed") >= .9f && Field<float>(example, "elapsed") < 4, "Timeout uses one second of actual waiting");
                 Require(UsedForms() == 0, "Failure/success releases context " + i);
-                if (i == 1) await Screenshot("web-timeout");
+                if (i == 1)
+                    await Screenshot("web-timeout");
             }
         }
         else if (name == "CancelWebRequestExample")
@@ -225,7 +255,8 @@ public static class ValidateWebRequestExamples
                         2000, "Slow POST running before cancellation " + entry);
                     Require(!button("bytesButton").interactable && !button("formButton").interactable && !dropdown("requestMode").interactable,
                         "In-flight POST locks body and parameter selection");
-                    if (entry == 0 && kind == "bytesButton") await Screenshot("web-post-pending");
+                    if (entry == 0 && kind == "bytesButton")
+                        await Screenshot("web-post-pending");
                     await Click(button("cancelButton"), mouse);
                     Require(Field<int>(example, "serial") == 0 && !QGF.WebRequest.GetWebRequestInfo(pending).IsValid && UsedForms() == 0,
                         "Cancel by serial clears tagged and untagged POST contexts " + kind + " entry " + entry);
@@ -247,7 +278,8 @@ public static class ValidateWebRequestExamples
             EventHandler<GameEventArgs> handler = (sender, args) =>
             {
                 var result = (WebRequestSuccessEventArgs)args;
-                if (result.SerialId == id) received = (byte[])result.GetWebResponseBytes().Clone();
+                if (result.SerialId == id)
+                    received = (byte[])result.GetWebResponseBytes().Clone();
             };
             QGF.Event.Subscribe(WebRequestSuccessEventArgs.EventId, handler);
             try
@@ -263,8 +295,11 @@ public static class ValidateWebRequestExamples
                 int pending = QGF.WebRequest.AddWebRequest(server.Url("/hold"), new WWWForm(), new object());
                 Require(QGF.WebRequest.RemoveWebRequest(pending) && UsedForms() == before, "Cancel pending form releases internal entry " + i);
             }
-            try { QGF.WebRequest.AddWebRequest("", new WWWForm(), new object()); }
-            catch (FrameworkException) { }
+            try
+            {
+                QGF.WebRequest.AddWebRequest("", new WWWForm(), new object());
+            }
+            catch (GameFrameworkException) { }
             Require(UsedForms() == before, "Failed Add returns its context");
 
             // 只销毁请求拥有者，框架继续运行；其他业务的独立请求仍应完成。
@@ -277,7 +312,8 @@ public static class ValidateWebRequestExamples
             EventHandler<GameEventArgs> otherHandler = (sender, args) =>
             {
                 var success = (WebRequestSuccessEventArgs)args;
-                if (success.SerialId == other) otherCompleted = Encoding.UTF8.GetString(success.GetWebResponseBytes()) == "other owner";
+                if (success.SerialId == other)
+                    otherCompleted = Encoding.UTF8.GetString(success.GetWebResponseBytes()) == "other owner";
             };
             using (var independent = new LocalHttpServer(Encoding.UTF8.GetBytes("other owner")))
             {
@@ -303,7 +339,8 @@ public static class ValidateWebRequestExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -321,7 +358,8 @@ public static class ValidateWebRequestExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -330,7 +368,8 @@ public static class ValidateWebRequestExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -361,13 +400,15 @@ public static class ValidateWebRequestExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -375,13 +416,15 @@ public static class ValidateWebRequestExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

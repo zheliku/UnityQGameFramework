@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Debugger
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 调试器窗口组接口。
@@ -13,17 +13,26 @@ namespace UnityQGameFramework.Core.Debugger
         /// <summary>
         /// 获取调试器窗口数量。
         /// </summary>
-        int DebuggerWindowCount { get; }
+        int DebuggerWindowCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取或设置当前选中的调试器窗口索引。
         /// </summary>
-        int SelectedIndex { get; set; }
+        int SelectedIndex
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取当前选中的调试器窗口。
         /// </summary>
-        IDebuggerWindow SelectedWindow { get; }
+        IDebuggerWindow SelectedWindow
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取调试组的调试器窗口名称集合。

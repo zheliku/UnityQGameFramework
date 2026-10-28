@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using System;
 
 namespace UnityQGameFramework.Runtime
@@ -44,29 +43,41 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体逻辑类型。
         /// </summary>
-        public Type EntityLogicType { get; private set; }
+        public Type EntityLogicType
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取显示成功的实体。
         /// </summary>
-        public Entity Entity { get; private set; }
+        public Entity Entity
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载持续时间。
         /// </summary>
-        public float Duration { get; private set; }
+        public float Duration
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建显示实体成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的显示实体成功事件。</returns>
-        public static ShowEntitySuccessEventArgs Create(UnityQGameFramework.Core.Entity.ShowEntitySuccessEventArgs e)
+        public static ShowEntitySuccessEventArgs Create(UnityQGameFramework.Core.Events.ShowEntitySuccessEventArgs e)
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)e.UserData;
             ShowEntitySuccessEventArgs showEntitySuccessEventArgs = ReferencePool.Acquire<ShowEntitySuccessEventArgs>();

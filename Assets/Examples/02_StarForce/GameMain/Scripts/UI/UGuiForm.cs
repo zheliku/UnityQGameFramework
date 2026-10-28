@@ -32,7 +32,10 @@ namespace StarForce
         /// <summary>
         /// 获取预制体原始的 Canvas 排序值。
         /// </summary>
-        public int OriginalDepth { get; private set; }
+        public int OriginalDepth
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前界面深度。
@@ -184,7 +187,7 @@ namespace StarForce
                     GameEntry.UI.CloseUIForm(this);
                 }
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

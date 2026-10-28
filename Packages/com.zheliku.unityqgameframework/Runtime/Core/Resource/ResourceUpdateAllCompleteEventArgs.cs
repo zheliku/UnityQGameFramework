@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 资源更新全部完成事件。
     /// </summary>
-    public sealed class ResourceUpdateAllCompleteEventArgs : FrameworkEventArgs
+    public sealed class ResourceUpdateAllCompleteEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化资源更新全部完成事件的新实例。

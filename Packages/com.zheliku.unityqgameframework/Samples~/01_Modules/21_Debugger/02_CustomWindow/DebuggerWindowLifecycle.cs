@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Debugger;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
@@ -73,32 +73,50 @@ namespace UnityQGameFramework.Examples.Modules
             /// <summary>
             /// 获取或设置当前计数。
             /// </summary>
-            public int Count { get; set; }
+            public int Count
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取窗口初始化次数。
             /// </summary>
-            public int InitializeCalls { get; private set; }
+            public int InitializeCalls
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取窗口关闭次数。
             /// </summary>
-            public int ShutdownCalls { get; private set; }
+            public int ShutdownCalls
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取窗口进入次数。
             /// </summary>
-            public int EnterCalls { get; private set; }
+            public int EnterCalls
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取窗口离开次数。
             /// </summary>
-            public int LeaveCalls { get; private set; }
+            public int LeaveCalls
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取窗口累计活动时长，以秒为单位。
             /// </summary>
-            public float ActiveSeconds { get; private set; }
+            public float ActiveSeconds
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 从注册参数读取初始值并重置活动计时。

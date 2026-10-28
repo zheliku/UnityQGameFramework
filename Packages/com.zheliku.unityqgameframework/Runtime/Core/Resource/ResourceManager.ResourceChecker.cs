@@ -3,14 +3,13 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源检查器。
@@ -28,12 +27,12 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 发现待更新资源的回调。
             /// </summary>
-            public FrameworkAction<ResourceName, string, LoadType, int, int, int, int> ResourceNeedUpdate;
+            public GameFrameworkAction<ResourceName, string, LoadType, int, int, int, int> ResourceNeedUpdate;
 
             /// <summary>
             /// 资源检查完成回调。
             /// </summary>
-            public FrameworkAction<int, int, int, long, long> ResourceCheckComplete;
+            public GameFrameworkAction<int, int, int, long, long> ResourceCheckComplete;
 
             /// <summary>
             /// 初始化资源检查器的新实例。
@@ -70,17 +69,17 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
-                    throw new FrameworkException("Resource helper is invalid.");
+                    throw new GameFrameworkException("Resource helper is invalid.");
                 }
 
                 if (string.IsNullOrEmpty(m_ResourceManager.ReadOnlyPath))
                 {
-                    throw new FrameworkException("Read-only path is invalid.");
+                    throw new GameFrameworkException("Read-only path is invalid.");
                 }
 
                 if (string.IsNullOrEmpty(m_ResourceManager.ReadWritePath))
                 {
-                    throw new FrameworkException("Read-write path is invalid.");
+                    throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
                 m_CurrentVariant = currentVariant;
@@ -192,7 +191,7 @@ namespace UnityQGameFramework.Core.Resource
                                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(ci.ReadWriteFileSystemName, false);
                                 if (!fileSystem.SaveAsFile(resourceFullName, resourcePath))
                                 {
-                                    throw new FrameworkException(Utility.Text.Format("Save as file '{0}' to '{1}' from file system '{2}' error.", resourceFullName, resourcePath, fileSystem.FullPath));
+                                    throw new GameFrameworkException(Utility.Text.Format("Save as file '{0}' to '{1}' from file system '{2}' error.", resourceFullName, resourcePath, fileSystem.FullPath));
                                 }
 
                                 fileSystem.DeleteFile(resourceFullName);
@@ -203,7 +202,7 @@ namespace UnityQGameFramework.Core.Resource
                                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(ci.FileSystemName, false);
                                 if (!fileSystem.WriteFile(resourceFullName, resourcePath))
                                 {
-                                    throw new FrameworkException(Utility.Text.Format("Write resource '{0}' to file system '{1}' error.", resourceFullName, fileSystem.FullPath));
+                                    throw new GameFrameworkException(Utility.Text.Format("Write resource '{0}' to file system '{1}' error.", resourceFullName, fileSystem.FullPath));
                                 }
 
                                 if (File.Exists(resourcePath))
@@ -233,7 +232,7 @@ namespace UnityQGameFramework.Core.Resource
                     }
                     else
                     {
-                        throw new FrameworkException(Utility.Text.Format("Check resources '{0}' error with unknown status.", ci.ResourceName.FullName));
+                        throw new GameFrameworkException(Utility.Text.Format("Check resources '{0}' error with unknown status.", ci.ResourceName.FullName));
                     }
 
                     if (ci.NeedRemove)
@@ -307,7 +306,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_UpdatableVersionListReady)
                 {
-                    throw new FrameworkException("Updatable version list has been parsed.");
+                    throw new GameFrameworkException("Updatable version list has been parsed.");
                 }
 
                 MemoryStream memoryStream = null;
@@ -317,7 +316,7 @@ namespace UnityQGameFramework.Core.Resource
                     UpdatableVersionList versionList = m_ResourceManager.UpdatableVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new FrameworkException("Deserialize updatable version list failure.");
+                        throw new GameFrameworkException("Deserialize updatable version list failure.");
                     }
 
                     UpdatableVersionList.Asset[] assets = versionList.GetAssets();
@@ -394,12 +393,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Parse updatable version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse updatable version list exception '{0}'.", exception), exception);
                 }
                 finally
                 {
@@ -419,7 +418,7 @@ namespace UnityQGameFramework.Core.Resource
             /// <param name="userData">用户自定义数据。</param>
             private void OnLoadUpdatableVersionListFailure(string fileUri, string errorMessage, object userData)
             {
-                throw new FrameworkException(Utility.Text.Format("Updatable version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
+                throw new GameFrameworkException(Utility.Text.Format("Updatable version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
             }
 
             /// <summary>
@@ -433,7 +432,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ReadOnlyVersionListReady)
                 {
-                    throw new FrameworkException("Read-only version list has been parsed.");
+                    throw new GameFrameworkException("Read-only version list has been parsed.");
                 }
 
                 MemoryStream memoryStream = null;
@@ -443,7 +442,7 @@ namespace UnityQGameFramework.Core.Resource
                     LocalVersionList versionList = m_ResourceManager.ReadOnlyVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new FrameworkException("Deserialize read-only version list failure.");
+                        throw new GameFrameworkException("Deserialize read-only version list failure.");
                     }
 
                     LocalVersionList.Resource[] resources = versionList.GetResources();
@@ -469,12 +468,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Parse read-only version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-only version list exception '{0}'.", exception), exception);
                 }
                 finally
                 {
@@ -496,7 +495,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ReadOnlyVersionListReady)
                 {
-                    throw new FrameworkException("Read-only version list has been parsed.");
+                    throw new GameFrameworkException("Read-only version list has been parsed.");
                 }
 
                 m_ReadOnlyVersionListReady = true;
@@ -514,7 +513,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ReadWriteVersionListReady)
                 {
-                    throw new FrameworkException("Read-write version list has been parsed.");
+                    throw new GameFrameworkException("Read-write version list has been parsed.");
                 }
 
                 MemoryStream memoryStream = null;
@@ -524,7 +523,7 @@ namespace UnityQGameFramework.Core.Resource
                     LocalVersionList versionList = m_ResourceManager.ReadWriteVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new FrameworkException("Deserialize read-write version list failure.");
+                        throw new GameFrameworkException("Deserialize read-write version list failure.");
                     }
 
                     LocalVersionList.Resource[] resources = versionList.GetResources();
@@ -550,12 +549,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Parse read-write version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-write version list exception '{0}'.", exception), exception);
                 }
                 finally
                 {
@@ -577,7 +576,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_ReadWriteVersionListReady)
                 {
-                    throw new FrameworkException("Read-write version list has been parsed.");
+                    throw new GameFrameworkException("Read-write version list has been parsed.");
                 }
 
                 m_ReadWriteVersionListReady = true;

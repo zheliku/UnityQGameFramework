@@ -13,7 +13,8 @@ public static class InspectQgfSamples
 {
     public static object Run()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode before refreshing assets.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode before refreshing assets.");
         AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
         return Read();
     }
@@ -24,12 +25,20 @@ public static class InspectQgfSamples
         var manifest = JObject.Parse(File.ReadAllText(package.resolvedPath + "/package.json"));
         var registrations = Sample.FindByPackage(package.name, package.version).Select(s => new { s.displayName, s.isImported }).ToArray();
         var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        var result = new { project = Application.dataPath, package = package.resolvedPath,
-            samples = registrations, registeredPaths = manifest["samples"].Select(s => (string)s["path"]).ToArray(),
+        var result = new
+        {
+            project = Application.dataPath,
+            package = package.resolvedPath,
+            samples = registrations,
+            registeredPaths = manifest["samples"].Select(s => (string)s["path"]).ToArray(),
             developmentExamples = Directory.Exists("Assets/Examples"),
             baseAssembly = AssetDatabase.GUIDToAssetPath("e638c6e0da015f4d99bdc5c5491facc0"),
-            currentScene = scene.path, currentSceneIsDirty = scene.isDirty, isCompiling = EditorApplication.isCompiling,
-            isPaused = EditorApplication.isPaused, isPlaying = EditorApplication.isPlaying };
+            currentScene = scene.path,
+            currentSceneIsDirty = scene.isDirty,
+            isCompiling = EditorApplication.isCompiling,
+            isPaused = EditorApplication.isPaused,
+            isPlaying = EditorApplication.isPlaying
+        };
         Directory.CreateDirectory("Artifacts~/SampleLayout");
         File.WriteAllText("Artifacts~/SampleLayout/editor-samples.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;

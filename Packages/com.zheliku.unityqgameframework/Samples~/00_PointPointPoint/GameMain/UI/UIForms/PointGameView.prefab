@@ -311,7 +311,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28e780425824ffa4eb51385d2eddc279, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.PointPointPoint::UnityQGameFramework.Examples.PointPointPoint.PointGameView
+  m_EditorClassIdentifier: UnityQGameFramework.Examples.PointPointPoint::UnityQGameFramework.Examples.PointPointPoint.PointGameView
   menu: {fileID: 3544336468003716065}
   play: {fileID: 2143252320226761675}
   result: {fileID: 54028190767404006}

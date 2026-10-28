@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 加载资源代理辅助器异步读取资源二进制流完成事件。
     /// </summary>
-    public sealed class LoadResourceAgentHelperReadBytesCompleteEventArgs : FrameworkEventArgs
+    public sealed class LoadResourceAgentHelperReadBytesCompleteEventArgs : GameFrameworkEventArgs
     {
         private byte[] m_Bytes;
 

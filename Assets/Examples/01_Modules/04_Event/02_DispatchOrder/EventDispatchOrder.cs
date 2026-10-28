@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
@@ -96,7 +95,10 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取本次事件携带的数量。
         /// </summary>
-        public int Amount { get; private set; }
+        public int Amount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 从引用池获取并填写事件参数。

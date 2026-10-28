@@ -4,7 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core.Events;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -42,17 +42,26 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取字典资源名称。
         /// </summary>
-        public string DictionaryAssetName { get; private set; }
+        public string DictionaryAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建加载字典失败事件。

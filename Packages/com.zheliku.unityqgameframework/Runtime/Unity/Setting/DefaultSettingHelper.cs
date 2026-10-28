@@ -32,17 +32,26 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取游戏配置存储文件路径。
         /// </summary>
-        public string FilePath { get; private set; }
+        public string FilePath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取游戏配置。
         /// </summary>
-        public DefaultSetting Setting { get; private set; }
+        public DefaultSetting Setting
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取游戏配置序列化器。
         /// </summary>
-        public DefaultSettingSerializer Serializer { get; private set; }
+        public DefaultSettingSerializer Serializer
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 加载游戏配置。

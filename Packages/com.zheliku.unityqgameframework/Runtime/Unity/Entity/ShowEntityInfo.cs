@@ -25,12 +25,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体逻辑类型。
         /// </summary>
-        public Type EntityLogicType { get; private set; }
+        public Type EntityLogicType
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 从引用池获取请求数据。

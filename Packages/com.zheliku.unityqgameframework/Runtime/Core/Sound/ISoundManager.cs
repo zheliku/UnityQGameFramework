@@ -1,13 +1,13 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 声音管理器接口。
@@ -17,7 +17,10 @@ namespace UnityQGameFramework.Core.Sound
         /// <summary>
         /// 获取声音组数量。
         /// </summary>
-        int SoundGroupCount { get; }
+        int SoundGroupCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 播放声音成功事件。

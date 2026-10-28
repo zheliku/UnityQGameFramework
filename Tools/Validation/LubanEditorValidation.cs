@@ -13,7 +13,8 @@ public static class LubanEditorValidation
     private const string Root = "Assets/Examples/02_StarForce/UnityQGameFramework/Config";
     public static async Task<object> Run()
     {
-        if (EditorApplication.isPlaying) throw new Exception("Stop Play Mode first.");
+        if (EditorApplication.isPlaying)
+            throw new Exception("Stop Play Mode first.");
         var profile = AssetDatabase.LoadAssetAtPath<LubanProfile>(Root + "/LubanProfile.asset");
         string before = Snapshot(Root + "/Generated") + Snapshot(Root + "/Data");
         string catalogGuid = AssetDatabase.AssetPathToGUID(Root + "/Data/Catalog.asset");
@@ -21,7 +22,8 @@ public static class LubanEditorValidation
         string schema = File.ReadAllText(definition);
         string userFile = Root + "/Generated/UserOwned.cs";
         string staleFile = Root + "/Generated/QgfObsolete.cs";
-        if (File.Exists(userFile) || File.Exists(staleFile)) throw new Exception("Validation sentinel path is occupied.");
+        if (File.Exists(userFile) || File.Exists(staleFile))
+            throw new Exception("Validation sentinel path is occupied.");
         EditorApplication.LockReloadAssemblies();
         try
         {
@@ -29,7 +31,10 @@ public static class LubanEditorValidation
             await LubanGenerator.GenerateAsync(profile, true);
             File.WriteAllText(definition, "{invalid");
             bool rejected = false;
-            try { await LubanGenerator.GenerateAsync(profile); }
+            try
+            {
+                await LubanGenerator.GenerateAsync(profile);
+            }
             catch (Exception) { rejected = true; }
             finally { File.WriteAllText(definition, schema); }
             Require(rejected, "Invalid schema must fail.");
@@ -69,8 +74,17 @@ public static class LubanEditorValidation
             EditorApplication.UnlockReloadAssemblies();
         }
         Require(before == Snapshot(Root + "/Generated") + Snapshot(Root + "/Data"), "Regeneration or moves changed output bytes/GUIDs.");
-        var result = new { passed = true, validation = true, invalidSchemaPreservesOutputs = true, sourceCodeDataMoves = true,
-            preservesMetas = true, preservesUserFiles = true, removesOwnedObsoleteFiles = true, rejectsUnownedDestinations = true };
+        var result = new
+        {
+            passed = true,
+            validation = true,
+            invalidSchemaPreservesOutputs = true,
+            sourceCodeDataMoves = true,
+            preservesMetas = true,
+            preservesUserFiles = true,
+            removesOwnedObsoleteFiles = true,
+            rejectsUnownedDestinations = true
+        };
         Directory.CreateDirectory("Artifacts~/Luban");
         File.WriteAllText("Artifacts~/Luban/editor-validation.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;
@@ -94,7 +108,10 @@ public static class LubanEditorValidation
             AssetDatabase.ImportAsset(code + "/Tables.cs");
             profile.CodeFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(code);
             bool rejected = false;
-            try { await LubanGenerator.GenerateAsync(profile); }
+            try
+            {
+                await LubanGenerator.GenerateAsync(profile);
+            }
             catch (IOException) { rejected = true; }
             Require(rejected && File.ReadAllText(code + "/Tables.cs") == userContent, "Reassigning CodeFolder overwrote user data.");
             profile.CodeFolder = originalCode;
@@ -102,7 +119,10 @@ public static class LubanEditorValidation
             string before = Snapshot(data);
             profile.DataFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(data);
             rejected = false;
-            try { await LubanGenerator.GenerateAsync(profile); }
+            try
+            {
+                await LubanGenerator.GenerateAsync(profile);
+            }
             catch (IOException) { rejected = true; }
             Require(rejected && Snapshot(data) == before, "Reassigning DataFolder overwrote an unowned catalog.");
             Require(profile.GeneratedCodeFolderGuid == codeGuid && profile.GeneratedDataFolderGuid == dataGuid, "Rejected generation changed ownership.");
@@ -121,5 +141,9 @@ public static class LubanEditorValidation
             return string.Join("|", Directory.GetFiles(directory, "*", SearchOption.AllDirectories).OrderBy(p => p, StringComparer.Ordinal)
                 .Select(p => p.Substring(directory.Length).Replace('\\', '/') + ":" + BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(p)))));
     }
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
 }

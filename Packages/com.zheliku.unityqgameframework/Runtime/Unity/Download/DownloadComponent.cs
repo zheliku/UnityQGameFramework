@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Download;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Download")]
-    public sealed class DownloadComponent : FrameworkComponent
+    public sealed class DownloadComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
         private const int OneMegaBytes = 1024 * 1024;
@@ -149,7 +148,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_DownloadManager = FrameworkEntry.GetModule<IDownloadManager>();
+            m_DownloadManager = GameFrameworkEntry.GetModule<IDownloadManager>();
             if (m_DownloadManager == null)
             {
                 Log.Fatal("Download manager is invalid.");
@@ -392,7 +391,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnDownloadStart(object sender, UnityQGameFramework.Core.Download.DownloadStartEventArgs e)
+        private void OnDownloadStart(object sender, UnityQGameFramework.Core.Events.DownloadStartEventArgs e)
         {
             m_EventComponent.Fire(this, DownloadStartEventArgs.Create(e));
         }
@@ -402,7 +401,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnDownloadUpdate(object sender, UnityQGameFramework.Core.Download.DownloadUpdateEventArgs e)
+        private void OnDownloadUpdate(object sender, UnityQGameFramework.Core.Events.DownloadUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, DownloadUpdateEventArgs.Create(e));
         }
@@ -412,7 +411,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnDownloadSuccess(object sender, UnityQGameFramework.Core.Download.DownloadSuccessEventArgs e)
+        private void OnDownloadSuccess(object sender, UnityQGameFramework.Core.Events.DownloadSuccessEventArgs e)
         {
             m_EventComponent.Fire(this, DownloadSuccessEventArgs.Create(e));
         }
@@ -422,7 +421,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnDownloadFailure(object sender, UnityQGameFramework.Core.Download.DownloadFailureEventArgs e)
+        private void OnDownloadFailure(object sender, UnityQGameFramework.Core.Events.DownloadFailureEventArgs e)
         {
             Log.Warning("Download failure, download serial id '{0}', download path '{1}', download uri '{2}', error message '{3}'.", e.SerialId, e.DownloadPath, e.DownloadUri, e.ErrorMessage);
             m_EventComponent.Fire(this, DownloadFailureEventArgs.Create(e));

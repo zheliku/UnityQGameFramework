@@ -15,7 +15,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.ObjectPool;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
@@ -28,8 +27,10 @@ public static class ValidateEntityExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -42,7 +43,8 @@ public static class ValidateEntityExamples
         cases.AddRange(cases.Select(test => new { test.name, test.layout, mode = 1 }).ToArray());
         cases.AddRange(cases.Where(test => test.mode == 0 && (test.name == "ShowCubeEntity" || test.name == "TwoCubeEntities"))
             .Select(test => new { test.name, test.layout, mode = 2 }).ToArray());
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -56,9 +58,16 @@ public static class ValidateEntityExamples
         var completed = new List<object>();
         Mouse mouse = null;
         Directory.CreateDirectory("Artifacts~/EntityExamples");
-        File.WriteAllText("Artifacts~/EntityExamples/active-run.json", JsonConvert.SerializeObject(new {
-            active = true, startedUtc = DateTime.UtcNow, optionsEnabled, options, originalBackground,
-            inputBackground = background, inputEditor = editorInput, originalScene = setup
+        File.WriteAllText("Artifacts~/EntityExamples/active-run.json", JsonConvert.SerializeObject(new
+        {
+            active = true,
+            startedUtc = DateTime.UtcNow,
+            optionsEnabled,
+            options,
+            originalBackground,
+            inputBackground = background,
+            inputEditor = editorInput,
+            originalScene = setup
         }, Formatting.Indented));
         Application.LogCallback capture = (message, stack, kind) =>
         {
@@ -77,7 +86,8 @@ public static class ValidateEntityExamples
             {
                 string sourcePath = (string)test.layout["script"];
                 string anchor = AssetDatabase.GUIDToAssetPath("9338363096095c298fb66e387f546ec1");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Entity sample not found.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported Entity sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
                 string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
@@ -102,32 +112,61 @@ public static class ValidateEntityExamples
                 await Check(test.name, test.mode, example, data, mouse);
                 await Play(false);
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, scene = script.Substring(0, script.Length - 3) + ".unity", startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            File.WriteAllText("Artifacts~/EntityExamples/active-run.json", JsonConvert.SerializeObject(new { active = false, stoppedUtc = DateTime.UtcNow }, Formatting.Indented));
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            File.WriteAllText("Artifacts~/EntityExamples/active-run.json", JsonConvert.SerializeObject(new
+            {
+                active = false,
+                stoppedUtc = DateTime.UtcNow
+            }, Formatting.Indented));
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown/Slider/InputField values set by test; buttons/toggles use virtual Mouse through EventSystem except pending-ID and group queries invoked directly inside the fixed load window",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/EntityExamples");
         string report = names == null ? "entity-examples-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/EntityExamples/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
 
@@ -166,7 +205,8 @@ public static class ValidateEntityExamples
             var original = QGF.Entity.GetEntity(owned[0]);
             QGF.Entity.ShowEntity(99, original.Logic.GetType(), original.EntityAssetName, original.EntityGroup.Name, Vector3.zero);
             await Until(() => QGF.Entity.HasEntity(99), 6000, "Unrelated entity ready");
-            if (name == "AttachEntities") await Click(button("attachButton"), mouse);
+            if (name == "AttachEntities")
+                await Click(button("attachButton"), mouse);
             UnityEngine.Object.Destroy(example.gameObject);
             await Task.Delay(180);
             Require(owned.All(id => !QGF.Entity.HasEntity(id) && !QGF.Entity.IsLoadingEntity(id)), "Destroy controller hides all its live entities");
@@ -195,7 +235,8 @@ public static class ValidateEntityExamples
                 Require(logic.InitCalls == 1 && logic.ShowCalls == index + 1, "OnInit once, OnShow on each reuse " + index);
                 Require(logic.HasShowData == (index >= 4), "Show context " + index);
                 Require(Vector3.Distance(logic.CachedTransform.position, new Vector3(3, 0, 0)) < 0.01f, "Show position " + index);
-                if (index == 4) await Screenshot("01-show");
+                if (index == 4)
+                    await Screenshot("01-show");
                 await Click(button("hideButton"), mouse);
                 Require(!QGF.Entity.HasEntity(1) && !QGF.Entity.IsValidEntity(entity), "Hide removes entity identity " + index);
                 Require(!logic.Available && !logic.Visible && logic.HasHideData == (index % 4 == 1 || index % 4 == 3), "Hide context and visibility " + index);
@@ -332,7 +373,8 @@ public static class ValidateEntityExamples
                 Vector3 attached = child.transform.position;
                 await Task.Delay(350);
                 Require(Vector3.Distance(attached, child.transform.position) > .05f, "Child moves with rotating parent " + index);
-                if (index == 1) await Screenshot("04-attached");
+                if (index == 1)
+                    await Screenshot("04-attached");
                 await Click(button("detachButton"), mouse);
                 Require(QGF.Entity.GetParentEntity(child) == null && QGF.Entity.GetChildEntityCount(10) == 0, "Detach relationship " + index);
                 Require(childLogic.DetachCalls == index + 1 && childLogic.LastData == (index % 2 == 1 ? "解除数据" : "无"), "Detach callback and context " + index);
@@ -360,7 +402,8 @@ public static class ValidateEntityExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -378,7 +421,8 @@ public static class ValidateEntityExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -387,7 +431,8 @@ public static class ValidateEntityExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -418,13 +463,15 @@ public static class ValidateEntityExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -432,13 +479,15 @@ public static class ValidateEntityExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

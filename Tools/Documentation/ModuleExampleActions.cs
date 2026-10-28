@@ -9,9 +9,6 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.FileSystem;
-using UnityQGameFramework.Core.Network;
-using UnityQGameFramework.Core.Sound;
 using UnityQGameFramework.Examples.Modules;
 using UnityQGameFramework.Examples.Modules.TableData;
 using UnityQGameFramework.Runtime;
@@ -30,12 +27,14 @@ public static class ModuleExampleActions
     }
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
     }
     private static async Task Until(Func<bool> condition, string message, int milliseconds = 10000)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(milliseconds);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(30);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(30);
         Require(condition(), message);
         await Task.Delay(80);
     }
@@ -165,12 +164,12 @@ public static class ModuleExampleActions
                 Field<Toggle>("protectKeep").isOn = true;
                 await Click("createButton");
                 await Click("releaseButton");
-                Require(Field<UnityQGameFramework.Core.ObjectPool.IObjectPool<PolicyCubeItem>>("pool").Count == 1, "Locked Keep survives recycling");
+                Require(Field<UnityQGameFramework.Core.IObjectPool<PolicyCubeItem>>("pool").Count == 1, "Locked Keep survives recycling");
                 Field<Toggle>("protectKeep").isOn = false;
                 await Click("releaseButton");
-                Require(Field<UnityQGameFramework.Core.ObjectPool.IObjectPool<PolicyCubeItem>>("pool").Count == 0, "Unlocked Keep can be recycled");
+                Require(Field<UnityQGameFramework.Core.IObjectPool<PolicyCubeItem>>("pool").Count == 0, "Unlocked Keep can be recycled");
                 await Click("createButton");
-                Require(Field<UnityQGameFramework.Core.ObjectPool.IObjectPool<PolicyCubeItem>>("pool").Count == 3, "Recycling example can be repeated");
+                Require(Field<UnityQGameFramework.Core.IObjectPool<PolicyCubeItem>>("pool").Count == 3, "Recycling example can be repeated");
                 break;
             case "FsmStateData":
                 Field<InputField>("jobsInput").text = "1";

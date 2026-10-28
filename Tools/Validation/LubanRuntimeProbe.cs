@@ -3,15 +3,16 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Fsm;
-using UnityQGameFramework.Core.Procedure;
 using UnityQGameFramework.Runtime;
 
 namespace Luban.Validation
 {
     public sealed class EmptyProcedure : ProcedureBase
     {
-        protected override void OnEnter(IFsm<IProcedureManager> owner) { base.OnEnter(owner); }
+        protected override void OnEnter(IFsm<IProcedureManager> owner)
+        {
+            base.OnEnter(owner);
+        }
     }
 
     public sealed class LubanRuntimeProbe : MonoBehaviour
@@ -21,7 +22,8 @@ namespace Luban.Validation
         private void OnDestroy() => Application.logMessageReceived -= Capture;
         private void Capture(string message, string stack, LogType type)
         {
-            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) ++m_Errors;
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                ++m_Errors;
         }
 
         private IEnumerator Start()
@@ -56,8 +58,15 @@ namespace Luban.Validation
             for (int i = 0; i < arguments.Length - 1; ++i)
                 if (arguments[i] == "-luban-result")
                     File.WriteAllText(arguments[i + 1], JsonUtility.ToJson(new Result
-                    { success = failure == null, unityVersion = Application.unityVersion, tables = 11,
-                      assetBundle = true, tomlConfig = failure == null, errors = m_Errors, failure = failure }, true));
+                    {
+                        success = failure == null,
+                        unityVersion = Application.unityVersion,
+                        tables = 11,
+                        assetBundle = true,
+                        tomlConfig = failure == null,
+                        errors = m_Errors,
+                        failure = failure
+                    }, true));
             Application.Quit(failure == null ? 0 : 1);
         }
 
@@ -69,8 +78,13 @@ namespace Luban.Validation
             Require(ReferenceEquals(row, component.GetDataTable<StarForce.TbEntity>().DataMap[10000]), "Native row identity mismatch.");
         }
 
-        private static void Require(bool value, string message) { if (!value) throw new Exception(message); }
-        [Serializable] private sealed class Result
+        private static void Require(bool value, string message)
+        {
+            if (!value)
+                throw new Exception(message);
+        }
+        [Serializable]
+        private sealed class Result
         {
             public bool success;
             public string unityVersion;

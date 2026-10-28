@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 用户自定义网络错误事件。
     /// </summary>
-    public sealed class NetworkCustomErrorEventArgs : FrameworkEventArgs
+    public sealed class NetworkCustomErrorEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化用户自定义网络错误事件的新实例。
@@ -22,12 +22,18 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义错误数据。
         /// </summary>
-        public object CustomErrorData { get; private set; }
+        public object CustomErrorData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建用户自定义网络错误事件。

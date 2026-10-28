@@ -10,7 +10,7 @@
 
 using UnityQGameFramework.Luban;
 using Luban = UnityQGameFramework.Luban;
-using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Config
@@ -32,7 +32,7 @@ public partial class Tables : IDataTableLoader
     {
         get
         {
-            return "7e64c019089d03ef3261bf5d5aac1d230b2ca471665275281f391f67e6f0a454";
+            return "2fbcb02a855c0cd3043b411899a72658f0c4f7af8801077003ba1bff14618065";
         }
     }
     /// <summary>

@@ -15,8 +15,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Fsm;
-using UnityQGameFramework.Core.Procedure;
 using UnityQGameFramework.Runtime;
 using UnityQGameFramework.Examples.Modules;
 
@@ -29,8 +27,10 @@ public static class ValidateFlowExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -42,8 +42,14 @@ public static class ValidateFlowExamples
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
         foreach (string name in new[] { "InspectFsmStates", "CoreProcedureStart" })
-            cases.Add(new { name, layout = layouts[name], mode = 1 });
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+            cases.Add(new
+            {
+                name,
+                layout = layouts[name],
+                mode = 1
+            });
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -74,7 +80,8 @@ public static class ValidateFlowExamples
                 string source = (string)test.layout["script"];
                 string folder = "01_Modules/" + source.Split('/')[3];
                 string anchor = AssetDatabase.GUIDToAssetPath((string)modules.Single(module => (string)module["folder"] == folder)["anchorGuid"]);
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported module not found: " + folder);
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported module not found: " + folder);
                 string script = Path.GetDirectoryName(anchor).Replace('\\', '/') + source.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
                 await Play(true);
@@ -98,31 +105,55 @@ public static class ValidateFlowExamples
                 await Check(test.name, test.mode, example, data, mouse);
                 await Play(false);
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown.value and InputField.text set by the test; actions use native mouse clicks",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/ExamplesCoverage");
         string report = names == null ? "flow-examples-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/ExamplesCoverage/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
@@ -189,7 +220,8 @@ public static class ValidateFlowExamples
                     && ReferenceEquals(right, QGF.Fsm.GetFsm(typeof(NamedMachines), "Right")) && right.CurrentStateTime > before,
                     "Named destroy overload " + destroy + " preserves Right");
                 Require(text("resultText").text.Contains("Left：已销毁"), "Immediate destroyed flag snapshot " + destroy);
-                if (destroy == 0) await Screenshot(name);
+                if (destroy == 0)
+                    await Screenshot(name);
                 await Click(button("recreateButton"), mouse);
                 Require(QGF.Fsm.GetFsm<NamedMachines>("Left").CurrentStateTime < right.CurrentStateTime, "Recreated Left has independent clock");
             }
@@ -282,7 +314,7 @@ public static class ValidateFlowExamples
             Require(GameEntry.GetComponent<ProcedureComponent>() == null, "Core example has no ProcedureComponent");
             dropdown("startMode").value = mode;
             await Click(button("initializeButton"), mouse);
-            var manager = FrameworkEntry.GetModule<IProcedureManager>();
+            var manager = GameFrameworkEntry.GetModule<IProcedureManager>();
             Require(manager.CurrentProcedure == null && manager.HasProcedure<CoreLaunch05>()
                 && manager.HasProcedure(typeof(CoreReady05)) && !button("initializeButton").interactable, "Core Initialize registers without starting");
             await Click(button("startButton"), mouse);
@@ -364,7 +396,8 @@ public static class ValidateFlowExamples
         else if (name == "ReferencePoolChecks")
         {
             var toggle = (Toggle)data.FindProperty("strictToggle").objectReferenceValue;
-            if (toggle.isOn) await Click(toggle, mouse);
+            if (toggle.isOn)
+                await Click(toggle, mouse);
             Require(!button("checkButton").interactable, "Unsafe duplicate probe disabled without strict mode");
             await Click(toggle, mouse);
             Require(ReferencePool.EnableStrictCheck, "Strict toggle");
@@ -375,7 +408,8 @@ public static class ValidateFlowExamples
             await Click(button("clearButton"), mouse);
             Require(ReferencePool.Count == 0, "ClearAll after all borrowers returned");
         }
-        else throw new Exception("Missing check: " + name);
+        else
+            throw new Exception("Missing check: " + name);
     }
 
     private static ReferencePoolInfo Pool<T>() where T : class, IReference => ReferencePool.GetAllReferencePoolInfos().Single(info => info.Type == typeof(T));
@@ -384,7 +418,8 @@ public static class ValidateFlowExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -400,7 +435,8 @@ public static class ValidateFlowExamples
             {
                 float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
                 float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-                if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+                if (overflow > 0)
+                    scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
                 Canvas.ForceUpdateCanvases();
                 await Task.Delay(100);
             }
@@ -410,7 +446,8 @@ public static class ValidateFlowExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -434,13 +471,15 @@ public static class ValidateFlowExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -448,13 +487,15 @@ public static class ValidateFlowExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

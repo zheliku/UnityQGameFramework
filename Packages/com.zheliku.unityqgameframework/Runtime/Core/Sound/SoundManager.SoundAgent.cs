@@ -3,11 +3,12 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class SoundManager : FrameworkModule, ISoundManager
+    internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         /// <summary>
         /// 声音代理。
@@ -30,17 +31,17 @@ namespace UnityQGameFramework.Core.Sound
             {
                 if (soundGroup == null)
                 {
-                    throw new FrameworkException("Sound group is invalid.");
+                    throw new GameFrameworkException("Sound group is invalid.");
                 }
 
                 if (soundHelper == null)
                 {
-                    throw new FrameworkException("Sound helper is invalid.");
+                    throw new GameFrameworkException("Sound helper is invalid.");
                 }
 
                 if (soundAgentHelper == null)
                 {
-                    throw new FrameworkException("Sound agent helper is invalid.");
+                    throw new GameFrameworkException("Sound agent helper is invalid.");
                 }
 
                 m_SoundGroup = soundGroup;
@@ -66,7 +67,10 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取或设置声音的序列编号。
             /// </summary>
-            public int SerialId { get; set; }
+            public int SerialId
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取当前是否正在播放。
@@ -267,19 +271,25 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取声音代理辅助器。
             /// </summary>
-            public ISoundAgentHelper Helper { get; }
+            public ISoundAgentHelper Helper
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取声音创建时间。
             /// </summary>
-            internal DateTime SetSoundAssetTime { get; private set; }
+            internal DateTime SetSoundAssetTime
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 播放声音。
             /// </summary>
             public void Play()
             {
-                Helper.Play(Constant.DefaultFadeInSeconds);
+                Helper.Play(SoundConstant.DefaultFadeInSeconds);
             }
 
             /// <summary>
@@ -296,7 +306,7 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public void Stop()
             {
-                Helper.Stop(Constant.DefaultFadeOutSeconds);
+                Helper.Stop(SoundConstant.DefaultFadeOutSeconds);
             }
 
             /// <summary>
@@ -313,7 +323,7 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public void Pause()
             {
-                Helper.Pause(Constant.DefaultFadeOutSeconds);
+                Helper.Pause(SoundConstant.DefaultFadeOutSeconds);
             }
 
             /// <summary>
@@ -330,7 +340,7 @@ namespace UnityQGameFramework.Core.Sound
             /// </summary>
             public void Resume()
             {
-                Helper.Resume(Constant.DefaultFadeInSeconds);
+                Helper.Resume(SoundConstant.DefaultFadeInSeconds);
             }
 
             /// <summary>
@@ -354,16 +364,16 @@ namespace UnityQGameFramework.Core.Sound
                 }
 
                 SetSoundAssetTime = DateTime.MinValue;
-                Time = Constant.DefaultTime;
-                MuteInSoundGroup = Constant.DefaultMute;
-                Loop = Constant.DefaultLoop;
-                Priority = Constant.DefaultPriority;
-                VolumeInSoundGroup = Constant.DefaultVolume;
-                Pitch = Constant.DefaultPitch;
-                PanStereo = Constant.DefaultPanStereo;
-                SpatialBlend = Constant.DefaultSpatialBlend;
-                MaxDistance = Constant.DefaultMaxDistance;
-                DopplerLevel = Constant.DefaultDopplerLevel;
+                Time = SoundConstant.DefaultTime;
+                MuteInSoundGroup = SoundConstant.DefaultMute;
+                Loop = SoundConstant.DefaultLoop;
+                Priority = SoundConstant.DefaultPriority;
+                VolumeInSoundGroup = SoundConstant.DefaultVolume;
+                Pitch = SoundConstant.DefaultPitch;
+                PanStereo = SoundConstant.DefaultPanStereo;
+                SpatialBlend = SoundConstant.DefaultSpatialBlend;
+                MaxDistance = SoundConstant.DefaultMaxDistance;
+                DopplerLevel = SoundConstant.DefaultDopplerLevel;
                 Helper.Reset();
             }
 

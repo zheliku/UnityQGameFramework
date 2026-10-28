@@ -48,7 +48,11 @@ public static class ResourceAddressExamplesValidation
                 releaseButton.onClick.Invoke();
                 await Until(() => asset.GetValue(example) == null, "Address asset was not returned: " + index);
             }
-            return new { passed = true, rules = new[] { "AddressByFileName", "AddressByFolderAndFileName", "AddressByGroupAndFileName" } };
+            return new
+            {
+                passed = true,
+                rules = new[] { "AddressByFileName", "AddressByFolderAndFileName", "AddressByGroupAndFileName" }
+            };
         }
         finally
         {

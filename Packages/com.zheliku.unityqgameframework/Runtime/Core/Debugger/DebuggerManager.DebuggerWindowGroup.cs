@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Debugger
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DebuggerManager : FrameworkModule, IDebuggerManager
+    internal sealed partial class DebuggerManager : GameFrameworkModule, IDebuggerManager
     {
         /// <summary>
         /// 调试器窗口组。
@@ -41,7 +41,10 @@ namespace UnityQGameFramework.Core.Debugger
             /// <summary>
             /// 获取或设置当前选中的调试器窗口索引。
             /// </summary>
-            public int SelectedIndex { get; set; }
+            public int SelectedIndex
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取当前选中的调试器窗口。
@@ -202,7 +205,7 @@ namespace UnityQGameFramework.Core.Debugger
             {
                 if (string.IsNullOrEmpty(path))
                 {
-                    throw new FrameworkException("Path is invalid.");
+                    throw new GameFrameworkException("Path is invalid.");
                 }
 
                 int pos = path.IndexOf('/');
@@ -210,7 +213,7 @@ namespace UnityQGameFramework.Core.Debugger
                 {
                     if (InternalGetDebuggerWindow(path) != null)
                     {
-                        throw new FrameworkException("Debugger window has been registered.");
+                        throw new GameFrameworkException("Debugger window has been registered.");
                     }
 
                     m_DebuggerWindows.Add(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
@@ -225,7 +228,7 @@ namespace UnityQGameFramework.Core.Debugger
                     {
                         if (InternalGetDebuggerWindow(debuggerWindowGroupName) != null)
                         {
-                            throw new FrameworkException("Debugger window has been registered, can not create debugger window group.");
+                            throw new GameFrameworkException("Debugger window has been registered, can not create debugger window group.");
                         }
 
                         debuggerWindowGroup = new DebuggerWindowGroup();

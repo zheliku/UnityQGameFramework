@@ -3,12 +3,12 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 声音相关常量。
     /// </summary>
-    internal static class Constant
+    internal static class SoundConstant
     {
         /// <summary>
         /// 默认播放起始时间，以秒为单位。

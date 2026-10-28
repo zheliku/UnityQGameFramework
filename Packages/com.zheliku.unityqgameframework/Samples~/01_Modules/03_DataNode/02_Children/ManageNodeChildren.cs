@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataNode;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules

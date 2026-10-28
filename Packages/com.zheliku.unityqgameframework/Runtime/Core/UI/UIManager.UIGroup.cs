@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class UIManager : FrameworkModule, IUIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         /// <summary>
         /// 界面组。
@@ -16,7 +16,7 @@ namespace UnityQGameFramework.Core.UI
         {
             private int m_Depth;
             private bool m_Pause;
-            private readonly FrameworkLinkedList<UIFormInfo> m_UIFormInfos;
+            private readonly GameFrameworkLinkedList<UIFormInfo> m_UIFormInfos;
             private LinkedListNode<UIFormInfo> m_CachedNode;
 
             /// <summary>
@@ -29,18 +29,18 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new FrameworkException("UI group name is invalid.");
+                    throw new GameFrameworkException("UI group name is invalid.");
                 }
 
                 if (uiGroupHelper == null)
                 {
-                    throw new FrameworkException("UI group helper is invalid.");
+                    throw new GameFrameworkException("UI group helper is invalid.");
                 }
 
                 Name = name;
                 m_Pause = false;
                 Helper = uiGroupHelper;
-                m_UIFormInfos = new FrameworkLinkedList<UIFormInfo>();
+                m_UIFormInfos = new GameFrameworkLinkedList<UIFormInfo>();
                 m_CachedNode = null;
                 Depth = depth;
             }
@@ -48,7 +48,10 @@ namespace UnityQGameFramework.Core.UI
             /// <summary>
             /// 获取界面组名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取或设置界面组深度。
@@ -118,7 +121,10 @@ namespace UnityQGameFramework.Core.UI
             /// <summary>
             /// 获取界面组辅助器。
             /// </summary>
-            public IUIGroupHelper Helper { get; }
+            public IUIGroupHelper Helper
+            {
+                get;
+            }
 
             /// <summary>
             /// 界面组轮询。
@@ -169,7 +175,7 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (string.IsNullOrEmpty(uiFormAssetName))
                 {
-                    throw new FrameworkException("UI form asset name is invalid.");
+                    throw new GameFrameworkException("UI form asset name is invalid.");
                 }
 
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
@@ -210,7 +216,7 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (string.IsNullOrEmpty(uiFormAssetName))
                 {
-                    throw new FrameworkException("UI form asset name is invalid.");
+                    throw new GameFrameworkException("UI form asset name is invalid.");
                 }
 
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
@@ -233,7 +239,7 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (string.IsNullOrEmpty(uiFormAssetName))
                 {
-                    throw new FrameworkException("UI form asset name is invalid.");
+                    throw new GameFrameworkException("UI form asset name is invalid.");
                 }
 
                 List<IUIForm> results = new List<IUIForm>();
@@ -257,12 +263,12 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (string.IsNullOrEmpty(uiFormAssetName))
                 {
-                    throw new FrameworkException("UI form asset name is invalid.");
+                    throw new GameFrameworkException("UI form asset name is invalid.");
                 }
 
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();
@@ -298,7 +304,7 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();
@@ -326,7 +332,7 @@ namespace UnityQGameFramework.Core.UI
                 UIFormInfo uiFormInfo = GetUIFormInfo(uiForm);
                 if (uiFormInfo == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Can not find UI form info for serial id '{0}', UI form asset name is '{1}'.", uiForm.SerialId, uiForm.UIFormAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find UI form info for serial id '{0}', UI form asset name is '{1}'.", uiForm.SerialId, uiForm.UIFormAssetName));
                 }
 
                 if (!uiFormInfo.Covered)
@@ -348,7 +354,7 @@ namespace UnityQGameFramework.Core.UI
 
                 if (!m_UIFormInfos.Remove(uiFormInfo))
                 {
-                    throw new FrameworkException(Utility.Text.Format("UI group '{0}' not exists specified UI form '[{1}]{2}'.", Name, uiForm.SerialId, uiForm.UIFormAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' not exists specified UI form '[{1}]{2}'.", Name, uiForm.SerialId, uiForm.UIFormAssetName));
                 }
 
                 ReferencePool.Release(uiFormInfo);
@@ -364,7 +370,7 @@ namespace UnityQGameFramework.Core.UI
                 UIFormInfo uiFormInfo = GetUIFormInfo(uiForm);
                 if (uiFormInfo == null)
                 {
-                    throw new FrameworkException("Can not find UI form info.");
+                    throw new GameFrameworkException("Can not find UI form info.");
                 }
 
                 m_UIFormInfos.Remove(uiFormInfo);
@@ -497,7 +503,7 @@ namespace UnityQGameFramework.Core.UI
             {
                 if (uiForm == null)
                 {
-                    throw new FrameworkException("UI form is invalid.");
+                    throw new GameFrameworkException("UI form is invalid.");
                 }
 
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)

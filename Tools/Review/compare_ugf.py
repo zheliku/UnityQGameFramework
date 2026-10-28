@@ -62,11 +62,13 @@ def official_path(repository, path):
             return None
         if path == "GameFramework/DataTable/DataTableManager.DataTable.cs":
             return "Runtime/Core/DataTable/DataTable.cs"
-        return "Runtime/Core/" + path.removeprefix("GameFramework/").replace("GameFramework", "Framework")
+        if path.endswith("/Constant.cs"):
+            return "Runtime/Core/" + path.removeprefix("GameFramework/").replace("Constant.cs", path.split("/")[-2] + "Constant.cs")
+        return "Runtime/Core/" + path.removeprefix("GameFramework/")
     if path.startswith("Scripts/Runtime/"):
-        return "Runtime/Unity/" + path.removeprefix("Scripts/Runtime/").replace("GameFramework", "Framework")
+        return "Runtime/Unity/" + path.removeprefix("Scripts/Runtime/")
     if path.startswith("Scripts/Editor/"):
-        return "Editor/" + path.removeprefix("Scripts/Editor/").replace("GameFramework", "Framework")
+        return "Editor/" + path.removeprefix("Scripts/Editor/")
     if path.startswith("Libraries/"):
         return "Runtime/Plugins/" + path.removeprefix("Libraries/")
     if path.startswith("GameFramework.prefab"):

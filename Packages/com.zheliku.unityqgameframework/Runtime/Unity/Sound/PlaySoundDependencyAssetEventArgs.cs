@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Sound;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -49,54 +47,81 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取声音的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音资源名称。
         /// </summary>
-        public string SoundAssetName { get; private set; }
+        public string SoundAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音组名称。
         /// </summary>
-        public string SoundGroupName { get; private set; }
+        public string SoundGroupName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取播放声音参数。
         /// </summary>
-        public PlaySoundParams PlaySoundParams { get; private set; }
+        public PlaySoundParams PlaySoundParams
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被加载的依赖资源名称。
         /// </summary>
-        public string DependencyAssetName { get; private set; }
+        public string DependencyAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取当前已加载依赖资源数量。
         /// </summary>
-        public int LoadedCount { get; private set; }
+        public int LoadedCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取总共加载依赖资源数量。
         /// </summary>
-        public int TotalCount { get; private set; }
+        public int TotalCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取声音绑定的实体。
         /// </summary>
-        public Entity BindingEntity { get; private set; }
+        public Entity BindingEntity
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建播放声音时加载依赖资源事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的播放声音时加载依赖资源事件。</returns>
-        public static PlaySoundDependencyAssetEventArgs Create(UnityQGameFramework.Core.Sound.PlaySoundDependencyAssetEventArgs e)
+        public static PlaySoundDependencyAssetEventArgs Create(UnityQGameFramework.Core.Events.PlaySoundDependencyAssetEventArgs e)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
             PlaySoundDependencyAssetEventArgs playSoundDependencyAssetEventArgs = ReferencePool.Acquire<PlaySoundDependencyAssetEventArgs>();

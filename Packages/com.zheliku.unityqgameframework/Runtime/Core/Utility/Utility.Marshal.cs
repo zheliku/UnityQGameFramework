@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -20,7 +20,10 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取缓存的从进程的非托管内存中分配的内存的大小。
             /// </summary>
-            public static int CachedHGlobalSize { get; private set; }
+            public static int CachedHGlobalSize
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 确保从进程的非托管内存中分配足够大小的内存并缓存。
@@ -30,7 +33,7 @@ namespace UnityQGameFramework.Core
             {
                 if (ensureSize < 0)
                 {
-                    throw new FrameworkException("Ensure size is invalid.");
+                    throw new GameFrameworkException("Ensure size is invalid.");
                 }
 
                 if (s_CachedHGlobalPtr == IntPtr.Zero || CachedHGlobalSize < ensureSize)
@@ -77,7 +80,7 @@ namespace UnityQGameFramework.Core
             {
                 if (structureSize < 0)
                 {
-                    throw new FrameworkException("Structure size is invalid.");
+                    throw new GameFrameworkException("Structure size is invalid.");
                 }
 
                 EnsureCachedHGlobalSize(structureSize);
@@ -134,22 +137,22 @@ namespace UnityQGameFramework.Core
             {
                 if (structureSize < 0)
                 {
-                    throw new FrameworkException("Structure size is invalid.");
+                    throw new GameFrameworkException("Structure size is invalid.");
                 }
 
                 if (result == null)
                 {
-                    throw new FrameworkException("Result is invalid.");
+                    throw new GameFrameworkException("Result is invalid.");
                 }
 
                 if (startIndex < 0)
                 {
-                    throw new FrameworkException("Start index is invalid.");
+                    throw new GameFrameworkException("Start index is invalid.");
                 }
 
                 if (startIndex + structureSize > result.Length)
                 {
-                    throw new FrameworkException("Result length is not enough.");
+                    throw new GameFrameworkException("Result length is not enough.");
                 }
 
                 EnsureCachedHGlobalSize(structureSize);
@@ -204,22 +207,22 @@ namespace UnityQGameFramework.Core
             {
                 if (structureSize < 0)
                 {
-                    throw new FrameworkException("Structure size is invalid.");
+                    throw new GameFrameworkException("Structure size is invalid.");
                 }
 
                 if (buffer == null)
                 {
-                    throw new FrameworkException("Buffer is invalid.");
+                    throw new GameFrameworkException("Buffer is invalid.");
                 }
 
                 if (startIndex < 0)
                 {
-                    throw new FrameworkException("Start index is invalid.");
+                    throw new GameFrameworkException("Start index is invalid.");
                 }
 
                 if (startIndex + structureSize > buffer.Length)
                 {
-                    throw new FrameworkException("Buffer length is not enough.");
+                    throw new GameFrameworkException("Buffer length is not enough.");
                 }
 
                 EnsureCachedHGlobalSize(structureSize);

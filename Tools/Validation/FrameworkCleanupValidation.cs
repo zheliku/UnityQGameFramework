@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Editor;
-using UnityQGameFramework.Core.DataTable;
-using UnityQGameFramework.Core.Debugger;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Examples.Modules.TableData;
 using UnityQGameFramework.Luban;
 using UnityQGameFramework.Runtime;
@@ -37,7 +36,13 @@ public static class FrameworkCleanupValidation
 
             Require(window.Failure == null, window.Failure);
             Require(window.Drawn, "The input pages did not receive an IMGUI repaint.");
-            return new { passed = true, summary = true, touch = true, unityVersion = Application.unityVersion };
+            return new
+            {
+                passed = true,
+                summary = true,
+                touch = true,
+                unityVersion = Application.unityVersion
+            };
         }
         finally
         {
@@ -55,12 +60,18 @@ public static class FrameworkCleanupValidation
         /// <summary>
         /// 获取输入页面是否已完成绘制。
         /// </summary>
-        internal bool Drawn { get; private set; }
+        internal bool Drawn
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取输入页面抛出的异常。
         /// </summary>
-        internal string Failure { get; private set; }
+        internal string Failure
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 在真实 IMGUI 上下文中调用输入页面。
@@ -128,7 +139,7 @@ public static class FrameworkCleanupValidation
         }
 
         Require(missing && items.GetDataRow(int.MinValue) == null, "Indexer and optional query must retain their distinct missing-key behavior.");
-        var manager = (IDataTableManager)Activator.CreateInstance(typeof(IDataTableManager).Assembly.GetType("UnityQGameFramework.Core.DataTable.DataTableManager", true), true);
+        var manager = (IDataTableManager)Activator.CreateInstance(typeof(IDataTableManager).Assembly.GetType("UnityQGameFramework.Core.DataTableManager", true), true);
         manager.AddDataTables(tables);
         var rows = new List<DRItem>(items.Count);
         var registrations = new List<DataTableBase>(tables.Count);
@@ -172,8 +183,19 @@ public static class FrameworkCleanupValidation
         DRItem[] snapshot = items.GetAllDataRows();
         Require(!ReferenceEquals(snapshot, items.GetAllDataRows()) && ReferenceEquals(snapshot[0], items.DataList[0]),
             "Array queries must return independent result arrays containing the original rows.");
-        var result = new { passed = true, unityVersion = Application.unityVersion, intKey = true, stringKey = true, compositeKey = true,
-            missingKey = true, reusedResults = true, queryCallsPerPath = 10000, allocatedBytes = allocated, tables = tables.Count };
+        var result = new
+        {
+            passed = true,
+            unityVersion = Application.unityVersion,
+            intKey = true,
+            stringKey = true,
+            compositeKey = true,
+            missingKey = true,
+            reusedResults = true,
+            queryCallsPerPath = 10000,
+            allocatedBytes = allocated,
+            tables = tables.Count
+        };
         Directory.CreateDirectory("Artifacts~/FrameworkCleanup");
         File.WriteAllText("Artifacts~/FrameworkCleanup/queries.json", Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented));
         return result;
@@ -213,7 +235,11 @@ public static class FrameworkCleanupValidation
                 generated.Add(path);
             }
 
-            return new { passed = true, profiles = generated };
+            return new
+            {
+                passed = true,
+                profiles = generated
+            };
         }
         finally
         {

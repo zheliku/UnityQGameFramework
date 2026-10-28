@@ -42,3 +42,5 @@ Git Consumer 按单份 Sample 验证 `ImportOne`、`MoveOne`、`PlayOne` 和 `Re
 ## API 覆盖
 
 `AuditExampleApi.Run` 导出公开成员清单，`check_example_api_coverage.py` 对照示例映射。组件转发、初始化入口和 Helper 回调单独标记；实际行为由各模块检查验证。
+
+`check_docs.py` 检查本地链接，并将完整 C# 示例提取到 `Artifacts~/Documentation/CompleteExamples.cs`。通过 Unity CLI 的 `script run --dry_run true` 编译此文件；模块行为直接验证实际 Sample，不再拼接旧文档中的临时类型或单独维护一份示例实现。

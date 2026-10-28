@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Music
 /// </summary>
-public partial class TbMusic : UnityQGameFramework.Core.DataTable.DataTable<DRMusic>
+public partial class TbMusic : UnityQGameFramework.Core.DataTable<DRMusic>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

@@ -3,16 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 声音管理器。
     /// </summary>
-    internal sealed partial class SoundManager : FrameworkModule, ISoundManager
+    internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         private readonly Dictionary<string, SoundGroup> m_SoundGroups;
         private readonly List<int> m_SoundsBeingLoaded;
@@ -143,7 +143,7 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (resourceManager == null)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                throw new GameFrameworkException("Resource manager is invalid.");
             }
 
             m_ResourceManager = resourceManager;
@@ -157,7 +157,7 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (soundHelper == null)
             {
-                throw new FrameworkException("Sound helper is invalid.");
+                throw new GameFrameworkException("Sound helper is invalid.");
             }
 
             m_SoundHelper = soundHelper;
@@ -172,7 +172,7 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (string.IsNullOrEmpty(soundGroupName))
             {
-                throw new FrameworkException("Sound group name is invalid.");
+                throw new GameFrameworkException("Sound group name is invalid.");
             }
 
             return m_SoundGroups.ContainsKey(soundGroupName);
@@ -187,7 +187,7 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (string.IsNullOrEmpty(soundGroupName))
             {
-                throw new FrameworkException("Sound group name is invalid.");
+                throw new GameFrameworkException("Sound group name is invalid.");
             }
 
             SoundGroup soundGroup = null;
@@ -223,7 +223,7 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -241,7 +241,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <returns>是否增加声音组成功。</returns>
         public bool AddSoundGroup(string soundGroupName, ISoundGroupHelper soundGroupHelper)
         {
-            return AddSoundGroup(soundGroupName, false, Constant.DefaultMute, Constant.DefaultVolume, soundGroupHelper);
+            return AddSoundGroup(soundGroupName, false, SoundConstant.DefaultMute, SoundConstant.DefaultVolume, soundGroupHelper);
         }
 
         /// <summary>
@@ -257,12 +257,12 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (string.IsNullOrEmpty(soundGroupName))
             {
-                throw new FrameworkException("Sound group name is invalid.");
+                throw new GameFrameworkException("Sound group name is invalid.");
             }
 
             if (soundGroupHelper == null)
             {
-                throw new FrameworkException("Sound group helper is invalid.");
+                throw new GameFrameworkException("Sound group helper is invalid.");
             }
 
             if (HasSoundGroup(soundGroupName))
@@ -291,13 +291,13 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (m_SoundHelper == null)
             {
-                throw new FrameworkException("You must set sound helper first.");
+                throw new GameFrameworkException("You must set sound helper first.");
             }
 
             SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Sound group '{0}' is not exist.", soundGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Sound group '{0}' is not exist.", soundGroupName));
             }
 
             soundGroup.AddSoundAgentHelper(m_SoundHelper, soundAgentHelper);
@@ -320,7 +320,7 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -345,7 +345,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName)
         {
-            return PlaySound(soundAssetName, soundGroupName, Resource.Constant.DefaultPriority, null, null);
+            return PlaySound(soundAssetName, soundGroupName, ResourceConstant.DefaultPriority, null, null);
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams)
         {
-            return PlaySound(soundAssetName, soundGroupName, Resource.Constant.DefaultPriority, playSoundParams, null);
+            return PlaySound(soundAssetName, soundGroupName, ResourceConstant.DefaultPriority, playSoundParams, null);
         }
 
         /// <summary>
@@ -381,7 +381,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, object userData)
         {
-            return PlaySound(soundAssetName, soundGroupName, Resource.Constant.DefaultPriority, null, userData);
+            return PlaySound(soundAssetName, soundGroupName, ResourceConstant.DefaultPriority, null, userData);
         }
 
         /// <summary>
@@ -420,7 +420,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, object userData)
         {
-            return PlaySound(soundAssetName, soundGroupName, Resource.Constant.DefaultPriority, playSoundParams, userData);
+            return PlaySound(soundAssetName, soundGroupName, ResourceConstant.DefaultPriority, playSoundParams, userData);
         }
 
         /// <summary>
@@ -436,12 +436,12 @@ namespace UnityQGameFramework.Core.Sound
         {
             if (m_ResourceManager == null)
             {
-                throw new FrameworkException("You must set resource manager first.");
+                throw new GameFrameworkException("You must set resource manager first.");
             }
 
             if (m_SoundHelper == null)
             {
-                throw new FrameworkException("You must set sound helper first.");
+                throw new GameFrameworkException("You must set sound helper first.");
             }
 
             if (playSoundParams == null)
@@ -480,7 +480,7 @@ namespace UnityQGameFramework.Core.Sound
                     return serialId;
                 }
 
-                throw new FrameworkException(errorMessage);
+                throw new GameFrameworkException(errorMessage);
             }
 
             m_SoundsBeingLoaded.Add(serialId);
@@ -495,7 +495,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <returns>是否停止播放声音成功。</returns>
         public bool StopSound(int serialId)
         {
-            return StopSound(serialId, Constant.DefaultFadeOutSeconds);
+            return StopSound(serialId, SoundConstant.DefaultFadeOutSeconds);
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace UnityQGameFramework.Core.Sound
         /// </summary>
         public void StopAllLoadedSounds()
         {
-            StopAllLoadedSounds(Constant.DefaultFadeOutSeconds);
+            StopAllLoadedSounds(SoundConstant.DefaultFadeOutSeconds);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <param name="serialId">要暂停播放声音的序列编号。</param>
         public void PauseSound(int serialId)
         {
-            PauseSound(serialId, Constant.DefaultFadeOutSeconds);
+            PauseSound(serialId, SoundConstant.DefaultFadeOutSeconds);
         }
 
         /// <summary>
@@ -581,7 +581,7 @@ namespace UnityQGameFramework.Core.Sound
                 }
             }
 
-            throw new FrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
+            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
         }
 
         /// <summary>
@@ -590,7 +590,7 @@ namespace UnityQGameFramework.Core.Sound
         /// <param name="serialId">要恢复播放声音的序列编号。</param>
         public void ResumeSound(int serialId)
         {
-            ResumeSound(serialId, Constant.DefaultFadeInSeconds);
+            ResumeSound(serialId, SoundConstant.DefaultFadeInSeconds);
         }
 
         /// <summary>
@@ -608,7 +608,7 @@ namespace UnityQGameFramework.Core.Sound
                 }
             }
 
-            throw new FrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
+            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
         }
 
         /// <summary>
@@ -623,7 +623,7 @@ namespace UnityQGameFramework.Core.Sound
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
-                throw new FrameworkException("Play sound info is invalid.");
+                throw new GameFrameworkException("Play sound info is invalid.");
             }
 
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
@@ -685,7 +685,7 @@ namespace UnityQGameFramework.Core.Sound
             }
 
             ReferencePool.Release(playSoundInfo);
-            throw new FrameworkException(errorMessage);
+            throw new GameFrameworkException(errorMessage);
         }
 
         /// <summary>
@@ -700,7 +700,7 @@ namespace UnityQGameFramework.Core.Sound
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
-                throw new FrameworkException("Play sound info is invalid.");
+                throw new GameFrameworkException("Play sound info is invalid.");
             }
 
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
@@ -738,7 +738,7 @@ namespace UnityQGameFramework.Core.Sound
             }
 
             ReferencePool.Release(playSoundInfo);
-            throw new FrameworkException(appendErrorMessage);
+            throw new GameFrameworkException(appendErrorMessage);
         }
 
         /// <summary>
@@ -752,7 +752,7 @@ namespace UnityQGameFramework.Core.Sound
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
-                throw new FrameworkException("Play sound info is invalid.");
+                throw new GameFrameworkException("Play sound info is invalid.");
             }
 
             if (m_PlaySoundUpdateEventHandler != null)
@@ -776,7 +776,7 @@ namespace UnityQGameFramework.Core.Sound
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
-                throw new FrameworkException("Play sound info is invalid.");
+                throw new GameFrameworkException("Play sound info is invalid.");
             }
 
             if (m_PlaySoundDependencyAssetEventHandler != null)

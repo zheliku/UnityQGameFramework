@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.WebRequest
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// Web 请求代理辅助器错误事件。
     /// </summary>
-    public sealed class WebRequestAgentHelperErrorEventArgs : FrameworkEventArgs
+    public sealed class WebRequestAgentHelperErrorEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化 Web 请求代理辅助器错误事件的新实例。
@@ -21,7 +21,10 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建 Web 请求代理辅助器错误事件。

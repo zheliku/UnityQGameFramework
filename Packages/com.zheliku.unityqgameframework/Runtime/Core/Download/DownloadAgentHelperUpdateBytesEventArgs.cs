@@ -3,12 +3,12 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 下载代理辅助器更新数据流事件。
     /// </summary>
-    public sealed class DownloadAgentHelperUpdateBytesEventArgs : FrameworkEventArgs
+    public sealed class DownloadAgentHelperUpdateBytesEventArgs : GameFrameworkEventArgs
     {
         private byte[] m_Bytes;
 
@@ -25,12 +25,18 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取数据流的偏移。
         /// </summary>
-        public int Offset { get; private set; }
+        public int Offset
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取数据流的长度。
         /// </summary>
-        public int Length { get; private set; }
+        public int Length
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建下载代理辅助器更新数据流事件。
@@ -43,17 +49,17 @@ namespace UnityQGameFramework.Core.Download
         {
             if (bytes == null)
             {
-                throw new FrameworkException("Bytes is invalid.");
+                throw new GameFrameworkException("Bytes is invalid.");
             }
 
             if (offset < 0 || offset >= bytes.Length)
             {
-                throw new FrameworkException("Offset is invalid.");
+                throw new GameFrameworkException("Offset is invalid.");
             }
 
             if (length <= 0 || offset + length > bytes.Length)
             {
-                throw new FrameworkException("Length is invalid.");
+                throw new GameFrameworkException("Length is invalid.");
             }
 
             DownloadAgentHelperUpdateBytesEventArgs downloadAgentHelperUpdateBytesEventArgs = ReferencePool.Acquire<DownloadAgentHelperUpdateBytesEventArgs>();

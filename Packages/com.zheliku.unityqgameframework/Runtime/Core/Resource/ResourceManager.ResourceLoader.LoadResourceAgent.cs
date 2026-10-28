@@ -3,14 +3,14 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.FileSystem;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private sealed partial class ResourceLoader
         {
@@ -42,22 +42,22 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (loadResourceAgentHelper == null)
                     {
-                        throw new FrameworkException("Load resource agent helper is invalid.");
+                        throw new GameFrameworkException("Load resource agent helper is invalid.");
                     }
 
                     if (resourceHelper == null)
                     {
-                        throw new FrameworkException("Resource helper is invalid.");
+                        throw new GameFrameworkException("Resource helper is invalid.");
                     }
 
                     if (resourceLoader == null)
                     {
-                        throw new FrameworkException("Resource loader is invalid.");
+                        throw new GameFrameworkException("Resource loader is invalid.");
                     }
 
                     if (decryptResourceCallback == null)
                     {
-                        throw new FrameworkException("Decrypt resource callback is invalid.");
+                        throw new GameFrameworkException("Decrypt resource callback is invalid.");
                     }
 
                     Helper = loadResourceAgentHelper;
@@ -72,12 +72,18 @@ namespace UnityQGameFramework.Core.Resource
                 /// <summary>
                 /// 获取资源加载代理辅助器。
                 /// </summary>
-                public ILoadResourceAgentHelper Helper { get; }
+                public ILoadResourceAgentHelper Helper
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取加载资源任务。
                 /// </summary>
-                public LoadResourceTaskBase Task { get; private set; }
+                public LoadResourceTaskBase Task
+                {
+                    get; private set;
+                }
 
                 /// <summary>
                 /// 初始化加载资源代理。
@@ -134,7 +140,7 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (task == null)
                     {
-                        throw new FrameworkException("Task is invalid.");
+                        throw new GameFrameworkException("Task is invalid.");
                     }
 
                     Task = task;
@@ -223,7 +229,7 @@ namespace UnityQGameFramework.Core.Resource
                     }
                     else
                     {
-                        throw new FrameworkException(Utility.Text.Format("Resource load type '{0}' is not supported.", resourceInfo.LoadType));
+                        throw new GameFrameworkException(Utility.Text.Format("Resource load type '{0}' is not supported.", resourceInfo.LoadType));
                     }
 
                     return StartTaskStatus.CanResume;
@@ -380,7 +386,7 @@ namespace UnityQGameFramework.Core.Resource
                             }
                             else
                             {
-                                throw new FrameworkException("Can not find dependency resource.");
+                                throw new GameFrameworkException("Can not find dependency resource.");
                             }
                         }
                     }

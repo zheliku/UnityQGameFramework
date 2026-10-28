@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Luban;
 
 namespace UnityQGameFramework.Runtime
@@ -13,7 +13,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取生成代码的结构版本。
         /// </summary>
-        string SchemaHash { get; }
+        string SchemaHash
+        {
+            get;
+        }
 
         /// <summary>
         /// 构造数据表并解析表间引用；不读取资源、不修改 DataTableComponent 登记。

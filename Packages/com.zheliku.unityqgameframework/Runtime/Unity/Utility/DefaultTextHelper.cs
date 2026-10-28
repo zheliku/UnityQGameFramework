@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -52,7 +52,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -76,7 +76,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -102,7 +102,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -130,7 +130,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -160,7 +160,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -192,7 +192,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -226,7 +226,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -262,7 +262,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -300,7 +300,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -340,7 +340,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -382,7 +382,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -426,7 +426,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -472,7 +472,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -520,7 +520,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();
@@ -570,7 +570,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (format == null)
             {
-                throw new FrameworkException("Format is invalid.");
+                throw new GameFrameworkException("Format is invalid.");
             }
 
             CheckCachedStringBuilder();

@@ -140,14 +140,20 @@ public static class ResourceEditorRedesignValidation
             Require(!float.IsNaN(buildButton.worldBound.width), "The headless editor could not lay out the Builder.");
             using (var down = PointerDownEvent.GetPooled(new Event
             {
-                type = EventType.MouseDown, mousePosition = buildButton.worldBound.center, button = 0, clickCount = 1
+                type = EventType.MouseDown,
+                mousePosition = buildButton.worldBound.center,
+                button = 0,
+                clickCount = 1
             }))
             {
                 buildButton.SendEvent(down);
             }
             using (var up = PointerUpEvent.GetPooled(new Event
             {
-                type = EventType.MouseUp, mousePosition = buildButton.worldBound.center, button = 0, clickCount = 1
+                type = EventType.MouseUp,
+                mousePosition = buildButton.worldBound.center,
+                button = 0,
+                clickCount = 1
             }))
             {
                 buildButton.SendEvent(up);
@@ -161,9 +167,21 @@ public static class ResourceEditorRedesignValidation
             Require(builder.rootVisualElement.Q<Label>("QgfBatchResult").text.StartsWith("Built 2 packages."),
                 "The visible batch result was lost when the native window refreshed.");
             Require(settings.GetPackage().PlayMode.GetType() == typeof(EPlayMode), "ResourceSettings does not expose YooAsset's native mode type.");
-            return new { passed = true, inspectorAssignment = true, nativeWindowsSynchronized = true, addedAndRemovedPackages = true,
-                matchingOptionsPreserved = true, defaultPackageRepaired = true, batchSelection = true, batchButtonInvoked = true, builtPackages = outputs,
-                collectorUnchanged = true, nativePlayModes = true, nativeBuiltinOutput = true };
+            return new
+            {
+                passed = true,
+                inspectorAssignment = true,
+                nativeWindowsSynchronized = true,
+                addedAndRemovedPackages = true,
+                matchingOptionsPreserved = true,
+                defaultPackageRepaired = true,
+                batchSelection = true,
+                batchButtonInvoked = true,
+                builtPackages = outputs,
+                collectorUnchanged = true,
+                nativePlayModes = true,
+                nativeBuiltinOutput = true
+            };
         }
         finally
         {

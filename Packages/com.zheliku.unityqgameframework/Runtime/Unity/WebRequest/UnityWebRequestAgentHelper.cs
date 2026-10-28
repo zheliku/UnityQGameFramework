@@ -4,7 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.WebRequest;
+using UnityQGameFramework.Core.Events;
 using System;
 using UnityEngine.Networking;
 

@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 namespace UnityQGameFramework.Core
 {
-    public static partial class FrameworkLog
+    public static partial class GameFrameworkLog
     {
         /// <summary>
         /// 游戏框架日志辅助器接口。
@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Core
             /// </summary>
             /// <param name="level">游戏框架日志等级。</param>
             /// <param name="message">日志内容。</param>
-            void Log(FrameworkLogLevel level, object message);
+            void Log(GameFrameworkLogLevel level, object message);
         }
     }
 }

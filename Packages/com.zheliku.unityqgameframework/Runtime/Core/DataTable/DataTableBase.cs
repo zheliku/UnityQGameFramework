@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace UnityQGameFramework.Core.DataTable
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 可登记的数据表；具体键和索引由 Luban schema 决定。

@@ -124,18 +124,18 @@ namespace UnityQGameFramework.Core
 
                 if (code == null)
                 {
-                    throw new FrameworkException("Code is invalid.");
+                    throw new GameFrameworkException("Code is invalid.");
                 }
 
                 int codeLength = code.Length;
                 if (codeLength <= 0)
                 {
-                    throw new FrameworkException("Code length is invalid.");
+                    throw new GameFrameworkException("Code length is invalid.");
                 }
 
                 if (startIndex < 0 || startIndex > bytes.Length || length < 0 || length > bytes.Length - startIndex)
                 {
-                    throw new FrameworkException("Start index or length is invalid.");
+                    throw new GameFrameworkException("Start index or length is invalid.");
                 }
 
                 int codeIndex = startIndex % codeLength;

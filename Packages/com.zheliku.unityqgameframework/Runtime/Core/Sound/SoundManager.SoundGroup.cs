@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class SoundManager : FrameworkModule, ISoundManager
+    internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         /// <summary>
         /// 声音组。
@@ -27,12 +27,12 @@ namespace UnityQGameFramework.Core.Sound
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new FrameworkException("Sound group name is invalid.");
+                    throw new GameFrameworkException("Sound group name is invalid.");
                 }
 
                 if (soundGroupHelper == null)
                 {
-                    throw new FrameworkException("Sound group helper is invalid.");
+                    throw new GameFrameworkException("Sound group helper is invalid.");
                 }
 
                 Name = name;
@@ -43,7 +43,10 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取声音组名称。
             /// </summary>
-            public string Name { get; }
+            public string Name
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取声音代理数。
@@ -59,7 +62,10 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取或设置声音组中的声音是否避免被同优先级声音替换。
             /// </summary>
-            public bool AvoidBeingReplacedBySamePriority { get; set; }
+            public bool AvoidBeingReplacedBySamePriority
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 获取或设置声音组静音。
@@ -102,7 +108,10 @@ namespace UnityQGameFramework.Core.Sound
             /// <summary>
             /// 获取声音组辅助器。
             /// </summary>
-            public ISoundGroupHelper Helper { get; }
+            public ISoundGroupHelper Helper
+            {
+                get;
+            }
 
             /// <summary>
             /// 增加声音代理辅助器。

@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 资源后端接口。
@@ -10,27 +10,42 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源只读路径。
         /// </summary>
-        string ReadOnlyPath { get; }
+        string ReadOnlyPath
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源读写路径。
         /// </summary>
-        string ReadWritePath { get; }
+        string ReadWritePath
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源运行模式。
         /// </summary>
-        ResourceMode ResourceMode { get; }
+        ResourceMode ResourceMode
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源资产数量。
         /// </summary>
-        int AssetCount { get; }
+        int AssetCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取正在加载的资产数量。
         /// </summary>
-        int LoadWorkingAgentCount { get; }
+        int LoadWorkingAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取原生文件长度。

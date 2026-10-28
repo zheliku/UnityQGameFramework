@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.DataTable
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 所有表共有的遍历、条件查询和排序；键查询保留生成的强类型签名。
@@ -12,27 +12,42 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取数据表名称。
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取数据表完整名称。
         /// </summary>
-        string FullName { get; }
+        string FullName
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取数据表类型。
         /// </summary>
-        Type Type { get; }
+        Type Type
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取数据表行的类型。
         /// </summary>
-        Type RowType { get; }
+        Type RowType
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取数据表行数。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 检查是否存在符合条件的数据表行。

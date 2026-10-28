@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using UnityQGameFramework.Runtime;
 
 namespace UnityQGameFramework.Examples.Modules
@@ -58,7 +57,7 @@ namespace UnityQGameFramework.Examples.Modules
                 QGF.WebRequest.AddWebRequest(server.Url("/other"), "Example.Other", 5, this);
                 resultText.text = "Cancel the active hold request. Remaining tasks run in priority order.";
             }
-            catch (OperationCanceledException)when (destroyCancellationToken.IsCancellationRequested)
+            catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
             }
             finally

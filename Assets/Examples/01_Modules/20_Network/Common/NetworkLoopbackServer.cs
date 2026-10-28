@@ -23,7 +23,10 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取服务监听的本机端口。
         /// </summary>
-        public int Port { get; }
+        public int Port
+        {
+            get;
+        }
 
         /// <summary>
         /// 在本机随机端口接收测试连接。
@@ -42,15 +45,15 @@ namespace UnityQGameFramework.Examples.Modules
                     {
                         client = await listener.AcceptTcpClientAsync().ConfigureAwait(false);
                     }
-                    catch (SocketException)when (stop.IsCancellationRequested)
+                    catch (SocketException) when (stop.IsCancellationRequested)
                     {
                         break;
                     }
-                    catch (ObjectDisposedException)when (stop.IsCancellationRequested)
+                    catch (ObjectDisposedException) when (stop.IsCancellationRequested)
                     {
                         break;
                     }
-                    catch (InvalidOperationException)when (stop.IsCancellationRequested)
+                    catch (InvalidOperationException) when (stop.IsCancellationRequested)
                     {
                         break;
                     }
@@ -76,10 +79,10 @@ namespace UnityQGameFramework.Examples.Modules
                             catch (SocketException)
                             {
                             }
-                            catch (ObjectDisposedException)when (stop.IsCancellationRequested)
+                            catch (ObjectDisposedException) when (stop.IsCancellationRequested)
                             {
                             }
-                            catch (OperationCanceledException)when (stop.IsCancellationRequested)
+                            catch (OperationCanceledException) when (stop.IsCancellationRequested)
                             {
                             }
                             finally

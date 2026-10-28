@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
-using UnityQGameFramework.Core.Sound;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -19,7 +17,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Sound")]
-    public sealed partial class SoundComponent : FrameworkComponent
+    public sealed partial class SoundComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
@@ -89,7 +87,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_SoundManager = FrameworkEntry.GetModule<ISoundManager>();
+            m_SoundManager = GameFrameworkEntry.GetModule<ISoundManager>();
             if (m_SoundManager == null)
             {
                 Log.Fatal("Sound manager is invalid.");
@@ -594,7 +592,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnPlaySoundSuccess(object sender, UnityQGameFramework.Core.Sound.PlaySoundSuccessEventArgs e)
+        private void OnPlaySoundSuccess(object sender, UnityQGameFramework.Core.Events.PlaySoundSuccessEventArgs e)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
             if (playSoundInfo != null)
@@ -618,7 +616,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnPlaySoundFailure(object sender, UnityQGameFramework.Core.Sound.PlaySoundFailureEventArgs e)
+        private void OnPlaySoundFailure(object sender, UnityQGameFramework.Core.Events.PlaySoundFailureEventArgs e)
         {
             string logMessage = Utility.Text.Format("Play sound failure, asset name '{0}', sound group name '{1}', error code '{2}', error message '{3}'.", e.SoundAssetName, e.SoundGroupName, e.ErrorCode, e.ErrorMessage);
             if (e.ErrorCode == PlaySoundErrorCode.IgnoredDueToLowPriority)
@@ -638,7 +636,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnPlaySoundUpdate(object sender, UnityQGameFramework.Core.Sound.PlaySoundUpdateEventArgs e)
+        private void OnPlaySoundUpdate(object sender, UnityQGameFramework.Core.Events.PlaySoundUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, PlaySoundUpdateEventArgs.Create(e));
         }
@@ -648,7 +646,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnPlaySoundDependencyAsset(object sender, UnityQGameFramework.Core.Sound.PlaySoundDependencyAssetEventArgs e)
+        private void OnPlaySoundDependencyAsset(object sender, UnityQGameFramework.Core.Events.PlaySoundDependencyAssetEventArgs e)
         {
             m_EventComponent.Fire(this, PlaySoundDependencyAssetEventArgs.Create(e));
         }
@@ -658,7 +656,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnLoadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.LoadSceneSuccessEventArgs e)
+        private void OnLoadSceneSuccess(object sender, UnityQGameFramework.Core.Events.LoadSceneSuccessEventArgs e)
         {
             RefreshAudioListener();
         }
@@ -668,7 +666,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnLoadSceneFailure(object sender, UnityQGameFramework.Core.Scene.LoadSceneFailureEventArgs e)
+        private void OnLoadSceneFailure(object sender, UnityQGameFramework.Core.Events.LoadSceneFailureEventArgs e)
         {
             RefreshAudioListener();
         }
@@ -678,7 +676,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnUnloadSceneSuccess(object sender, UnityQGameFramework.Core.Scene.UnloadSceneSuccessEventArgs e)
+        private void OnUnloadSceneSuccess(object sender, UnityQGameFramework.Core.Events.UnloadSceneSuccessEventArgs e)
         {
             RefreshAudioListener();
         }
@@ -688,7 +686,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnUnloadSceneFailure(object sender, UnityQGameFramework.Core.Scene.UnloadSceneFailureEventArgs e)
+        private void OnUnloadSceneFailure(object sender, UnityQGameFramework.Core.Events.UnloadSceneFailureEventArgs e)
         {
             RefreshAudioListener();
         }

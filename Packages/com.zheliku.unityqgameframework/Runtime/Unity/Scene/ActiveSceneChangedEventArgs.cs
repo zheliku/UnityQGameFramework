@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 using UnityEngine.SceneManagement;
 
 namespace UnityQGameFramework.Runtime
@@ -42,12 +41,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取上一个被激活的场景。
         /// </summary>
-        public Scene LastActiveScene { get; private set; }
+        public Scene LastActiveScene
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取被激活的场景。
         /// </summary>
-        public Scene ActiveScene { get; private set; }
+        public Scene ActiveScene
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建激活场景被改变事件。

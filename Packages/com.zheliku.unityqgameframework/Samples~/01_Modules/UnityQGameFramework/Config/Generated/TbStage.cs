@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 /// <summary>
 /// 复合索引
 /// </summary>
-public partial class TbStage : UnityQGameFramework.Core.DataTable.DataTable<DRStage>
+public partial class TbStage : UnityQGameFramework.Core.DataTable<DRStage>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

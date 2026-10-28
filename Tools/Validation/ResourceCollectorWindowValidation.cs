@@ -55,7 +55,12 @@ public static class ResourceCollectorWindowValidation
             string output = ResourceBuildService.Build(source, source.Packages[0].PackageName, true);
             Require(before == EditorJsonUtility.ToJson(source), "QGF simulation restores the native collector after building.");
             Require(Directory.Exists(output), "The official simulation pipeline produced its output.");
-            results.Add(new { source = AssetDatabase.GetAssetPath(source), packages = packageNames, output });
+            results.Add(new
+            {
+                source = AssetDatabase.GetAssetPath(source),
+                packages = packageNames,
+                output
+            });
         }
         var moduleSource = sources.Single(source => source.Packages.Any(package => package.PackageName == "QgfExamples.Modules"));
         collectorWindow.rootVisualElement.Q<ObjectField>("QgfResourceSource").value = moduleSource;
@@ -108,8 +113,14 @@ public static class ResourceCollectorWindowValidation
             }
             Selection.activeObject = moduleSource;
         }
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(new { passed = true, sources = results, savedToSelectedSource = true,
-            assetSelection = true, deletedSourceRemoved = true }, Newtonsoft.Json.Formatting.Indented);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(new
+        {
+            passed = true,
+            sources = results,
+            savedToSelectedSource = true,
+            assetSelection = true,
+            deletedSourceRemoved = true
+        }, Newtonsoft.Json.Formatting.Indented);
         Directory.CreateDirectory("Artifacts~/ResourceExamples");
         File.WriteAllText("Artifacts~/ResourceExamples/native-windows.json", json);
         return Newtonsoft.Json.Linq.JObject.Parse(json);

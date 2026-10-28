@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 下载代理辅助器更新数据大小事件。
     /// </summary>
-    public sealed class DownloadAgentHelperUpdateLengthEventArgs : FrameworkEventArgs
+    public sealed class DownloadAgentHelperUpdateLengthEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化下载代理辅助器更新数据大小事件的新实例。
@@ -21,7 +21,10 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取下载的增量数据大小。
         /// </summary>
-        public int DeltaLength { get; private set; }
+        public int DeltaLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建下载代理辅助器更新数据大小事件。
@@ -32,7 +35,7 @@ namespace UnityQGameFramework.Core.Download
         {
             if (deltaLength <= 0)
             {
-                throw new FrameworkException("Delta length is invalid.");
+                throw new GameFrameworkException("Delta length is invalid.");
             }
 
             DownloadAgentHelperUpdateLengthEventArgs downloadAgentHelperUpdateLengthEventArgs = ReferencePool.Acquire<DownloadAgentHelperUpdateLengthEventArgs>();

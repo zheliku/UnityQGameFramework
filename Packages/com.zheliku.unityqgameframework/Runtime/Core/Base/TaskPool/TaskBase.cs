@@ -30,27 +30,42 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取任务的序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取任务的标签。
         /// </summary>
-        public string Tag { get; private set; }
+        public string Tag
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取任务的优先级。
         /// </summary>
-        public int Priority { get; private set; }
+        public int Priority
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取任务的用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取或设置任务是否完成。
         /// </summary>
-        public bool Done { get; set; }
+        public bool Done
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取任务描述。

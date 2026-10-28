@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Setting
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 游戏配置辅助器接口。
@@ -16,7 +16,10 @@ namespace UnityQGameFramework.Core.Setting
         /// <summary>
         /// 获取游戏配置项数量。
         /// </summary>
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 加载游戏配置。

@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 关闭界面完成事件。
     /// </summary>
-    public sealed class CloseUIFormCompleteEventArgs : FrameworkEventArgs
+    public sealed class CloseUIFormCompleteEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化关闭界面完成事件的新实例。
@@ -24,22 +24,34 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取界面序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面资源名称。
         /// </summary>
-        public string UIFormAssetName { get; private set; }
+        public string UIFormAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面所属的界面组。
         /// </summary>
-        public IUIGroup UIGroup { get; private set; }
+        public IUIGroup UIGroup
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建关闭界面完成事件。

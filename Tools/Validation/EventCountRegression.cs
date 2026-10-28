@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 // 纯 Core 回归，不依赖 Unity 或游戏场景。
 public static class EventCountRegression
 {
     public static void Main()
     {
-        var events = FrameworkEntry.GetModule<IEventManager>();
+        var events = GameFrameworkEntry.GetModule<IEventManager>();
         var order = new List<string>();
         EventHandler<GameEventArgs> first = (_, _) => order.Add("A");
         EventHandler<GameEventArgs> second = null;
@@ -26,8 +25,11 @@ public static class EventCountRegression
             Require(events.Count(1) == 2 && events.EventHandlerCount == 3, "Count handlers across event IDs");
 
             bool duplicateRejected = false;
-            try { events.Subscribe(1, first); }
-            catch (FrameworkException) { duplicateRejected = true; }
+            try
+            {
+                events.Subscribe(1, first);
+            }
+            catch (GameFrameworkException) { duplicateRejected = true; }
             Require(duplicateRejected && events.EventHandlerCount == 3, "Rejected duplicate preserves count");
 
             events.FireNow(null, Message.Create(1));
@@ -37,7 +39,7 @@ public static class EventCountRegression
 
             events.Fire(null, Message.Create(1));
             Require(events.EventCount == 1 && order.Count == 2, "Queued message is deferred");
-            FrameworkEntry.Update(.1f, .1f);
+            GameFrameworkEntry.Update(.1f, .1f);
             Require(events.EventCount == 0 && string.Join("", order) == "ABA" && Message.Recycled == 2, "Queued dispatch and recycling");
 
             int fallback = 0;
@@ -53,12 +55,13 @@ public static class EventCountRegression
             Require(events.EventHandlerCount == 0 && events.Count(1) == 0 && events.Count(2) == 0, "Final unsubscribe clears count");
             Console.WriteLine("PASS: total handlers, duplicate rejection, self-unsubscribe, queue, fallback and recycling");
         }
-        finally { FrameworkEntry.Shutdown(); }
+        finally { GameFrameworkEntry.Shutdown(); }
     }
 
     private static void Require(bool value, string message)
     {
-        if (!value) throw new Exception(message);
+        if (!value)
+            throw new Exception(message);
     }
 
     private sealed class Message : GameEventArgs
@@ -72,6 +75,10 @@ public static class EventCountRegression
             value.id = id;
             return value;
         }
-        public override void Clear() { id = 0; Recycled++; }
+        public override void Clear()
+        {
+            id = 0;
+            Recycled++;
+        }
     }
 }

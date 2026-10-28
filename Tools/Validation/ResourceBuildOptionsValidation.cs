@@ -120,7 +120,12 @@ public static class ResourceBuildOptionsValidation
                         rejected = exception.Message.Contains("Missing.BuildOptionsEncryptor");
                     }
                     Require(rejected && File.Exists(Directory.GetFiles(output, "*.report").Single()), "A missing encryptor fails before deleting the last build.");
-                    outputs.Add(new { pipeline, output, bundled });
+                    outputs.Add(new
+                    {
+                        pipeline,
+                        output,
+                        bundled
+                    });
                 }
                 finally
                 {
@@ -133,7 +138,12 @@ public static class ResourceBuildOptionsValidation
                     BundleBuilderSetting.SetPackageBundleEncryptorClassName(packageName, pipeline, encryptor);
                 }
             }
-            var result = new { passed = true, unity = Application.unityVersion, builds = outputs };
+            var result = new
+            {
+                passed = true,
+                unity = Application.unityVersion,
+                builds = outputs
+            };
             Directory.CreateDirectory("Artifacts~/ResourceExamples");
             File.WriteAllText("Artifacts~/ResourceExamples/build-options.json", JsonConvert.SerializeObject(result, Formatting.Indented));
             return result;

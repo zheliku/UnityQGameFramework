@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// UIForm
 /// </summary>
-public partial class TbUIForm : UnityQGameFramework.Core.DataTable.DataTable<DRUIForm>
+public partial class TbUIForm : UnityQGameFramework.Core.DataTable<DRUIForm>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

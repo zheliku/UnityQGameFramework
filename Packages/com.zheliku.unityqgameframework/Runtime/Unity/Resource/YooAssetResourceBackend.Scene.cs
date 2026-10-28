@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
 using YooAsset;
 using SceneHandle = YooAsset.SceneHandle;
 
@@ -40,7 +39,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (callbacks == null)
             {
-                throw new FrameworkException("Load scene callbacks is invalid.");
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
             LoadSceneCallbackAsync(sceneAssetName, priority, callbacks, userData).Forget();
         }
@@ -55,7 +54,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (callbacks == null)
             {
-                throw new FrameworkException("Unload scene callbacks is invalid.");
+                throw new GameFrameworkException("Unload scene callbacks is invalid.");
             }
             UnloadSceneCallbackAsync(sceneAssetName, callbacks, userData).Forget();
         }
@@ -75,12 +74,12 @@ namespace UnityQGameFramework.Runtime
             ThrowIfShutdown();
             if (string.IsNullOrEmpty(sceneAssetName))
             {
-                throw new FrameworkException("Scene asset name is invalid.");
+                throw new GameFrameworkException("Scene asset name is invalid.");
             }
             PackageInfo package = CreatePackage(packageName);
             if (package.Scenes.ContainsKey(sceneAssetName))
             {
-                throw new FrameworkException("Scene is already loaded or loading: " + sceneAssetName);
+                throw new GameFrameworkException("Scene is already loaded or loading: " + sceneAssetName);
             }
 
             var scene = new SceneInfo();
@@ -106,7 +105,7 @@ namespace UnityQGameFramework.Runtime
                     cancellation.Token.ThrowIfCancellationRequested();
                     if (!scene.Handle.IsValid || scene.Handle.Status != EOperationStatus.Succeeded)
                     {
-                        throw new FrameworkException(scene.Handle.IsValid ? scene.Handle.Error : "The scene handle was released during loading.");
+                        throw new GameFrameworkException(scene.Handle.IsValid ? scene.Handle.Error : "The scene handle was released during loading.");
                     }
                     progress?.Invoke(1f);
                     cancellation.Token.ThrowIfCancellationRequested();
@@ -161,7 +160,7 @@ namespace UnityQGameFramework.Runtime
             if (!m_Packages.TryGetValue(GetPackageName(packageName), out PackageInfo package)
                 || !package.Scenes.TryGetValue(sceneAssetName, out SceneInfo scene) || !scene.Loaded || scene.Unloading)
             {
-                throw new FrameworkException("Scene is not loaded or is already unloading: " + sceneAssetName);
+                throw new GameFrameworkException("Scene is not loaded or is already unloading: " + sceneAssetName);
             }
 
             scene.Unloading = true;

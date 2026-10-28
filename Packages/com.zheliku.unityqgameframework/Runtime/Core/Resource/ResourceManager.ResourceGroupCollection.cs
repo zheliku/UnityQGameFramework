@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源组集合。
@@ -27,12 +27,12 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (resourceGroups == null || resourceGroups.Length < 1)
                 {
-                    throw new FrameworkException("Resource groups is invalid.");
+                    throw new GameFrameworkException("Resource groups is invalid.");
                 }
 
                 if (resourceInfos == null)
                 {
-                    throw new FrameworkException("Resource infos is invalid.");
+                    throw new GameFrameworkException("Resource infos is invalid.");
                 }
 
                 int lastIndex = resourceGroups.Length - 1;
@@ -40,21 +40,21 @@ namespace UnityQGameFramework.Core.Resource
                 {
                     if (resourceGroups[i] == null)
                     {
-                        throw new FrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", i));
+                        throw new GameFrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", i));
                     }
 
                     for (int j = i + 1; j < resourceGroups.Length; j++)
                     {
                         if (resourceGroups[i] == resourceGroups[j])
                         {
-                            throw new FrameworkException(Utility.Text.Format("Resource group '{0}' duplicated.", resourceGroups[i].Name));
+                            throw new GameFrameworkException(Utility.Text.Format("Resource group '{0}' duplicated.", resourceGroups[i].Name));
                         }
                     }
                 }
 
                 if (resourceGroups[lastIndex] == null)
                 {
-                    throw new FrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", lastIndex));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", lastIndex));
                 }
 
                 m_ResourceGroups = resourceGroups;
@@ -72,7 +72,7 @@ namespace UnityQGameFramework.Core.Resource
                         ResourceInfo resourceInfo = null;
                         if (!m_ResourceInfos.TryGetValue(resourceName, out resourceInfo))
                         {
-                            throw new FrameworkException(Utility.Text.Format("Resource info '{0}' is invalid.", resourceName.FullName));
+                            throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is invalid.", resourceName.FullName));
                         }
 
                         if (m_ResourceNames.Add(resourceName))
@@ -130,12 +130,18 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源组集合包含资源的总大小。
             /// </summary>
-            public long TotalLength { get; private set; }
+            public long TotalLength
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取资源组集合包含资源压缩后的总大小。
             /// </summary>
-            public long TotalCompressedLength { get; private set; }
+            public long TotalCompressedLength
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取资源组集合中已准备完成资源的总大小。
@@ -223,7 +229,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (results == null)
                 {
-                    throw new FrameworkException("Results is invalid.");
+                    throw new GameFrameworkException("Results is invalid.");
                 }
 
                 results.Clear();

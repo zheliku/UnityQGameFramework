@@ -5,7 +5,7 @@
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         /// <summary>
         /// 按类型汇总运行时对象内存。
@@ -31,17 +31,26 @@ namespace UnityQGameFramework.Runtime
                 /// <summary>
                 /// 获取对象类型名称。
                 /// </summary>
-                public string Name { get; }
+                public string Name
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取或设置对象数量。
                 /// </summary>
-                public int Count { get; set; }
+                public int Count
+                {
+                    get; set;
+                }
 
                 /// <summary>
                 /// 获取或设置内存总字节数。
                 /// </summary>
-                public long Size { get; set; }
+                public long Size
+                {
+                    get; set;
+                }
             }
         }
     }

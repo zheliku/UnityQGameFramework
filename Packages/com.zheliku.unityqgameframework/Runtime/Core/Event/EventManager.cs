@@ -5,12 +5,12 @@
 
 using System;
 
-namespace UnityQGameFramework.Core.Event
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 事件管理器。
     /// </summary>
-    internal sealed class EventManager : FrameworkModule, IEventManager
+    internal sealed class EventManager : GameFrameworkModule, IEventManager
     {
         private readonly EventPool<GameEventArgs> m_EventPool;
 

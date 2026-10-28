@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Scene
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 卸载场景成功事件。
     /// </summary>
-    public sealed class UnloadSceneSuccessEventArgs : FrameworkEventArgs
+    public sealed class UnloadSceneSuccessEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化卸载场景成功事件的新实例。
@@ -22,12 +22,18 @@ namespace UnityQGameFramework.Core.Scene
         /// <summary>
         /// 获取场景资源名称。
         /// </summary>
-        public string SceneAssetName { get; private set; }
+        public string SceneAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建卸载场景成功事件。

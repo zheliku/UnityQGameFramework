@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.UI;
+using UnityQGameFramework.Core;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime

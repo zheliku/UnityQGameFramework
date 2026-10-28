@@ -96,7 +96,11 @@ namespace UnityQGameFramework.Editor
                     // 构建产物导入会刷新原生窗口，保留本次结果以便刷新后继续查看。
                     SessionState.SetString(key + ".Result", result.text);
                 }
-            }) { text = "Build Selected", name = "QgfBuildSelected" };
+            })
+            {
+                text = "Build Selected",
+                name = "QgfBuildSelected"
+            };
             build.SetEnabled(selected.Count > 0 && !ResourceBuildService.IsBuilding && !EditorApplication.isPlayingOrWillChangePlaymode);
             controls.Add(build);
             section.Add(controls);

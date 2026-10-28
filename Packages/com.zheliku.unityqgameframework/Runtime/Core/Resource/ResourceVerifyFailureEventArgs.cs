@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 资源校验失败事件。
     /// </summary>
-    public sealed class ResourceVerifyFailureEventArgs : FrameworkEventArgs
+    public sealed class ResourceVerifyFailureEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化资源校验失败事件的新实例。
@@ -21,7 +21,10 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源校验失败事件。

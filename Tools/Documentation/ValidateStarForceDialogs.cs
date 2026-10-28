@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.EventSystems;
-using UnityQGameFramework.Core.Localization;
+using UnityQGameFramework.Core;
 using Entry = StarForce.GameEntry;
 using Object = UnityEngine.Object;
 
@@ -23,9 +23,11 @@ public static class ValidateStarForceDialogs
     {
         if (!Application.dataPath.Contains("Artifacts~") || !File.Exists("QgfExampleConsumer~.json"))
             throw new InvalidOperationException("Use the isolated Consumer project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Stop Play first.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Stop Play first.");
         for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
-            if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty) throw new InvalidOperationException("Unsaved scene.");
+            if (UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty)
+                throw new InvalidOperationException("Unsaved scene.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
         var options = EditorSettings.enterPlayModeOptions;
@@ -39,11 +41,13 @@ public static class ValidateStarForceDialogs
         var checks = new List<string>();
         Application.LogCallback capture = (message, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         void Check(bool condition, string message)
         {
-            if (!condition) throw new Exception(message);
+            if (!condition)
+                throw new Exception(message);
             checks.Add(message);
         }
         Application.logMessageReceived += capture;
@@ -51,7 +55,7 @@ public static class ValidateStarForceDialogs
         {
             EditorSettings.enterPlayModeOptionsEnabled = true;
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
-        EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");
+            EditorSceneManager.OpenScene("Assets/Examples/02_StarForce/StarForce Launcher.unity");
             await Play(true);
             Application.runInBackground = true;
             input.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
@@ -69,9 +73,17 @@ public static class ValidateStarForceDialogs
             {
                 int answers = 0;
                 object received = null;
-                var data = new DialogParams { Mode = mode, Title = "选择操作", Message = "关闭窗口后只执行一次回调。", PauseGame = true,
-                    UserData = "managed-" + mode, OnClickConfirm = value => { answers++; received = value; },
-                    OnClickCancel = value => { answers++; received = value; }, OnClickOther = value => { answers++; received = value; } };
+                var data = new DialogParams
+                {
+                    Mode = mode,
+                    Title = "选择操作",
+                    Message = "关闭窗口后只执行一次回调。",
+                    PauseGame = true,
+                    UserData = "managed-" + mode,
+                    OnClickConfirm = value => { answers++; received = value; },
+                    OnClickCancel = value => { answers++; received = value; },
+                    OnClickOther = value => { answers++; received = value; }
+                };
                 Entry.UI.OpenDialog(data);
                 DialogForm form = null;
                 await Until(() => (form = Object.FindFirstObjectByType<DialogForm>()) != null && form.Available);
@@ -79,9 +91,21 @@ public static class ValidateStarForceDialogs
                 Check(answers == 0 && form.DialogMode == mode && Entry.Base.IsGamePaused, "Managed dialog waits for a choice: mode " + mode);
                 var managedBackground = form.transform.Find("Panel_Mask/Panel_Background").GetComponent<Image>();
                 Check(managedBackground.sprite != null && managedBackground.color.a >= 1f, "Managed dialog card is opaque: mode " + mode);
-                if (mode == 1) { form.OnConfirmButtonClick(); form.OnConfirmButtonClick(); }
-                else if (mode == 2) { form.OnCancelButtonClick(); form.OnConfirmButtonClick(); }
-                else { form.OnOtherButtonClick(); form.OnCancelButtonClick(); }
+                if (mode == 1)
+                {
+                    form.OnConfirmButtonClick();
+                    form.OnConfirmButtonClick();
+                }
+                else if (mode == 2)
+                {
+                    form.OnCancelButtonClick();
+                    form.OnConfirmButtonClick();
+                }
+                else
+                {
+                    form.OnOtherButtonClick();
+                    form.OnCancelButtonClick();
+                }
                 Check(answers == 1 && Equals(received, data.UserData), "Managed callback and context once: mode " + mode);
                 await Until(() => !form.Available);
                 Check(!Entry.Base.IsGamePaused, "Managed dialog releases its pause: mode " + mode);
@@ -106,9 +130,15 @@ public static class ValidateStarForceDialogs
                     "UpdateResourceViaCarrierDataNetwork.Title", "UpdateResourceViaCarrierDataNetwork.Message" })
                     Check(!string.IsNullOrEmpty(Entry.Localization.GetRawString(key)), "Startup translation " + language + ": " + key);
                 int answers = 0;
-                Entry.UI.OpenDialog(new DialogParams { Mode = 2, Title = Entry.Localization.GetString("ForceUpdate.Title"),
-                    Message = Entry.Localization.GetString("ForceUpdate.Message"), PauseGame = true,
-                    OnClickConfirm = _ => answers++, OnClickCancel = _ => answers++ });
+                Entry.UI.OpenDialog(new DialogParams
+                {
+                    Mode = 2,
+                    Title = Entry.Localization.GetString("ForceUpdate.Title"),
+                    Message = Entry.Localization.GetString("ForceUpdate.Message"),
+                    PauseGame = true,
+                    OnClickConfirm = _ => answers++,
+                    OnClickCancel = _ => answers++
+                });
                 var form = Object.FindFirstObjectByType<BuiltinDialogForm>();
                 Check(form != null && answers == 0 && Entry.Base.IsGamePaused, "Builtin dialog waits without tables: " + language);
                 var builtinBackground = form.transform.Find("Panel_Mask/Panel_Background").GetComponent<Image>();
@@ -161,22 +191,38 @@ public static class ValidateStarForceDialogs
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             input.backgroundBehavior = oldBackground;
             input.editorInputBehaviorInPlayMode = oldEditorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = background;
-            if (setup.Any(scene => scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
-        var result = new { passed = true, unity = Application.unityVersion, checks, interaction = "Direct handlers; Chinese startup Cancel uses native mouse input" };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            checks,
+            interaction = "Direct handlers; Chinese startup Cancel uses native mouse input"
+        };
         Directory.CreateDirectory("Artifacts~/StarForceDialogs");
         File.WriteAllText("Artifacts~/StarForceDialogs/check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, assertions = checks.Count };
+        return new
+        {
+            result.passed,
+            result.unity,
+            assertions = checks.Count
+        };
     }
 
     private static async Task Until(Func<bool> condition)
@@ -184,7 +230,8 @@ public static class ValidateStarForceDialogs
         double start = EditorApplication.timeSinceStartup;
         while (!condition())
         {
-            if (EditorApplication.timeSinceStartup - start > 20) throw new TimeoutException("Dialog state");
+            if (EditorApplication.timeSinceStartup - start > 20)
+                throw new TimeoutException("Dialog state");
             await Task.Delay(40);
         }
     }

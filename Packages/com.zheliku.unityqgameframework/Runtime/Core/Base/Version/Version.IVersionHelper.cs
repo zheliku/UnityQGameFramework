@@ -15,12 +15,18 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取游戏版本号。
             /// </summary>
-            string GameVersion { get; }
+            string GameVersion
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取内部游戏版本号。
             /// </summary>
-            int InternalGameVersion { get; }
+            int InternalGameVersion
+            {
+                get;
+            }
         }
     }
 }

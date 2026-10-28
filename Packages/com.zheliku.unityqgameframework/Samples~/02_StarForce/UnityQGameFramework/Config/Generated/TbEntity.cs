@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Entity
 /// </summary>
-public partial class TbEntity : UnityQGameFramework.Core.DataTable.DataTable<DREntity>
+public partial class TbEntity : UnityQGameFramework.Core.DataTable<DREntity>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

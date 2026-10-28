@@ -18,7 +18,9 @@ namespace UnityQGameFramework.Editor
         public override void OnImportAsset(AssetImportContext context)
         {
             var asset = new TextAsset(File.ReadAllText(context.assetPath, new UTF8Encoding(false, true)))
-            { name = Path.GetFileNameWithoutExtension(context.assetPath) };
+            {
+                name = Path.GetFileNameWithoutExtension(context.assetPath)
+            };
             context.AddObjectToAsset("text", asset);
             context.SetMainObject(asset);
         }

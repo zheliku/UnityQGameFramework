@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class UIManager : FrameworkModule, IUIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         /// <summary>
         /// 保存打开界面请求的参数。
@@ -26,22 +26,34 @@ namespace UnityQGameFramework.Core.UI
             /// <summary>
             /// 获取界面序列编号。
             /// </summary>
-            public int SerialId { get; private set; }
+            public int SerialId
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取目标界面组。
             /// </summary>
-            public UIGroup UIGroup { get; private set; }
+            public UIGroup UIGroup
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取是否暂停被覆盖的界面。
             /// </summary>
-            public bool PauseCoveredUIForm { get; private set; }
+            public bool PauseCoveredUIForm
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取用户自定义数据。
             /// </summary>
-            public object UserData { get; private set; }
+            public object UserData
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 从引用池获取界面打开请求。

@@ -25,7 +25,8 @@ public static class StyleExampleUi
     {
         if (!Path.GetFullPath(Application.dataPath).Contains(Path.DirectorySeparatorChar + "Artifacts~" + Path.DirectorySeparatorChar))
             throw new Exception("Use the isolated authoring project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount).Any(i => UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty))
             throw new Exception("Unsaved scene.");
@@ -38,11 +39,13 @@ public static class StyleExampleUi
         {
             foreach (string path in AssetDatabase.FindAssets("t:Prefab", roots).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p))
             {
-                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal))) continue;
+                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal)))
+                    continue;
                 var root = PrefabUtility.LoadPrefabContents(path);
                 try
                 {
-                    if (root.GetComponentInChildren<RectTransform>(true) == null) continue;
+                    if (root.GetComponentInChildren<RectTransform>(true) == null)
+                        continue;
                     Apply(root, path);
                     PrefabUtility.SaveAsPrefabAsset(root, path);
                     prefabs++;
@@ -51,13 +54,16 @@ public static class StyleExampleUi
             }
             foreach (string path in AssetDatabase.FindAssets("t:Scene", roots).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p))
             {
-                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal))) continue;
+                if (cases != null && !cases.Any(folder => path.StartsWith(folder + "/", StringComparison.Ordinal)))
+                    continue;
                 var scene = EditorSceneManager.OpenScene(path);
-                foreach (var root in scene.GetRootGameObjects()) Apply(root, path);
+                foreach (var root in scene.GetRootGameObjects())
+                    Apply(root, path);
                 if (!path.Contains("02_StarForce"))
                 {
                     RenderSettings.skybox = AssetDatabase.GetBuiltinExtraResource<Material>("Default-Skybox.mat");
-                    foreach (var camera in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsSortMode.None)) camera.clearFlags = CameraClearFlags.Skybox;
+                    foreach (var camera in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))
+                        camera.clearFlags = CameraClearFlags.Skybox;
                 }
                 EditorSceneManager.SaveScene(scene);
                 scenes++;
@@ -65,10 +71,20 @@ public static class StyleExampleUi
         }
         finally
         {
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
-        var result = new { passed = true, scenes, prefabs, palette = "StarForce / transparent controls / white outlines", background = "Unity default skybox; StarForce keeps its own scene", runtimeThemeDependency = false };
+        var result = new
+        {
+            passed = true,
+            scenes,
+            prefabs,
+            palette = "StarForce / transparent controls / white outlines",
+            background = "Unity default skybox; StarForce keeps its own scene",
+            runtimeThemeDependency = false
+        };
         Directory.CreateDirectory("Artifacts~/SciFiStyle");
         File.WriteAllText("Artifacts~/SciFiStyle/style-check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
         return result;
@@ -78,28 +94,44 @@ public static class StyleExampleUi
     {
         bool starForce = path.Contains("02_StarForce");
         if (starForce)
-            foreach (var scaler in root.GetComponentsInChildren<CanvasScaler>(true)) scaler.matchWidthOrHeight = 1;
+            foreach (var scaler in root.GetComponentsInChildren<CanvasScaler>(true))
+                scaler.matchWidthOrHeight = 1;
         var outline = SpriteFor(path, "button-outline.png", "ButtonOutline.png");
         var checkmark = SpriteFor(path, "checked.png", "Checkmark.png");
         foreach (var text in root.GetComponentsInChildren<Text>(true))
         {
             text.color = Ink;
             text.lineSpacing = 1.05f;
-            foreach (var shadow in text.GetComponents<Shadow>()) UnityEngine.Object.DestroyImmediate(shadow);
-            if (text.name.Contains("Title")) text.fontStyle = FontStyle.Bold;
-            if (!starForce && text.fontSize >= 26) text.fontSize = 26;
+            foreach (var shadow in text.GetComponents<Shadow>())
+                UnityEngine.Object.DestroyImmediate(shadow);
+            if (text.name.Contains("Title"))
+                text.fontStyle = FontStyle.Bold;
+            if (!starForce && text.fontSize >= 26)
+                text.fontSize = 26;
         }
         foreach (var image in root.GetComponentsInChildren<Image>(true))
         {
-            if (image.GetComponent<Mask>() != null) { image.color = Color.white; continue; }
-            if (image.name.Contains("Marker")) image.color = image.transform.childCount == 0 ? Accent : Track;
-            else if (image.name.Contains("Checkmark") || image.name.Contains("Fill")) image.color = Accent;
-            else if (image.name.Contains("Handle")) image.color = Color.white;
-            else if (image.name.Contains("Arrow")) image.color = Muted;
-            else if (image.name.Contains("Mask")) image.color = new Color(.015f, .035f, .06f, .45f);
-            else if (image.name.Contains("Page") || image.name.Contains("Board")) image.color = Soft;
-            else if (image.GetComponent<ScrollRect>() != null || image.name.Contains("Background") || image.name.Contains("Window")) image.color = Soft;
-            else image.color = Track;
+            if (image.GetComponent<Mask>() != null)
+            {
+                image.color = Color.white;
+                continue;
+            }
+            if (image.name.Contains("Marker"))
+                image.color = image.transform.childCount == 0 ? Accent : Track;
+            else if (image.name.Contains("Checkmark") || image.name.Contains("Fill"))
+                image.color = Accent;
+            else if (image.name.Contains("Handle"))
+                image.color = Color.white;
+            else if (image.name.Contains("Arrow"))
+                image.color = Muted;
+            else if (image.name.Contains("Mask"))
+                image.color = new Color(.015f, .035f, .06f, .45f);
+            else if (image.name.Contains("Page") || image.name.Contains("Board"))
+                image.color = Soft;
+            else if (image.GetComponent<ScrollRect>() != null || image.name.Contains("Background") || image.name.Contains("Window"))
+                image.color = Soft;
+            else
+                image.color = Track;
         }
         foreach (var button in root.GetComponentsInChildren<Button>(true))
         {
@@ -107,11 +139,16 @@ public static class StyleExampleUi
             var image = button.targetGraphic as Image;
             if (image != null)
             {
-                if (board) image.color = new Color(.02f, .07f, .12f, .22f);
-                else Border(image, outline);
+                if (board)
+                    image.color = new Color(.02f, .07f, .12f, .22f);
+                else
+                    Border(image, outline);
             }
             foreach (var text in button.GetComponentsInChildren<Text>(true))
-            { text.color = Ink; text.fontStyle = FontStyle.Bold; }
+            {
+                text.color = Ink;
+                text.fontStyle = FontStyle.Bold;
+            }
             Colors(button);
         }
         foreach (var input in root.GetComponentsInChildren<InputField>(true))
@@ -119,8 +156,10 @@ public static class StyleExampleUi
             input.caretColor = Accent;
             input.selectionColor = new Color(.15f, .6f, .8f, .3f);
             input.textComponent.color = Ink;
-            if (input.placeholder != null) input.placeholder.color = Muted;
-            if (input.targetGraphic is Image image) Border(image, outline);
+            if (input.placeholder != null)
+                input.placeholder.color = Muted;
+            if (input.targetGraphic is Image image)
+                Border(image, outline);
             Colors(input);
         }
         foreach (var dropdown in root.GetComponentsInChildren<Dropdown>(true))
@@ -129,16 +168,22 @@ public static class StyleExampleUi
         }
         foreach (var toggle in root.GetComponentsInChildren<Toggle>(true))
         {
-            if (toggle.GetComponentInParent<Dropdown>(true) != null) continue;
-            if (toggle.graphic != null) toggle.graphic.color = Accent;
-            if (toggle.graphic is Image tick) tick.sprite = checkmark;
-            if (toggle.targetGraphic != null) toggle.targetGraphic.color = Track;
+            if (toggle.GetComponentInParent<Dropdown>(true) != null)
+                continue;
+            if (toggle.graphic != null)
+                toggle.graphic.color = Accent;
+            if (toggle.graphic is Image tick)
+                tick.sprite = checkmark;
+            if (toggle.targetGraphic != null)
+                toggle.targetGraphic.color = Track;
             Colors(toggle);
         }
         foreach (var slider in root.GetComponentsInChildren<Slider>(true))
         {
-            if (slider.fillRect != null) slider.fillRect.GetComponent<Image>().color = Accent;
-            if (slider.handleRect != null) slider.handleRect.GetComponent<Image>().color = Color.white;
+            if (slider.fillRect != null)
+                slider.fillRect.GetComponent<Image>().color = Accent;
+            if (slider.handleRect != null)
+                slider.handleRect.GetComponent<Image>().color = Color.white;
             Colors(slider);
         }
         foreach (var scroll in root.GetComponentsInChildren<ScrollRect>(true))
@@ -179,13 +224,15 @@ public static class StyleExampleUi
         if (starForce)
         {
             StyleCommonButtons(root);
-            if (root.name == "MenuForm") StyleStarForceMenu(root);
+            if (root.name == "MenuForm")
+                StyleStarForceMenu(root);
         }
     }
 
     private static void StyleDropdown(Dropdown dropdown, Sprite outline, Sprite checkmark)
     {
-        if (dropdown.targetGraphic is Image image) Border(image, outline);
+        if (dropdown.targetGraphic is Image image)
+            Border(image, outline);
         Colors(dropdown);
         dropdown.captionText.color = Ink;
         dropdown.captionText.lineSpacing = 1;
@@ -246,7 +293,8 @@ public static class StyleExampleUi
             barRect.anchorMax = Vector2.one;
             barRect.offsetMin = new Vector2(-14, 8);
             barRect.offsetMax = new Vector2(-6, -8);
-            if (bar.GetComponent<Image>() is Image track) track.color = new Color(1, 1, 1, .06f);
+            if (bar.GetComponent<Image>() is Image track)
+                track.color = new Color(1, 1, 1, .06f);
             bar.targetGraphic.color = new Color(.7f, .85f, .9f, .6f);
         }
         var item = dropdown.itemText.GetComponentInParent<Toggle>(true);
@@ -278,8 +326,10 @@ public static class StyleExampleUi
             selection.type = Image.Type.Simple;
             selection.color = Color.white;
         }
-        if (item.graphic != null) item.graphic.color = Ink;
-        if (item.graphic is Image tick) tick.sprite = checkmark;
+        if (item.graphic != null)
+            item.graphic.color = Ink;
+        if (item.graphic is Image tick)
+            tick.sprite = checkmark;
         var colors = item.colors;
         colors.normalColor = new Color(.75f, .85f, .9f, .025f);
         colors.highlightedColor = new Color(.2f, .6f, .75f, .32f);
@@ -312,15 +362,18 @@ public static class StyleExampleUi
         string target = module.Contains("02_StarForce") ? source
             : module.Contains("00_PointPointPoint") ? module + "/GameMain/UI/UISprites/" + targetName
             : "Assets/Examples/01_Modules/Common/UI/UISprites/" + targetName;
-        if (sprites.TryGetValue(target, out var sprite)) return sprite;
+        if (sprites.TryGetValue(target, out var sprite))
+            return sprite;
         if (!File.Exists(target))
         {
             Directory.CreateDirectory(Path.GetDirectoryName(target));
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
-            if (!AssetDatabase.CopyAsset(source, target)) throw new Exception("Could not copy UI sprite: " + target);
+            if (!AssetDatabase.CopyAsset(source, target))
+                throw new Exception("Could not copy UI sprite: " + target);
         }
         sprite = AssetDatabase.LoadAssetAtPath<Sprite>(target);
-        if (sprite == null) throw new Exception("Missing UI sprite: " + target);
+        if (sprite == null)
+            throw new Exception("Missing UI sprite: " + target);
         sprites[target] = sprite;
         return sprite;
     }
@@ -340,8 +393,11 @@ public static class StyleExampleUi
         {
             bool primary = button.name == "Button_Start" || button.name == "Button_Confirm";
             foreach (var image in button.GetComponentsInChildren<Image>(true))
-            { image.color = primary ? Hex("C1F0FF") : Hex("B7D6E8"); }
-            foreach (var text in button.GetComponentsInChildren<Text>(true)) text.color = Ink;
+            {
+                image.color = primary ? Hex("C1F0FF") : Hex("B7D6E8");
+            }
+            foreach (var text in button.GetComponentsInChildren<Text>(true))
+                text.color = Ink;
         }
     }
 
@@ -398,13 +454,15 @@ public static class StyleExampleUi
             foreach (var image in button.GetComponentsInChildren<Image>(true))
             {
                 var rect = (RectTransform)image.transform;
-                rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one;
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
                 rect.offsetMin = rect.offsetMax = Vector2.zero;
             }
             foreach (var label in button.GetComponentsInChildren<Text>(true))
             {
                 var rect = (RectTransform)label.transform;
-                rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one;
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
                 rect.offsetMin = rect.offsetMax = Vector2.zero;
                 label.fontSize = 30;
                 label.alignment = TextAnchor.MiddleCenter;
@@ -425,5 +483,9 @@ public static class StyleExampleUi
         control.colors = colors;
     }
 
-    private static Color Hex(string value) { ColorUtility.TryParseHtmlString("#" + value, out var color); return color; }
+    private static Color Hex(string value)
+    {
+        ColorUtility.TryParseHtmlString("#" + value, out var color);
+        return color;
+    }
 }

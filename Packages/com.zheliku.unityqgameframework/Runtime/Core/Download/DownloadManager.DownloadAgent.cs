@@ -3,12 +3,13 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         /// <summary>
         /// 下载代理。
@@ -23,22 +24,22 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 下载开始回调。
             /// </summary>
-            public FrameworkAction<DownloadAgent> DownloadAgentStart;
+            public GameFrameworkAction<DownloadAgent> DownloadAgentStart;
 
             /// <summary>
             /// 下载字节增量回调。
             /// </summary>
-            public FrameworkAction<DownloadAgent, int> DownloadAgentUpdate;
+            public GameFrameworkAction<DownloadAgent, int> DownloadAgentUpdate;
 
             /// <summary>
             /// 下载成功回调。
             /// </summary>
-            public FrameworkAction<DownloadAgent, long> DownloadAgentSuccess;
+            public GameFrameworkAction<DownloadAgent, long> DownloadAgentSuccess;
 
             /// <summary>
             /// 下载失败回调。
             /// </summary>
-            public FrameworkAction<DownloadAgent, string> DownloadAgentFailure;
+            public GameFrameworkAction<DownloadAgent, string> DownloadAgentFailure;
 
             /// <summary>
             /// 初始化下载代理的新实例。
@@ -48,7 +49,7 @@ namespace UnityQGameFramework.Core.Download
             {
                 if (downloadAgentHelper == null)
                 {
-                    throw new FrameworkException("Download agent helper is invalid.");
+                    throw new GameFrameworkException("Download agent helper is invalid.");
                 }
 
                 m_Helper = downloadAgentHelper;
@@ -70,22 +71,34 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 获取下载任务。
             /// </summary>
-            public DownloadTask Task { get; private set; }
+            public DownloadTask Task
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取已经等待时间。
             /// </summary>
-            public float WaitTime { get; private set; }
+            public float WaitTime
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取开始下载时已经存在的大小。
             /// </summary>
-            public long StartLength { get; private set; }
+            public long StartLength
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取本次已经下载的大小。
             /// </summary>
-            public long DownloadedLength { get; private set; }
+            public long DownloadedLength
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取当前的大小。
@@ -101,7 +114,10 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 获取已经存盘的大小。
             /// </summary>
-            public long SavedLength { get; private set; }
+            public long SavedLength
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 初始化下载代理。
@@ -155,7 +171,7 @@ namespace UnityQGameFramework.Core.Download
             {
                 if (task == null)
                 {
-                    throw new FrameworkException("Task is invalid.");
+                    throw new GameFrameworkException("Task is invalid.");
                 }
 
                 Task = task;
@@ -316,7 +332,7 @@ namespace UnityQGameFramework.Core.Download
                 DownloadedLength = e.Length;
                 if (SavedLength != CurrentLength)
                 {
-                    throw new FrameworkException("Internal download error.");
+                    throw new GameFrameworkException("Internal download error.");
                 }
 
                 m_Helper.Reset();

@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Network;
 using UnityEditor;
 using UnityEngine;
 using UnityQGameFramework.Runtime;
@@ -15,7 +14,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制网络组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(NetworkComponent))]
-    internal sealed class NetworkComponentInspector : FrameworkInspector
+    internal sealed class NetworkComponentInspector : GameFrameworkInspector
     {
         /// <summary>
         /// 绘制组件的 Inspector 配置和运行时信息。

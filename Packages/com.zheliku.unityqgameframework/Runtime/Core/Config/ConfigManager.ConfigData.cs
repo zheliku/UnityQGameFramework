@@ -5,9 +5,9 @@
 
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.Config
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ConfigManager : FrameworkModule, IConfigManager
+    internal sealed partial class ConfigManager : GameFrameworkModule, IConfigManager
     {
         /// <summary>
         /// 保存同一配置项的布尔、整数、浮点和文本值。
@@ -33,22 +33,34 @@ namespace UnityQGameFramework.Core.Config
             /// <summary>
             /// 获取布尔值。
             /// </summary>
-            public bool BoolValue { get; }
+            public bool BoolValue
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取整数值。
             /// </summary>
-            public int IntValue { get; }
+            public int IntValue
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取浮点数值。
             /// </summary>
-            public float FloatValue { get; }
+            public float FloatValue
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取字符串值。
             /// </summary>
-            public string StringValue { get; }
+            public string StringValue
+            {
+                get;
+            }
         }
     }
 }

@@ -16,20 +16,20 @@ namespace UnityQGameFramework.Runtime
     /// </summary>
     public static class GameEntry
     {
-        private static readonly FrameworkLinkedList<FrameworkComponent> s_FrameworkComponents = new FrameworkLinkedList<FrameworkComponent>();
-        private static readonly Dictionary<Type, FrameworkComponent> s_ComponentCache = new Dictionary<Type, FrameworkComponent>();
+        private static readonly GameFrameworkLinkedList<GameFrameworkComponent> s_GameFrameworkComponents = new GameFrameworkLinkedList<GameFrameworkComponent>();
+        private static readonly Dictionary<Type, GameFrameworkComponent> s_ComponentCache = new Dictionary<Type, GameFrameworkComponent>();
 
         /// <summary>
         /// 游戏框架所在的场景编号。
         /// </summary>
-        internal const int FrameworkSceneId = 0;
+        internal const int GameFrameworkSceneId = 0;
 
         /// <summary>
         /// 获取游戏框架组件。
         /// </summary>
         /// <typeparam name="T">要获取的游戏框架组件类型。</typeparam>
         /// <returns>要获取的游戏框架组件。</returns>
-        public static T GetComponent<T>() where T : FrameworkComponent
+        public static T GetComponent<T>() where T : GameFrameworkComponent
         {
             return (T)GetComponent(typeof(T));
         }
@@ -39,9 +39,9 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="type">要获取的游戏框架组件类型。</param>
         /// <returns>要获取的游戏框架组件。</returns>
-        public static FrameworkComponent GetComponent(Type type)
+        public static GameFrameworkComponent GetComponent(Type type)
         {
-            return type != null && s_ComponentCache.TryGetValue(type, out FrameworkComponent component) ? component : null;
+            return type != null && s_ComponentCache.TryGetValue(type, out GameFrameworkComponent component) ? component : null;
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="typeName">要获取的游戏框架组件类型名称。</param>
         /// <returns>要获取的游戏框架组件。</returns>
-        public static FrameworkComponent GetComponent(string typeName)
+        public static GameFrameworkComponent GetComponent(string typeName)
         {
-            LinkedListNode<FrameworkComponent> current = s_FrameworkComponents.First;
+            LinkedListNode<GameFrameworkComponent> current = s_GameFrameworkComponents.First;
             while (current != null)
             {
                 Type type = current.Value.GetType();
@@ -89,7 +89,7 @@ namespace UnityQGameFramework.Runtime
 
             if (shutdownType == ShutdownType.Restart)
             {
-                SceneManager.LoadScene(FrameworkSceneId);
+                SceneManager.LoadScene(GameFrameworkSceneId);
                 return;
             }
 
@@ -106,16 +106,16 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 注册游戏框架组件。
         /// </summary>
-        /// <param name="frameworkComponent">要注册的游戏框架组件。</param>
-        internal static void RegisterComponent(FrameworkComponent frameworkComponent)
+        /// <param name="gameFrameworkComponent">要注册的游戏框架组件。</param>
+        internal static void RegisterComponent(GameFrameworkComponent gameFrameworkComponent)
         {
-            if (frameworkComponent == null)
+            if (gameFrameworkComponent == null)
             {
                 Log.Error("Unity Q Game Framework component is invalid.");
                 return;
             }
 
-            Type type = frameworkComponent.GetType();
+            Type type = gameFrameworkComponent.GetType();
 
             if (s_ComponentCache.ContainsKey(type))
             {
@@ -123,8 +123,8 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
-            s_FrameworkComponents.AddLast(frameworkComponent);
-            s_ComponentCache.Add(type, frameworkComponent);
+            s_GameFrameworkComponents.AddLast(gameFrameworkComponent);
+            s_ComponentCache.Add(type, gameFrameworkComponent);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         internal static void ClearComponents()
         {
-            s_FrameworkComponents.Clear();
+            s_GameFrameworkComponents.Clear();
             s_ComponentCache.Clear();
         }
     }

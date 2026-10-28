@@ -11,8 +11,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Localization;
-using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Editor;
 using UnityQGameFramework.Examples.Modules.TableData;
 using UnityQGameFramework.Runtime;
@@ -104,7 +102,7 @@ public static class QgfResourceBackendProbe
             {
                 await resource.DestroyPackageAsync();
             }
-            catch (FrameworkException)
+            catch (GameFrameworkException)
             {
                 rejected = true;
             }
@@ -192,7 +190,7 @@ public static class QgfResourceBackendProbe
             {
                 await tables.LoadDataTablesAsync<Tables>("missing-catalog");
             }
-            catch (FrameworkException)
+            catch (GameFrameworkException)
             {
                 tableFailure = true;
             }
@@ -423,7 +421,7 @@ public static class QgfResourceBackendProbe
         /// </summary>
         /// <param name="loader">数据文件加载方法。</param>
         /// <returns>已解析但不应登记的数据表。</returns>
-        public IReadOnlyList<UnityQGameFramework.Core.DataTable.DataTableBase> CreateTables(Func<string, UnityQGameFramework.Luban.ByteBuf> loader)
+        public IReadOnlyList<UnityQGameFramework.Core.DataTableBase> CreateTables(Func<string, UnityQGameFramework.Luban.ByteBuf> loader)
         {
             var result = ((IDataTableLoader)new Tables()).CreateTables(loader);
             GameEntry.GetComponent<DataTableComponent>().CancelLoadDataTables();

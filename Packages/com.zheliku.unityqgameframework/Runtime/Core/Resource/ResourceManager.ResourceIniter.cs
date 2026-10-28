@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源初始化器。
@@ -23,7 +23,7 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 资源初始化完成回调。
             /// </summary>
-            public FrameworkAction ResourceInitComplete;
+            public GameFrameworkAction ResourceInitComplete;
 
             /// <summary>
             /// 初始化资源初始化器的新实例。
@@ -55,12 +55,12 @@ namespace UnityQGameFramework.Core.Resource
 
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
-                    throw new FrameworkException("Resource helper is invalid.");
+                    throw new GameFrameworkException("Resource helper is invalid.");
                 }
 
                 if (string.IsNullOrEmpty(m_ResourceManager.ReadOnlyPath))
                 {
-                    throw new FrameworkException("Read-only path is invalid.");
+                    throw new GameFrameworkException("Read-only path is invalid.");
                 }
 
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.ReadOnlyPath, RemoteVersionListFileName)), new LoadBytesCallbacks(OnLoadPackageVersionListSuccess, OnLoadPackageVersionListFailure), null);
@@ -82,7 +82,7 @@ namespace UnityQGameFramework.Core.Resource
                     PackageVersionList versionList = m_ResourceManager.PackageVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new FrameworkException("Deserialize package version list failure.");
+                        throw new GameFrameworkException("Deserialize package version list failure.");
                     }
 
                     PackageVersionList.Asset[] assets = versionList.GetAssets();
@@ -163,12 +163,12 @@ namespace UnityQGameFramework.Core.Resource
                 }
                 catch (Exception exception)
                 {
-                    if (exception is FrameworkException)
+                    if (exception is GameFrameworkException)
                     {
                         throw;
                     }
 
-                    throw new FrameworkException(Utility.Text.Format("Parse package version list exception '{0}'.", exception), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse package version list exception '{0}'.", exception), exception);
                 }
                 finally
                 {
@@ -189,7 +189,7 @@ namespace UnityQGameFramework.Core.Resource
             /// <param name="userData">用户自定义数据。</param>
             private void OnLoadPackageVersionListFailure(string fileUri, string errorMessage, object userData)
             {
-                throw new FrameworkException(Utility.Text.Format("Package version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
+                throw new GameFrameworkException(Utility.Text.Format("Package version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
             }
         }
     }

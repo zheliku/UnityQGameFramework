@@ -4,8 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Fsm;
-using UnityQGameFramework.Core.Procedure;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -18,7 +16,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Procedure")]
-    public sealed class ProcedureComponent : FrameworkComponent
+    public sealed class ProcedureComponent : GameFrameworkComponent
     {
         private IProcedureManager m_ProcedureManager = null;
         private ProcedureBase m_EntranceProcedure = null;
@@ -59,7 +57,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_ProcedureManager = FrameworkEntry.GetModule<IProcedureManager>();
+            m_ProcedureManager = GameFrameworkEntry.GetModule<IProcedureManager>();
             if (m_ProcedureManager == null)
             {
                 Log.Fatal("Procedure manager is invalid.");
@@ -102,7 +100,7 @@ namespace UnityQGameFramework.Runtime
                 yield break;
             }
 
-            m_ProcedureManager.Initialize(FrameworkEntry.GetModule<IFsmManager>(), procedures);
+            m_ProcedureManager.Initialize(GameFrameworkEntry.GetModule<IFsmManager>(), procedures);
             m_Initialized = true;
 
             // Wait for the other components' Start methods. Waiting for a render

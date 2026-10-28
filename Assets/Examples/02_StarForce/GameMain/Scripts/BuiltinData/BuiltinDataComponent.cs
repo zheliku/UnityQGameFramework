@@ -14,7 +14,7 @@ namespace StarForce
     /// <summary>
     /// 管理启动场景携带的配置和界面模板。
     /// </summary>
-    public class BuiltinDataComponent : FrameworkComponent
+    public class BuiltinDataComponent : GameFrameworkComponent
     {
         [SerializeField]
         private TextAsset m_BuildInfoTextAsset = null;
@@ -33,7 +33,10 @@ namespace StarForce
         /// <summary>
         /// 获取构建信息。
         /// </summary>
-        public BuildInfo BuildInfo { get; private set; }
+        public BuildInfo BuildInfo
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源更新进度界面模板。

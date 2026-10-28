@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11407892, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StarForce.BuiltinDialogForm, Assembly-CSharp
+      value: StarForce.BuiltinDialogForm, UnityQGameFramework.Examples.StarForce
       objectReference: {fileID: 0}
     - target: {fileID: 11407892, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11432982, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StarForce.BuiltinDialogForm, Assembly-CSharp
+      value: StarForce.BuiltinDialogForm, UnityQGameFramework.Examples.StarForce
       objectReference: {fileID: 0}
     - target: {fileID: 11432982, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -106,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11435820, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StarForce.BuiltinDialogForm, Assembly-CSharp
+      value: StarForce.BuiltinDialogForm, UnityQGameFramework.Examples.StarForce
       objectReference: {fileID: 0}
     - target: {fileID: 11435820, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -134,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11457524, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StarForce.BuiltinDialogForm, Assembly-CSharp
+      value: StarForce.BuiltinDialogForm, UnityQGameFramework.Examples.StarForce
       objectReference: {fileID: 0}
     - target: {fileID: 11457524, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -170,7 +170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11466582, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StarForce.BuiltinDialogForm, Assembly-CSharp
+      value: StarForce.BuiltinDialogForm, UnityQGameFramework.Examples.StarForce
       objectReference: {fileID: 0}
     - target: {fileID: 11466582, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11490228, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StarForce.BuiltinDialogForm, Assembly-CSharp
+      value: StarForce.BuiltinDialogForm, UnityQGameFramework.Examples.StarForce
       objectReference: {fileID: 0}
     - target: {fileID: 11490228, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -437,7 +437,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 190f8e8191d84631a4cdbfa2c7b82193, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StarForce.BuiltinDialogForm
+  m_EditorClassIdentifier: UnityQGameFramework.Examples.StarForce::StarForce.BuiltinDialogForm
   m_TitleText: {fileID: 3495967705459439705}
   m_MessageText: {fileID: 3495967705459457311}
   m_ModeObjects:

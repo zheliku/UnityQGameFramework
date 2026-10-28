@@ -11,7 +11,8 @@ public static class ValidateStarForceBuild
 {
     public static object Run()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
         var watched = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .Select(name => "ProjectSettings/" + name + ".asset")
             .Concat(new[] { BuildStarForce.GetScenePath() }).ToDictionary(path => path, Hash);
@@ -21,26 +22,42 @@ public static class ValidateStarForceBuild
         var errors = new List<string>();
         Application.LogCallback capture = (message, stack, type) =>
         {
-            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         string folder = Path.GetFullPath("Artifacts~/StarForcePlayer");
         Directory.CreateDirectory(folder + "/Before");
-        foreach (string path in watched.Keys) File.Copy(path, folder + "/Before/" + Path.GetFileName(path), true);
+        foreach (string path in watched.Keys)
+            File.Copy(path, folder + "/Before/" + Path.GetFileName(path), true);
         string player;
         Application.logMessageReceived += capture;
-        try { player = BuildStarForce.BuildPlayer(folder + "/StarForce.exe"); }
+        try
+        {
+            player = BuildStarForce.BuildPlayer(folder + "/StarForce.exe");
+        }
         finally { Application.logMessageReceived -= capture; }
         var changed = watched.Where(pair => Hash(pair.Key) != pair.Value).Select(pair => pair.Key).ToArray();
         if (changed.Length != 0 || !Same(streaming, Tree("Assets/StreamingAssets")))
             throw new Exception("Build changed host files: " + string.Join(", ", changed));
         if (memory.Any(pair => EditorJsonUtility.ToJson(Unsupported.GetSerializedAssetInterfaceSingleton(pair.Key)) != pair.Value))
             throw new Exception("Build changed in-memory settings.");
-        if (errors.Count != 0) throw new Exception("Build errors: " + string.Join("\n", errors));
+        if (errors.Count != 0)
+            throw new Exception("Build errors: " + string.Join("\n", errors));
         string resources = folder + "/StarForce_Data/StreamingAssets/yoo/QgfExamples.StarForce";
-        if (!File.Exists(resources + "/BuiltinCatalog.bytes")) throw new Exception("Missing YooAsset builtin catalog.");
-        return new { passed = true, player, unity = Application.unityVersion, settingsUnchanged = true,
-            settingsMemoryUnchanged = true, sceneUnchanged = true, projectStreamingAssetsUnchanged = true,
-            packageFiles = Directory.GetFiles(resources, "*", SearchOption.AllDirectories).Length, editorErrors = 0 };
+        if (!File.Exists(resources + "/BuiltinCatalog.bytes"))
+            throw new Exception("Missing YooAsset builtin catalog.");
+        return new
+        {
+            passed = true,
+            player,
+            unity = Application.unityVersion,
+            settingsUnchanged = true,
+            settingsMemoryUnchanged = true,
+            sceneUnchanged = true,
+            projectStreamingAssetsUnchanged = true,
+            packageFiles = Directory.GetFiles(resources, "*", SearchOption.AllDirectories).Length,
+            editorErrors = 0
+        };
     }
 
     private static Dictionary<string, string> Tree(string folder) => Directory.Exists(folder)
@@ -50,6 +67,7 @@ public static class ValidateStarForceBuild
         && a.All(pair => b.TryGetValue(pair.Key, out string value) && value == pair.Value);
     private static string Hash(string path)
     {
-        using (var hash = SHA256.Create()) return Convert.ToBase64String(hash.ComputeHash(File.ReadAllBytes(path)));
+        using (var hash = SHA256.Create())
+            return Convert.ToBase64String(hash.ComputeHash(File.ReadAllBytes(path)));
     }
 }

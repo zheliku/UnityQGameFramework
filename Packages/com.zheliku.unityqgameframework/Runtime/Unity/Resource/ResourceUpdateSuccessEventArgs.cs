@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -44,34 +43,49 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源下载后存放路径。
         /// </summary>
-        public string DownloadPath { get; private set; }
+        public string DownloadPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载地址。
         /// </summary>
-        public string DownloadUri { get; private set; }
+        public string DownloadUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源大小。
         /// </summary>
-        public int Length { get; private set; }
+        public int Length
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int CompressedLength { get; private set; }
+        public int CompressedLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源更新成功事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源更新成功事件。</returns>
-        public static ResourceUpdateSuccessEventArgs Create(UnityQGameFramework.Core.Resource.ResourceUpdateSuccessEventArgs e)
+        public static ResourceUpdateSuccessEventArgs Create(UnityQGameFramework.Core.Events.ResourceUpdateSuccessEventArgs e)
         {
             ResourceUpdateSuccessEventArgs resourceUpdateSuccessEventArgs = ReferencePool.Acquire<ResourceUpdateSuccessEventArgs>();
             resourceUpdateSuccessEventArgs.Name = e.Name;

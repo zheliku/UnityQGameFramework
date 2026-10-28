@@ -159,7 +159,14 @@ foreach (string path in sources)
             int lastRank = -1;
             foreach (XElement tag in xml.Elements())
             {
-                int rank = tag.Name.LocalName switch { "summary" => 0, "typeparam" => 1, "param" => 2, "returns" => 3, _ => 4 };
+                int rank = tag.Name.LocalName switch
+                {
+                    "summary" => 0,
+                    "typeparam" => 1,
+                    "param" => 2,
+                    "returns" => 3,
+                    _ => 4
+                };
                 if (rank < lastRank)
                 {
                     Issue("tag_order");

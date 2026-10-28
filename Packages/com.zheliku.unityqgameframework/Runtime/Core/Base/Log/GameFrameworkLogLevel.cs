@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -8,7 +8,7 @@ namespace UnityQGameFramework.Core
     /// <summary>
     /// 游戏框架日志等级。
     /// </summary>
-    public enum FrameworkLogLevel : byte
+    public enum GameFrameworkLogLevel : byte
     {
         /// <summary>
         /// 调试。

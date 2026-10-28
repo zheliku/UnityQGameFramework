@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Asteroid
 /// </summary>
-public partial class TbAsteroid : UnityQGameFramework.Core.DataTable.DataTable<DRAsteroid>
+public partial class TbAsteroid : UnityQGameFramework.Core.DataTable<DRAsteroid>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

@@ -3,8 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.DataTable;
-using UnityQGameFramework.Core.UI;
+using UnityQGameFramework.Core;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

@@ -4,8 +4,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.DataTable;
-using UnityQGameFramework.Core.Resource;
 using UnityQGameFramework.Luban;
 
 namespace UnityQGameFramework.Runtime
@@ -16,7 +14,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Data Table")]
-    public sealed class DataTableComponent : FrameworkComponent
+    public sealed class DataTableComponent : GameFrameworkComponent
     {
         private IDataTableManager m_DataTableManager;
         private ResourceComponent m_ResourceComponent;
@@ -52,7 +50,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 是否正在通过资源模块加载 Catalog。
         /// </summary>
-        public bool IsLoading { get; private set; }
+        public bool IsLoading
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 是否已完成整组表的加载。
@@ -71,7 +72,7 @@ namespace UnityQGameFramework.Runtime
         protected override void Awake()
         {
             base.Awake();
-            m_DataTableManager = FrameworkEntry.GetModule<IDataTableManager>();
+            m_DataTableManager = GameFrameworkEntry.GetModule<IDataTableManager>();
         }
 
         /// <summary>
@@ -378,7 +379,7 @@ namespace UnityQGameFramework.Runtime
             IsLoading = false;
             LoadRequest request = m_LoadRequest;
             m_LoadRequest = null;
-            request?.Completion?.TrySetException(new FrameworkException(error));
+            request?.Completion?.TrySetException(new GameFrameworkException(error));
             Log.Warning("Load Luban data tables failed: {0}: {1}", assetName, error);
             m_EventComponent.Fire(this, LoadDataTableFailureEventArgs.Create(assetName, error, userData));
         }

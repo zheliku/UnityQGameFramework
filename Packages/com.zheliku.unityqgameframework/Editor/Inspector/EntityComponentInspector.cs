@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Entity;
 using UnityEditor;
 using UnityQGameFramework.Runtime;
 
@@ -14,7 +13,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制实体组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(EntityComponent))]
-    internal sealed class EntityComponentInspector : FrameworkInspector
+    internal sealed class EntityComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_EnableShowEntityUpdateEvent = null;
         private SerializedProperty m_EnableShowEntityDependencyAssetEvent = null;

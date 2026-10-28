@@ -1,12 +1,8 @@
 using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.Network;
-using UnityQGameFramework.Core.Event;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
-using ConnectedArgs = UnityQGameFramework.Runtime.NetworkConnectedEventArgs;
-using ClosedArgs = UnityQGameFramework.Runtime.NetworkClosedEventArgs;
-using ErrorArgs = UnityQGameFramework.Runtime.NetworkErrorEventArgs;
 
 namespace UnityQGameFramework.Examples.Modules
 {
@@ -28,9 +24,9 @@ namespace UnityQGameFramework.Examples.Modules
             // 创建通道只登记协议；Connect 才发起 Socket 连接。
             channel = QGF.Network.CreateNetworkChannel("Example.Main", ServiceType.Tcp, new NetworkTextProtocol());
             channel.HeartBeatInterval = 0;
-            QGF.Event.Subscribe(ConnectedArgs.EventId, OnEvent);
-            QGF.Event.Subscribe(ClosedArgs.EventId, OnEvent);
-            QGF.Event.Subscribe(ErrorArgs.EventId, OnEvent);
+            QGF.Event.Subscribe(NetworkConnectedEventArgs.EventId, OnEvent);
+            QGF.Event.Subscribe(NetworkClosedEventArgs.EventId, OnEvent);
+            QGF.Event.Subscribe(NetworkErrorEventArgs.EventId, OnEvent);
             connectButton.onClick.AddListener(() =>
             {
                 connecting = true;
@@ -43,15 +39,15 @@ namespace UnityQGameFramework.Examples.Modules
         private void OnEvent(object sender, GameEventArgs args)
         {
             // 全局事件先确认通道，避免处理其他业务连接的结果。
-            if (args is ConnectedArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
+            if (args is NetworkConnectedEventArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
             {
                 stateText.text = "Connected";
             }
-            else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
+            else if (args is NetworkClosedEventArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
             {
                 stateText.text = "Disconnected. You can connect again.";
             }
-            else if (args is ErrorArgs error && ReferenceEquals(error.NetworkChannel, channel))
+            else if (args is NetworkErrorEventArgs error && ReferenceEquals(error.NetworkChannel, channel))
             {
                 stateText.text = "Connection failed: " + error.SocketErrorCode;
                 channel.Close();
@@ -80,19 +76,19 @@ namespace UnityQGameFramework.Examples.Modules
             var events = GameEntry.GetComponent<EventComponent>();
             if (events != null)
             {
-                if (events.Check(ConnectedArgs.EventId, OnEvent))
+                if (events.Check(NetworkConnectedEventArgs.EventId, OnEvent))
                 {
-                    events.Unsubscribe(ConnectedArgs.EventId, OnEvent);
+                    events.Unsubscribe(NetworkConnectedEventArgs.EventId, OnEvent);
                 }
 
-                if (events.Check(ClosedArgs.EventId, OnEvent))
+                if (events.Check(NetworkClosedEventArgs.EventId, OnEvent))
                 {
-                    events.Unsubscribe(ClosedArgs.EventId, OnEvent);
+                    events.Unsubscribe(NetworkClosedEventArgs.EventId, OnEvent);
                 }
 
-                if (events.Check(ErrorArgs.EventId, OnEvent))
+                if (events.Check(NetworkErrorEventArgs.EventId, OnEvent))
                 {
-                    events.Unsubscribe(ErrorArgs.EventId, OnEvent);
+                    events.Unsubscribe(NetworkErrorEventArgs.EventId, OnEvent);
                 }
             }
 

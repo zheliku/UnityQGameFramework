@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Scene
 /// </summary>
-public partial class TbScene : UnityQGameFramework.Core.DataTable.DataTable<DRScene>
+public partial class TbScene : UnityQGameFramework.Core.DataTable<DRScene>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

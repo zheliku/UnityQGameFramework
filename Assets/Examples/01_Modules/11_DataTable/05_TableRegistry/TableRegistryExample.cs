@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Core.DataTable;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Examples.Modules.TableData;
 using UnityQGameFramework.Luban;
 using UnityQGameFramework.Runtime;

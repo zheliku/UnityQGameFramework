@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Debugger
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 调试器管理器接口。
@@ -13,12 +13,18 @@ namespace UnityQGameFramework.Core.Debugger
         /// <summary>
         /// 获取或设置调试器窗口是否激活。
         /// </summary>
-        bool ActiveWindow { get; set; }
+        bool ActiveWindow
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 调试器窗口根结点。
         /// </summary>
-        IDebuggerWindowGroup DebuggerWindowRoot { get; }
+        IDebuggerWindowGroup DebuggerWindowRoot
+        {
+            get;
+        }
 
         /// <summary>
         /// 注册调试器窗口。

@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Localization;
 using System;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-1000)]
     [AddComponentMenu("Unity Q Game Framework/Base")]
-    public sealed class BaseComponent : FrameworkComponent
+    public sealed class BaseComponent : GameFrameworkComponent
     {
         private const int DefaultDpi = 96;  // default windows dpi
 
@@ -163,7 +162,7 @@ namespace UnityQGameFramework.Runtime
             InitTextHelper();
             InitVersionHelper();
             InitLogHelper();
-            Log.Info("Unity Q Game Framework Version: {0}", UnityQGameFramework.Core.Version.FrameworkVersion);
+            Log.Info("Unity Q Game Framework Version: {0}", UnityQGameFramework.Core.Version.GameFrameworkVersion);
             Log.Info("Game Version: {0} ({1})", UnityQGameFramework.Core.Version.GameVersion, UnityQGameFramework.Core.Version.InternalGameVersion);
             Log.Info("Unity Version: {0}", Application.unityVersion);
 
@@ -188,7 +187,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         private void Update()
         {
-            FrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
+            GameFrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
         /// <summary>
@@ -206,7 +205,7 @@ namespace UnityQGameFramework.Runtime
         private void OnDestroy()
         {
             Application.lowMemory -= OnLowMemory;
-            FrameworkEntry.Shutdown();
+            GameFrameworkEntry.Shutdown();
             GameEntry.ClearComponents();
         }
 
@@ -298,13 +297,13 @@ namespace UnityQGameFramework.Runtime
             Type versionHelperType = Utility.Assembly.GetType(m_VersionHelperTypeName);
             if (versionHelperType == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find version helper type '{0}'.", m_VersionHelperTypeName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find version helper type '{0}'.", m_VersionHelperTypeName));
             }
 
             UnityQGameFramework.Core.Version.IVersionHelper versionHelper = (UnityQGameFramework.Core.Version.IVersionHelper)Activator.CreateInstance(versionHelperType);
             if (versionHelper == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not create version helper instance '{0}'.", m_VersionHelperTypeName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not create version helper instance '{0}'.", m_VersionHelperTypeName));
             }
 
             UnityQGameFramework.Core.Version.SetVersionHelper(versionHelper);
@@ -323,16 +322,16 @@ namespace UnityQGameFramework.Runtime
             Type logHelperType = Utility.Assembly.GetType(m_LogHelperTypeName);
             if (logHelperType == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not find log helper type '{0}'.", m_LogHelperTypeName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find log helper type '{0}'.", m_LogHelperTypeName));
             }
 
-            FrameworkLog.ILogHelper logHelper = (FrameworkLog.ILogHelper)Activator.CreateInstance(logHelperType);
+            GameFrameworkLog.ILogHelper logHelper = (GameFrameworkLog.ILogHelper)Activator.CreateInstance(logHelperType);
             if (logHelper == null)
             {
-                throw new FrameworkException(Utility.Text.Format("Can not create log helper instance '{0}'.", m_LogHelperTypeName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not create log helper instance '{0}'.", m_LogHelperTypeName));
             }
 
-            FrameworkLog.SetLogHelper(logHelper);
+            GameFrameworkLog.SetLogHelper(logHelper);
         }
 
         /// <summary>

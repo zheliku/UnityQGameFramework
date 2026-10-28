@@ -17,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 /// <summary>
 /// 字符串键与跨表引用
 /// </summary>
-public partial class TbItemAlias : UnityQGameFramework.Core.DataTable.DataTable<DRItemAlias>
+public partial class TbItemAlias : UnityQGameFramework.Core.DataTable<DRItemAlias>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

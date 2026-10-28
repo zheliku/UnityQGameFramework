@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Armor
 /// </summary>
-public partial class TbArmor : UnityQGameFramework.Core.DataTable.DataTable<DRArmor>
+public partial class TbArmor : UnityQGameFramework.Core.DataTable<DRArmor>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

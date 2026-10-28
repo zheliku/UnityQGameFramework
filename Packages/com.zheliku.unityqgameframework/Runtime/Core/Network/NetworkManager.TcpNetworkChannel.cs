@@ -7,9 +7,9 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         /// <summary>
         /// TCP 网络频道。
@@ -62,7 +62,7 @@ namespace UnityQGameFramework.Core.Network
                         return;
                     }
 
-                    throw new FrameworkException(errorMessage);
+                    throw new GameFrameworkException(errorMessage);
                 }
 
                 m_NetworkChannelHelper.PrepareForConnecting();

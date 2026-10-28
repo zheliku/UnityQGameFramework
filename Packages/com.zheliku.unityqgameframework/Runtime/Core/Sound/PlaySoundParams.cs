@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Sound
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 播放声音参数。
@@ -16,78 +16,114 @@ namespace UnityQGameFramework.Core.Sound
         public PlaySoundParams()
         {
             Referenced = false;
-            Time = Constant.DefaultTime;
-            MuteInSoundGroup = Constant.DefaultMute;
-            Loop = Constant.DefaultLoop;
-            Priority = Constant.DefaultPriority;
-            VolumeInSoundGroup = Constant.DefaultVolume;
-            FadeInSeconds = Constant.DefaultFadeInSeconds;
-            Pitch = Constant.DefaultPitch;
-            PanStereo = Constant.DefaultPanStereo;
-            SpatialBlend = Constant.DefaultSpatialBlend;
-            MaxDistance = Constant.DefaultMaxDistance;
-            DopplerLevel = Constant.DefaultDopplerLevel;
+            Time = SoundConstant.DefaultTime;
+            MuteInSoundGroup = SoundConstant.DefaultMute;
+            Loop = SoundConstant.DefaultLoop;
+            Priority = SoundConstant.DefaultPriority;
+            VolumeInSoundGroup = SoundConstant.DefaultVolume;
+            FadeInSeconds = SoundConstant.DefaultFadeInSeconds;
+            Pitch = SoundConstant.DefaultPitch;
+            PanStereo = SoundConstant.DefaultPanStereo;
+            SpatialBlend = SoundConstant.DefaultSpatialBlend;
+            MaxDistance = SoundConstant.DefaultMaxDistance;
+            DopplerLevel = SoundConstant.DefaultDopplerLevel;
         }
 
         /// <summary>
         /// 获取或设置播放位置。
         /// </summary>
-        public float Time { get; set; }
+        public float Time
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置在声音组内是否静音。
         /// </summary>
-        public bool MuteInSoundGroup { get; set; }
+        public bool MuteInSoundGroup
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置是否循环播放。
         /// </summary>
-        public bool Loop { get; set; }
+        public bool Loop
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音优先级。
         /// </summary>
-        public int Priority { get; set; }
+        public int Priority
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置在声音组内音量大小。
         /// </summary>
-        public float VolumeInSoundGroup { get; set; }
+        public float VolumeInSoundGroup
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音淡入时间，以秒为单位。
         /// </summary>
-        public float FadeInSeconds { get; set; }
+        public float FadeInSeconds
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音音调。
         /// </summary>
-        public float Pitch { get; set; }
+        public float Pitch
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音立体声声相。
         /// </summary>
-        public float PanStereo { get; set; }
+        public float PanStereo
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音空间混合量。
         /// </summary>
-        public float SpatialBlend { get; set; }
+        public float SpatialBlend
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音最大距离。
         /// </summary>
-        public float MaxDistance { get; set; }
+        public float MaxDistance
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取或设置声音多普勒等级。
         /// </summary>
-        public float DopplerLevel { get; set; }
+        public float DopplerLevel
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 获取播放参数是否已由声音模块持有。
         /// </summary>
-        internal bool Referenced { get; private set; }
+        internal bool Referenced
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建播放声音参数。
@@ -105,17 +141,17 @@ namespace UnityQGameFramework.Core.Sound
         /// </summary>
         public void Clear()
         {
-            Time = Constant.DefaultTime;
-            MuteInSoundGroup = Constant.DefaultMute;
-            Loop = Constant.DefaultLoop;
-            Priority = Constant.DefaultPriority;
-            VolumeInSoundGroup = Constant.DefaultVolume;
-            FadeInSeconds = Constant.DefaultFadeInSeconds;
-            Pitch = Constant.DefaultPitch;
-            PanStereo = Constant.DefaultPanStereo;
-            SpatialBlend = Constant.DefaultSpatialBlend;
-            MaxDistance = Constant.DefaultMaxDistance;
-            DopplerLevel = Constant.DefaultDopplerLevel;
+            Time = SoundConstant.DefaultTime;
+            MuteInSoundGroup = SoundConstant.DefaultMute;
+            Loop = SoundConstant.DefaultLoop;
+            Priority = SoundConstant.DefaultPriority;
+            VolumeInSoundGroup = SoundConstant.DefaultVolume;
+            FadeInSeconds = SoundConstant.DefaultFadeInSeconds;
+            Pitch = SoundConstant.DefaultPitch;
+            PanStereo = SoundConstant.DefaultPanStereo;
+            SpatialBlend = SoundConstant.DefaultSpatialBlend;
+            MaxDistance = SoundConstant.DefaultMaxDistance;
+            DopplerLevel = SoundConstant.DefaultDopplerLevel;
         }
     }
 }

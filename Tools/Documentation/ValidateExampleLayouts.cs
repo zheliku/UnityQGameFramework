@@ -65,7 +65,8 @@ public static class ValidateExampleLayouts
         var errors = new List<string>();
         Application.LogCallback capture = (message, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         Application.logMessageReceived += capture;
         var results = new List<object>();
@@ -98,7 +99,9 @@ public static class ValidateExampleLayouts
                     .Single(item => item.GetType().Name == Path.GetFileName(path));
                 var fields = new SerializedObject(example);
                 Func<string, Button> button = name => (Button)fields.FindProperty(name).objectReferenceValue;
-                if (example.name == "SpawnOrCreateCube") for (int i = 0; i < 6; i++) await Click(button("spawnButton"), mouse);
+                if (example.name == "SpawnOrCreateCube")
+                    for (int i = 0; i < 6; i++)
+                        await Click(button("spawnButton"), mouse);
                 if (example.name == "CoverWindowExample")
                 {
                     ((Toggle)fields.FindProperty("pauseToggle").objectReferenceValue).isOn = false;
@@ -143,18 +146,24 @@ public static class ValidateExampleLayouts
                         {
                             Bounds bounds = renderer.bounds;
                             foreach (float x in new[] { bounds.min.x, bounds.max.x })
-                            foreach (float y in new[] { bounds.min.y, bounds.max.y })
-                            {
-                                Vector3 point = camera.WorldToViewportPoint(new Vector3(x, y, bounds.center.z));
-                                Require(point.z > 0 && area.Contains(point), "Full renderer bounds fit in the observation area: " + renderer.name);
-                            }
+                                foreach (float y in new[] { bounds.min.y, bounds.max.y })
+                                {
+                                    Vector3 point = camera.WorldToViewportPoint(new Vector3(x, y, bounds.center.z));
+                                    Require(point.z > 0 && area.Contains(point), "Full renderer bounds fit in the observation area: " + renderer.name);
+                                }
                         }
                     }
                     string name = Path.GetFileName(path) + "-" + Screen.width + "x" + Screen.height;
                     Directory.CreateDirectory("Artifacts~/ResponsiveExamples");
                     ScreenCapture.CaptureScreenshot(Path.GetFullPath("Artifacts~/ResponsiveExamples/" + name + ".png"));
                     await Task.Delay(200);
-                    results.Add(new { example = example.name, width = Screen.width, height = Screen.height, portrait });
+                    results.Add(new
+                    {
+                        example = example.name,
+                        width = Screen.width,
+                        height = Screen.height,
+                        portrait
+                    });
                 }
                 await Play(false);
                 Require(errors.Count == 0, string.Join("\n", errors));
@@ -162,9 +171,12 @@ public static class ValidateExampleLayouts
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             Application.logMessageReceived -= capture;
             input.backgroundBehavior = background;
             input.editorInputBehaviorInPlayMode = editorInput;
@@ -172,13 +184,23 @@ public static class ValidateExampleLayouts
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             selection.SetValue(gameView, oldSelection);
-            foreach (int index in temporarySizes.OrderByDescending(index => index)) groupType.GetMethod("RemoveCustomSize").Invoke(group, new object[] { index });
+            foreach (int index in temporarySizes.OrderByDescending(index => index))
+                groupType.GetMethod("RemoveCustomSize").Invoke(group, new object[] { index });
             gameView.Repaint();
-            if (setup.Any(item => item.isActive && item.isLoaded && !string.IsNullOrEmpty(item.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(item => item.isActive && item.isLoaded && !string.IsNullOrEmpty(item.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(paths.All(item => Hash(item.Key) == item.Value), "Project settings unchanged");
-        var report = new { passed = true, assertions, nativeButtons = true, settingsUnchanged = true, scenes = results };
+        var report = new
+        {
+            passed = true,
+            assertions,
+            nativeButtons = true,
+            settingsUnchanged = true,
+            scenes = results
+        };
         File.WriteAllText("Artifacts~/ResponsiveExamples/check.json", JsonConvert.SerializeObject(report, Formatting.Indented));
         return report;
     }
@@ -190,20 +212,31 @@ public static class ValidateExampleLayouts
         rect.GetWorldCorners(corners);
         return Rect.MinMaxRect(corners[0].x / Screen.width, corners[0].y / Screen.height, corners[2].x / Screen.width, corners[2].y / Screen.height);
     }
-    private static void Require(bool value, string message) { if (!value) throw new Exception(message); assertions++; }
-    private static string Hash(string path) { using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path))); }
+    private static void Require(bool value, string message)
+    {
+        if (!value)
+            throw new Exception(message);
+        assertions++;
+    }
+    private static string Hash(string path)
+    {
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+    }
     private static async Task Play(bool value)
     {
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (value ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (value ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = value;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(200);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }
@@ -218,7 +251,8 @@ public static class ValidateExampleLayouts
         {
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(100);
         }

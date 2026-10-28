@@ -14,7 +14,10 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         [SerializeField] private Text phase, rules, record, status, resultTitle, resultScore;
         [SerializeField] private Button startButton, targetButton, boardButton, menuButton;
         [SerializeField] private RectTransform board, target;
-        internal PointGameData Game { get; private set; }
+        internal PointGameData Game
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 初始化实例。

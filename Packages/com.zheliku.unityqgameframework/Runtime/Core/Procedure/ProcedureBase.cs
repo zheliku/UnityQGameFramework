@@ -1,12 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Fsm;
-using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
+using ProcedureOwner = UnityQGameFramework.Core.IFsm<UnityQGameFramework.Core.IProcedureManager>;
 
-namespace UnityQGameFramework.Core.Procedure
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 流程基类。

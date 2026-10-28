@@ -3,16 +3,16 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Download
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class DownloadManager : FrameworkModule, IDownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         /// <summary>
         /// 统计最近一段时间的下载流量。
         /// </summary>
         private sealed partial class DownloadCounter
         {
-            private readonly FrameworkLinkedList<DownloadCounterNode> m_DownloadCounterNodes;
+            private readonly GameFrameworkLinkedList<DownloadCounterNode> m_DownloadCounterNodes;
             private float m_UpdateInterval;
             private float m_RecordInterval;
             private float m_Accumulator;
@@ -27,15 +27,15 @@ namespace UnityQGameFramework.Core.Download
             {
                 if (updateInterval <= 0f)
                 {
-                    throw new FrameworkException("Update interval is invalid.");
+                    throw new GameFrameworkException("Update interval is invalid.");
                 }
 
                 if (recordInterval <= 0f)
                 {
-                    throw new FrameworkException("Record interval is invalid.");
+                    throw new GameFrameworkException("Record interval is invalid.");
                 }
 
-                m_DownloadCounterNodes = new FrameworkLinkedList<DownloadCounterNode>();
+                m_DownloadCounterNodes = new GameFrameworkLinkedList<DownloadCounterNode>();
                 m_UpdateInterval = updateInterval;
                 m_RecordInterval = recordInterval;
                 Reset();
@@ -54,7 +54,7 @@ namespace UnityQGameFramework.Core.Download
                 {
                     if (value <= 0f)
                     {
-                        throw new FrameworkException("Update interval is invalid.");
+                        throw new GameFrameworkException("Update interval is invalid.");
                     }
 
                     m_UpdateInterval = value;
@@ -75,7 +75,7 @@ namespace UnityQGameFramework.Core.Download
                 {
                     if (value <= 0f)
                     {
-                        throw new FrameworkException("Record interval is invalid.");
+                        throw new GameFrameworkException("Record interval is invalid.");
                     }
 
                     m_RecordInterval = value;
@@ -86,7 +86,10 @@ namespace UnityQGameFramework.Core.Download
             /// <summary>
             /// 获取当前下载速率，以字节每秒为单位。
             /// </summary>
-            public float CurrentSpeed { get; private set; }
+            public float CurrentSpeed
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 清理下载速率统计样本。

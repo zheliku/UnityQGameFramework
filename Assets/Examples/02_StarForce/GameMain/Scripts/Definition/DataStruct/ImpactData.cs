@@ -31,21 +31,33 @@ namespace StarForce
         /// <summary>
         /// 获取所属阵营。
         /// </summary>
-        public CampType Camp { get; }
+        public CampType Camp
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取当前生命值。
         /// </summary>
-        public int HP { get; }
+        public int HP
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取攻击力。
         /// </summary>
-        public int Attack { get; }
+        public int Attack
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取防御力。
         /// </summary>
-        public int Defense { get; }
+        public int Defense
+        {
+            get;
+        }
     }
 }

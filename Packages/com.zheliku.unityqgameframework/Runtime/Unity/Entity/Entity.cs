@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Entity;
 using System;
 using UnityEngine;
 
@@ -18,12 +17,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体编号。
         /// </summary>
-        public int Id { get; private set; }
+        public int Id
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体资源名称。
         /// </summary>
-        public string EntityAssetName { get; private set; }
+        public string EntityAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体实例。
@@ -39,12 +44,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取实体所属的实体组。
         /// </summary>
-        public IEntityGroup EntityGroup { get; private set; }
+        public IEntityGroup EntityGroup
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取实体逻辑。
         /// </summary>
-        public EntityLogic Logic { get; private set; }
+        public EntityLogic Logic
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 实体初始化。

@@ -15,12 +15,18 @@ namespace StarForce
         /// <summary>
         /// 获取内置启动数据组件。
         /// </summary>
-        public static BuiltinDataComponent BuiltinData { get; private set; }
+        public static BuiltinDataComponent BuiltinData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取血条组件。
         /// </summary>
-        public static HPBarComponent HPBar { get; private set; }
+        public static HPBarComponent HPBar
+        {
+            get; private set;
+        }
 
         private static void InitCustomComponents()
         {

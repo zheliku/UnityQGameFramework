@@ -60,7 +60,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();

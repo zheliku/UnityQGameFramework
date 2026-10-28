@@ -1,12 +1,6 @@
 # UnityQGameFramework
 
-QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制作数据表、Tomlyn 读取 TOML，内置 UniTask。兼容目标为 Unity 2022.3、6.0、6.3；示例的 3D 资源使用 URP。
-
-[入门](Packages/com.zheliku.unityqgameframework/Documentation~/01-getting-started.md) · [模块](Packages/com.zheliku.unityqgameframework/Documentation~/Modules/README.md) · [Luban](Packages/com.zheliku.unityqgameframework/Documentation~/02-data-tables.md) · [变更记录](Packages/com.zheliku.unityqgameframework/CHANGELOG.md)
-
-| StarForce 菜单 | 战斗 |
-| --- | --- |
-| ![菜单](Packages/com.zheliku.unityqgameframework/Documentation~/Images/starforce-menu.png) | ![战斗](Packages/com.zheliku.unityqgameframework/Documentation~/Images/starforce-battle.png) |
+QGF 基于 UnityGameFramework，使用 Luban 制作数据表、Tomlyn 读取 TOML、YooAsset 管理资源、UniTask 处理异步。支持目标为 Unity 2022.3、6.0、6.3，示例使用 uGUI、Input System 和 URP。
 
 ## 安装
 
@@ -16,55 +10,36 @@ QGF 基于 UnityGameFramework 的模块和 Unity 组件开发，使用 Luban 制
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-编译完成后，Samples 中有三个导入项：点点点、模块示例和 StarForce。模块示例内部按模块编号，并包含一份公共资源。
+默认内置 UniTask 和 YooAsset，请勿重复安装。游戏脚本、Excel 和资源放在 `Assets`；框架放在 `Packages`。
 
-游戏代码和资源放在 Assets，框架与工具放在 Packages。Luban 默认工作区为 `Assets/UnityQGameFramework/Config`，全局 Profile 在 `QGF > Settings` 选择。
+## 示例与文档
 
-资源示例使用 YooAsset 原生 `BundleCollectorSetting` 和 `BundleBuilder` 窗口；QGF 只提供 Sample 配置切换和 ResourceComponent 关联，不修改 YooAsset 源码。Luban 运行库只保留必要源码，编译器按需下载到 `Library`。
+从 Package Manager 导入一个 Sample，打开启动场景并运行。宿主需启用 Input System；示例不会替你修改项目设置。编辑器模拟模式无需预先打包资源或点击 YooAsset 的 Fix。
 
-## 运行示例
+| Sample | 内容 |
+| --- | --- |
+| 00 · PointPointPoint | 用流程、UI、事件和设置完成一个小游戏 |
+| 01 · Modules | 按模块查看核心调用和运行结果 |
+| 02 · StarForce | 飞机、武器、数据表、资源和界面的协作 |
 
-导入 Sample 后等待 Unity 编译完成，再打开对应场景点击 Play。示例默认使用各自的 YooAsset Editor Simulation，普通运行无需手动构建 AssetBundle，也无需在 YooAsset 收集器窗口点击 `Fix` 或 `Save`；修改收集规则后才需要保存，路径失效时再使用 Fix。资源构建和 Player 构建请按各 Sample 的 README 操作。
+[开始使用](Packages/com.zheliku.unityqgameframework/Documentation~/01-getting-started.md) · [模块用法](Packages/com.zheliku.unityqgameframework/Documentation~/Modules/README.md) · [Luban](Packages/com.zheliku.unityqgameframework/Documentation~/02-data-tables.md) · [资源构建](Packages/com.zheliku.unityqgameframework/Documentation~/Modules/resource-build.md) · [更新记录](Packages/com.zheliku.unityqgameframework/CHANGELOG.md)
 
-## 开发
+基于 [UnityGameFramework](https://github.com/EllanJiang/UnityGameFramework) 和 [GameFramework](https://github.com/EllanJiang/GameFramework)，示例与架构设计参考 [QFramework](https://github.com/liangxiegame/QFramework)。目前尚未移植 QFramework 的 Architecture、Model、System。
 
-数据表不需要手动 Initialize：场景 QGF 的 DataTableComponent 指定生成的 `Catalog.asset` 后，在普通业务 `Start` 或启动流程中调用一次 `LoadDataTables<Tables>()`，成功后用 `GetDataTable<TbItem>()` 查询。全局 Luban Profile 只决定编辑器生成哪份表，Catalog 才决定运行时数据，二者不是两份缓存。配置关系和同步/异步完整步骤见[模块示例 README](Assets/Examples/01_Modules/README.md#datatable-从哪里开始)。
+源码采用 [MIT](Packages/com.zheliku.unityqgameframework/LICENSE.md)，第三方内容见 [许可声明](<Packages/com.zheliku.unityqgameframework/Third%20Party%20Notices.md>)。
 
-```text
-Assets/Examples/00_PointPointPoint/       点点点
-Assets/Examples/01_Modules/               模块示例
-Assets/Examples/02_StarForce/             StarForce
-Packages/com.zheliku.unityqgameframework/ UPM 包
-Tools/Packaging/                        同步与打包
-Artifacts~/                             本机产物与验证记录
-```
+## 参与开发
 
-示例只在 Assets 中编辑，目录与包内 Samples~ 相同。修改后原样复制发布并检查包：
+克隆仓库并执行 `git lfs pull`，在 Unity 中打开根目录。框架源码位于 `Packages/com.zheliku.unityqgameframework`，示例只在 `Assets/Examples` 编辑。
 
 ```sh
+python Tools/Style/format_code.py
+dotnet run --project Tools/Style/CodeStyleAudit.csproj -- .
 python Tools/Packaging/sync_samples.py
 python Tools/Packaging/check_package.py
 python Tools/Documentation/check_docs.py
 ```
 
-`python Tools/Packaging/prepare_upm.py` 生成 tgz。发布时同步 package.json、框架版本和 Changelog。
+`python Tools/Packaging/prepare_upm.py` 生成 tgz；可用 `--external-dependency unitask` 或 `--external-dependency yooasset` 排除对应内置插件，再由消费项目安装官方依赖。
 
-消费项目已安装官方 UniTask 或 YooAsset 时，可分别追加 `--external-dependency unitask`、`--external-dependency yooasset` 生成排除对应内置副本的包。输出的 `external-dependencies.json` 列出消费项目需要安装的官方 Git URL；默认 Git 包仍包含两个插件，不能与官方副本同时安装。
-
-逐文件比较官方 UGF 与当前包，运行 `python Tools/Review/compare_ugf.py`，然后在 VS Code 打开 `Artifacts~/UgfComparison/UGF-QGF.code-workspace`。对应文件按当前路径排列，移动或改名仍显示为 `M`；原始路径、提交和文件哈希见同目录的 `file-map.json`。后续运行时追加 `--refresh`，旧对照副本会先保存到 `History`，主仓库的 Git 索引不变。
-
-## 文档与扩展
-
-- [运行机制](Packages/com.zheliku.unityqgameframework/Documentation~/00-runtime.md)：初始化、统一更新与关闭。
-- [项目约定](Packages/com.zheliku.unityqgameframework/Documentation~/03-conventions.md)：生命周期、事件与资源归还。
-- [StarForce 导读](Packages/com.zheliku.unityqgameframework/Documentation~/05-starforce.md)：飞机、武器、UI 和数据表的协作。
-- [UGF 到 QGF](Packages/com.zheliku.unityqgameframework/Documentation~/04-changes-from-ugf.md)：当前改动与架构迁移进度。
-
-`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的用途与 Git URL，复制后通过 Package Manager 安装。
-
-## 来源与许可
-
-基于 [UnityGameFramework](https://github.com/EllanJiang/UnityGameFramework) 和 [GameFramework](https://github.com/EllanJiang/GameFramework)。配置流程参考 GodotGameFramework，架构设计与示例参考 [QFramework](https://github.com/liangxiegame/QFramework)。
-
-源码采用 [MIT](Packages/com.zheliku.unityqgameframework/LICENSE.md)，第三方内容见 [许可声明](Packages/com.zheliku.unityqgameframework/Third%20Party%20Notices.md)。
-资源配置只有一个保存来源：`ResourceSettings.asset`。ResourceComponent 仅引用它；Collector 资产由 YooAsset 官方窗口管理。运行模式、服务器和缓存设置在 ResourceSettings Inspector 修改，避免在组件、窗口和多个 SO 中重复保存。
+查看原版 UGF 与当前框架的逐文件差异：运行 `python Tools/Review/compare_ugf.py --refresh`，在 VS Code 打开 `Artifacts~/UgfComparison/UGF-QGF.code-workspace`。对应文件使用当前路径，移动、改名仍可直接比较；基线保留上游原文，主仓库索引不变。

@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Network;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Network")]
-    public sealed class NetworkComponent : FrameworkComponent
+    public sealed class NetworkComponent : GameFrameworkComponent
     {
         private INetworkManager m_NetworkManager = null;
         private EventComponent m_EventComponent = null;
@@ -39,7 +38,7 @@ namespace UnityQGameFramework.Runtime
         {
             base.Awake();
 
-            m_NetworkManager = FrameworkEntry.GetModule<INetworkManager>();
+            m_NetworkManager = GameFrameworkEntry.GetModule<INetworkManager>();
             if (m_NetworkManager == null)
             {
                 Log.Fatal("Network manager is invalid.");
@@ -131,7 +130,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnNetworkConnected(object sender, UnityQGameFramework.Core.Network.NetworkConnectedEventArgs e)
+        private void OnNetworkConnected(object sender, UnityQGameFramework.Core.Events.NetworkConnectedEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkConnectedEventArgs.Create(e));
         }
@@ -141,7 +140,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnNetworkClosed(object sender, UnityQGameFramework.Core.Network.NetworkClosedEventArgs e)
+        private void OnNetworkClosed(object sender, UnityQGameFramework.Core.Events.NetworkClosedEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkClosedEventArgs.Create(e));
         }
@@ -151,7 +150,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnNetworkMissHeartBeat(object sender, UnityQGameFramework.Core.Network.NetworkMissHeartBeatEventArgs e)
+        private void OnNetworkMissHeartBeat(object sender, UnityQGameFramework.Core.Events.NetworkMissHeartBeatEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkMissHeartBeatEventArgs.Create(e));
         }
@@ -161,7 +160,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnNetworkError(object sender, UnityQGameFramework.Core.Network.NetworkErrorEventArgs e)
+        private void OnNetworkError(object sender, UnityQGameFramework.Core.Events.NetworkErrorEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkErrorEventArgs.Create(e));
         }
@@ -171,7 +170,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sender">事件发送者。</param>
         /// <param name="e">事件参数。</param>
-        private void OnNetworkCustomError(object sender, UnityQGameFramework.Core.Network.NetworkCustomErrorEventArgs e)
+        private void OnNetworkCustomError(object sender, UnityQGameFramework.Core.Events.NetworkCustomErrorEventArgs e)
         {
             m_EventComponent.Fire(this, NetworkCustomErrorEventArgs.Create(e));
         }

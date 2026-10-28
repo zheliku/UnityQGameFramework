@@ -53,7 +53,10 @@ public static class ConfigureModuleResourceAddresses
         }
         EditorUtility.SetDirty(source);
         AssetDatabase.SaveAssetIfDirty(source);
-        return new { groups = groups.Select(group => group.GroupName).ToArray() };
+        return new
+        {
+            groups = groups.Select(group => group.GroupName).ToArray()
+        };
     }
 
     private static string GetGroup(string path)

@@ -1,12 +1,13 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 网络管理器接口。
@@ -16,7 +17,10 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取网络频道数量。
         /// </summary>
-        int NetworkChannelCount { get; }
+        int NetworkChannelCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 网络连接成功事件。

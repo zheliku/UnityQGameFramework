@@ -1,12 +1,13 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.WebRequest
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// Web 请求管理器接口。
@@ -16,27 +17,42 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <summary>
         /// 获取 Web 请求代理总数量。
         /// </summary>
-        int TotalAgentCount { get; }
+        int TotalAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取可用 Web 请求代理数量。
         /// </summary>
-        int FreeAgentCount { get; }
+        int FreeAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取工作中 Web 请求代理数量。
         /// </summary>
-        int WorkingAgentCount { get; }
+        int WorkingAgentCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取等待 Web 请求数量。
         /// </summary>
-        int WaitingTaskCount { get; }
+        int WaitingTaskCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取或设置 Web 请求超时时长，以秒为单位。
         /// </summary>
-        float Timeout { get; set; }
+        float Timeout
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Web 请求开始事件。

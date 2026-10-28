@@ -6,9 +6,9 @@
 using System;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         /// <summary>
         /// 管理接收缓冲及消息拆包进度。
@@ -31,12 +31,18 @@ namespace UnityQGameFramework.Core.Network
             /// <summary>
             /// 获取接收数据缓冲流。
             /// </summary>
-            public MemoryStream Stream { get; private set; }
+            public MemoryStream Stream
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取当前消息包头。
             /// </summary>
-            public IPacketHeader PacketHeader { get; private set; }
+            public IPacketHeader PacketHeader
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 准备接收消息包头。
@@ -55,7 +61,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 if (packetHeader == null)
                 {
-                    throw new FrameworkException("Packet header is invalid.");
+                    throw new GameFrameworkException("Packet header is invalid.");
                 }
 
                 Reset(packetHeader.PacketLength, packetHeader);
@@ -102,7 +108,7 @@ namespace UnityQGameFramework.Core.Network
             {
                 if (targetLength < 0)
                 {
-                    throw new FrameworkException("Target length is invalid.");
+                    throw new GameFrameworkException("Target length is invalid.");
                 }
 
                 Stream.Position = 0L;

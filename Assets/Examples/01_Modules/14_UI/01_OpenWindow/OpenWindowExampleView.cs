@@ -15,22 +15,34 @@ namespace UnityQGameFramework.Examples.Modules
         /// <summary>
         /// 获取初始化回调次数。
         /// </summary>
-        public int InitCalls { get; private set; }
+        public int InitCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取打开回调次数。
         /// </summary>
-        public int OpenCalls { get; private set; }
+        public int OpenCalls
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取打开时是否收到业务数据。
         /// </summary>
-        public bool HasOpenData { get; private set; }
+        public bool HasOpenData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取关闭时传入的数据。
         /// </summary>
-        public string CloseData { get; private set; }
+        public string CloseData
+        {
+            get; private set;
+        }
 
         // OnInit 在实例首次创建时执行；从池中复用不会再次初始化。
         /// <summary>

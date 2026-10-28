@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 网络心跳包丢失事件。
     /// </summary>
-    public sealed class NetworkMissHeartBeatEventArgs : FrameworkEventArgs
+    public sealed class NetworkMissHeartBeatEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化网络心跳包丢失事件的新实例。
@@ -22,12 +22,18 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取网络频道。
         /// </summary>
-        public INetworkChannel NetworkChannel { get; private set; }
+        public INetworkChannel NetworkChannel
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取心跳包已丢失次数。
         /// </summary>
-        public int MissCount { get; private set; }
+        public int MissCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建网络心跳包丢失事件。

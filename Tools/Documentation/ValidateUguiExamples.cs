@@ -27,11 +27,14 @@ public static class ValidateUguiExamples
 
     private static async Task<object> RunSelected(string[] folders, string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
-            .Any(i => UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty)) throw new Exception("Unsaved scene");
+            .Any(i => UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty))
+            throw new Exception("Unsaved scene");
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         var modules = JArray.Parse(File.ReadAllText("Tools/Documentation/examples-layout.json"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -49,7 +52,8 @@ public static class ValidateUguiExamples
         Mouse mouse = null;
         Application.LogCallback capture = (message, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         Application.logMessageReceived += capture;
         try
@@ -62,9 +66,11 @@ public static class ValidateUguiExamples
             mouse = InputSystem.AddDevice<Mouse>();
             foreach (var pair in layouts)
             {
-                if (names != null && !names.Contains(pair.Key)) continue;
+                if (names != null && !names.Contains(pair.Key))
+                    continue;
                 string script = (string)pair.Value["script"];
-                if (folders != null && !folders.Any(folder => script.StartsWith("Assets/Examples/" + folder + "/", StringComparison.Ordinal))) continue;
+                if (folders != null && !folders.Any(folder => script.StartsWith("Assets/Examples/" + folder + "/", StringComparison.Ordinal)))
+                    continue;
                 var definition = modules.Single(module => script.StartsWith(
                     "Assets/Examples/" + (string)module["folder"] + "/", StringComparison.Ordinal));
                 string folder = (string)definition["folder"];
@@ -92,16 +98,20 @@ public static class ValidateUguiExamples
                 foreach (JObject control in (JArray)pair.Value["controls"])
                 {
                     string field = (string)control["field"];
-                    if (field == null) continue;
+                    if (field == null)
+                        continue;
                     Require(serialized.FindProperty(field)?.objectReferenceValue != null, pair.Key + "." + field + " reference");
                 }
                 int clicked = 0;
                 foreach (JObject control in (JArray)pair.Value["controls"])
                 {
-                    if (new[] { "JsonUtilityExample", "ReadConfigValues", "LoadConfigAsset", "RuntimeConfigValues", "SaveCounter", "ReadTranslation", "LoadCubePrefab", "LoadRoomExample" }.Contains(pair.Key)) continue;
-                    if ((string)control["type"] != "Button" || (string)control["field"] == "errorButton") continue;
+                    if (new[] { "JsonUtilityExample", "ReadConfigValues", "LoadConfigAsset", "RuntimeConfigValues", "SaveCounter", "ReadTranslation", "LoadCubePrefab", "LoadRoomExample" }.Contains(pair.Key))
+                        continue;
+                    if ((string)control["type"] != "Button" || (string)control["field"] == "errorButton")
+                        continue;
                     var button = (Button)serialized.FindProperty((string)control["field"]).objectReferenceValue;
-                    if (!button.interactable) continue;
+                    if (!button.interactable)
+                        continue;
                     await Click(button, mouse);
                     clicked++;
                 }
@@ -114,25 +124,43 @@ public static class ValidateUguiExamples
                 }
                 await Play(false);
                 Require(errors.Count == 0, pair.Key + ": " + string.Join("\n", errors));
-                completed.Add(new { example = pair.Key, introductoryButtons = clicked, semanticChecks = "CheckState also clicks controls for the merged examples" });
+                completed.Add(new
+                {
+                    example = pair.Key,
+                    introductoryButtons = clicked,
+                    semanticChecks = "CheckState also clicks controls for the merged examples"
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(pointer);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var pointer in disabledPointers.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(pointer);
             inputSettings.backgroundBehavior = backgroundBehavior;
             inputSettings.editorInputBehaviorInPlayMode = editorInputBehavior;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host project settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeMouseInput = true, settingsUnchanged = true, scenes = completed, assertionCount };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeMouseInput = true,
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount
+        };
         Directory.CreateDirectory("Artifacts~/ExamplesUgui");
         string report = names != null ? string.Join("-", names) + "-check.json" : folders == null ? "ugui-check.json" : string.Join("-", folders) + "-check.json";
         File.WriteAllText("Artifacts~/ExamplesUgui/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
@@ -196,7 +224,8 @@ public static class ValidateUguiExamples
         }
         else if (name == "ManageNodeChildren")
         {
-            for (int i = 0; i < 7; i++) await Click(button("addButton"), mouse);
+            for (int i = 0; i < 7; i++)
+                await Click(button("addButton"), mouse);
             var inventory = QGF.DataNode.GetNode("Example/Inventory");
             Require(inventory.ChildCount == 7 && text("countText").text.Contains("子节点：7"), "All seven added nodes remain in DataNode");
             Require(text("childrenText").text.Contains("另有 3 个节点")
@@ -339,7 +368,7 @@ public static class ValidateUguiExamples
             var reload = (Toggle)data.FindProperty("reloadToggle").objectReferenceValue;
             await Click(button("action1Button"), mouse);
             string english = QGF.Localization.GetString("Game.Name");
-            Require(QGF.Localization.Language == UnityQGameFramework.Core.Localization.Language.English, "English selected");
+            Require(QGF.Localization.Language == UnityQGameFramework.Core.Language.English, "English selected");
             await Click(reload, mouse);
             await Click(button("action2Button"), mouse);
             Require(QGF.Localization.GetString("Game.Name") == english, "Language property alone leaves loaded strings unchanged");
@@ -405,7 +434,8 @@ public static class ValidateUguiExamples
             {
                 float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
                 float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-                if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+                if (overflow > 0)
+                    scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
                 Canvas.ForceUpdateCanvases();
                 await Task.Delay(100);
             }
@@ -413,8 +443,10 @@ public static class ValidateUguiExamples
         bool received = false;
         UnityEngine.Events.UnityAction observed = () => received = true;
         UnityEngine.Events.UnityAction<bool> toggled = value => received = true;
-        if (button is Button action) action.onClick.AddListener(observed);
-        if (button is Toggle toggle) toggle.onValueChanged.AddListener(toggled);
+        if (button is Button action)
+            action.onClick.AddListener(observed);
+        if (button is Toggle toggle)
+            toggle.onValueChanged.AddListener(toggled);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         InputSystem.QueueStateEvent(mouse, new MouseState { position = position, buttons = 0 });
         await Task.Delay(90);
@@ -424,8 +456,10 @@ public static class ValidateUguiExamples
         string down = $"mouse={mouse.leftButton.isPressed}, action={module?.leftClick.action.ReadValue<float>()}, pointer={module?.point.action.ReadValue<Vector2>()}, focused={Application.isFocused}, gameView={EditorWindow.focusedWindow?.GetType().Name}";
         InputSystem.QueueStateEvent(mouse, new MouseState { position = position, buttons = 0 });
         await Task.Delay(180);
-        if (button is Button finished) finished.onClick.RemoveListener(observed);
-        if (button is Toggle changed) changed.onValueChanged.RemoveListener(toggled);
+        if (button is Button finished)
+            finished.onClick.RemoveListener(observed);
+        if (button is Toggle changed)
+            changed.onValueChanged.RemoveListener(toggled);
         if (!received)
         {
             Directory.CreateDirectory("Artifacts~/ExamplesUgui");
@@ -440,9 +474,15 @@ public static class ValidateUguiExamples
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
-    private static void Require(bool condition, string step) { if (!condition) throw new Exception(step); assertionCount++; }
+    private static void Require(bool condition, string step)
+    {
+        if (!condition)
+            throw new Exception(step);
+        assertionCount++;
+    }
     private static async Task Screenshot(string name)
     {
         Directory.CreateDirectory("Artifacts~/ExamplesUgui");
@@ -454,7 +494,8 @@ public static class ValidateUguiExamples
         double start = EditorApplication.timeSinceStartup;
         while (!done())
         {
-            if (EditorApplication.timeSinceStartup - start > 15) throw new TimeoutException(step);
+            if (EditorApplication.timeSinceStartup - start > 15)
+                throw new TimeoutException(step);
             await Task.Delay(100);
         }
         await Task.Delay(150);
@@ -464,13 +505,15 @@ public static class ValidateUguiExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

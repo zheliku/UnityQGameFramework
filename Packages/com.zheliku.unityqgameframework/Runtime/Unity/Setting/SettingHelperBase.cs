@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Setting;
+using UnityQGameFramework.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +18,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取游戏配置项数量。
         /// </summary>
-        public abstract int Count { get; }
+        public abstract int Count
+        {
+            get;
+        }
 
         /// <summary>
         /// 加载游戏配置。

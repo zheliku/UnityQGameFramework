@@ -102,8 +102,15 @@ public static class ResourceConfigurationValidation
             string[] serializedFields = typeof(ResourceComponent).GetFields(InternalMembers)
                 .Where(field => field.GetCustomAttribute<SerializeField>() != null).Select(field => field.Name).ToArray();
             Require(serializedFields.SequenceEqual(new[] { "m_Settings" }), "ResourceComponent still stores duplicate runtime configuration.");
-            return new { passed = true, nativeModes = modes, customAssetLoaded = true, legacyModesMigrated = true,
-                oneSettingsSource = true, componentSerializedFields = serializedFields };
+            return new
+            {
+                passed = true,
+                nativeModes = modes,
+                customAssetLoaded = true,
+                legacyModesMigrated = true,
+                oneSettingsSource = true,
+                componentSerializedFields = serializedFields
+            };
         }
         finally
         {
@@ -183,8 +190,16 @@ public static class ResourceConfigurationValidation
         }
         ValidateModeAsset(0, 2, false);
         ValidateModeAsset(0, 2, true);
-        return new { passed = true, legacyModeCases = 15, nativeModeRoundTrips = 5,
-            globalOverrideIgnored = true, newSettingsUseSimulation = true, cacheSelection = true, cleanupIntervals = true };
+        return new
+        {
+            passed = true,
+            legacyModeCases = 15,
+            nativeModeRoundTrips = 5,
+            globalOverrideIgnored = true,
+            newSettingsUseSimulation = true,
+            cacheSelection = true,
+            cleanupIntervals = true
+        };
     }
 
     /// <summary>

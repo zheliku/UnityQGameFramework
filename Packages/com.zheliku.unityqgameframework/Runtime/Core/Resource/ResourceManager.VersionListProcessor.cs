@@ -3,13 +3,13 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Download;
+using UnityQGameFramework.Core.Events;
 using System;
 using System.IO;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 版本资源列表处理器。
@@ -26,12 +26,12 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 版本资源列表更新成功回调。
             /// </summary>
-            public FrameworkAction<string, string> VersionListUpdateSuccess;
+            public GameFrameworkAction<string, string> VersionListUpdateSuccess;
 
             /// <summary>
             /// 版本资源列表更新失败回调。
             /// </summary>
-            public FrameworkAction<string, string> VersionListUpdateFailure;
+            public GameFrameworkAction<string, string> VersionListUpdateFailure;
 
             /// <summary>
             /// 初始化版本资源列表处理器的新实例。
@@ -70,7 +70,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (downloadManager == null)
                 {
-                    throw new FrameworkException("Download manager is invalid.");
+                    throw new GameFrameworkException("Download manager is invalid.");
                 }
 
                 m_DownloadManager = downloadManager;
@@ -87,7 +87,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (string.IsNullOrEmpty(m_ResourceManager.ReadWritePath))
                 {
-                    throw new FrameworkException("Read-write path is invalid.");
+                    throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
                 string versionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.ReadWritePath, RemoteVersionListFileName));
@@ -141,7 +141,7 @@ namespace UnityQGameFramework.Core.Resource
             {
                 if (m_DownloadManager == null)
                 {
-                    throw new FrameworkException("You must set download manager first.");
+                    throw new GameFrameworkException("You must set download manager first.");
                 }
 
                 m_VersionListLength = versionListLength;

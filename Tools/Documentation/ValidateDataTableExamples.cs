@@ -32,15 +32,19 @@ public static class ValidateDataTableExamples
         if (name == "LoadLubanTablesExample" || name == "QueryRowsExample")
         {
             var items = QGF.DataTable.GetDataTable<TbItem>();
-            if (!QGF.DataTable.IsLoaded || items == null || items.Count == 0) throw new Exception("Generated table not loaded");
-            if (!ReferenceEquals(items, QGF.DataTable.GetDataTable(typeof(TbItem)))) throw new Exception("Typed/untyped lookup differ");
+            if (!QGF.DataTable.IsLoaded || items == null || items.Count == 0)
+                throw new Exception("Generated table not loaded");
+            if (!ReferenceEquals(items, QGF.DataTable.GetDataTable(typeof(TbItem))))
+                throw new Exception("Typed/untyped lookup differ");
             if (name == "QueryRowsExample")
             {
                 var field = example.GetType().GetField("idInput", BindingFlags.NonPublic | BindingFlags.Instance);
                 ((InputField)field.GetValue(example)).text = "999999";
-                if (items.GetDataRow(999999) != null) throw new Exception("Missing key did not return null");
+                if (items.GetDataRow(999999) != null)
+                    throw new Exception("Missing key did not return null");
             }
         }
-        else await ModuleExampleActions.Exercise(name, example);
+        else
+            await ModuleExampleActions.Exercise(name, example);
     }
 }

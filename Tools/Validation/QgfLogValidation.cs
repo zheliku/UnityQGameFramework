@@ -28,15 +28,15 @@ public static class QgfLogValidation
         Debug.unityLogger.logHandler = handler;
         try
         {
-            // 编辑器中尚未创建 BaseComponent，FrameworkLog 也应能输出菜单消息。
-            FrameworkLog.Info("editor-ready");
+            // 编辑器中尚未创建 BaseComponent，GameFrameworkLog 也应能输出菜单消息。
+            GameFrameworkLog.Info("editor-ready");
             Require(handler.Messages.Count == 1 && handler.Messages[0].Contains("[QGF]"), "Editor logger was not initialized.");
 
             var helper = new DefaultLogHelper();
-            helper.Log(FrameworkLogLevel.Debug, "debug");
-            helper.Log(FrameworkLogLevel.Info, null);
-            helper.Log(FrameworkLogLevel.Warning, "warning");
-            helper.Log(FrameworkLogLevel.Error, "error");
+            helper.Log(GameFrameworkLogLevel.Debug, "debug");
+            helper.Log(GameFrameworkLogLevel.Info, null);
+            helper.Log(GameFrameworkLogLevel.Warning, "warning");
+            helper.Log(GameFrameworkLogLevel.Error, "error");
             Require(handler.Types[1] == LogType.Log && handler.Messages[1].Contains("DEBUG"), "Debug format failed.");
             Require(handler.Messages[2].Contains("INFO") && handler.Messages[2].EndsWith("null"), "Null message failed.");
             Require(handler.Types[3] == LogType.Warning && handler.Messages[3].Contains("WARNING"), "Warning level failed.");
@@ -56,7 +56,7 @@ public static class QgfLogValidation
             {
                 theme.SetValue(null, index == 1);
                 int callLine = CurrentLine() + 1;
-                FrameworkLog.Info("caller-check");
+                GameFrameworkLog.Info("caller-check");
                 string formatted = handler.Messages[handler.Messages.Count - 1];
                 Require(formatted.Contains("QgfLogValidation.Run") && formatted.Contains("QgfLogValidation.cs:" + callLine), "The caller method and line are missing or point to a logging wrapper.");
                 Require(formatted.Contains("<a href=\"") && formatted.Contains("line=\"" + callLine + "\""), "The source link does not include its exact line.");
@@ -74,7 +74,7 @@ public static class QgfLogValidation
             catch (Exception exception)
             {
                 source = exception;
-                helper.Log(FrameworkLogLevel.Error, exception);
+                helper.Log(GameFrameworkLogLevel.Error, exception);
             }
             Require(ReferenceEquals(handler.Exception, source), "The original exception type or object was replaced.");
             Require(!string.IsNullOrEmpty(source.StackTrace) && handler.Exception.Message == "original-error", "The original exception stack or message was lost.");
@@ -82,14 +82,29 @@ public static class QgfLogValidation
             bool fatalThrown = false;
             try
             {
-                helper.Log(FrameworkLogLevel.Fatal, "fatal");
+                helper.Log(GameFrameworkLogLevel.Fatal, "fatal");
             }
-            catch (FrameworkException exception)
+            catch (GameFrameworkException exception)
             {
                 fatalThrown = exception.Message == "fatal";
             }
-            Require(fatalThrown, "Fatal must still throw FrameworkException.");
-            return new { passed = true, formattedLevels = 4, editorBootstrap = true, nullMessage = true, originalException = true, fatal = true, bothThemes = true, exactCallerLine = true, runtimeLogCaller = true, nativeLogUnchanged = true, sourceHyperlink = true, nativeTextColors = true, noEditorTimestamp = true };
+            Require(fatalThrown, "Fatal must still throw GameFrameworkException.");
+            return new
+            {
+                passed = true,
+                formattedLevels = 4,
+                editorBootstrap = true,
+                nullMessage = true,
+                originalException = true,
+                fatal = true,
+                bothThemes = true,
+                exactCallerLine = true,
+                runtimeLogCaller = true,
+                nativeLogUnchanged = true,
+                sourceHyperlink = true,
+                nativeTextColors = true,
+                noEditorTimestamp = true
+            };
         }
         finally
         {
@@ -112,7 +127,7 @@ public static class QgfLogValidation
         {
             await Task.Yield();
             int callLine = CurrentLine() + 1;
-            FrameworkLog.Info("async-caller-check");
+            GameFrameworkLog.Info("async-caller-check");
             string text = handler.Messages[handler.Messages.Count - 1];
             Require(text.Contains("QgfLogValidation.RunAsync") && !text.Contains("MoveNext")
                 && text.Contains("QgfLogValidation.cs:" + callLine), "Async caller was not restored to its source method.");
@@ -120,7 +135,13 @@ public static class QgfLogValidation
             await Task.Run(LogFromWorker);
             text = handler.Messages[handler.Messages.Count - 1];
             Require(text.Contains("QgfLogValidation.LogFromWorker") && text.Contains("worker-caller-check"), "Worker caller was lost.");
-            return new { passed = true, format, asyncCaller = true, workerCaller = true };
+            return new
+            {
+                passed = true,
+                format,
+                asyncCaller = true,
+                workerCaller = true
+            };
         }
         finally
         {
@@ -130,7 +151,7 @@ public static class QgfLogValidation
 
     private static void LogFromWorker()
     {
-        FrameworkLog.Info("worker-caller-check");
+        GameFrameworkLog.Info("worker-caller-check");
     }
 
     private static int CurrentLine([CallerLineNumber] int line = 0)

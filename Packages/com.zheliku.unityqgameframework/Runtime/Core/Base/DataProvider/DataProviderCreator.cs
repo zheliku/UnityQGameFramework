@@ -1,9 +1,8 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.Resource;
 
 namespace UnityQGameFramework.Core
 {
@@ -53,17 +52,17 @@ namespace UnityQGameFramework.Core
         {
             if (owner == null)
             {
-                throw new FrameworkException("Owner is invalid.");
+                throw new GameFrameworkException("Owner is invalid.");
             }
 
             if (resourceManager == null)
             {
-                throw new FrameworkException("Resource manager is invalid.");
+                throw new GameFrameworkException("Resource manager is invalid.");
             }
 
             if (dataProviderHelper == null)
             {
-                throw new FrameworkException("Data provider helper is invalid.");
+                throw new GameFrameworkException("Data provider helper is invalid.");
             }
 
             DataProvider<T> dataProvider = new DataProvider<T>(owner);

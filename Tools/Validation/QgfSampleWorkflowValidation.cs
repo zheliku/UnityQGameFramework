@@ -55,7 +55,12 @@ public static class QgfSampleWorkflowValidation
             await Task.Delay(500);
             Require(UnityEngine.Object.FindFirstObjectByType<BaseComponent>() == null, "Baseline scene contains QGF components.");
             await SetPlayMode(false);
-            editorStartup = new { emptyScene = true, errors = s_Errors.ToArray(), warnings = s_Warnings.ToArray() };
+            editorStartup = new
+            {
+                emptyScene = true,
+                errors = s_Errors.ToArray(),
+                warnings = s_Warnings.ToArray()
+            };
             File.WriteAllText("Artifacts~/SampleWorkflow/editor-baseline.json", JsonConvert.SerializeObject(editorStartup, Formatting.Indented));
             Require(s_Errors.All(error => error.Contains("UnityEditor.Search.SearchDatabase")), "The editor baseline has an unrelated failure.");
             // 上述原生 Search 故障保存在独立记录中；后续示例的任何错误都仍然使检查失败。
@@ -128,8 +133,16 @@ public static class QgfSampleWorkflowValidation
             Application.logMessageReceived -= OnLog;
             File.WriteAllText("Artifacts~/SampleWorkflow/result.json", JsonConvert.SerializeObject(new
             {
-                passed = exitCode == 0, unity = Application.unityVersion, editorStartup, logger, tables, resources, smoke,
-                warnings = s_Warnings, errors = s_Errors, failure
+                passed = exitCode == 0,
+                unity = Application.unityVersion,
+                editorStartup,
+                logger,
+                tables,
+                resources,
+                smoke,
+                warnings = s_Warnings,
+                errors = s_Errors,
+                failure
             }, Formatting.Indented));
             EditorApplication.Exit(exitCode);
         }

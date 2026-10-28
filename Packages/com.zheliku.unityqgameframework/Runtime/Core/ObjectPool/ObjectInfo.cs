@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace UnityQGameFramework.Core.ObjectPool
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 对象信息。
@@ -36,27 +36,42 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象名称。
         /// </summary>
-        public string Name { get; }
+        public string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象是否被加锁。
         /// </summary>
-        public bool Locked { get; }
+        public bool Locked
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象自定义释放检查标记。
         /// </summary>
-        public bool CustomCanReleaseFlag { get; }
+        public bool CustomCanReleaseFlag
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象的优先级。
         /// </summary>
-        public int Priority { get; }
+        public int Priority
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象上次使用时间。
         /// </summary>
-        public DateTime LastUseTime { get; }
+        public DateTime LastUseTime
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取对象是否正在使用。
@@ -72,6 +87,9 @@ namespace UnityQGameFramework.Core.ObjectPool
         /// <summary>
         /// 获取对象的获取计数。
         /// </summary>
-        public int SpawnCount { get; }
+        public int SpawnCount
+        {
+            get;
+        }
     }
 }

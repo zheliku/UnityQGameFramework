@@ -11,9 +11,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 #endif
-using UnityQGameFramework.Core.Event;
-using UnityQGameFramework.Core.Localization;
-using UnityQGameFramework.Core.Resource;
+using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 using Entry = StarForce.GameEntry;
 
@@ -32,9 +30,12 @@ public sealed class StarForcePlayerProbe : MonoBehaviour
         var args = Environment.GetCommandLineArgs();
         for (int i = 0; i < args.Length - 1; i++)
         {
-            if (args[i] == "-qgf-starforce-result") resultPath = args[++i];
-            else if (args[i] == "-qgf-starforce-run") run = args[++i];
-            else if (args[i] == "-qgf-starforce-language") expectedLanguage = args[++i];
+            if (args[i] == "-qgf-starforce-result")
+                resultPath = args[++i];
+            else if (args[i] == "-qgf-starforce-run")
+                run = args[++i];
+            else if (args[i] == "-qgf-starforce-language")
+                expectedLanguage = args[++i];
         }
         if (!string.IsNullOrEmpty(resultPath))
         {
@@ -103,7 +104,8 @@ public sealed class StarForcePlayerProbe : MonoBehaviour
 #else
                 // 旧 Input 不能注入虚拟鼠标，直接设置业务目标并触发武器，验证同一套移动与实体逻辑。
                 aircraft.GetType().GetField("m_TargetPosition", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(aircraft, target);
-                foreach (Weapon weapon in (IList)Field(aircraft, "m_Weapons")) weapon.TryAttack();
+                foreach (Weapon weapon in (IList)Field(aircraft, "m_Weapons"))
+                    weapon.TryAttack();
 #endif
                 await Until(() => (aircraft.transform.position - initial).sqrMagnitude > 0.25f && result.bullets > bulletsBefore, "Mouse movement and fire");
 #if ENABLE_INPUT_SYSTEM
@@ -123,8 +125,10 @@ public sealed class StarForcePlayerProbe : MonoBehaviour
                 var next = Entry.Localization.Language == Language.Korean ? Language.English : Language.Korean;
                 Find<MenuForm>().OnSettingButtonClick();
                 await Until(() => Find<SettingForm>() != null, "Language form");
-                if (next == Language.Korean) Find<SettingForm>().OnKoreanSelected(true);
-                else Find<SettingForm>().OnEnglishSelected(true);
+                if (next == Language.Korean)
+                    Find<SettingForm>().OnKoreanSelected(true);
+                else
+                    Find<SettingForm>().OnEnglishSelected(true);
                 Find<SettingForm>().OnSubmitButtonClick();
                 await Until(() => Find<MenuForm>() != null && Entry.Localization.Language == next, "Language restart");
                 result.languageRestart = true;
@@ -160,13 +164,15 @@ public sealed class StarForcePlayerProbe : MonoBehaviour
 
     private void OnLog(string message, string stack, LogType kind)
     {
-        if (kind != LogType.Error && kind != LogType.Exception && kind != LogType.Assert) return;
+        if (kind != LogType.Error && kind != LogType.Exception && kind != LogType.Assert)
+            return;
         result.errors++;
         result.lastError = message + "\n" + stack;
     }
     private void OnEntity(object sender, GameEventArgs args)
     {
-        if (((ShowEntitySuccessEventArgs)args).EntityLogicType == typeof(Bullet)) result.bullets++;
+        if (((ShowEntitySuccessEventArgs)args).EntityLogicType == typeof(Bullet))
+            result.bullets++;
     }
     private static T Find<T>() where T : UnityEngine.Object
     {
@@ -182,11 +188,16 @@ public sealed class StarForcePlayerProbe : MonoBehaviour
         for (var type = instance.GetType(); type != null; type = type.BaseType)
         {
             var field = type.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-            if (field != null) return field.GetValue(instance);
+            if (field != null)
+                return field.GetValue(instance);
         }
         throw new Exception("Missing field " + name);
     }
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+    }
     private static async Task Until(Func<bool> condition, string message)
     {
         double start = Time.realtimeSinceStartupAsDouble;

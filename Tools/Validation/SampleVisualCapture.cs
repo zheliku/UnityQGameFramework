@@ -5,11 +5,26 @@ using UnityEngine;
 // Copy to Assets/Validation in the disposable consumer, alongside the Editor validator.
 public sealed class SampleVisualCapture : MonoBehaviour
 {
-    public bool Complete { get; private set; }
-    public float WhiteRatio { get; private set; }
-    public float BlackRatio { get; private set; }
-    public float ColorRatio { get; private set; }
-    public float PinkRatio { get; private set; }
+    public bool Complete
+    {
+        get; private set;
+    }
+    public float WhiteRatio
+    {
+        get; private set;
+    }
+    public float BlackRatio
+    {
+        get; private set;
+    }
+    public float ColorRatio
+    {
+        get; private set;
+    }
+    public float PinkRatio
+    {
+        get; private set;
+    }
 
     public void Capture(string path) => StartCoroutine(CaptureFrame(path));
 
@@ -23,10 +38,14 @@ public sealed class SampleVisualCapture : MonoBehaviour
         {
             float min = Mathf.Min(color.r, color.g, color.b);
             float max = Mathf.Max(color.r, color.g, color.b);
-            if (min > .95f) ++white;
-            if (max < .03f) ++black;
-            if (max - min > .05f) ++colorful;
-            if (color.r > .5f && color.b > .5f && color.r > color.g * 2 && color.b > color.g * 2) ++pink;
+            if (min > .95f)
+                ++white;
+            if (max < .03f)
+                ++black;
+            if (max - min > .05f)
+                ++colorful;
+            if (color.r > .5f && color.b > .5f && color.r > color.g * 2 && color.b > color.g * 2)
+                ++pink;
         }
         WhiteRatio = (float)white / pixels.Length;
         BlackRatio = (float)black / pixels.Length;

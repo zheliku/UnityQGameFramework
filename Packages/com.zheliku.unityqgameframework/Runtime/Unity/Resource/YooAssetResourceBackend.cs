@@ -5,7 +5,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Resource;
 using YooAsset;
 
 namespace UnityQGameFramework.Runtime
@@ -35,7 +34,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (settings == null)
             {
-                throw new FrameworkException("Resource settings is invalid.");
+                throw new GameFrameworkException("Resource settings is invalid.");
             }
 
             settings.GetPackage();
@@ -48,12 +47,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源只读路径。
         /// </summary>
-        public string ReadOnlyPath { get; private set; }
+        public string ReadOnlyPath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取资源读写路径。
         /// </summary>
-        public string ReadWritePath { get; private set; }
+        public string ReadWritePath
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取默认资源包的运行模式。
@@ -107,11 +112,11 @@ namespace UnityQGameFramework.Runtime
             ThrowIfShutdown();
             if (m_Packages.Count > 0)
             {
-                throw new FrameworkException("Set resource paths before creating packages.");
+                throw new GameFrameworkException("Set resource paths before creating packages.");
             }
             if (string.IsNullOrEmpty(readOnlyPath) || string.IsNullOrEmpty(readWritePath))
             {
-                throw new FrameworkException("Resource paths are invalid.");
+                throw new GameFrameworkException("Resource paths are invalid.");
             }
             ReadOnlyPath = readOnlyPath;
             ReadWritePath = readWritePath;
@@ -125,7 +130,7 @@ namespace UnityQGameFramework.Runtime
         {
             if (callback == null)
             {
-                throw new FrameworkException("Init resources complete callback is invalid.");
+                throw new GameFrameworkException("Init resources complete callback is invalid.");
             }
             InitializeCallbackAsync(callback).Forget();
         }
@@ -163,7 +168,7 @@ namespace UnityQGameFramework.Runtime
             PackageInfo package = CreatePackage(name);
             if (package.Destroying)
             {
-                throw new FrameworkException("Resource package is being destroyed: " + package.Package.PackageName);
+                throw new GameFrameworkException("Resource package is being destroyed: " + package.Package.PackageName);
             }
             if (options != null)
             {
@@ -171,7 +176,7 @@ namespace UnityQGameFramework.Runtime
                 {
                     if (!ReferenceEquals(package.Options, options) || package.Version != version)
                     {
-                        throw new FrameworkException("The resource package is already initialized with other options: " + package.Package.PackageName);
+                        throw new GameFrameworkException("The resource package is already initialized with other options: " + package.Package.PackageName);
                     }
                 }
                 else
@@ -209,12 +214,12 @@ namespace UnityQGameFramework.Runtime
             string name = GetPackageName(packageName);
             if (!m_Packages.TryGetValue(name, out PackageInfo package))
             {
-                throw new FrameworkException("Resource package was not created: " + name);
+                throw new GameFrameworkException("Resource package was not created: " + name);
             }
             RemoveReleasedHandles(package);
             if (package.Destroying || package.Initializing || package.Requests > 0 || package.Assets.Count > 0 || package.Scenes.Count > 0 || package.Operations.Count > 0)
             {
-                throw new FrameworkException("Resource package still has active operations or resource handles: " + name);
+                throw new GameFrameworkException("Resource package still has active operations or resource handles: " + name);
             }
 
             package.Destroying = true;
@@ -246,7 +251,7 @@ namespace UnityQGameFramework.Runtime
             string name = GetPackageName(packageName);
             if (!m_Packages.TryGetValue(name, out PackageInfo package) || !package.Ready || package.Destroying)
             {
-                throw new FrameworkException("Initialize the resource package before creating a downloader: " + name);
+                throw new GameFrameworkException("Initialize the resource package before creating a downloader: " + name);
             }
             ResourceDownloaderOperation operation = package.Package.CreateResourceDownloader(options);
             package.Operations.Add(operation);
@@ -279,7 +284,7 @@ namespace UnityQGameFramework.Runtime
             }
             if (owner == null || owner.Destroying)
             {
-                throw new FrameworkException("The downloader does not belong to an active resource package.");
+                throw new GameFrameworkException("The downloader does not belong to an active resource package.");
             }
 
             owner.Requests++;
@@ -322,12 +327,12 @@ namespace UnityQGameFramework.Runtime
             string name = GetPackageName(packageName);
             if (!m_Packages.TryGetValue(name, out PackageInfo package) || !package.Ready || package.Destroying)
             {
-                throw new FrameworkException("Initialize the resource package before clearing its cache: " + name);
+                throw new GameFrameworkException("Initialize the resource package before clearing its cache: " + name);
             }
             RemoveReleasedHandles(package);
             if (package.Assets.Count > 0 || package.Scenes.Count > 0 || package.Requests > 0 || package.Operations.Count > 0)
             {
-                throw new FrameworkException("Finish resource operations and return all resource borrows before clearing the cache: " + name);
+                throw new GameFrameworkException("Finish resource operations and return all resource borrows before clearing the cache: " + name);
             }
             ClearCacheOperation operation = package.Package.ClearCacheAsync(new ClearCacheOptions(clearMethod, clearParameter));
             package.Operations.Add(operation);
@@ -480,7 +485,7 @@ namespace UnityQGameFramework.Runtime
             }
             if (YooAssets.TryGetPackage(name, out _))
             {
-                throw new FrameworkException("Resource package is owned by another resource service: " + name);
+                throw new GameFrameworkException("Resource package is owned by another resource service: " + name);
             }
             package = new PackageInfo(settings, YooAssets.CreatePackage(name));
             m_Packages.Add(name, package);
@@ -501,7 +506,7 @@ namespace UnityQGameFramework.Runtime
                 case EPlayMode.EditorSimulateMode:
                     if (!Application.isEditor || ResourceComponent.EditorPackageBuilder == null)
                     {
-                        throw new FrameworkException("Editor simulation is only available in the Unity Editor.");
+                        throw new GameFrameworkException("Editor simulation is only available in the Unity Editor.");
                     }
                     string root = ResourceComponent.EditorPackageBuilder(m_Settings, settings.Name, true);
                     return new EditorSimulateModeOptions
@@ -535,14 +540,14 @@ namespace UnityQGameFramework.Runtime
                     System.Type type = Utility.Assembly.GetType(settings.InitializerTypeName);
                     if (type == null || type.IsAbstract || !typeof(IResourcePackageInitializer).IsAssignableFrom(type))
                     {
-                        throw new FrameworkException("The custom initializer must implement IResourcePackageInitializer: " + settings.InitializerTypeName);
+                        throw new GameFrameworkException("The custom initializer must implement IResourcePackageInitializer: " + settings.InitializerTypeName);
                     }
                     var initializer = (IResourcePackageInitializer)Activator.CreateInstance(type);
                     return initializer.CreateOptions(settings, builtinRoot, cacheRoot)
-                        ?? throw new FrameworkException("The custom initializer returned null options: " + settings.Name);
+                        ?? throw new GameFrameworkException("The custom initializer returned null options: " + settings.Name);
 
                 default:
-                    throw new FrameworkException("Resource play mode is invalid.");
+                    throw new GameFrameworkException("Resource play mode is invalid.");
             }
         }
 
@@ -785,7 +790,7 @@ namespace UnityQGameFramework.Runtime
             {
                 if (string.IsNullOrWhiteSpace(settings.HostServer))
                 {
-                    throw new FrameworkException("Resource host server is not configured: " + settings.Name);
+                    throw new GameFrameworkException("Resource host server is not configured: " + settings.Name);
                 }
                 m_Settings = settings;
             }

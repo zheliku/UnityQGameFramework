@@ -40,11 +40,14 @@ public static class ValidateExampleOwnership
     /// <returns>资源归属检查结果。</returns>
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use an isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use an isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
-            .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty)) throw new Exception("Unsaved scene.");
+            .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
+            throw new Exception("Unsaved scene.");
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         var sceneHashes = new Dictionary<string, string>();
@@ -57,7 +60,8 @@ public static class ValidateExampleOwnership
         bool background = Application.runInBackground;
         Application.LogCallback capture = (message, stack, kind) =>
         {
-            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert) errors.Add(message + "\n" + stack);
+            if (kind == LogType.Error || kind == LogType.Exception || kind == LogType.Assert)
+                errors.Add(message + "\n" + stack);
         };
         Application.logMessageReceived += capture;
         try
@@ -80,31 +84,58 @@ public static class ValidateExampleOwnership
                     Application.runInBackground = true;
                     var owner = (MonoBehaviour)UnityEngine.Object.FindFirstObjectByType(type);
                     await Task.Delay(250);
-                    if (name == "LoadRoomExample" || name == "SwitchRoomsExample") await CheckScene(name, mode, owner, layouts);
-                    else await CheckUI(name, mode, owner);
+                    if (name == "LoadRoomExample" || name == "SwitchRoomsExample")
+                        await CheckScene(name, mode, owner, layouts);
+                    else
+                        await CheckUI(name, mode, owner);
                     await Play(false);
                     Require(errors.Count == 0, name + " runtime errors: " + string.Join("\n", errors));
-                    completed.Add(new { name, mode, scene, assertions = assertions.Skip(start).ToArray() });
+                    completed.Add(new
+                    {
+                        name,
+                        mode,
+                        scene,
+                        assertions = assertions.Skip(start).ToArray()
+                    });
                 }
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = background;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Five host settings unchanged");
         Require(sceneHashes.All(item => Hash(item.Key) == item.Value), "Saved source scenes unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, interaction = "Programmatic listeners for destruction timing; functional UI uses separate native-input validators",
-            runs = completed, assertionCount = assertions.Count, settingsUnchanged = true, savedScenesUnchanged = true };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            interaction = "Programmatic listeners for destruction timing; functional UI uses separate native-input validators",
+            runs = completed,
+            assertionCount = assertions.Count,
+            settingsUnchanged = true,
+            savedScenesUnchanged = true
+        };
         Directory.CreateDirectory("Artifacts~/OwnerCleanupExamples");
         File.WriteAllText("Artifacts~/OwnerCleanupExamples/" + (names == null ? "ownership" : string.Join("-", names)) + "-check.json", JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, runs = completed.Count, result.assertionCount, result.settingsUnchanged, result.savedScenesUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            runs = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged,
+            result.savedScenesUnchanged
+        };
     }
 
     private static async Task CheckUI(string name, int mode, MonoBehaviour owner)
@@ -145,8 +176,10 @@ public static class ValidateExampleOwnership
         }
         int[] ids = keys.Select(key => Field<int>(owner, key)).Where(id => id != 0).ToArray();
         Require(ids.Length == (name == "CoverWindowExample" && mode == 1 ? 1 : keys.Length), "Owned request identities recorded");
-        if (mode == 1) Require(ids.All(id => QGF.UI.IsLoadingUIForm(id)), "Owned windows still loading");
-        else await Until(() => ids.All(id => QGF.UI.HasUIForm(id)), "Owned windows loaded");
+        if (mode == 1)
+            Require(ids.All(id => QGF.UI.IsLoadingUIForm(id)), "Owned windows still loading");
+        else
+            await Until(() => ids.All(id => QGF.UI.HasUIForm(id)), "Owned windows loaded");
         if (mode == 2)
         {
             Field<Slider>(owner, "idleSlider").value = 2.5f;
@@ -220,12 +253,22 @@ public static class ValidateExampleOwnership
     }
 
     private static T Field<T>(object instance, string name) => (T)instance.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(instance);
-    private static void Require(bool condition, string message) { if (!condition) throw new Exception(message); assertions.Add(message); }
-    private static string Hash(string path) { using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path))); }
+    private static void Require(bool condition, string message)
+    {
+        if (!condition)
+            throw new Exception(message);
+        assertions.Add(message);
+    }
+    private static string Hash(string path)
+    {
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+    }
     private static async Task Until(Func<bool> condition, string message)
     {
         var end = DateTime.UtcNow.AddSeconds(8);
-        while (!condition() && DateTime.UtcNow < end) await Task.Delay(10);
+        while (!condition() && DateTime.UtcNow < end)
+            await Task.Delay(10);
         Require(condition(), message);
     }
     private static async Task Play(bool enabled)
@@ -236,7 +279,8 @@ public static class ValidateExampleOwnership
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

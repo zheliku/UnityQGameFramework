@@ -17,7 +17,7 @@ namespace StarForce
 /// <summary>
 /// Thruster
 /// </summary>
-public partial class TbThruster : UnityQGameFramework.Core.DataTable.DataTable<DRThruster>
+public partial class TbThruster : UnityQGameFramework.Core.DataTable<DRThruster>
 {
     /// <summary>
     /// 按源表顺序获取指定位置的记录。

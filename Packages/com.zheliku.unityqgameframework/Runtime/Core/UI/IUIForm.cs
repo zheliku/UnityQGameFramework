@@ -1,9 +1,9 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 界面接口。
@@ -13,32 +13,50 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取界面序列编号。
         /// </summary>
-        int SerialId { get; }
+        int SerialId
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取界面资源名称。
         /// </summary>
-        string UIFormAssetName { get; }
+        string UIFormAssetName
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取界面实例。
         /// </summary>
-        object Handle { get; }
+        object Handle
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取界面所属的界面组。
         /// </summary>
-        IUIGroup UIGroup { get; }
+        IUIGroup UIGroup
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取界面在界面组中的深度。
         /// </summary>
-        int DepthInUIGroup { get; }
+        int DepthInUIGroup
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取是否暂停被覆盖的界面。
         /// </summary>
-        bool PauseCoveredUIForm { get; }
+        bool PauseCoveredUIForm
+        {
+            get;
+        }
 
         /// <summary>
         /// 初始化界面。

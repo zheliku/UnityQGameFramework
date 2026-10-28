@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -43,7 +43,10 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取任务信息是否有效。
         /// </summary>
-        public bool IsValid { get; }
+        public bool IsValid
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取任务的序列编号。
@@ -54,7 +57,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_SerialId;
@@ -70,7 +73,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_Tag;
@@ -86,7 +89,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_Priority;
@@ -102,7 +105,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_UserData;
@@ -118,7 +121,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_Status;
@@ -134,7 +137,7 @@ namespace UnityQGameFramework.Core
             {
                 if (!IsValid)
                 {
-                    throw new FrameworkException("Data is invalid.");
+                    throw new GameFrameworkException("Data is invalid.");
                 }
 
                 return m_Description;

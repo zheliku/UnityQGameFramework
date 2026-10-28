@@ -32,7 +32,7 @@ namespace UnityQGameFramework.Examples.Modules.Editor
             }
             catch (System.Exception exception)
             {
-                FrameworkLog.Error(exception);
+                GameFrameworkLog.Error(exception);
             }
         }
 
@@ -64,7 +64,7 @@ namespace UnityQGameFramework.Examples.Modules.Editor
                 RemoteFolder = output
             };
             File.WriteAllText(record, JsonUtility.ToJson(fixture, true));
-            UnityQGameFramework.Core.FrameworkLog.Info("Resource update example built: " + output);
+            UnityQGameFramework.Core.GameFrameworkLog.Info("Resource update example built: " + output);
             return fixture;
         }
 

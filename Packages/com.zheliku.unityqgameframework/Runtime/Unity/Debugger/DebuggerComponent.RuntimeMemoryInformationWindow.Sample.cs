@@ -5,7 +5,7 @@
 
 namespace UnityQGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : FrameworkComponent
+    public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
         private sealed partial class RuntimeMemoryInformationWindow<T> : ScrollableDebuggerWindowBase where T : UnityEngine.Object
         {
@@ -31,22 +31,34 @@ namespace UnityQGameFramework.Runtime
                 /// <summary>
                 /// 获取对象名称。
                 /// </summary>
-                public string Name { get; }
+                public string Name
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取对象类型名称。
                 /// </summary>
-                public string Type { get; }
+                public string Type
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取内存字节数。
                 /// </summary>
-                public long Size { get; }
+                public long Size
+                {
+                    get;
+                }
 
                 /// <summary>
                 /// 获取或设置是否高亮重复采样记录。
                 /// </summary>
-                public bool Highlight { get; set; }
+                public bool Highlight
+                {
+                    get; set;
+                }
             }
         }
     }

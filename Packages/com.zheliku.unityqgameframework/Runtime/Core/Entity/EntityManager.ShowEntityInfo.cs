@@ -3,9 +3,9 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Entity
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class EntityManager : FrameworkModule, IEntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         /// <summary>
         /// 等待实体显示时保存的请求信息。
@@ -26,22 +26,34 @@ namespace UnityQGameFramework.Core.Entity
             /// <summary>
             /// 获取异步显示请求序号。
             /// </summary>
-            public int SerialId { get; private set; }
+            public int SerialId
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取实体实例编号。
             /// </summary>
-            public int EntityId { get; private set; }
+            public int EntityId
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取目标实体组。
             /// </summary>
-            public EntityGroup EntityGroup { get; private set; }
+            public EntityGroup EntityGroup
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取调用方传入的业务数据。
             /// </summary>
-            public object UserData { get; private set; }
+            public object UserData
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 从引用池取得并填写异步显示请求。

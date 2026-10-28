@@ -12,23 +12,27 @@ public static class ExampleCompatibilityChecks
 {
     public static void Run()
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new InvalidOperationException("Use an isolated project.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new InvalidOperationException("Use an isolated project.");
         var layouts = JObject.Parse(File.ReadAllText("Tools/Documentation/ugui-layouts.json"));
         int references = 0;
         foreach (var pair in layouts)
         {
             string typeName = "UnityQGameFramework.Examples.Modules." + pair.Key;
             var type = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(typeName)).FirstOrDefault(candidate => candidate != null);
-            if (type == null) throw new Exception("Missing example type: " + typeName);
+            if (type == null)
+                throw new Exception("Missing example type: " + typeName);
             string script = (string)pair.Value["script"];
             EditorSceneManager.OpenScene(Path.ChangeExtension(script, ".unity"));
             var controller = UnityEngine.Object.FindFirstObjectByType(type);
-            if (controller == null) throw new Exception("Missing scene controller: " + script);
+            if (controller == null)
+                throw new Exception("Missing scene controller: " + script);
             var serialized = new SerializedObject(controller);
             foreach (var control in (JArray)pair.Value["controls"])
             {
                 string field = (string)control["field"];
-                if (field == null) continue;
+                if (field == null)
+                    continue;
                 if (serialized.FindProperty(field)?.objectReferenceValue == null)
                     throw new Exception("Missing serialized reference: " + pair.Key + "." + field);
                 references++;
@@ -43,8 +47,14 @@ public static class ExampleCompatibilityChecks
         var builtin = new SerializedObject(UnityEngine.Object.FindFirstObjectByType(builtinType));
         if (builtin.FindProperty("m_BuiltinDialogFormTemplate").objectReferenceValue == null)
             throw new Exception("Missing builtin dialog prefab reference.");
-        var result = new { passed = true, unity = Application.unityVersion, scenes = layouts.Count, references,
-            scope = "Compilation, scene loading and serialized references; no Play Mode or rendered UI" };
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            scenes = layouts.Count,
+            references,
+            scope = "Compilation, scene loading and serialized references; no Play Mode or rendered UI"
+        };
         Directory.CreateDirectory("Artifacts~/Compatibility");
         File.WriteAllText("Artifacts~/Compatibility/current-examples.json", JsonConvert.SerializeObject(result, Formatting.Indented));
         Debug.Log(JsonConvert.SerializeObject(result));

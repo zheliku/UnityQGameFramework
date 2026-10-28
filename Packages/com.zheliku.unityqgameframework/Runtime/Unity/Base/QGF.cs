@@ -247,7 +247,7 @@ namespace UnityQGameFramework.Runtime
         /// <typeparam name="T">框架组件类型。</typeparam>
         /// <returns>已注册的框架组件；未注册时抛出异常。</returns>
         private static T Require<T>()
-            where T : FrameworkComponent
+            where T : GameFrameworkComponent
         {
             T component = GameEntry.GetComponent<T>();
             if (component != null)
@@ -255,7 +255,7 @@ namespace UnityQGameFramework.Runtime
                 return component;
             }
 
-            throw new FrameworkException("QGF requires a registered " + typeof(T).Name + ". Add it to the framework scene and access it after initialization.");
+            throw new GameFrameworkException("QGF requires a registered " + typeof(T).Name + ". Add it to the framework scene and access it after initialization.");
         }
     }
 }

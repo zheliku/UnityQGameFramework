@@ -3,9 +3,11 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.WebRequest
+using UnityQGameFramework.Core.Events;
+
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class WebRequestManager : FrameworkModule, IWebRequestManager
+    internal sealed partial class WebRequestManager : GameFrameworkModule, IWebRequestManager
     {
         /// <summary>
         /// Web 请求代理。
@@ -17,17 +19,17 @@ namespace UnityQGameFramework.Core.WebRequest
             /// <summary>
             /// Web 请求开始回调。
             /// </summary>
-            public FrameworkAction<WebRequestAgent> WebRequestAgentStart;
+            public GameFrameworkAction<WebRequestAgent> WebRequestAgentStart;
 
             /// <summary>
             /// Web 请求成功回调。
             /// </summary>
-            public FrameworkAction<WebRequestAgent, byte[]> WebRequestAgentSuccess;
+            public GameFrameworkAction<WebRequestAgent, byte[]> WebRequestAgentSuccess;
 
             /// <summary>
             /// Web 请求失败回调。
             /// </summary>
-            public FrameworkAction<WebRequestAgent, string> WebRequestAgentFailure;
+            public GameFrameworkAction<WebRequestAgent, string> WebRequestAgentFailure;
 
             /// <summary>
             /// 初始化 Web 请求代理的新实例。
@@ -37,7 +39,7 @@ namespace UnityQGameFramework.Core.WebRequest
             {
                 if (webRequestAgentHelper == null)
                 {
-                    throw new FrameworkException("Web request agent helper is invalid.");
+                    throw new GameFrameworkException("Web request agent helper is invalid.");
                 }
 
                 m_Helper = webRequestAgentHelper;
@@ -52,12 +54,18 @@ namespace UnityQGameFramework.Core.WebRequest
             /// <summary>
             /// 获取 Web 请求任务。
             /// </summary>
-            public WebRequestTask Task { get; private set; }
+            public WebRequestTask Task
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 获取已经等待时间。
             /// </summary>
-            public float WaitTime { get; private set; }
+            public float WaitTime
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// 初始化 Web 请求代理。
@@ -106,7 +114,7 @@ namespace UnityQGameFramework.Core.WebRequest
             {
                 if (task == null)
                 {
-                    throw new FrameworkException("Task is invalid.");
+                    throw new GameFrameworkException("Task is invalid.");
                 }
 
                 Task = task;

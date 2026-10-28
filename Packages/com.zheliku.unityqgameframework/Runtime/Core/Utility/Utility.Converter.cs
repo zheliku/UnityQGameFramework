@@ -32,7 +32,10 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取或设置屏幕每英寸点数。
             /// </summary>
-            public static float ScreenDpi { get; set; }
+            public static float ScreenDpi
+            {
+                get; set;
+            }
 
             /// <summary>
             /// 将像素转换为厘米。
@@ -43,7 +46,7 @@ namespace UnityQGameFramework.Core
             {
                 if (ScreenDpi <= 0)
                 {
-                    throw new FrameworkException("You must set screen DPI first.");
+                    throw new GameFrameworkException("You must set screen DPI first.");
                 }
 
                 return InchesToCentimeters * pixels / ScreenDpi;
@@ -58,7 +61,7 @@ namespace UnityQGameFramework.Core
             {
                 if (ScreenDpi <= 0)
                 {
-                    throw new FrameworkException("You must set screen DPI first.");
+                    throw new GameFrameworkException("You must set screen DPI first.");
                 }
 
                 return CentimetersToInches * centimeters * ScreenDpi;
@@ -73,7 +76,7 @@ namespace UnityQGameFramework.Core
             {
                 if (ScreenDpi <= 0)
                 {
-                    throw new FrameworkException("You must set screen DPI first.");
+                    throw new GameFrameworkException("You must set screen DPI first.");
                 }
 
                 return pixels / ScreenDpi;
@@ -88,7 +91,7 @@ namespace UnityQGameFramework.Core
             {
                 if (ScreenDpi <= 0)
                 {
-                    throw new FrameworkException("You must set screen DPI first.");
+                    throw new GameFrameworkException("You must set screen DPI first.");
                 }
 
                 return inches * ScreenDpi;
@@ -126,12 +129,12 @@ namespace UnityQGameFramework.Core
             {
                 if (buffer == null)
                 {
-                    throw new FrameworkException("Buffer is invalid.");
+                    throw new GameFrameworkException("Buffer is invalid.");
                 }
 
                 if (startIndex < 0 || startIndex + 1 > buffer.Length)
                 {
-                    throw new FrameworkException("Start index is invalid.");
+                    throw new GameFrameworkException("Start index is invalid.");
                 }
 
                 buffer[startIndex] = value ? (byte)1 : (byte)0;
@@ -244,12 +247,12 @@ namespace UnityQGameFramework.Core
             {
                 if (buffer == null)
                 {
-                    throw new FrameworkException("Buffer is invalid.");
+                    throw new GameFrameworkException("Buffer is invalid.");
                 }
 
                 if (startIndex < 0 || startIndex + 2 > buffer.Length)
                 {
-                    throw new FrameworkException("Start index is invalid.");
+                    throw new GameFrameworkException("Start index is invalid.");
                 }
 
                 fixed (byte* valueRef = buffer)
@@ -365,12 +368,12 @@ namespace UnityQGameFramework.Core
             {
                 if (buffer == null)
                 {
-                    throw new FrameworkException("Buffer is invalid.");
+                    throw new GameFrameworkException("Buffer is invalid.");
                 }
 
                 if (startIndex < 0 || startIndex + 4 > buffer.Length)
                 {
-                    throw new FrameworkException("Start index is invalid.");
+                    throw new GameFrameworkException("Start index is invalid.");
                 }
 
                 fixed (byte* valueRef = buffer)
@@ -486,12 +489,12 @@ namespace UnityQGameFramework.Core
             {
                 if (buffer == null)
                 {
-                    throw new FrameworkException("Buffer is invalid.");
+                    throw new GameFrameworkException("Buffer is invalid.");
                 }
 
                 if (startIndex < 0 || startIndex + 8 > buffer.Length)
                 {
-                    throw new FrameworkException("Start index is invalid.");
+                    throw new GameFrameworkException("Start index is invalid.");
                 }
 
                 fixed (byte* valueRef = buffer)
@@ -726,12 +729,12 @@ namespace UnityQGameFramework.Core
             {
                 if (value == null)
                 {
-                    throw new FrameworkException("Value is invalid.");
+                    throw new GameFrameworkException("Value is invalid.");
                 }
 
                 if (encoding == null)
                 {
-                    throw new FrameworkException("Encoding is invalid.");
+                    throw new GameFrameworkException("Encoding is invalid.");
                 }
 
                 return encoding.GetBytes(value);
@@ -761,12 +764,12 @@ namespace UnityQGameFramework.Core
             {
                 if (value == null)
                 {
-                    throw new FrameworkException("Value is invalid.");
+                    throw new GameFrameworkException("Value is invalid.");
                 }
 
                 if (encoding == null)
                 {
-                    throw new FrameworkException("Encoding is invalid.");
+                    throw new GameFrameworkException("Encoding is invalid.");
                 }
 
                 return encoding.GetBytes(value, 0, value.Length, buffer, startIndex);
@@ -792,12 +795,12 @@ namespace UnityQGameFramework.Core
             {
                 if (value == null)
                 {
-                    throw new FrameworkException("Value is invalid.");
+                    throw new GameFrameworkException("Value is invalid.");
                 }
 
                 if (encoding == null)
                 {
-                    throw new FrameworkException("Encoding is invalid.");
+                    throw new GameFrameworkException("Encoding is invalid.");
                 }
 
                 return encoding.GetString(value);
@@ -827,12 +830,12 @@ namespace UnityQGameFramework.Core
             {
                 if (value == null)
                 {
-                    throw new FrameworkException("Value is invalid.");
+                    throw new GameFrameworkException("Value is invalid.");
                 }
 
                 if (encoding == null)
                 {
-                    throw new FrameworkException("Encoding is invalid.");
+                    throw new GameFrameworkException("Encoding is invalid.");
                 }
 
                 return encoding.GetString(value, startIndex, length);

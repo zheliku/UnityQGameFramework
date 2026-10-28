@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -41,7 +40,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源更新全部完成事件。</returns>
-        public static ResourceUpdateAllCompleteEventArgs Create(UnityQGameFramework.Core.Resource.ResourceUpdateAllCompleteEventArgs e)
+        public static ResourceUpdateAllCompleteEventArgs Create(UnityQGameFramework.Core.Events.ResourceUpdateAllCompleteEventArgs e)
         {
             return ReferencePool.Acquire<ResourceUpdateAllCompleteEventArgs>();
         }

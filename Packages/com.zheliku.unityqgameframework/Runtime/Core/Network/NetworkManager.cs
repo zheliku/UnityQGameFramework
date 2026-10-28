@@ -3,16 +3,17 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
+using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace UnityQGameFramework.Core.Network
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 网络管理器。
     /// </summary>
-    internal sealed partial class NetworkManager : FrameworkModule, INetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         private readonly Dictionary<string, NetworkChannelBase> m_NetworkChannels;
         private EventHandler<NetworkConnectedEventArgs> m_NetworkConnectedEventHandler;
@@ -207,7 +208,7 @@ namespace UnityQGameFramework.Core.Network
         {
             if (results == null)
             {
-                throw new FrameworkException("Results is invalid.");
+                throw new GameFrameworkException("Results is invalid.");
             }
 
             results.Clear();
@@ -228,17 +229,17 @@ namespace UnityQGameFramework.Core.Network
         {
             if (networkChannelHelper == null)
             {
-                throw new FrameworkException("Network channel helper is invalid.");
+                throw new GameFrameworkException("Network channel helper is invalid.");
             }
 
             if (networkChannelHelper.PacketHeaderLength < 0)
             {
-                throw new FrameworkException("Packet header length is invalid.");
+                throw new GameFrameworkException("Packet header length is invalid.");
             }
 
             if (HasNetworkChannel(name))
             {
-                throw new FrameworkException(Utility.Text.Format("Already exist network channel '{0}'.", name ?? string.Empty));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist network channel '{0}'.", name ?? string.Empty));
             }
 
             NetworkChannelBase networkChannel = null;
@@ -251,7 +252,7 @@ namespace UnityQGameFramework.Core.Network
                     networkChannel = new TcpWithSyncReceiveNetworkChannel(name, networkChannelHelper);
                     break;
                 default:
-                    throw new FrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType));
+                    throw new GameFrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType));
             }
 
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;

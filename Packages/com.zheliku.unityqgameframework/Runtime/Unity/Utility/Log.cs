@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug(object message)
         {
-            FrameworkLog.Debug(message);
+            GameFrameworkLog.Debug(message);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug(string message)
         {
-            FrameworkLog.Debug(message);
+            GameFrameworkLog.Debug(message);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T>(string format, T arg)
         {
-            FrameworkLog.Debug(format, arg);
+            GameFrameworkLog.Debug(format, arg);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            FrameworkLog.Debug(format, arg1, arg2);
+            GameFrameworkLog.Debug(format, arg1, arg2);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
         }
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
         }
 
         /// <summary>
@@ -516,7 +516,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_DEBUG_AND_ABOVE_LOG")]
         public static void Debug<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
-            FrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            GameFrameworkLog.Debug(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info(object message)
         {
-            FrameworkLog.Info(message);
+            GameFrameworkLog.Info(message);
         }
 
         /// <summary>
@@ -544,7 +544,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info(string message)
         {
-            FrameworkLog.Info(message);
+            GameFrameworkLog.Info(message);
         }
 
         /// <summary>
@@ -560,7 +560,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T>(string format, T arg)
         {
-            FrameworkLog.Info(format, arg);
+            GameFrameworkLog.Info(format, arg);
         }
 
         /// <summary>
@@ -578,7 +578,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            FrameworkLog.Info(format, arg1, arg2);
+            GameFrameworkLog.Info(format, arg1, arg2);
         }
 
         /// <summary>
@@ -598,7 +598,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3);
         }
 
         /// <summary>
@@ -620,7 +620,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4);
         }
 
         /// <summary>
@@ -644,7 +644,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5);
         }
 
         /// <summary>
@@ -670,7 +670,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6);
         }
 
         /// <summary>
@@ -698,7 +698,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         }
 
         /// <summary>
@@ -760,7 +760,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         }
 
         /// <summary>
@@ -794,7 +794,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         }
 
         /// <summary>
@@ -830,7 +830,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
         }
 
         /// <summary>
@@ -868,7 +868,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
         }
 
         /// <summary>
@@ -908,7 +908,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
         }
 
         /// <summary>
@@ -950,7 +950,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
         }
 
         /// <summary>
@@ -994,7 +994,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
         }
 
         /// <summary>
@@ -1040,7 +1040,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_INFO_AND_ABOVE_LOG")]
         public static void Info<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
-            FrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            GameFrameworkLog.Info(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
         }
 
         /// <summary>
@@ -1055,7 +1055,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning(object message)
         {
-            FrameworkLog.Warning(message);
+            GameFrameworkLog.Warning(message);
         }
 
         /// <summary>
@@ -1070,7 +1070,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning(string message)
         {
-            FrameworkLog.Warning(message);
+            GameFrameworkLog.Warning(message);
         }
 
         /// <summary>
@@ -1087,7 +1087,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T>(string format, T arg)
         {
-            FrameworkLog.Warning(format, arg);
+            GameFrameworkLog.Warning(format, arg);
         }
 
         /// <summary>
@@ -1106,7 +1106,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            FrameworkLog.Warning(format, arg1, arg2);
+            GameFrameworkLog.Warning(format, arg1, arg2);
         }
 
         /// <summary>
@@ -1127,7 +1127,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3);
         }
 
         /// <summary>
@@ -1150,7 +1150,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4);
         }
 
         /// <summary>
@@ -1175,7 +1175,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5);
         }
 
         /// <summary>
@@ -1202,7 +1202,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6);
         }
 
         /// <summary>
@@ -1231,7 +1231,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         /// <summary>
@@ -1262,7 +1262,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         }
 
         /// <summary>
@@ -1295,7 +1295,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         }
 
         /// <summary>
@@ -1330,7 +1330,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         }
 
         /// <summary>
@@ -1367,7 +1367,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
         }
 
         /// <summary>
@@ -1406,7 +1406,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
         }
 
         /// <summary>
@@ -1447,7 +1447,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
         }
 
         /// <summary>
@@ -1490,7 +1490,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
         }
 
         /// <summary>
@@ -1535,7 +1535,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
         }
 
         /// <summary>
@@ -1582,7 +1582,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_WARNING_AND_ABOVE_LOG")]
         public static void Warning<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
-            FrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            GameFrameworkLog.Warning(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
         }
 
         /// <summary>
@@ -1598,7 +1598,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error(object message)
         {
-            FrameworkLog.Error(message);
+            GameFrameworkLog.Error(message);
         }
 
         /// <summary>
@@ -1614,7 +1614,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error(string message)
         {
-            FrameworkLog.Error(message);
+            GameFrameworkLog.Error(message);
         }
 
         /// <summary>
@@ -1632,7 +1632,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T>(string format, T arg)
         {
-            FrameworkLog.Error(format, arg);
+            GameFrameworkLog.Error(format, arg);
         }
 
         /// <summary>
@@ -1652,7 +1652,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            FrameworkLog.Error(format, arg1, arg2);
+            GameFrameworkLog.Error(format, arg1, arg2);
         }
 
         /// <summary>
@@ -1674,7 +1674,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3);
         }
 
         /// <summary>
@@ -1698,7 +1698,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4);
         }
 
         /// <summary>
@@ -1724,7 +1724,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5);
         }
 
         /// <summary>
@@ -1752,7 +1752,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6);
         }
 
         /// <summary>
@@ -1782,7 +1782,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         /// <summary>
@@ -1814,7 +1814,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         }
 
         /// <summary>
@@ -1848,7 +1848,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         }
 
         /// <summary>
@@ -1884,7 +1884,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         }
 
         /// <summary>
@@ -1922,7 +1922,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
         }
 
         /// <summary>
@@ -1962,7 +1962,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
         }
 
         /// <summary>
@@ -2004,7 +2004,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
         }
 
         /// <summary>
@@ -2048,7 +2048,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
         }
 
         /// <summary>
@@ -2094,7 +2094,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
         }
 
         /// <summary>
@@ -2142,7 +2142,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_ERROR_AND_ABOVE_LOG")]
         public static void Error<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
-            FrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            GameFrameworkLog.Error(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
         }
 
         /// <summary>
@@ -2159,7 +2159,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal(object message)
         {
-            FrameworkLog.Fatal(message);
+            GameFrameworkLog.Fatal(message);
         }
 
         /// <summary>
@@ -2176,7 +2176,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal(string message)
         {
-            FrameworkLog.Fatal(message);
+            GameFrameworkLog.Fatal(message);
         }
 
         /// <summary>
@@ -2195,7 +2195,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T>(string format, T arg)
         {
-            FrameworkLog.Fatal(format, arg);
+            GameFrameworkLog.Fatal(format, arg);
         }
 
         /// <summary>
@@ -2216,7 +2216,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            FrameworkLog.Fatal(format, arg1, arg2);
+            GameFrameworkLog.Fatal(format, arg1, arg2);
         }
 
         /// <summary>
@@ -2239,7 +2239,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3);
         }
 
         /// <summary>
@@ -2264,7 +2264,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4);
         }
 
         /// <summary>
@@ -2291,7 +2291,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5);
         }
 
         /// <summary>
@@ -2320,7 +2320,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6);
         }
 
         /// <summary>
@@ -2351,7 +2351,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         /// <summary>
@@ -2384,7 +2384,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
         }
 
         /// <summary>
@@ -2419,7 +2419,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
         }
 
         /// <summary>
@@ -2456,7 +2456,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
         }
 
         /// <summary>
@@ -2495,7 +2495,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
         }
 
         /// <summary>
@@ -2536,7 +2536,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
         }
 
         /// <summary>
@@ -2579,7 +2579,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
         }
 
         /// <summary>
@@ -2624,7 +2624,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
         }
 
         /// <summary>
@@ -2671,7 +2671,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
         }
 
         /// <summary>
@@ -2720,7 +2720,7 @@ namespace UnityQGameFramework.Runtime
         [Conditional("ENABLE_FATAL_AND_ABOVE_LOG")]
         public static void Fatal<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
-            FrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            GameFrameworkLog.Fatal(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
         }
     }
 }

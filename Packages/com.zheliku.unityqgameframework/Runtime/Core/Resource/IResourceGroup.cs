@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
 using System.Collections.Generic;
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
     /// <summary>
     /// 资源组接口。
@@ -15,47 +15,74 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源组名称。
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组是否准备完毕。
         /// </summary>
-        bool Ready { get; }
+        bool Ready
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组包含资源数量。
         /// </summary>
-        int TotalCount { get; }
+        int TotalCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组中已准备完成资源数量。
         /// </summary>
-        int ReadyCount { get; }
+        int ReadyCount
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组包含资源的总大小。
         /// </summary>
-        long TotalLength { get; }
+        long TotalLength
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组包含资源压缩后的总大小。
         /// </summary>
-        long TotalCompressedLength { get; }
+        long TotalCompressedLength
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组中已准备完成资源的总大小。
         /// </summary>
-        long ReadyLength { get; }
+        long ReadyLength
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组中已准备完成资源压缩后的总大小。
         /// </summary>
-        long ReadyCompressedLength { get; }
+        long ReadyCompressedLength
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组的完成进度。
         /// </summary>
-        float Progress { get; }
+        float Progress
+        {
+            get;
+        }
 
         /// <summary>
         /// 获取资源组包含的资源名称列表。

@@ -3,7 +3,7 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core.UI;
+using UnityQGameFramework.Core;
 using System;
 using UnityEngine;
 
@@ -17,12 +17,18 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取界面序列编号。
         /// </summary>
-        public int SerialId { get; private set; }
+        public int SerialId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面资源名称。
         /// </summary>
-        public string UIFormAssetName { get; private set; }
+        public string UIFormAssetName
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面实例。
@@ -38,22 +44,34 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取界面所属的界面组。
         /// </summary>
-        public IUIGroup UIGroup { get; private set; }
+        public IUIGroup UIGroup
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面深度。
         /// </summary>
-        public int DepthInUIGroup { get; private set; }
+        public int DepthInUIGroup
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取是否暂停被覆盖的界面。
         /// </summary>
-        public bool PauseCoveredUIForm { get; private set; }
+        public bool PauseCoveredUIForm
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取界面逻辑。
         /// </summary>
-        public UIFormLogic Logic { get; private set; }
+        public UIFormLogic Logic
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 初始化界面。

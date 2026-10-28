@@ -4,7 +4,6 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
-using UnityQGameFramework.Core.Event;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -44,34 +43,49 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取资源名称。
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取下载地址。
         /// </summary>
-        public string DownloadUri { get; private set; }
+        public string DownloadUri
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取已重试次数。
         /// </summary>
-        public int RetryCount { get; private set; }
+        public int RetryCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取设定的重试次数。
         /// </summary>
-        public int TotalRetryCount { get; private set; }
+        public int TotalRetryCount
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取错误信息。
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建资源更新失败事件。
         /// </summary>
         /// <param name="e">内部事件。</param>
         /// <returns>创建的资源更新失败事件。</returns>
-        public static ResourceUpdateFailureEventArgs Create(UnityQGameFramework.Core.Resource.ResourceUpdateFailureEventArgs e)
+        public static ResourceUpdateFailureEventArgs Create(UnityQGameFramework.Core.Events.ResourceUpdateFailureEventArgs e)
         {
             ResourceUpdateFailureEventArgs resourceUpdateFailureEventArgs = ReferencePool.Acquire<ResourceUpdateFailureEventArgs>();
             resourceUpdateFailureEventArgs.Name = e.Name;

@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace UnityQGameFramework.Runtime
     /// <summary>
     /// 默认游戏框架日志辅助器。
     /// </summary>
-    public class DefaultLogHelper : FrameworkLog.ILogHelper
+    public class DefaultLogHelper : GameFrameworkLog.ILogHelper
     {
 #if UNITY_EDITOR
         private static volatile bool s_DarkTheme;
@@ -34,7 +34,7 @@ namespace UnityQGameFramework.Runtime
         {
             // 编辑器菜单早于场景运行；BaseComponent 启动时仍可设置自己的辅助器。
             s_DarkTheme = EditorGUIUtility.isProSkin;
-            FrameworkLog.SetLogHelper(new DefaultLogHelper());
+            GameFrameworkLog.SetLogHelper(new DefaultLogHelper());
             EditorApplication.update += UpdateTheme;
         }
 
@@ -52,18 +52,18 @@ namespace UnityQGameFramework.Runtime
         /// <param name="level">日志等级。</param>
         /// <param name="message">日志正文。</param>
         /// <returns>供 Unity Console 显示的富文本日志。</returns>
-        private static string FormatEditorLog(FrameworkLogLevel level, string message)
+        private static string FormatEditorLog(GameFrameworkLogLevel level, string message)
         {
             string color;
             switch (level)
             {
-                case FrameworkLogLevel.Debug:
+                case GameFrameworkLogLevel.Debug:
                     color = s_DarkTheme ? "#D6E7F5" : "#5B7185";
                     break;
-                case FrameworkLogLevel.Info:
+                case GameFrameworkLogLevel.Info:
                     color = s_DarkTheme ? "#64F0D8" : "#008F83";
                     break;
-                case FrameworkLogLevel.Warning:
+                case GameFrameworkLogLevel.Warning:
                     color = s_DarkTheme ? "#FFD166" : "#A86A00";
                     break;
                 default:
@@ -108,7 +108,7 @@ namespace UnityQGameFramework.Runtime
             foreach (StackFrame frame in frames)
             {
                 Type type = frame.GetMethod()?.DeclaringType;
-                if (type == null || type == typeof(FrameworkLog) || type == typeof(Log) || typeof(DefaultLogHelper).IsAssignableFrom(type))
+                if (type == null || type == typeof(GameFrameworkLog) || type == typeof(Log) || typeof(DefaultLogHelper).IsAssignableFrom(type))
                 {
                     continue;
                 }
@@ -157,13 +157,13 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="level">日志等级。</param>
         /// <param name="message">日志内容。</param>
-        public void Log(FrameworkLogLevel level, object message)
+        public void Log(GameFrameworkLogLevel level, object message)
         {
-            if (level == FrameworkLogLevel.Fatal)
+            if (level == GameFrameworkLogLevel.Fatal)
             {
-                throw new FrameworkException(message == null ? "null" : message.ToString(), message as Exception);
+                throw new GameFrameworkException(message == null ? "null" : message.ToString(), message as Exception);
             }
-            if (level == FrameworkLogLevel.Error && message is Exception exception)
+            if (level == GameFrameworkLogLevel.Error && message is Exception exception)
             {
                 // Unity 直接记录原异常，保留异常类型、抛出位置和 InnerException。
                 Debug.LogException(exception);
@@ -180,21 +180,21 @@ namespace UnityQGameFramework.Runtime
 #endif
             switch (level)
             {
-                case FrameworkLogLevel.Debug:
-                case FrameworkLogLevel.Info:
+                case GameFrameworkLogLevel.Debug:
+                case GameFrameworkLogLevel.Info:
                     Debug.Log(text);
                     break;
 
-                case FrameworkLogLevel.Warning:
+                case GameFrameworkLogLevel.Warning:
                     Debug.LogWarning(text);
                     break;
 
-                case FrameworkLogLevel.Error:
+                case GameFrameworkLogLevel.Error:
                     Debug.LogError(text);
                     break;
 
                 default:
-                    throw new FrameworkException(content, message as Exception);
+                    throw new GameFrameworkException(content, message as Exception);
             }
         }
     }

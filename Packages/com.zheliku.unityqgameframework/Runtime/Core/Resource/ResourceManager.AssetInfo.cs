@@ -1,11 +1,11 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.Resource
+namespace UnityQGameFramework.Core
 {
-    internal sealed partial class ResourceManager : FrameworkModule, IResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源信息。
@@ -30,12 +30,18 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取资源名称。
             /// </summary>
-            public string AssetName { get; }
+            public string AssetName
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取所在资源名称。
             /// </summary>
-            public ResourceName ResourceName { get; }
+            public ResourceName ResourceName
+            {
+                get;
+            }
 
             /// <summary>
             /// 获取依赖资源名称。

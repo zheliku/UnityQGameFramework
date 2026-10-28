@@ -1,14 +1,14 @@
-﻿//------------------------------------------------------------
+//------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-namespace UnityQGameFramework.Core.UI
+namespace UnityQGameFramework.Core.Events
 {
     /// <summary>
     /// 打开界面成功事件。
     /// </summary>
-    public sealed class OpenUIFormSuccessEventArgs : FrameworkEventArgs
+    public sealed class OpenUIFormSuccessEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化打开界面成功事件的新实例。
@@ -23,17 +23,26 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取打开成功的界面。
         /// </summary>
-        public IUIForm UIForm { get; private set; }
+        public IUIForm UIForm
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取加载持续时间。
         /// </summary>
-        public float Duration { get; private set; }
+        public float Duration
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 获取用户自定义数据。
         /// </summary>
-        public object UserData { get; private set; }
+        public object UserData
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 创建打开界面成功事件。

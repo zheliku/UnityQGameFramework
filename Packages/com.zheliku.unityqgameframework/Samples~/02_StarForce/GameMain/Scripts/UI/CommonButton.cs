@@ -106,7 +106,7 @@ namespace StarForce
             {
                 await m_CanvasGroup.FadeToAlpha(alpha, FadeTime, cancellation);
             }
-            catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
             {
             }
             catch (Exception exception)

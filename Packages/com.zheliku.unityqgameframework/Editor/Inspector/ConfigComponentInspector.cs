@@ -12,7 +12,7 @@ namespace UnityQGameFramework.Editor
     /// 绘制配置组件的 Inspector。
     /// </summary>
     [CustomEditor(typeof(ConfigComponent))]
-    internal sealed class ConfigComponentInspector : FrameworkInspector
+    internal sealed class ConfigComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_EnableLoadConfigUpdateEvent = null;
         private SerializedProperty m_EnableLoadConfigDependencyAssetEvent = null;

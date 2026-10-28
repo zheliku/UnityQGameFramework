@@ -27,8 +27,10 @@ public static class ValidateDebuggerExamples
 
     public static async Task<object> RunOnly(string[] names)
     {
-        if (!Application.dataPath.Contains("Artifacts~")) throw new Exception("Use the isolated validation project.");
-        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new Exception("Stop Play Mode first.");
+        if (!Application.dataPath.Contains("Artifacts~"))
+            throw new Exception("Use the isolated validation project.");
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new Exception("Stop Play Mode first.");
         var setup = EditorSceneManager.GetSceneManagerSetup();
         if (Enumerable.Range(0, UnityEngine.SceneManagement.SceneManager.sceneCount)
             .Any(index => UnityEngine.SceneManagement.SceneManager.GetSceneAt(index).isDirty))
@@ -38,7 +40,8 @@ public static class ValidateDebuggerExamples
         var cases = layouts.Properties().Where(pair => new[] { "21_Debugger" }
             .Any(folder => ((string)pair.Value["script"]).StartsWith("Assets/Examples/01_Modules/" + folder + "/")))
             .Select(pair => new { name = pair.Name, layout = pair.Value, mode = 0 }).ToList();
-        if (names != null) cases = cases.Where(test => names.Contains(test.name)).ToList();
+        if (names != null)
+            cases = cases.Where(test => names.Contains(test.name)).ToList();
         var settings = new[] { "ProjectSettings", "EditorBuildSettings", "TagManager", "GraphicsSettings", "QualitySettings" }
             .ToDictionary(name => "ProjectSettings/" + name + ".asset", name => Hash("ProjectSettings/" + name + ".asset"));
         bool optionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
@@ -68,7 +71,8 @@ public static class ValidateDebuggerExamples
             {
                 string sourcePath = (string)test.layout["script"];
                 string anchor = AssetDatabase.GUIDToAssetPath("16e9a88cf2495a198884a80a014df5ef");
-                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal)) throw new Exception("Imported Debugger sample not found.");
+                if (!anchor.StartsWith("Assets/", StringComparison.Ordinal))
+                    throw new Exception("Imported Debugger sample not found.");
                 string moduleRoot = Path.GetDirectoryName(anchor).Replace('\\', '/');
                 string script = moduleRoot + sourcePath.Substring("Assets/Examples/01_Modules".Length);
                 EditorSceneManager.OpenScene(script.Substring(0, script.Length - 3) + ".unity");
@@ -93,35 +97,61 @@ public static class ValidateDebuggerExamples
                 var owned = test.name == "DebuggerWindowLifecycle" ? Field<object>(example, "window") : null;
                 int beforeShutdown = owned == null ? 0 : Property<int>(owned, "ShutdownCalls");
                 await Play(false);
-                if (owned != null) Require(Property<int>(owned, "ShutdownCalls") == beforeShutdown + 1, "Scene stop unregisters owned window exactly once");
+                if (owned != null)
+                    Require(Property<int>(owned, "ShutdownCalls") == beforeShutdown + 1, "Scene stop unregisters owned window exactly once");
                 Require(GameEntry.GetComponent<DebuggerComponent>() == null, "No retained debugger component after stop");
                 Require(errors.Count == 0, test.name + " runtime errors: " + string.Join("\n", errors));
-                completed.Add(new { example = test.name, scene = script.Substring(0, script.Length - 3) + ".unity", startMode = test.mode, assertions = assertions.Skip(start).ToArray() });
+                completed.Add(new
+                {
+                    example = test.name,
+                    scene = script.Substring(0, script.Length - 3) + ".unity",
+                    startMode = test.mode,
+                    assertions = assertions.Skip(start).ToArray()
+                });
             }
         }
         finally
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) await Play(false);
-            if (mouse != null && mouse.added) InputSystem.RemoveDevice(mouse);
-            foreach (var device in disabled.Where(device => device.added && !device.enabled)) InputSystem.EnableDevice(device);
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                await Play(false);
+            if (mouse != null && mouse.added)
+                InputSystem.RemoveDevice(mouse);
+            foreach (var device in disabled.Where(device => device.added && !device.enabled))
+                InputSystem.EnableDevice(device);
             inputSettings.backgroundBehavior = background;
             inputSettings.editorInputBehaviorInPlayMode = editorInput;
             Application.logMessageReceived -= capture;
             EditorSettings.enterPlayModeOptionsEnabled = optionsEnabled;
             EditorSettings.enterPlayModeOptions = options;
             Application.runInBackground = originalBackground;
-            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path))) EditorSceneManager.RestoreSceneManagerSetup(setup);
-            else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (setup.Any(scene => scene.isActive && scene.isLoaded && !string.IsNullOrEmpty(scene.path)))
+                EditorSceneManager.RestoreSceneManagerSetup(setup);
+            else
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
         Require(settings.All(item => Hash(item.Key) == item.Value), "Host settings unchanged");
-        var result = new { passed = true, unity = Application.unityVersion, nativeButtonsAndToggles = true,
+        var result = new
+        {
+            passed = true,
+            unity = Application.unityVersion,
+            nativeButtonsAndToggles = true,
             modeAndTextSetup = "Dropdown, Slider and InputField values set by the test; buttons and toggles use native mouse clicks",
             logScope = "Conditional calls checked against example assembly symbols; with Info disabled, three Unity log fixtures exercise collection and list queries",
-            settingsUnchanged = true, scenes = completed, assertionCount = assertions.Count };
+            settingsUnchanged = true,
+            scenes = completed,
+            assertionCount = assertions.Count
+        };
         Directory.CreateDirectory("Artifacts~/DebuggerExamples");
         string report = names == null ? "debugger-check.json" : string.Join("-", names) + "-check.json";
         File.WriteAllText("Artifacts~/DebuggerExamples/" + report, JsonConvert.SerializeObject(result, Formatting.Indented));
-        return new { result.passed, result.unity, scenes = completed.Count, result.assertionCount, result.settingsUnchanged };
+        return new
+        {
+            result.passed,
+            result.unity,
+            scenes = completed.Count,
+            result.assertionCount,
+            result.settingsUnchanged
+        };
     }
 
 
@@ -137,7 +167,7 @@ public static class ValidateDebuggerExamples
         CheckPlacement(debugger);
         if (name == "InspectDebuggerExample")
         {
-            var manager = FrameworkEntry.GetModule<UnityQGameFramework.Core.Debugger.IDebuggerManager>();
+            var manager = GameFrameworkEntry.GetModule<UnityQGameFramework.Core.IDebuggerManager>();
             foreach (int index in new[] { 1, 2, 0 })
             {
                 dropdown("pageDropdown").value = index;
@@ -221,11 +251,13 @@ public static class ValidateDebuggerExamples
             debugger.GetRecentLogsNonAlloc(logs);
             Require(logs.Any(entry => entry.LogMessage == input.text && entry.LogType == LogType.Warning) == warningCompiled,
                 "QGF Warning follows example assembly compilation symbols");
-            if (logs.Count == 0) Require(text("logsText").text.Contains("QGF > Logging"), "Empty log view explains logging configuration");
+            if (logs.Count == 0)
+                Require(text("logsText").text.Contains("QGF > Logging"), "Empty log view explains logging configuration");
             for (int index = 0; index < 3; index++)
             {
                 input.text = "dbg-test-order-" + index;
-                if (infoCompiled) await Click(button("infoButton"), mouse);
+                if (infoCompiled)
+                    await Click(button("infoButton"), mouse);
                 else
                 {
                     // 日志宏关闭的宿主仍验证收集与查询；这三条由检查工具提供，不计作示例 Log 调用。
@@ -272,10 +304,11 @@ public static class ValidateDebuggerExamples
 
     private static T Property<T>(object instance, string name) => (T)instance.GetType().GetProperty(name).GetValue(instance);
 
-    private static UnityQGameFramework.Core.Debugger.IDebuggerWindow SelectedLeaf(UnityQGameFramework.Core.Debugger.IDebuggerWindowGroup root)
+    private static UnityQGameFramework.Core.IDebuggerWindow SelectedLeaf(UnityQGameFramework.Core.IDebuggerWindowGroup root)
     {
-        UnityQGameFramework.Core.Debugger.IDebuggerWindow window = root;
-        while (window is UnityQGameFramework.Core.Debugger.IDebuggerWindowGroup group) window = group.SelectedWindow;
+        UnityQGameFramework.Core.IDebuggerWindow window = root;
+        while (window is UnityQGameFramework.Core.IDebuggerWindowGroup group)
+            window = group.SelectedWindow;
         return window;
     }
 
@@ -284,7 +317,8 @@ public static class ValidateDebuggerExamples
     private static async Task Until(Func<bool> condition, int timeout, string message)
     {
         var deadline = DateTime.UtcNow.AddMilliseconds(timeout);
-        while (!condition() && DateTime.UtcNow < deadline) await Task.Delay(25);
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(25);
         Require(condition(), message);
     }
 
@@ -302,7 +336,8 @@ public static class ValidateDebuggerExamples
             var local = scroll.viewport.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
             float overflow = scroll.content.rect.height - scroll.viewport.rect.height;
             float offset = scroll.content.anchoredPosition.y + scroll.viewport.rect.center.y - local.y;
-            if (overflow > 0) scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
+            if (overflow > 0)
+                scroll.verticalNormalizedPosition = 1 - Mathf.Clamp01(offset / overflow);
             Canvas.ForceUpdateCanvases();
             await Task.Delay(150);
         }
@@ -311,7 +346,8 @@ public static class ValidateDebuggerExamples
         var button = target as Button;
         var toggle = target as Toggle;
         bool oldValue = toggle != null && toggle.isOn;
-        if (button != null) button.onClick.AddListener(observed);
+        if (button != null)
+            button.onClick.AddListener(observed);
         var position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
         try
         {
@@ -349,13 +385,15 @@ public static class ValidateDebuggerExamples
 
     private static void Require(bool condition, string message)
     {
-        if (!condition) throw new Exception(message);
+        if (!condition)
+            throw new Exception(message);
         assertions.Add(message);
     }
 
     private static string Hash(string path)
     {
-        using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
+        using (var sha = SHA256.Create())
+            return Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(path)));
     }
 
     private static async Task Play(bool enabled)
@@ -363,13 +401,15 @@ public static class ValidateDebuggerExamples
         var completion = new TaskCompletionSource<bool>();
         Action<PlayModeStateChange> handler = state =>
         {
-            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode)) completion.TrySetResult(true);
+            if (state == (enabled ? PlayModeStateChange.EnteredPlayMode : PlayModeStateChange.EnteredEditMode))
+                completion.TrySetResult(true);
         };
         EditorApplication.playModeStateChanged += handler;
         try
         {
             EditorApplication.isPlaying = enabled;
-            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task) throw new TimeoutException("Play transition");
+            if (await Task.WhenAny(completion.Task, Task.Delay(15000)) != completion.Task)
+                throw new TimeoutException("Play transition");
             await Task.Delay(150);
         }
         finally { EditorApplication.playModeStateChanged -= handler; }

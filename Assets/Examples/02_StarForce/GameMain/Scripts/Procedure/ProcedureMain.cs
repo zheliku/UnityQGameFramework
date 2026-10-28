@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 using UnityQGameFramework.Runtime;
-using ProcedureOwner = UnityQGameFramework.Core.Fsm.IFsm<UnityQGameFramework.Core.Procedure.IProcedureManager>;
+using ProcedureOwner = UnityQGameFramework.Core.IFsm<UnityQGameFramework.Core.IProcedureManager>;
 
 namespace StarForce
 {
