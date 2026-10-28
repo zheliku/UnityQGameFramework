@@ -84,11 +84,11 @@ namespace StarForce
                 GameEntry.UI.OpenDialog(new DialogParams
                 {
                     Mode = 2,
-                    Title = "资源初始化失败",
+                    Title = "Resource initialization failed",
                     Message = exception.Message,
-                    ConfirmText = "重试",
+                    ConfirmText = "Retry",
                     OnClickConfirm = userData => StartInitialization(),
-                    CancelText = "退出",
+                    CancelText = "Quit",
                     OnClickCancel = userData => UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit)
                 });
             }

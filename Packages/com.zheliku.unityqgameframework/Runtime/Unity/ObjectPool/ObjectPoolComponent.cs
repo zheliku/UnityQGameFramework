@@ -165,10 +165,10 @@ namespace UnityQGameFramework.Runtime
         /// 获取对象池。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <param name="results">要获取的对象池。</param>
-        public void GetObjectPools(Predicate<ObjectPoolBase> condition, List<ObjectPoolBase> results)
+        /// <param name="results">要获取的对象池；填充前清空，容量不足时仍会扩容。</param>
+        public void GetObjectPoolsNonAlloc(Predicate<ObjectPoolBase> condition, List<ObjectPoolBase> results)
         {
-            m_ObjectPoolManager.GetObjectPools(condition, results);
+            m_ObjectPoolManager.GetObjectPoolsNonAlloc(condition, results);
         }
 
         /// <summary>
@@ -183,10 +183,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有对象池。
         /// </summary>
-        /// <param name="results">所有对象池。</param>
-        public void GetAllObjectPools(List<ObjectPoolBase> results)
+        /// <param name="results">所有对象池；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllObjectPoolsNonAlloc(List<ObjectPoolBase> results)
         {
-            m_ObjectPoolManager.GetAllObjectPools(results);
+            m_ObjectPoolManager.GetAllObjectPoolsNonAlloc(results);
         }
 
         /// <summary>
@@ -203,10 +203,10 @@ namespace UnityQGameFramework.Runtime
         /// 获取所有对象池。
         /// </summary>
         /// <param name="sort">是否根据对象池的优先级排序。</param>
-        /// <param name="results">所有对象池。</param>
-        public void GetAllObjectPools(bool sort, List<ObjectPoolBase> results)
+        /// <param name="results">所有对象池；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllObjectPoolsNonAlloc(bool sort, List<ObjectPoolBase> results)
         {
-            m_ObjectPoolManager.GetAllObjectPools(sort, results);
+            m_ObjectPoolManager.GetAllObjectPoolsNonAlloc(sort, results);
         }
 
         /// <summary>

@@ -44,9 +44,9 @@ namespace UnityQGameFramework.Examples.Modules
             }
 
             bool preparing = fsm.CurrentState is Prepare;
-            stateText.text = preparing ? "准备阶段" : "执行阶段：每秒处理一件";
-            jobsText.text = fsm.HasData("Jobs") ? $"Jobs = {fsm.GetData<VarInt32>("Jobs").Value}" : "Jobs 已移除";
-            batchText.text = $"上一批读取到：{lastBatch} 件";
+            stateText.text = preparing ? "Preparation" : "Processing: one item per second";
+            jobsText.text = fsm.HasData("Jobs") ? $"Jobs = {fsm.GetData<VarInt32>("Jobs").Value}" : "Jobs removed";
+            batchText.text = $"Previous batch read: {lastBatch} items";
             loadButton.interactable = clearButton.interactable = preparing;
             runButton.interactable = preparing && fsm.HasData("Jobs");
         }

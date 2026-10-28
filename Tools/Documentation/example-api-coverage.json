@@ -367,7 +367,7 @@
           ]
         },
         {
-          "signature": "Void GetAllChild(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataNode.IDataNode])",
+          "signature": "Void GetAllChildNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataNode.IDataNode])",
           "examples": [
             "Assets/Examples/01_Modules/03_DataNode/02_Children"
           ]
@@ -569,7 +569,7 @@
           ]
         },
         {
-          "signature": "Void GetAllStates(System.Collections.Generic.List`1[UnityQGameFramework.Core.Fsm.FsmState`1[T]])",
+          "signature": "Void GetAllStatesNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Fsm.FsmState`1[T]])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -814,7 +814,7 @@
           ]
         },
         {
-          "signature": "Void GetAllFsms(System.Collections.Generic.List`1[UnityQGameFramework.Core.Fsm.FsmBase])",
+          "signature": "Void GetAllFsmsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Fsm.FsmBase])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -1226,7 +1226,7 @@
           ]
         },
         {
-          "signature": "Void GetAllFsms(System.Collections.Generic.List`1[UnityQGameFramework.Core.Fsm.FsmBase])",
+          "signature": "Void GetAllFsmsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Fsm.FsmBase])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -3226,7 +3226,7 @@
           ]
         },
         {
-          "signature": "Void GetAllObjectPools(Boolean, System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
+          "signature": "Void GetAllObjectPoolsNonAlloc(Boolean, System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
           "note": "经 ObjectPoolComponent 转发；示例没有直接调用 Core 管理器。",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
@@ -3235,7 +3235,7 @@
           ]
         },
         {
-          "signature": "Void GetAllObjectPools(System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
+          "signature": "Void GetAllObjectPoolsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
           "note": "经 ObjectPoolComponent 转发；示例没有直接调用 Core 管理器。",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
@@ -3244,7 +3244,7 @@
           ]
         },
         {
-          "signature": "Void GetObjectPools(System.Predicate`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase], System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
+          "signature": "Void GetObjectPoolsNonAlloc(System.Predicate`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase], System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
           "note": "经 ObjectPoolComponent 转发；示例没有直接调用 Core 管理器。",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
@@ -5387,7 +5387,7 @@
           ]
         },
         {
-          "signature": "Void GetAllObjectPools(Boolean, System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
+          "signature": "Void GetAllObjectPoolsNonAlloc(Boolean, System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5395,7 +5395,7 @@
           ]
         },
         {
-          "signature": "Void GetAllObjectPools(System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
+          "signature": "Void GetAllObjectPoolsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5403,7 +5403,7 @@
           ]
         },
         {
-          "signature": "Void GetObjectPools(System.Predicate`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase], System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
+          "signature": "Void GetObjectPoolsNonAlloc(System.Predicate`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase], System.Collections.Generic.List`1[UnityQGameFramework.Core.ObjectPool.ObjectPoolBase])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5853,7 +5853,7 @@
           ]
         },
         {
-          "signature": "Void GetAllEntityGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntityGroup])",
+          "signature": "Void GetAllEntityGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntityGroup])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5861,7 +5861,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadedEntities(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.Entity])",
+          "signature": "Void GetAllLoadedEntitiesNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.Entity])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5869,7 +5869,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadingEntityIds(System.Collections.Generic.List`1[System.Int32])",
+          "signature": "Void GetAllLoadingEntityIdsNonAlloc(System.Collections.Generic.List`1[System.Int32])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5877,7 +5877,7 @@
           ]
         },
         {
-          "signature": "Void GetChildEntities(Int32, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetChildEntitiesNonAlloc(Int32, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5885,7 +5885,7 @@
           ]
         },
         {
-          "signature": "Void GetChildEntities(UnityQGameFramework.Core.Entity.IEntity, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetChildEntitiesNonAlloc(UnityQGameFramework.Core.Entity.IEntity, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -5893,7 +5893,7 @@
           ]
         },
         {
-          "signature": "Void GetEntities(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Runtime.Entity])",
+          "signature": "Void GetEntitiesNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Runtime.Entity])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -6246,7 +6246,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadedUIForms(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.UIForm])",
+          "signature": "Void GetAllLoadedUIFormsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.UIForm])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -6254,7 +6254,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadingUIFormSerialIds(System.Collections.Generic.List`1[System.Int32])",
+          "signature": "Void GetAllLoadingUIFormSerialIdsNonAlloc(System.Collections.Generic.List`1[System.Int32])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -6262,7 +6262,7 @@
           ]
         },
         {
-          "signature": "Void GetAllUIGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIGroup])",
+          "signature": "Void GetAllUIGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIGroup])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -6270,7 +6270,7 @@
           ]
         },
         {
-          "signature": "Void GetUIForms(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Runtime.UIForm])",
+          "signature": "Void GetUIFormsNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Runtime.UIForm])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -6391,7 +6391,7 @@
           ]
         },
         {
-          "signature": "Void GetAllUIForms(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
+          "signature": "Void GetAllUIFormsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -6399,7 +6399,7 @@
           ]
         },
         {
-          "signature": "Void GetUIForms(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
+          "signature": "Void GetUIFormsNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7139,7 +7139,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadingSoundSerialIds(System.Collections.Generic.List`1[System.Int32])",
+          "signature": "Void GetAllLoadingSoundSerialIdsNonAlloc(System.Collections.Generic.List`1[System.Int32])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7147,7 +7147,7 @@
           ]
         },
         {
-          "signature": "Void GetAllSoundGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Sound.ISoundGroup])",
+          "signature": "Void GetAllSoundGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Sound.ISoundGroup])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7342,7 +7342,7 @@
           ]
         },
         {
-          "signature": "Void GetLoadedSceneAssetNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetLoadedSceneAssetNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7350,7 +7350,7 @@
           ]
         },
         {
-          "signature": "Void GetLoadingSceneAssetNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetLoadingSceneAssetNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7358,7 +7358,7 @@
           ]
         },
         {
-          "signature": "Void GetUnloadingSceneAssetNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetUnloadingSceneAssetNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7483,7 +7483,7 @@
           ]
         },
         {
-          "signature": "Void GetAllFileSystems(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.IFileSystem])",
+          "signature": "Void GetAllFileSystemsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.IFileSystem])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7676,7 +7676,7 @@
           ]
         },
         {
-          "signature": "Void GetAllFileInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.FileInfo])",
+          "signature": "Void GetAllFileInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.FileInfo])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -7909,13 +7909,13 @@
           ]
         },
         {
-          "signature": "Void GetAllWebRequestInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllWebRequestInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "examples": [
             "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
         },
         {
-          "signature": "Void GetAllWebRequestInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllWebRequestInfosNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "examples": [
             "Assets/Examples/01_Modules/18_WebRequest/02_Cancel"
           ]
@@ -8055,7 +8055,7 @@
           ]
         },
         {
-          "signature": "Void GetAllDownloadInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllDownloadInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -8063,7 +8063,7 @@
           ]
         },
         {
-          "signature": "Void GetDownloadInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetDownloadInfosNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -8175,7 +8175,7 @@
           ]
         },
         {
-          "signature": "Void GetAllNetworkChannels(System.Collections.Generic.List`1[UnityQGameFramework.Core.Network.INetworkChannel])",
+          "signature": "Void GetAllNetworkChannelsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Network.INetworkChannel])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -8348,7 +8348,7 @@
           ]
         },
         {
-          "signature": "Void GetRecentLogs(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.DebuggerComponent+LogNode])",
+          "signature": "Void GetRecentLogsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.DebuggerComponent+LogNode])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -8356,7 +8356,7 @@
           ]
         },
         {
-          "signature": "Void GetRecentLogs(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.DebuggerComponent+LogNode], Int32)",
+          "signature": "Void GetRecentLogsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.DebuggerComponent+LogNode], Int32)",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -8518,7 +8518,7 @@
           ]
         },
         {
-          "signature": "Void GetAllSettingNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetAllSettingNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -9954,7 +9954,7 @@
       "type": "UnityQGameFramework.Runtime.DataTableComponent",
       "methods": [
         {
-          "signature": "Boolean DestroyDataTable(System.Type, System.String)",
+          "signature": "Boolean RemoveDataTable(System.Type, System.String)",
           "examples": [
             "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
           ],
@@ -9965,7 +9965,7 @@
           "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
-          "signature": "Boolean DestroyDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
+          "signature": "Boolean RemoveDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
           "examples": [
             "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
           ],
@@ -9976,7 +9976,7 @@
           "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
-          "signature": "Boolean DestroyDataTable[T](System.String)",
+          "signature": "Boolean RemoveDataTable[T](System.String)",
           "examples": [
             "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
           ],
@@ -10090,7 +10090,7 @@
           "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
-          "signature": "Void GetAllDataTables(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
+          "signature": "Void GetAllDataTablesNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
           "examples": [
             "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
           ],
@@ -10101,7 +10101,7 @@
           "reason": "示例展示这一组接口的实际工作流；不为参数重载重复建立场景。"
         },
         {
-          "signature": "Void RegisterDataTables(System.Collections.Generic.IEnumerable`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
+          "signature": "Void AddDataTables(System.Collections.Generic.IEnumerable`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
           "examples": [
             "Assets/Examples/01_Modules/11_DataTable/05_TableRegistry"
           ],
@@ -10203,7 +10203,7 @@
           ]
         },
         {
-          "signature": "Void GetAllDataRows(System.Collections.Generic.List`1[T])",
+          "signature": "Void GetAllDataRowsNonAlloc(System.Collections.Generic.List`1[T])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -10211,7 +10211,7 @@
           ]
         },
         {
-          "signature": "Void GetDataRows(System.Comparison`1[T], System.Collections.Generic.List`1[T])",
+          "signature": "Void GetDataRowsNonAlloc(System.Comparison`1[T], System.Collections.Generic.List`1[T])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -10219,7 +10219,7 @@
           ]
         },
         {
-          "signature": "Void GetDataRows(System.Predicate`1[T], System.Collections.Generic.List`1[T])",
+          "signature": "Void GetDataRowsNonAlloc(System.Predicate`1[T], System.Collections.Generic.List`1[T])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -10227,7 +10227,7 @@
           ]
         },
         {
-          "signature": "Void GetDataRows(System.Predicate`1[T], System.Comparison`1[T], System.Collections.Generic.List`1[T])",
+          "signature": "Void GetDataRowsNonAlloc(System.Predicate`1[T], System.Comparison`1[T], System.Collections.Generic.List`1[T])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -10284,7 +10284,7 @@
       "type": "UnityQGameFramework.Core.DataTable.IDataTableManager",
       "methods": [
         {
-          "signature": "Boolean DestroyDataTable(System.Type, System.String)",
+          "signature": "Boolean RemoveDataTable(System.Type, System.String)",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/IDataTableManager.cs",
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/DataTableManager.cs",
@@ -10294,29 +10294,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreDataResourceExamples/compiled-forwarding.json",
-            "kind": "compiled component interface call",
-            "sites": [
-              {
-                "component": "UnityQGameFramework.Runtime.DataTableComponent",
-                "entry": "Boolean DestroyDataTable(System.Type, System.String)",
-                "entryName": "DestroyDataTable",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.DataTableComponent.DestroyDataTable",
-                "targetType": "UnityQGameFramework.Core.DataTable.IDataTableManager",
-                "target": "Boolean DestroyDataTable(System.Type, System.String)",
-                "targetName": "DestroyDataTable",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 8
-              }
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Boolean DestroyDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
+          "signature": "Boolean RemoveDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/IDataTableManager.cs",
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/DataTableManager.cs",
@@ -10326,42 +10307,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreDataResourceExamples/compiled-forwarding.json",
-            "kind": "compiled component interface call",
-            "sites": [
-              {
-                "component": "UnityQGameFramework.Runtime.DataTableComponent",
-                "entry": "Void UnloadDataTables()",
-                "entryName": "UnloadDataTables",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.DataTableComponent.UnloadDataTables",
-                "targetType": "UnityQGameFramework.Core.DataTable.IDataTableManager",
-                "target": "Boolean DestroyDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
-                "targetName": "DestroyDataTable",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 74
-              },
-              {
-                "component": "UnityQGameFramework.Runtime.DataTableComponent",
-                "entry": "Boolean DestroyDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
-                "entryName": "DestroyDataTable",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.DataTableComponent.DestroyDataTable",
-                "targetType": "UnityQGameFramework.Core.DataTable.IDataTableManager",
-                "target": "Boolean DestroyDataTable(UnityQGameFramework.Core.DataTable.DataTableBase)",
-                "targetName": "DestroyDataTable",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 7
-              }
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Boolean DestroyDataTable[T](System.String)",
+          "signature": "Boolean RemoveDataTable[T](System.String)",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/IDataTableManager.cs",
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/DataTableManager.cs",
@@ -10371,26 +10320,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreDataResourceExamples/compiled-forwarding.json",
-            "kind": "compiled component interface call",
-            "sites": [
-              {
-                "component": "UnityQGameFramework.Runtime.DataTableComponent",
-                "entry": "Boolean DestroyDataTable[T](System.String)",
-                "entryName": "DestroyDataTable",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.DataTableComponent.DestroyDataTable",
-                "targetType": "UnityQGameFramework.Core.DataTable.IDataTableManager",
-                "target": "Boolean DestroyDataTable[T](System.String)",
-                "targetName": "DestroyDataTable",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 7
-              }
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Boolean HasDataTable(System.Type, System.String)",
@@ -10545,7 +10475,7 @@
           }
         },
         {
-          "signature": "Void GetAllDataTables(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
+          "signature": "Void GetAllDataTablesNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/IDataTableManager.cs",
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/DataTable/DataTableManager.cs",
@@ -10555,29 +10485,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreDataResourceExamples/compiled-forwarding.json",
-            "kind": "compiled component interface call",
-            "sites": [
-              {
-                "component": "UnityQGameFramework.Runtime.DataTableComponent",
-                "entry": "Void GetAllDataTables(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
-                "entryName": "GetAllDataTables",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.DataTableComponent.GetAllDataTables",
-                "targetType": "UnityQGameFramework.Core.DataTable.IDataTableManager",
-                "target": "Void GetAllDataTables(System.Collections.Generic.List`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
-                "targetName": "GetAllDataTables",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 7
-              }
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void RegisterDataTables(System.Collections.Generic.IEnumerable`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
+          "signature": "Void AddDataTables(System.Collections.Generic.IEnumerable`1[UnityQGameFramework.Core.DataTable.DataTableBase])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -10962,7 +10873,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadAssetInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllLoadAssetInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -10970,7 +10881,7 @@
           ]
         },
         {
-          "signature": "Void GetAllResourceGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Resource.IResourceGroup])",
+          "signature": "Void GetAllResourceGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Resource.IResourceGroup])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -11392,14 +11303,6 @@
           ]
         },
         {
-          "name": "ReadWritePathType",
-          "classification": "documented-api",
-          "documents": [
-            "Documentation~/Modules/README.md"
-          ],
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
-        },
-        {
           "name": "ReadWriteVersionListSerializer",
           "classification": "documented-api",
           "documents": [
@@ -11534,6 +11437,22 @@
           "documents": [
             "Documentation~/Modules/README.md"
           ]
+        },
+        {
+          "name": "LoadingCount",
+          "classification": "documented-api",
+          "reason": "运行时请求数量；资源示例与 Inspector 使用同一个 YooAsset 后端状态。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "name": "PlayMode",
+          "classification": "documented-api",
+          "reason": "默认资源包的唯一运行模式；配置与读取方式见资源模块文档。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
         }
       ],
       "remainingReview": "Mode/path/serializer setup is documented separately from example calls. Component decryption is a forwarding API; 07 configures the Core callback before loading. No new runtime pass is implied by this classification.",
@@ -11551,7 +11470,7 @@
           ]
         },
         {
-          "signature": "Void GetResourceNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetResourceNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -11689,7 +11608,7 @@
           ]
         },
         {
-          "signature": "Void GetResourceNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetResourceNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "documents": [
@@ -12748,7 +12667,7 @@
           ]
         },
         {
-          "signature": "Void GetAllLoadAssetInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllLoadAssetInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/Resource/IResourceManager.cs",
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/Resource/ResourceManager.cs",
@@ -12758,29 +12677,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreDataResourceExamples/compiled-forwarding.json",
-            "kind": "compiled component interface call",
-            "sites": [
-              {
-                "component": "UnityQGameFramework.Runtime.ResourceComponent",
-                "entry": "Void GetAllLoadAssetInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
-                "entryName": "GetAllLoadAssetInfos",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.ResourceComponent.GetAllLoadAssetInfos",
-                "targetType": "UnityQGameFramework.Core.Resource.IResourceManager",
-                "target": "Void GetAllLoadAssetInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
-                "targetName": "GetAllLoadAssetInfos",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 7
-              }
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllResourceGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Resource.IResourceGroup])",
+          "signature": "Void GetAllResourceGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Resource.IResourceGroup])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/Resource/IResourceManager.cs",
             "Packages/com.zheliku.unityqgameframework/Runtime/Core/Resource/ResourceManager.cs",
@@ -12790,26 +12690,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreDataResourceExamples/compiled-forwarding.json",
-            "kind": "compiled component interface call",
-            "sites": [
-              {
-                "component": "UnityQGameFramework.Runtime.ResourceComponent",
-                "entry": "Void GetAllResourceGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Resource.IResourceGroup])",
-                "entryName": "GetAllResourceGroups",
-                "IsPublic": true,
-                "caller": "UnityQGameFramework.Runtime.ResourceComponent.GetAllResourceGroups",
-                "targetType": "UnityQGameFramework.Core.Resource.IResourceManager",
-                "target": "Void GetAllResourceGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Resource.IResourceGroup])",
-                "targetName": "GetAllResourceGroups",
-                "IsSpecialName": false,
-                "instruction": "callvirt",
-                "offset": 7
-              }
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void InitResources(UnityQGameFramework.Core.Resource.InitResourcesCompleteCallback)",
@@ -17121,7 +17002,7 @@
           }
         },
         {
-          "signature": "Void GetAllDownloadInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllDownloadInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Download/DownloadComponent.cs"
           ],
@@ -17129,17 +17010,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllDownloadInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetDownloadInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetDownloadInfosNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Download/DownloadComponent.cs"
           ],
@@ -17147,14 +17021,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetDownloadInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         }
       ],
       "properties": [
@@ -18056,7 +17923,7 @@
           }
         },
         {
-          "signature": "Void GetAllEntityGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntityGroup])",
+          "signature": "Void GetAllEntityGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntityGroup])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Entity/EntityComponent.cs"
           ],
@@ -18064,17 +17931,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllEntityGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntityGroup])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllLoadedEntities(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetAllLoadedEntitiesNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Entity/EntityComponent.cs"
           ],
@@ -18082,17 +17942,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllLoadedEntities(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.Entity])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllLoadingEntityIds(System.Collections.Generic.List`1[System.Int32])",
+          "signature": "Void GetAllLoadingEntityIdsNonAlloc(System.Collections.Generic.List`1[System.Int32])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Entity/EntityComponent.cs"
           ],
@@ -18100,17 +17953,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllLoadingEntityIds(System.Collections.Generic.List`1[System.Int32])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetChildEntities(Int32, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetChildEntitiesNonAlloc(Int32, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Entity/EntityComponent.cs"
           ],
@@ -18118,17 +17964,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetChildEntities(Int32, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetChildEntities(UnityQGameFramework.Core.Entity.IEntity, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetChildEntitiesNonAlloc(UnityQGameFramework.Core.Entity.IEntity, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Entity/EntityComponent.cs"
           ],
@@ -18136,17 +17975,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetChildEntities(UnityQGameFramework.Core.Entity.IEntity, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetEntities(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetEntitiesNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Entity/EntityComponent.cs"
           ],
@@ -18154,14 +17986,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetEntities(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Runtime.Entity])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void HideAllLoadedEntities()",
@@ -18830,7 +18655,7 @@
           }
         },
         {
-          "signature": "Void GetAllFileSystems(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.IFileSystem])",
+          "signature": "Void GetAllFileSystemsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.IFileSystem])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/FileSystem/FileSystemComponent.cs"
           ],
@@ -18838,14 +18663,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllFileSystems(System.Collections.Generic.List`1[UnityQGameFramework.Core.FileSystem.IFileSystem])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void SetFileSystemHelper(UnityQGameFramework.Core.FileSystem.IFileSystemHelper)",
@@ -18990,7 +18808,7 @@
           }
         },
         {
-          "signature": "Void GetAllNetworkChannels(System.Collections.Generic.List`1[UnityQGameFramework.Core.Network.INetworkChannel])",
+          "signature": "Void GetAllNetworkChannelsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Network.INetworkChannel])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Network/NetworkComponent.cs"
           ],
@@ -18998,14 +18816,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllNetworkChannels(System.Collections.Generic.List`1[UnityQGameFramework.Core.Network.INetworkChannel])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         }
       ],
       "properties": [
@@ -19224,7 +19035,7 @@
           }
         },
         {
-          "signature": "Void GetLoadedSceneAssetNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetLoadedSceneAssetNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Scene/SceneComponent.cs"
           ],
@@ -19232,17 +19043,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetLoadedSceneAssetNames(System.Collections.Generic.List`1[System.String])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetLoadingSceneAssetNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetLoadingSceneAssetNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Scene/SceneComponent.cs"
           ],
@@ -19250,17 +19054,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetLoadingSceneAssetNames(System.Collections.Generic.List`1[System.String])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetUnloadingSceneAssetNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetUnloadingSceneAssetNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Scene/SceneComponent.cs"
           ],
@@ -19268,14 +19065,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetUnloadingSceneAssetNames(System.Collections.Generic.List`1[System.String])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void LoadScene(System.String)",
@@ -19814,7 +19604,7 @@
           }
         },
         {
-          "signature": "Void GetAllSettingNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetAllSettingNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Setting/SettingComponent.cs"
           ],
@@ -19822,14 +19612,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllSettingNames(System.Collections.Generic.List`1[System.String])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void RemoveAllSettings()",
@@ -20384,7 +20167,7 @@
           }
         },
         {
-          "signature": "Void GetAllLoadingSoundSerialIds(System.Collections.Generic.List`1[System.Int32])",
+          "signature": "Void GetAllLoadingSoundSerialIdsNonAlloc(System.Collections.Generic.List`1[System.Int32])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Sound/SoundComponent.cs"
           ],
@@ -20392,17 +20175,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllLoadingSoundSerialIds(System.Collections.Generic.List`1[System.Int32])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllSoundGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Sound.ISoundGroup])",
+          "signature": "Void GetAllSoundGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Sound.ISoundGroup])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Sound/SoundComponent.cs"
           ],
@@ -20410,14 +20186,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllSoundGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.Sound.ISoundGroup])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void PauseSound(Int32)",
@@ -21254,7 +21023,7 @@
           }
         },
         {
-          "signature": "Void GetAllLoadedUIForms(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
+          "signature": "Void GetAllLoadedUIFormsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/UI/UIComponent.cs"
           ],
@@ -21262,17 +21031,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllLoadedUIForms(System.Collections.Generic.List`1[UnityQGameFramework.Runtime.UIForm])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllLoadingUIFormSerialIds(System.Collections.Generic.List`1[System.Int32])",
+          "signature": "Void GetAllLoadingUIFormSerialIdsNonAlloc(System.Collections.Generic.List`1[System.Int32])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/UI/UIComponent.cs"
           ],
@@ -21280,17 +21042,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllLoadingUIFormSerialIds(System.Collections.Generic.List`1[System.Int32])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllUIGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIGroup])",
+          "signature": "Void GetAllUIGroupsNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIGroup])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/UI/UIComponent.cs"
           ],
@@ -21298,17 +21053,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllUIGroups(System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIGroup])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetUIForms(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
+          "signature": "Void GetUIFormsNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.UI.IUIForm])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/UI/UIComponent.cs"
           ],
@@ -21316,14 +21064,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetUIForms(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Runtime.UIForm])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
           "signature": "Void RefocusUIForm(UnityQGameFramework.Core.UI.IUIForm)",
@@ -22129,7 +21870,7 @@
           }
         },
         {
-          "signature": "Void GetAllWebRequestInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllWebRequestInfosNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/WebRequest/WebRequestComponent.cs"
           ],
@@ -22137,17 +21878,10 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllWebRequestInfos(System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         },
         {
-          "signature": "Void GetAllWebRequestInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
+          "signature": "Void GetAllWebRequestInfosNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])",
           "sources": [
             "Packages/com.zheliku.unityqgameframework/Runtime/Unity/WebRequest/WebRequestComponent.cs"
           ],
@@ -22155,14 +21889,7 @@
             "Documentation~/Modules/README.md"
           ],
           "classification": "documented-api",
-          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
-          "forwardingEvidence": {
-            "file": "Artifacts~/CoreForwardingExamples/manager-call-chains.json",
-            "kind": "compiled interface call",
-            "componentEntries": [
-              "Void GetAllWebRequestInfos(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.TaskInfo])"
-            ]
-          }
+          "reason": "示例保留代表性用法；其他接口与重载参见模块文档。"
         }
       ],
       "properties": [
@@ -23322,7 +23049,7 @@
           "exampleEvidence": "Artifacts~/EntityGroupExamples/audit.json"
         },
         {
-          "signature": "Void GetAllEntities(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetAllEntitiesNonAlloc(System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "sources": [
@@ -23343,7 +23070,7 @@
           "exampleEvidence": "Artifacts~/EntityGroupExamples/audit.json"
         },
         {
-          "signature": "Void GetEntities(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
+          "signature": "Void GetEntitiesNonAlloc(System.String, System.Collections.Generic.List`1[UnityQGameFramework.Core.Entity.IEntity])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "sources": [
@@ -25099,7 +24826,7 @@
           }
         },
         {
-          "signature": "Void GetAllSettingNames(System.Collections.Generic.List`1[System.String])",
+          "signature": "Void GetAllSettingNamesNonAlloc(System.Collections.Generic.List`1[System.String])",
           "classification": "documented-api",
           "reason": "示例保留代表性用法；其他接口与重载参见模块文档。",
           "sources": [
@@ -25117,7 +24844,7 @@
               "UnityQGameFramework.Examples.SettingExampleHelper"
             ],
             "callers": [
-              "UnityQGameFramework.Core.Setting.SettingManager.GetAllSettingNames"
+              "UnityQGameFramework.Core.Setting.SettingManager.GetAllSettingNamesNonAlloc"
             ]
           }
         },
@@ -27912,6 +27639,193 @@
       "sources": [
         "Packages/com.zheliku.unityqgameframework/Runtime/Unity/Utility/DefaultTextHelper.cs"
       ]
+    },
+    {
+      "type": "UnityQGameFramework.Core.Resource.IResourceBackend",
+      "sources": [
+        "Packages/com.zheliku.unityqgameframework/Runtime/Core/Resource/IResourceBackend.cs"
+      ],
+      "documents": [
+        "Documentation~/Modules/resource.md"
+      ],
+      "methods": [
+        {
+          "signature": "Byte[] LoadBinary(System.String)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Int32 GetBinaryLength(System.String)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Int32 LoadBinarySegment(System.String, Int32, Byte[], Int32, Int32)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "UnityQGameFramework.Core.Resource.HasAssetResult HasAsset(System.String)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void Initialize(UnityQGameFramework.Core.Resource.InitResourcesCompleteCallback)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void LoadAsset(System.String, System.Type, Int32, UnityQGameFramework.Core.Resource.LoadAssetCallbacks, System.Object)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void LoadBinary(System.String, UnityQGameFramework.Core.Resource.LoadBinaryCallbacks, System.Object)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void LoadScene(System.String, Int32, UnityQGameFramework.Core.Resource.LoadSceneCallbacks, System.Object)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void SetPaths(System.String, System.String)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void Shutdown()",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void UnloadAsset(System.Object)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void UnloadScene(System.String, UnityQGameFramework.Core.Resource.UnloadSceneCallbacks, System.Object)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void UnloadUnusedAssets()",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "signature": "Void Update(Single, Single)",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "AssetCount",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "name": "LoadWorkingAgentCount",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "name": "ReadOnlyPath",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "name": "ReadWritePath",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        },
+        {
+          "name": "ResourceMode",
+          "classification": "documented-api",
+          "reason": "Core 与 YooAsset 的集成接口；业务通过 ResourceComponent 使用，后端负责资源生命周期。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        }
+      ],
+      "events": []
+    },
+    {
+      "type": "UnityQGameFramework.Core.Resource.IResourceBackendHost",
+      "sources": [
+        "Packages/com.zheliku.unityqgameframework/Runtime/Core/Resource/IResourceBackendHost.cs"
+      ],
+      "documents": [
+        "Documentation~/Modules/resource.md"
+      ],
+      "methods": [
+        {
+          "signature": "Void SetResourceBackend(UnityQGameFramework.Core.Resource.IResourceBackend)",
+          "classification": "documented-api",
+          "reason": "ResourceComponent 启动时连接资源后端；业务无需重复设置后端。",
+          "documents": [
+            "Documentation~/Modules/resource.md"
+          ]
+        }
+      ],
+      "properties": [],
+      "events": []
     }
   ],
   "currentGuiVerification": "PoolCreationExamples：六十个直接组件创建调用、同一 Core 转发链及 Config 字符串入口已核对；接口映射不代替全项目最终验收。"

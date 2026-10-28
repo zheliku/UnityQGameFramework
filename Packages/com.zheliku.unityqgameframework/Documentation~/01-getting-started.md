@@ -27,8 +27,8 @@ Packages/UnityQGameFramework
 ```text
 Assets/UnityQGameFramework/Config/
   LubanProfile.asset
+  luban.conf
   Source/
-    luban.conf
     __tables__.xlsx
     __beans__.xlsx
     __enums__.xlsx
@@ -76,13 +76,15 @@ git lfs pull
 
 ## 3. 先运行点点点
 
-在 Package Manager 的 Samples 中导入 **00 · 点点点**，打开 `PointPointPoint.unity` 并运行。点击目标得分，点击空白会扣分；完成目标或倒计时结束后进入结算。
+在 Package Manager 的 Samples 中导入 **00 · PointPointPoint**，打开 `PointPointPoint.unity` 并运行。点击目标得分，点击空白会扣分；完成目标或倒计时结束后进入结算。
+
+示例直接使用 Input System。宿主的 Player Settings > Active Input Handling 需选择 Input System Package (New) 或 Both，示例不会自动修改此设置。
 
 源码目录是 `Assets/Examples/00_PointPointPoint`。启动、菜单、游玩和结算分别在 Procedure 中；界面通过 Event 通知本局流程。
 
 ## 4. 再运行 StarForce
 
-导入 **03 · StarForce**，打开 `StarForce Launcher.unity` 并运行。点击开始进入战斗，按住鼠标左键移动飞机并开火。
+导入 **02 · StarForce**，打开 `StarForce Launcher.unity` 并运行。点击开始进入战斗，按住鼠标左键移动飞机并开火。
 
 源码目录是 `Assets/Examples/02_StarForce`，Package Manager 中的 Sample 名称为 `02_StarForce`。Launcher 负责初始化和预加载；Menu、Main 场景由资源模块加载。
 
@@ -194,36 +196,30 @@ Git 安装使用 `packages-lock.json` 记录的提交，不按 `package.json` �
 
 更新后检查 Console，必要时重新生成表格。生成模板变化时，代码和数据必须成套更新。
 
-已导入的 Sample 是 Assets 中的副本，不会随包更新自动覆盖。重新导入前，使用 `QGF > Uninstall > Selected Example` 备份并移除旧版本。同一项目不要保留两个版本的同一 Sample，否则会重复编译其中的脚本。
+已导入的 Sample 是 Assets 中的副本，不会随包更新自动覆盖。重新导入前，保存自己的修改并删除旧版本目录。同一项目不要保留两个版本的同一 Sample，否则会重复编译其中的脚本。
 
 ### 只移除示例
 
-选中示例目录中的任一资源，执行 `QGF > Uninstall > Selected Example`。菜单会把目录和 `.meta` 备份到项目根目录的 `QgfBackup~`，再移除示例。
+在 Project 窗口删除导入的示例目录即可。示例不修改宿主项目的输入、渲染、图层或构建场景设置，无需恢复这些设置。如果将示例 Profile 设为全局生成目标，删除后在 `QGF > Settings` 重新选择自己的 Profile。
 
 ### 移除框架
 
-`QGF > Uninstall > Framework` 会备份并移除登记的配置工作区和示例，再请求 Package Manager 移除框架。通过 Package Manager 直接 Remove 也会触发清理。
-
-备份不参与 Unity 编译，确认自己的 Excel 和扩展代码已保存后可自行删除。`QgfBackup~` 已在本仓库的 `.gitignore` 中忽略；使用自己项目时，也可加入相同规则。
-
-清理范围是框架登记的工作区和示例。自己写在其他目录中的业务脚本仍由自己管理；如果它们引用了 QGF，卸载框架前需要同步移除或迁移这些引用。单独移动到工作区之外的自定义文件夹也应自行处理。完整仓库中的 embedded package 由 Git 管理，卸载框架菜单不会删除这份框架源码。
-
-资源工具首次保存到默认 `Assets/UnityQGameFramework/Configs` 时，也会登记这个配置目录；卸载框架时同样备份并移除。它与 Luban 的 `Config` 工作区用途不同，后者保存 Excel 与生成物。
+先保存自己的 Excel、生成物和扩展代码，删除或迁移引用 QGF 的示例及业务脚本，再通过 Package Manager 的 **Remove** 移除框架。Assets 中的配置目录由项目管理，不会随包卸载自动删除；确认不再使用后自行移除。`ProjectSettings/UnityQGameFrameworkSettings.asset` 只保存全局 Luban Profile 和默认目录，不再使用框架时可以删除。
 
 ## 8. 可选编辑器扩展
 
-打开 `QGF > Extensions`，按需安装：
+打开 `QGF > Extensions` 查看用途和 Git URL。复制地址后，在 Package Manager 的 **Install package from git URL** 中安装：
 
 | 工具 | 用途 | 此 Git 包的最低 Unity 版本 |
 | --- | --- | --- |
 | [Alchemy](https://github.com/annulusgames/Alchemy) | Inspector、Hierarchy 和 EditorWindow 增强 | 2021.2 |
 | [Rainbow Folders 2](https://github.com/Borod4r/Rainbow-Folders-2) | Project 文件夹颜色、图标及规则 | 6000.3 |
 
-只有点击安装时，才通过 Package Manager 将工具添加为当前项目的直接 Git 依赖。窗口识别已有的 UPM 安装和本地程序集，保留现有版本；更新、切换固定提交和移除由 Package Manager 管理。卸载 QGF 不会删除独立安装的工具。
+面板只提供说明和复制地址，不检查安装状态，也不发起包安装请求。版本、更新和移除由开发者通过 Package Manager 管理。卸载 QGF 不会删除独立安装的工具。
 
 框架包的 `package.json` 不声明这些依赖，QGF 的运行时代码、Inspector 和示例也不引用它们的类型。完整开发仓库的 `Packages/manifest.json` 已包含这两个工具，属于开发环境选择，其他项目通过 Git URL 安装 QGF 时不会继承。
 
-Unity Package Manager 不支持在 `package.json` 中声明 Git URL 依赖，所以扩展通过 `Client.Add` 写入宿主工程的 `Packages/manifest.json`。提交 `manifest.json` 和 `packages-lock.json` 后，团队会使用相同工具版本。固定上游版本时，在 URL 末尾指定 `#完整提交哈希`。
+提交 `manifest.json` 和 `packages-lock.json` 后，团队会使用相同工具版本。固定上游版本时，在 Git URL 末尾指定 `#完整提交哈希`。
 
 Alchemy 的序列化扩展还需要 Unity.Serialization；只使用 Inspector 增强不由 QGF 自动安装额外的序列化库。自己的业务程序集如果开始引用 Alchemy 类型，仍需保留对应引用。后续若为 QGF Inspector 增加 Alchemy 专用适配，应放入独立的可选 Editor 适配程序集。
 
@@ -235,7 +231,7 @@ Alchemy 的序列化扩展还需要 Unity.Serialization；只使用 Inspector �
 
 **生成提示找不到 dotnet。** 在终端执行 `dotnet --list-runtimes`，安装 .NET 8 或兼容运行时后重启 Unity，让编辑器获得新的 PATH。
 
-**网络无法下载 Luban。** 自行下载官方 Luban 5.1.0，在 `QGF > Settings > 高级 > 本地编译器` 选择解压后的 `Luban.dll`。留空恢复使用 Library 下载缓存。本机路径不提交给团队。
+**网络无法下载 Luban。** QGF 会把固定版本的官方 Luban 编译器缓存到 `Library/UnityQGameFramework/Tools/Luban`。检查网络或系统 `tar` 命令后重新执行生成；不需要在项目设置中指定本机编译器路径。
 
 **出现两个 DRItem 或 Tables。** 检查是否把同一套生成代码复制到了另一个 Assets 目录。同一命名空间下的相同类型只能保留一份；第二套独立配置要使用不同命名空间。
 

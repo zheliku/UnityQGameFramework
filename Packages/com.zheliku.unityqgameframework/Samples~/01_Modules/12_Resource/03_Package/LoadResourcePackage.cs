@@ -20,7 +20,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            stateText.text = "初始化包后加载 Cube；持有句柄时，尝试销毁包。";
+            stateText.text = "Initialize the package and load Cube. Try destroying the package while holding its handle.";
             initializeButton.onClick.AddListener(InitializeOrDestroy);
             loadButton.onClick.AddListener(Load);
             releaseButton.onClick.AddListener(Release);
@@ -36,15 +36,15 @@ namespace UnityQGameFramework.Examples.Modules
                     // 活跃句柄属于包；归还之前销毁包会失败，不会误卸载正在使用的资源。
                     await QGF.Resource.DestroyPackageAsync(cancellationToken: destroyCancellationToken);
                     initialized = false;
-                    stateText.text = "包已销毁，可以再次初始化。";
+                    stateText.text = "Package destroyed. It can be initialized again.";
                 }
                 else
                 {
                     await QGF.Resource.InitializePackageAsync(cancellationToken: destroyCancellationToken);
                     initialized = true;
-                    stateText.text = "资源包已就绪。";
+                    stateText.text = "Resource package ready.";
                 }
-                initializeButton.GetComponentInChildren<Text>().text = initialized ? "销毁包" : "初始化包";
+                initializeButton.GetComponentInChildren<Text>().text = initialized ? "Destroy Package" : "Initialize Package";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -68,7 +68,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // 显式句柄只代表本次借用，释放使用 handle.Release()，不再调用 UnloadAsset。
                 handle = await QGF.Resource.LoadAssetHandleAsync<GameObject>(ResourceExamplePaths.CubeAddress, cancellationToken: destroyCancellationToken);
                 instance = Instantiate((GameObject)handle.AssetObject, new Vector3(3, -2, 0), Quaternion.Euler(20, 35, 0));
-                stateText.text = "句柄持有 Cube。此时点击“销毁包”会被拒绝。";
+                stateText.text = "The handle owns Cube. Destroy Package is rejected while the handle is held.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -92,7 +92,7 @@ namespace UnityQGameFramework.Examples.Modules
                 await UniTask.NextFrame(destroyCancellationToken);
                 handle.Release();
                 handle = null;
-                stateText.text = "实例已销毁，句柄已释放；现在可以销毁包。";
+                stateText.text = "Instance destroyed and handle released. The package can now be destroyed.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -109,8 +109,8 @@ namespace UnityQGameFramework.Examples.Modules
             initializeButton.interactable = !loading;
             loadButton.interactable = initialized && !held && !loading;
             releaseButton.interactable = held && !loading;
-            groupsText.text = $"包：{QGF.Resource.Settings.DefaultPackageName}\n初始化：{initialized}";
-            assetText.text = held ? "持有一个独立资产句柄。" : "没有未归还的资产句柄。";
+            groupsText.text = $"Package: {QGF.Resource.Settings.DefaultPackageName}\nInitialized: {initialized}";
+            assetText.text = held ? "Holding an independent asset handle." : "No outstanding asset handles.";
         }
 
         private void OnDestroy()

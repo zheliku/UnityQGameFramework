@@ -38,13 +38,13 @@ namespace UnityQGameFramework.Examples.Modules
             int length = (int)lengthSlider.value;
             // 一次调用同时展示源文件 offset 与读取 length；返回数组只包含实际读到的字节。
             byte[] bytes = container.ReadFileSegment("bytes.txt", offset, length) ?? Array.Empty<byte>();
-            resultText.text = string.Join(System.Environment.NewLine, $"读取 {bytes.Length} 字节，源偏移 {offset}", Encoding.ASCII.GetString(bytes));
+            resultText.text = string.Join(System.Environment.NewLine, $"Read {bytes.Length} bytes, source offset {offset}", Encoding.ASCII.GetString(bytes));
         }
 
         private void Update()
         {
             readButton.interactable = container != null;
-            rangeText.text = "源：0123456789ABCDEF（16 字节）；调整偏移和长度，超出文件尾部只返回剩余字节。";
+            rangeText.text = "Source: 0123456789ABCDEF (16 bytes). Adjust offset and length; reads beyond the end return only the remaining bytes.";
         }
 
         private void OnDestroy()

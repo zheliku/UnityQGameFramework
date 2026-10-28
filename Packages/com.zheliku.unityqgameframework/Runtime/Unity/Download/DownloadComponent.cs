@@ -213,10 +213,10 @@ namespace UnityQGameFramework.Runtime
         /// 根据下载任务的标签获取下载任务的信息。
         /// </summary>
         /// <param name="tag">要获取信息的下载任务的标签。</param>
-        /// <param name="results">下载任务的信息。</param>
-        public void GetDownloadInfos(string tag, List<TaskInfo> results)
+        /// <param name="results">下载任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetDownloadInfosNonAlloc(string tag, List<TaskInfo> results)
         {
-            m_DownloadManager.GetDownloadInfos(tag, results);
+            m_DownloadManager.GetDownloadInfosNonAlloc(tag, results);
         }
 
         /// <summary>
@@ -231,10 +231,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有下载任务的信息。
         /// </summary>
-        /// <param name="results">所有下载任务的信息。</param>
-        public void GetAllDownloadInfos(List<TaskInfo> results)
+        /// <param name="results">所有下载任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllDownloadInfosNonAlloc(List<TaskInfo> results)
         {
-            m_DownloadManager.GetAllDownloadInfos(results);
+            m_DownloadManager.GetAllDownloadInfosNonAlloc(results);
         }
 
         /// <summary>

@@ -741,7 +741,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u4FDD\u5B58\u8BA1\u6570"
+  m_Text: "01  Save a Counter"
 --- !u!222 &907170627
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -777,9 +777,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219220725}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1219220727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u589E\u52A0\u8BA1\u6570\u540E\u505C\u6B62\u5E76\u91CD\u65B0\u8FD0\u884C\uFF0C\u89C2\u5BDF\u4FDD\u5B58\u7684\u503C\u3002"
+  m_Text: "Increment the counter, stop, then run again to read the saved value."
 --- !u!222 &1325189722
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1082,7 +1082,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "+1 \u5E76\u4FDD\u5B58"
+  m_Text: "+1 and Save"
 --- !u!222 &1612912291
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1161,7 +1161,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6E05\u9664\u8BA1\u6570"
+  m_Text: "Clear Counter"
 --- !u!222 &1878079298
 CanvasRenderer:
   m_ObjectHideFlags: 0

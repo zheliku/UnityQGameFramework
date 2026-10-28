@@ -1433,10 +1433,10 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取所有加载资源任务的信息。
         /// </summary>
-        /// <param name="results">所有加载资源任务的信息。</param>
-        public void GetAllLoadAssetInfos(List<TaskInfo> results)
+        /// <param name="results">所有加载资源任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadAssetInfosNonAlloc(List<TaskInfo> results)
         {
-            m_ResourceLoader.GetAllLoadAssetInfos(results);
+            m_ResourceLoader.GetAllLoadAssetInfosNonAlloc(results);
         }
 
         /// <summary>
@@ -2336,8 +2336,8 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取所有资源组。
         /// </summary>
-        /// <param name="results">所有资源组。</param>
-        public void GetAllResourceGroups(List<IResourceGroup> results)
+        /// <param name="results">所有资源组；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllResourceGroupsNonAlloc(List<IResourceGroup> results)
         {
             if (results == null)
             {

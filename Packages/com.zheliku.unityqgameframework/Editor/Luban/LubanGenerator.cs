@@ -78,22 +78,6 @@ namespace UnityQGameFramework.Editor
         }
 
         /// <summary>
-        /// 获取或设置本地编译器路径，留空时使用下载的编译器。
-        /// </summary>
-        public static string LocalGenerator
-        {
-            get
-            {
-                return EditorPrefs.GetString("QGF.Luban.Generator." + Application.dataPath, string.Empty);
-            }
-
-            set
-            {
-                EditorPrefs.SetString("QGF.Luban.Generator." + Application.dataPath, value ?? string.Empty);
-            }
-        }
-
-        /// <summary>
         /// 获取或设置编译器进程的超时秒数。
         /// </summary>
         public static int ProcessTimeoutSeconds
@@ -157,7 +141,7 @@ namespace UnityQGameFramework.Editor
             string path = AssetDatabase.GetAssetPath(profile.ConfigurationFile);
             if (!path.StartsWith("Assets/", StringComparison.Ordinal) || !File.Exists(path))
             {
-                throw new FileNotFoundException("请在 Luban Profile 中指定 Assets 内的 luban.conf。", path);
+                throw new FileNotFoundException("Assign a luban.conf file inside Assets to the Luban Profile.", path);
             }
 
             return path;
@@ -177,7 +161,7 @@ namespace UnityQGameFramework.Editor
             string project = Path.GetDirectoryName(assets) + Path.DirectorySeparatorChar;
             if (!source.StartsWith(assets + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) || !Directory.Exists(source))
             {
-                throw new DirectoryNotFoundException("luban.conf 的 dataDir 必须是 Assets 内的目录：" + source);
+                throw new DirectoryNotFoundException("The dataDir in luban.conf must reference a folder inside Assets: " + source);
             }
 
             return source.Substring(project.Length).Replace('\\', '/');
@@ -240,11 +224,11 @@ namespace UnityQGameFramework.Editor
                     File.Delete(download);
                 }
 
-                // bsdtar is included in Windows and macOS. Linux users can supply an extracted local compiler.
+                // Windows 和 macOS 自带的 bsdtar 支持 7z；Linux 需要安装 libarchive 的 bsdtar。
                 await RunProcess("tar", new[] { "-xf", archive, "-C", CacheRoot }, CacheRoot);
                 if (!File.Exists(DefaultGenerator))
                 {
-                    throw new IOException("Luban.dll was not extracted. Select the compiler in QGF > Settings > Advanced. Required Luban version: " + Version + ".");
+                    throw new IOException("Luban.dll was not extracted. Install a tar executable with 7z support and generate again. Required Luban version: " + Version + ".");
                 }
 
                 LastLog = "Luban " + Version + " installed in " + CacheRoot;
@@ -320,11 +304,12 @@ namespace UnityQGameFramework.Editor
                 throw new InvalidOperationException("A Luban target is required.");
             }
 
-            string compiler = string.IsNullOrWhiteSpace(LocalGenerator) ? DefaultGenerator : Path.GetFullPath(LocalGenerator);
-            if (!File.Exists(compiler))
+            if (!File.Exists(DefaultGenerator))
             {
-                throw new FileNotFoundException("Install Luban or select a local Luban.dll.", compiler);
+                await InstallAsync();
             }
+
+            string compiler = DefaultGenerator;
 
             if (!validateOnly && File.Exists(data + "/Catalog.asset") && AssetDatabase.LoadAssetAtPath<LubanDataTableCatalog>(data + "/Catalog.asset") == null)
             {

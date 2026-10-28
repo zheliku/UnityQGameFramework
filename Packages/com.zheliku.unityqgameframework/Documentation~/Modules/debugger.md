@@ -2,6 +2,8 @@
 
 Debugger 用 IMGUI 查看环境、时间、日志和模块状态。StarForce 左上角的 DEBUGGER 按钮可打开窗口。
 
+输入页面直接读取 Input System 的 Mouse、Keyboard 和 Touchscreen。Summary 显示设备与更新模式，Touch 显示当前活动触点；未连接设备时显示空状态。
+
 [Debugger 示例](../../Samples~/01_Modules/21_Debugger/) 分别查看运行状态和接入自定义窗口：
 
 | 目录 | 操作 |
@@ -80,8 +82,8 @@ OnUpdate 更新当前选中页面的数据。OnDraw 负责绘制控件，按钮�
 | ResetLayout() | 恢复默认矩形和缩放 |
 | GetDebuggerWindow(path) | 取得已注册窗口，缺失时返回 null |
 | SelectDebuggerWindow(path) | 选中路径，未找到时返回 false |
-| GetRecentLogs(results) | 将已记录的日志填入 List |
-| GetRecentLogs(results, count) | 取得末尾 count 条，保留记录顺序 |
+| GetRecentLogsNonAlloc(results) | 将已记录的日志填入 List |
+| GetRecentLogsNonAlloc(results, count) | 取得末尾 count 条，保留记录顺序 |
 
 日志查询会清空并重新填入 List。LogNode 由调试器持有；需要长期保存时复制文本、时间和类型。03_RecentLogs 每次刷新查询结果，界面显示当前结果集。
 

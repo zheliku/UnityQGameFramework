@@ -106,8 +106,8 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取所有界面组。
         /// </summary>
-        /// <param name="results">所有界面组。</param>
-        void GetAllUIGroups(List<IUIGroup> results);
+        /// <param name="results">所有界面组；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllUIGroupsNonAlloc(List<IUIGroup> results);
 
         /// <summary>
         /// 增加界面组。
@@ -165,8 +165,8 @@ namespace UnityQGameFramework.Core.UI
         /// 获取界面。
         /// </summary>
         /// <param name="uiFormAssetName">界面资源名称。</param>
-        /// <param name="results">要获取的界面。</param>
-        void GetUIForms(string uiFormAssetName, List<IUIForm> results);
+        /// <param name="results">要获取的界面；填充前清空，容量不足时仍会扩容。</param>
+        void GetUIFormsNonAlloc(string uiFormAssetName, List<IUIForm> results);
 
         /// <summary>
         /// 获取所有已加载的界面。
@@ -177,8 +177,8 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取所有已加载的界面。
         /// </summary>
-        /// <param name="results">所有已加载的界面。</param>
-        void GetAllLoadedUIForms(List<IUIForm> results);
+        /// <param name="results">所有已加载的界面；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllLoadedUIFormsNonAlloc(List<IUIForm> results);
 
         /// <summary>
         /// 获取所有正在加载界面的序列编号。
@@ -189,8 +189,8 @@ namespace UnityQGameFramework.Core.UI
         /// <summary>
         /// 获取所有正在加载界面的序列编号。
         /// </summary>
-        /// <param name="results">所有正在加载界面的序列编号。</param>
-        void GetAllLoadingUIFormSerialIds(List<int> results);
+        /// <param name="results">所有正在加载界面的序列编号；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllLoadingUIFormSerialIdsNonAlloc(List<int> results);
 
         /// <summary>
         /// 是否正在加载界面。

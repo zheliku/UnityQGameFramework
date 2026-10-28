@@ -311,7 +311,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &32128421
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -347,9 +347,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,7 +471,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u4FEE\u6539\u89D2\u8272\u540E\u5199\u5165 JSON\uFF0C\u518D\u8BFB\u56DE\u5FEB\u7167\u3002"
+  m_Text: "Edit the character, write JSON, then read the snapshot."
 --- !u!222 &107649093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -571,7 +571,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  JSON \u5bf9\u8c61"
+  m_Text: "02  JSON Objects"
 --- !u!222 &165794780
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -650,7 +650,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "JSON \u2192 \u5BF9\u8C61"
+  m_Text: "JSON → Object"
 --- !u!222 &395432961
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -975,7 +975,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5347\u4E00\u7EA7"
+  m_Text: "Level Up"
 --- !u!222 &441591706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1438,7 +1438,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u540D\u5B57"
+  m_Text: "Name"
 --- !u!222 &1147010935
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2048,7 +2048,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5BF9\u8C61 \u2192 JSON"
+  m_Text: "Object → JSON"
 --- !u!222 &1449275567
 CanvasRenderer:
   m_ObjectHideFlags: 0

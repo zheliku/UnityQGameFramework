@@ -54,7 +54,7 @@ Profile 控制编辑器生成。Catalog 在运行时把文件名关联到 TextAs
 | 全局游戏参数 | DefaultConfigHelper + TomlConfigParser | Config |
 | 语言文本 | DefaultLocalizationHelper + TomlLocalizationParser | Localization |
 | 示例 BuildInfo、内置字典 | 示例的 TOML 读取逻辑 | StarForce |
-| 构建场景、资源集合、资源编辑器、资源构建配置与报告 | EditorToml、对应资源工具 | Editor |
+| 构建场景、资源集合、资源编辑器、资源构建配置与报告 | 对应资源工具和 Tomlyn | Editor |
 
 使用 Tomlyn 解析标准 TOML，没有自写 TOML 语法解析器。Config 将嵌套标量键展开；Localization 先选当前语言，再展开字符串键。它们各自通过资源接口读取，**Config 没有依赖 DataTable 才能工作**。
 
@@ -64,7 +64,7 @@ Profile 控制编辑器生成。Catalog 在运行时把文件名关联到 TextAs
 
 当前使用现代 Unity 对象查找 API、refreshRateRatio，以及 NamedBuildTarget 相关编辑器 API，处理旧接口的弃用警告。序列化字段与对外只读状态按实际用途整理；有 Unity 序列化要求的字段仍保留，不因改用自动属性而丢失资产配置。
 
-StarForce 保留原版鼠标操作，按当前输入后端使用对应 API；不将 WASD/空格扩展当成框架的默认玩法。示例自身管理需要的层与资源路径，编辑器场景经完整路径加载，导入和试玩不自动替宿主修改 Layer、输入后端、URP 资产或构建场景列表。
+StarForce 保留原版鼠标操作，直接使用 Input System 的 Mouse；Debugger 输入页面也直接查询新输入设备。示例自身管理需要的层与资源路径，编辑器场景经完整路径加载，导入和试玩不自动替宿主修改 Layer、输入后端、URP 资产或构建场景列表。运行示例时，宿主需启用 Input System。
 
 材质使用 URP 的内置 Shader，移除示例自定义 Shader。宿主需要已经启用 URP，框架不替宿主创建一套渲染管线。血条初始化移到明确可用的阶段，模板或对象池缺失时给出诊断，避免 Update 反复空引用。
 
@@ -79,8 +79,8 @@ Unity 层新增 `QGF` 静态入口：`QGF.Config`、`QGF.Fsm` 等属性复用 Ga
 - 安装后在 Assets 创建默认 Luban 工作区，包含官方 schema 工作簿和 Item 示例；通过 QGF Settings 选择全局 Profile。
 - DataTable Inspector 可以选择 Profile，显式应用到全局并执行生成；运行 Catalog 与全局生成 Profile 分开管理。
 - QGF > Open Folder 分别打开表源、生成代码、表数据和存档位置，不把不同含义的 Data 混成一个目录。
-- 生成器管理代码、数据、Catalog 的输出，手写扩展放在独立目录；本机 Luban 编译器可使用缓存或本地路径。
-- 卸载入口登记并备份相关项目文件，示例可单独移除。删除包之前仍要迁移自己的业务代码与依赖。
+- 生成器管理代码、数据、Catalog 的输出，手写扩展放在独立目录；Luban 编译器固定版本并自动缓存到 Library，不把本机路径写入项目配置。
+- 示例直接删除导入目录，框架通过 Package Manager 移除，不追踪或自动删除项目资产。删除包之前仍要迁移自己的业务代码与依赖。
 - Alchemy、Rainbow Folders 通过 QGF > Extensions 按需安装，核心程序集不引用它们。插件许可见 [第三方声明](../Third%20Party%20Notices.md)。
 
 `Tools/Packaging` 中的同步与发布检查属于完整源码仓库的维护工具，普通 Git 包使用者不需要这些脚本来运行游戏。

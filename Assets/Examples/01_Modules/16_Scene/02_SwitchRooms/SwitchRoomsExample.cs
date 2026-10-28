@@ -18,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
         private Button switchButton;
         [SerializeField]
         private Text stateText;
-        private string current, target, pending, phase = "准备";
+        private string current, target, pending, phase = "Ready";
         private bool ready, changing;
         private float started, elapsed;
         private void Start()
@@ -45,18 +45,18 @@ namespace UnityQGameFramework.Examples.Modules
                 target = current == blue ? OrangeRoomAddress : blue;
                 if (current != null)
                 {
-                    phase = "卸载旧房间";
+                    phase = "Unloading previous room";
                     // UniTask 完成表示场景句柄已归还。
                     await QGF.Scene.UnloadSceneAsync(current, cancellation);
                     current = null;
                 }
 
-                phase = "加载新房间";
+                phase = "Loading new room";
                 // 旧房间已移除后才加载目标，避免两个关卡同时参与运行。
                 pending = target;
                 await QGF.Scene.LoadSceneAsync(target, cancellation);
                 current = target;
-                phase = "切换完成";
+                phase = "Switch complete";
                 pending = null;
             }
             catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
@@ -64,7 +64,7 @@ namespace UnityQGameFramework.Examples.Modules
             }
             catch (Exception exception)
             {
-                phase = "切换失败，可再次尝试";
+                phase = "Switch failed. Try again.";
                 Log.Error(exception);
             }
             finally
@@ -83,26 +83,26 @@ namespace UnityQGameFramework.Examples.Modules
 
             // changing 覆盖整个卸载/加载过程，防止重复提交切换。
             switchButton.interactable = !changing;
-            stateText.text = $"阶段：{phase}\n当前：{GetRoomLabel(current)}" + $"\n目标：{GetRoomLabel(target)}" + $"\n耗时：{(changing ? Time.unscaledTime - started : elapsed):F3} 秒";
+            stateText.text = $"Phase: {phase}\nCurrent: {GetRoomLabel(current)}" + $"\nTarget: {GetRoomLabel(target)}" + $"\nElapsed: {(changing ? Time.unscaledTime - started : elapsed):F3} s";
             int loadedCount = QGF.Scene.GetLoadedSceneAssetNames().Length;
             int loadingCount = QGF.Scene.GetLoadingSceneAssetNames().Length;
             int unloadingCount = QGF.Scene.GetUnloadingSceneAssetNames().Length;
-            stateText.text += $"\n已加载：{loadedCount} / 加载中：{loadingCount} / 卸载中：{unloadingCount}";
+            stateText.text += $"\nLoaded: {loadedCount} / Loading: {loadingCount} / Unloading: {unloadingCount}";
         }
 
         private string GetRoomLabel(string assetAddress)
         {
             if (assetAddress == BlueRoomAddress)
             {
-                return "蓝色房间";
+                return "Blue Room";
             }
 
             if (assetAddress == OrangeRoomAddress)
             {
-                return "橙色房间";
+                return "Orange Room";
             }
 
-            return "无";
+            return "None";
         }
 
         private void OnDestroy()

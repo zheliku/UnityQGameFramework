@@ -825,7 +825,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "2D \u2192 3D \u6DF7\u5408"
+  m_Text: "2D → 3D Blend"
 --- !u!222 &503705826
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1121,7 +1121,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u505C\u6B62"
+  m_Text: "Stop"
 --- !u!222 &615259271
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1762,7 +1762,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6700\u5927\u8DDD\u79BB\uFF08\u7C73\uFF09"
+  m_Text: "Maximum Distance (m)"
 --- !u!222 &794506820
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2576,7 +2576,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5E94\u7528\u5750\u6807\u5E76\u64AD\u653E"
+  m_Text: "Apply Position and Play"
 --- !u!222 &1259862089
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2838,8 +2838,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u79FB\u52A8\u58F0\u6E90\uFF0C\u8C03\u6574\u6700\u5927\u8DDD\u79BB\u30012D/3D
-    \u6DF7\u5408\u548C\u58F0\u76F8\u3002"
+  m_Text: "Move the source and adjust maximum distance, 2D/3D blend and stereo pan."
 --- !u!222 &1340172559
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3022,9 +3021,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1384291377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1384291379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3342,7 +3341,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  \u7a7a\u95f4\u58f0\u97f3"
+  m_Text: "03  Spatial Sound"
 --- !u!222 &1619196500
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3859,7 +3858,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6807\u8BB0\u504F\u79FB\uFF08\u7C73\uFF09"
+  m_Text: "Marker Offset (m)"
 --- !u!222 &1764205452
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4341,7 +4340,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "2D \u58F0\u76F8\uFF1A\u5DE6 \u2192 \u53F3"
+  m_Text: "2D Stereo Pan: Left → Right"
 --- !u!222 &2116996639
 CanvasRenderer:
   m_ObjectHideFlags: 0

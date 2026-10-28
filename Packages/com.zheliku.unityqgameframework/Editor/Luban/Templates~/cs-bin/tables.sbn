@@ -33,11 +33,11 @@ public partial class {{__name}} : IDataTableLoader
         }
     }
     /// <summary>
-    /// 加载数据表并解析表间引用。
+    /// 构造数据表并解析表间引用；不读取资源、不修改 DataTableComponent 登记。
     /// </summary>
     /// <param name="loader">读取指定数据文件的加载方法。</param>
     /// <returns>已完成解析的数据表。</returns>
-    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.Load(System.Func<string, ByteBuf> loader)
+    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.CreateTables(System.Func<string, ByteBuf> loader)
     {
         {{~for table in __tables ~}}
         {{format_property_name __code_style table.name}} = new {{table.full_name}}(loader("{{table.output_data_file}}"));

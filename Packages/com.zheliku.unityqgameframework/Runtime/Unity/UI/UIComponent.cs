@@ -272,10 +272,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有界面组。
         /// </summary>
-        /// <param name="results">所有界面组。</param>
-        public void GetAllUIGroups(List<IUIGroup> results)
+        /// <param name="results">所有界面组；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllUIGroupsNonAlloc(List<IUIGroup> results)
         {
-            m_UIManager.GetAllUIGroups(results);
+            m_UIManager.GetAllUIGroupsNonAlloc(results);
         }
 
         /// <summary>
@@ -378,8 +378,8 @@ namespace UnityQGameFramework.Runtime
         /// 获取界面。
         /// </summary>
         /// <param name="uiFormAssetName">界面资源名称。</param>
-        /// <param name="results">要获取的界面。</param>
-        public void GetUIForms(string uiFormAssetName, List<UIForm> results)
+        /// <param name="results">要获取的界面；填充前清空，容量不足时仍会扩容。</param>
+        public void GetUIFormsNonAlloc(string uiFormAssetName, List<UIForm> results)
         {
             if (results == null)
             {
@@ -388,7 +388,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             results.Clear();
-            m_UIManager.GetUIForms(uiFormAssetName, m_InternalUIFormResults);
+            m_UIManager.GetUIFormsNonAlloc(uiFormAssetName, m_InternalUIFormResults);
             foreach (IUIForm uiForm in m_InternalUIFormResults)
             {
                 results.Add((UIForm)uiForm);
@@ -414,8 +414,8 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有已加载的界面。
         /// </summary>
-        /// <param name="results">所有已加载的界面。</param>
-        public void GetAllLoadedUIForms(List<UIForm> results)
+        /// <param name="results">所有已加载的界面；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadedUIFormsNonAlloc(List<UIForm> results)
         {
             if (results == null)
             {
@@ -424,7 +424,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             results.Clear();
-            m_UIManager.GetAllLoadedUIForms(m_InternalUIFormResults);
+            m_UIManager.GetAllLoadedUIFormsNonAlloc(m_InternalUIFormResults);
             foreach (IUIForm uiForm in m_InternalUIFormResults)
             {
                 results.Add((UIForm)uiForm);
@@ -443,10 +443,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有正在加载界面的序列编号。
         /// </summary>
-        /// <param name="results">所有正在加载界面的序列编号。</param>
-        public void GetAllLoadingUIFormSerialIds(List<int> results)
+        /// <param name="results">所有正在加载界面的序列编号；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadingUIFormSerialIdsNonAlloc(List<int> results)
         {
-            m_UIManager.GetAllLoadingUIFormSerialIds(results);
+            m_UIManager.GetAllLoadingUIFormSerialIdsNonAlloc(results);
         }
 
         /// <summary>

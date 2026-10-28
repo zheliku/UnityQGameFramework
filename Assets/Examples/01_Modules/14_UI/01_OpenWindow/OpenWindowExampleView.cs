@@ -56,7 +56,7 @@ namespace UnityQGameFramework.Examples.Modules
             OpenCalls++;
             HasOpenData = userData != null;
             CloseData = null;
-            title.text = userData as string ?? "默认标题";
+            title.text = userData as string ?? "Default Title";
         }
 
         /// <summary>

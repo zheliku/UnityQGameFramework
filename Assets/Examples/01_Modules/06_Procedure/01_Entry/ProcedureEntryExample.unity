@@ -818,7 +818,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u4ECE\u5165\u53E3\u6D41\u7A0B\u5F00\u59CB"
+  m_Text: "01  Entrance Procedure"
 --- !u!222 &1493952721
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -901,9 +901,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825216915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1825216917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,7 +1127,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u5728 QGF / Procedure \u67E5\u770B\u5DF2\u6CE8\u518C\u6D41\u7A0B\u548C\u5165\u53E3\u3002"
+  m_Text: "Inspect registered procedures and the entrance in QGF / Procedure."
 --- !u!222 &2014617238
 CanvasRenderer:
   m_ObjectHideFlags: 0

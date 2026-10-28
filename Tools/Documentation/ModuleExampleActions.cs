@@ -72,7 +72,7 @@ public static class ModuleExampleActions
             case "LoadConfigAsset":
                 await Click("loadButton");
                 await Until(() => QGF.Config.HasConfig("Level.Name"), "TOML asset loaded");
-                Require(Field<Text>("contextText").text.Contains("当前对象"), "Config UserData identifies the request owner");
+                Require(Field<Text>("contextText").text.Contains("current object"), "Config UserData identifies the request owner");
                 break;
             case "LoadCatalogExample":
                 Field<Button>("loadButton").onClick.Invoke();
@@ -176,7 +176,7 @@ public static class ModuleExampleActions
                 Field<InputField>("jobsInput").text = "1";
                 await Click("loadButton");
                 await Click("runButton");
-                await Until(() => Field<int>("lastBatch") == 1 && Field<Text>("jobsText").text.Contains("移除"), "State reads shared data, completes and removes it");
+                await Until(() => Field<int>("lastBatch") == 1 && Field<Text>("jobsText").text.Contains("removed"), "State reads shared data, completes and removes it");
                 break;
             case "NamedMachines":
                 var right = Field<object>("right");
@@ -223,11 +223,11 @@ public static class ModuleExampleActions
                 Field<Dropdown>("levelChoice").value = 1;
                 await Click("confirmButton");
                 await Until(() => QGF.Procedure.CurrentProcedure?.GetType().Name == "ExampleLoad03", "Procedure receives the selected level");
-                Require(Field<string>("LoadedLevel") == "沙漠" && Field<bool>("HasLevelData"), "Temporary data survives the procedure change");
+                Require(Field<string>("LoadedLevel") == "Desert" && Field<bool>("HasLevelData"), "Temporary data survives the procedure change");
                 await Click("finishButton");
                 await Until(() => QGF.Procedure.CurrentProcedure?.GetType().Name == "ExampleSelect03" && !Field<bool>("HasLevelData"),
                     "Removing the temporary value returns to selection");
-                Require(Field<string>("LoadedLevel") == "沙漠", "Copied business data remains after removing its pooled wrapper");
+                Require(Field<string>("LoadedLevel") == "Desert", "Copied business data remains after removing its pooled wrapper");
                 break;
             case "ReferenceOwnership":
                 await Click("acquireButton");

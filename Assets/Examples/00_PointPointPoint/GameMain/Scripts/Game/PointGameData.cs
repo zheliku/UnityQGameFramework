@@ -24,7 +24,7 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         /// <summary>
         /// 当前游戏阶段。
         /// </summary>
-        public string Phase = "启动";
+        public string Phase = "Launch";
 
         /// <summary>
         /// 每局持续时长，以秒为单位。

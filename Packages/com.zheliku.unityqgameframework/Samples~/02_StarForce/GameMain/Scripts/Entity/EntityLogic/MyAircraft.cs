@@ -4,6 +4,7 @@
 //------------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityQGameFramework.Runtime;
 
 namespace StarForce
@@ -69,16 +70,10 @@ namespace StarForce
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 
-#if ENABLE_INPUT_SYSTEM
-            var mouse = UnityEngine.InputSystem.Mouse.current;
+            Mouse mouse = Mouse.current;
             if (mouse != null && mouse.leftButton.isPressed)
             {
                 Vector3 point = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
-#else
-            if (Input.GetMouseButton(0))
-            {
-                Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-#endif
                 m_TargetPosition = new Vector3(point.x, 0f, point.z);
 
                 for (int i = 0; i < m_Weapons.Count; i++)

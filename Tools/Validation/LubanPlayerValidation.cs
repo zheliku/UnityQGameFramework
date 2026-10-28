@@ -17,7 +17,6 @@ namespace Luban.Validation
         {
             bool success = false;
             string failure = null;
-            string previous = LubanGenerator.LocalGenerator;
             const string workspace = "Assets/CachedGeneratorValidation";
             bool created = false;
             EditorApplication.LockReloadAssemblies();
@@ -26,9 +25,6 @@ namespace Luban.Validation
                 var package = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(DataTableComponent).Assembly);
                 if (package.source != UnityEditor.PackageManager.PackageSource.LocalTarball && package.source != UnityEditor.PackageManager.PackageSource.Git)
                     throw new Exception("Expected a cached UPM tarball or Git package.");
-                string[] arguments = Environment.GetCommandLineArgs();
-                for (int i = 0; i < arguments.Length - 1; ++i)
-                    if (arguments[i] == "-qgf-luban-generator") LubanGenerator.LocalGenerator = arguments[i + 1];
                 if (Directory.Exists(workspace)) throw new Exception("Temporary workspace is occupied.");
                 var profile = LubanWorkspace.Create(workspace);
                 created = true;
@@ -42,7 +38,6 @@ namespace Luban.Validation
             finally
             {
                 if (created) AssetDatabase.DeleteAsset(workspace);
-                LubanGenerator.LocalGenerator = previous;
                 EditorApplication.UnlockReloadAssemblies();
             }
             Directory.CreateDirectory("Results");

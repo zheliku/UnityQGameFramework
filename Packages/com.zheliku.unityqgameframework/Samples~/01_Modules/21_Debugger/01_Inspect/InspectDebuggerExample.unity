@@ -543,7 +543,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u8C03\u8BD5\u7A97\u53E3\u5728\u5F00\u53D1\u7248\u672C\u4E2D\u63D0\u4F9B\u8FD0\u884C\u65F6\u8BCA\u65AD\u3002"
+  m_Text: "The debugger provides runtime diagnostics in development builds."
 --- !u!222 &269638780
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -747,9 +747,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 731687243}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &731687245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,7 +931,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u663E\u793A\u8C03\u8BD5\u7A97\u53E3"
+  m_Text: "Show Debugger"
 --- !u!222 &1128557126
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1443,7 +1443,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u67E5\u770B\u8FD0\u884C\u4FE1\u606F"
+  m_Text: "01  Runtime Information"
 --- !u!222 &2131583786
 CanvasRenderer:
   m_ObjectHideFlags: 0

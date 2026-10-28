@@ -140,7 +140,7 @@ var cheapSorted = items.GetDataRows(
 
 ```csharp
 var result = new System.Collections.Generic.List<DRItem>();
-items.GetDataRows(row => row.Price <= 20, result);
+items.GetDataRowsNonAlloc(row => row.Price <= 20, result);
 ```
 
 表实现了 `IEnumerable<T>`，可以 foreach，也可添加 `using System.Linq;` 后使用：
@@ -154,7 +154,7 @@ var names = items.Where(row => row.Price <= 20)
 
 条件查询会遍历记录。频繁查询大表时，在 Luban schema 中定义索引。
 
-其他常用属性有 `Count`、`DataMap`、`DataList`；`GetAllDataRows()` 取得全部记录。需要最小或最大键时，在业务侧按键字段比较。
+具有单一主键的生成表还提供强类型索引器，例如 `items[1]`；缺键时索引器抛出 `KeyNotFoundException`，允许缺键时使用 `GetDataRow(1)`。其他常用属性有 `Count`、`DataMap`、`DataList`；`GetAllDataRows()` 取得新数组，`GetAllDataRowsNonAlloc(result)` 复用调用方列表。需要最小或最大键时，在业务侧按键字段比较。
 
 ## 5. 再添加一张 Weapon 表
 
@@ -220,7 +220,7 @@ Profile 与 `luban.conf` 放在 Config 根目录；可在 DataTable 组件 Inspe
 
 全局选择位于 `QGF > Settings > Profile`，也可在 DataTable Inspector 选择 Profile 后点 **设为全局**。设置保存在 `ProjectSettings/UnityQGameFrameworkSettings.asset`，团队应一起提交。
 
-Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，创建生成的 `Tables` 加载器并执行 `IDataTableLoader.Load`；解析跨表引用和完成版本校验后登记全部生成表。
+Catalog 保存生成文件名与 TextAsset 的对应关系。组件据此读取 bytes，创建生成的 `Tables` 加载器并执行 `IDataTableLoader.CreateTables`；解析跨表引用和完成版本校验后登记全部生成表。
 
 它是需要随游戏分发的数据清单，不是缓存。Profile 是生成输入配置，Catalog 是生成输出；已生成的 C# 负责解析，具体记录值仍来自 bytes。DataTableComponent 会自动初始化，在普通业务 `Start` 或启动流程中调用 `LoadDataTables<Tables>()` 即可；无需额外 Initialize，也不要在 `Awake` 中提前加载。成功后用 `GetDataTable<TbXxx>()` 查询，查询本身不会自动加载。
 
@@ -335,7 +335,7 @@ namespace MyGame
 
 一个组件同时持有一组已加载的数据表。重复加载前调用 `UnloadDataTables()`；它取消在途请求，并解除组件对整组表的引用。业务自己保存的记录引用也应在更换配置时一并更新。
 
-`DestroyDataTable<TbXxx>()` 移除对应登记，不改写业务仍持有的表及记录。切换配置使用 `UnloadDataTables()`，并更新业务保存的旧记录引用。
+`RemoveDataTable<TbXxx>()` 移除对应登记，不改写业务仍持有的表及记录。切换配置使用 `UnloadDataTables()`，并更新业务保存的旧记录引用。
 
 ## 10. 移动目录与提交版本控制
 

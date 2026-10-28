@@ -146,9 +146,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9654485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &9654487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +488,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6BD4\u8F83\u4E00\u6B21\u6D3E\u53D1\u987A\u5E8F"
+  m_Text: "Compare Dispatch Order"
 --- !u!222 &530076541
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -912,7 +912,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u7ACB\u5373\u6D3E\u53D1\u4E0E\u6392\u961F"
+  m_Text: "02  Immediate and Queued Dispatch"
 --- !u!222 &1199264378
 CanvasRenderer:
   m_ObjectHideFlags: 0

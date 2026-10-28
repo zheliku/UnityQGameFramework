@@ -91,10 +91,10 @@ namespace UnityQGameFramework.Examples.Modules
 
             var entity = QGF.Entity.GetEntity(1);
             var group = QGF.Entity.GetEntityGroup("Example");
-            policyText.text = $"空闲过期：{group.InstanceExpireTime:F1} 秒    本次等待：{idleSlider.value:F1} 秒\n锁定的实例不会因空闲过期被释放";
-            stateText.text = recycling ? $"已隐藏，等待 {idleRemaining:F1} 秒后再显示" : entity == null ? "正在加载" : $"当前实例：{currentInstance}\n上次实例：{previousInstance}\n" + $"本次来源：{(previousInstance != 0 && currentInstance == previousInstance ? "复用" : "新建")}";
+            policyText.text = $"Idle timeout: {group.InstanceExpireTime:F1} s    Wait this time: {idleSlider.value:F1} s\nLocked instances are not released after their idle timeout.";
+            stateText.text = recycling ? $"Hidden; waiting {idleRemaining:F1} s before showing again" : entity == null ? "Loading" : $"Current instance: {currentInstance}\nPrevious instance: {previousInstance}\n" + $"Instance source: {(previousInstance != 0 && currentInstance == previousInstance ? "Reused" : "Created")}";
             var logic = entity == null ? null : (ReuseCubeEntityLogic)entity.Logic;
-            lifecycleText.text = logic == null ? "实例未显示" : $"本实例 OnInit：{logic.InitCalls}    OnShow：{logic.ShowCalls}\n" + $"OnHide：{logic.HideCalls}    OnRecycle：{logic.RecycleCalls}";
+            lifecycleText.text = logic == null ? "Instance not shown" : $"Instance OnInit: {logic.InitCalls}    OnShow：{logic.ShowCalls}\n" + $"OnHide：{logic.HideCalls}    OnRecycle：{logic.RecycleCalls}";
             recycleButton.interactable = entity != null && !recycling;
             idleSlider.interactable = lockedToggle.interactable = !recycling;
         }

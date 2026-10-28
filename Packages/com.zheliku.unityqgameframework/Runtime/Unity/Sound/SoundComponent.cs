@@ -208,10 +208,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有声音组。
         /// </summary>
-        /// <param name="results">所有声音组。</param>
-        public void GetAllSoundGroups(List<ISoundGroup> results)
+        /// <param name="results">所有声音组；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllSoundGroupsNonAlloc(List<ISoundGroup> results)
         {
-            m_SoundManager.GetAllSoundGroups(results);
+            m_SoundManager.GetAllSoundGroupsNonAlloc(results);
         }
 
         /// <summary>
@@ -294,10 +294,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有正在加载声音的序列编号。
         /// </summary>
-        /// <param name="results">所有正在加载声音的序列编号。</param>
-        public void GetAllLoadingSoundSerialIds(List<int> results)
+        /// <param name="results">所有正在加载声音的序列编号；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadingSoundSerialIdsNonAlloc(List<int> results)
         {
-            m_SoundManager.GetAllLoadingSoundSerialIds(results);
+            m_SoundManager.GetAllLoadingSoundSerialIdsNonAlloc(results);
         }
 
         /// <summary>

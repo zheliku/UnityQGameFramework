@@ -128,7 +128,7 @@ namespace UnityQGameFramework.Examples.Modules
 
                 if (ResponseMode == 3)
                 {
-                    byte[] error = Encoding.UTF8.GetBytes("服务器拒绝这次业务请求");
+                    byte[] error = Encoding.UTF8.GetBytes("The server rejected this request.");
                     body = new byte[4 + error.Length];
                     Buffer.BlockCopy(BitConverter.GetBytes(4), 0, body, 0, 4);
                     Buffer.BlockCopy(error, 0, body, 4, error.Length);

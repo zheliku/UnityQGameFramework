@@ -53,7 +53,7 @@ namespace UnityQGameFramework.Examples.Modules
             base.OnOpen(userData);
             // 回池保留这个实例；本次打开的数据仍要重新写入。
             OpenCalls++;
-            title.text = userData as string ?? "我的窗口";
+            title.text = userData as string ?? "My Window";
         }
 
         /// <summary>

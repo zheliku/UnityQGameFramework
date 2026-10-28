@@ -6,6 +6,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityQGameFramework.Examples.PointPointPoint;
 using UnityQGameFramework.Runtime;
 
@@ -48,7 +49,7 @@ public static class BuildPointGameScene
             Directory.CreateDirectory(root + "/UI/UIForms");
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             BuildForm(root + "/UI/UIForms/PointGameView.prefab");
-            new GameObject("EventSystem", typeof(EventSystem), typeof(UIInputAdapter));
+            new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             var camera = new GameObject("Main Camera", typeof(Camera)).GetComponent<Camera>();
             camera.tag = "MainCamera";
             camera.clearFlags = CameraClearFlags.Skybox;
@@ -75,7 +76,7 @@ public static class BuildPointGameScene
         scaler.matchWidthOrHeight = 0.5f;
         var page = Panel("Page", form.transform, new Vector2(0, 0), new Vector2(1, 1));
         page.gameObject.AddComponent<Image>().color = new Color(0.09f, 0.11f, 0.15f);
-        Label("Title", page, "点点点", 24, 14, 50, 30);
+        Label("Title", page, "PointPointPoint", 24, 14, 50, 30);
         var phase = Label("Phase", page, string.Empty, 24, 72, 48, 18);
         var menu = Panel("Menu", page, Vector2.zero, Vector2.one);
         var play = Panel("Play", page, Vector2.zero, Vector2.one);
@@ -87,7 +88,7 @@ public static class BuildPointGameScene
         }
         var rules = Label("Rules", menu, string.Empty, 0, 0, 40);
         var record = Label("Record", menu, string.Empty, 0, 48, 60);
-        var start = Button("Start", menu, "开始", 0, 132, new Vector2(220, 44));
+        var start = Button("Start", menu, "Start", 0, 132, new Vector2(220, 44));
         var status = Label("Status", play, string.Empty, 0, 0, 52);
         var board = Panel("Board", play, new Vector2(0, 0), Vector2.one);
         board.offsetMin = Vector2.zero;
@@ -96,10 +97,10 @@ public static class BuildPointGameScene
         var miss = board.gameObject.AddComponent<Button>();
         board.name = "Button_Board";
         miss.targetGraphic = board.GetComponent<Image>();
-        var target = Button("Target", board, "点我", 0, 0, new Vector2(64, 64));
+        var target = Button("Target", board, "Click Me", 0, 0, new Vector2(64, 64));
         var resultTitle = Label("ResultTitle", result, string.Empty, 0, 0, 50, 28);
         var resultScore = Label("ResultScore", result, string.Empty, 0, 64, 50);
-        var back = Button("MenuButton", result, "返回菜单", 0, 132, new Vector2(220, 44));
+        var back = Button("MenuButton", result, "Return to Menu", 0, 132, new Vector2(220, 44));
         foreach (var button in form.GetComponentsInChildren<Button>(true))
         {
             var navigation = button.navigation;

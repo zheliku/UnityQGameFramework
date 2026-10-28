@@ -23,9 +23,9 @@ namespace UnityQGameFramework.Examples.Modules
         {
             QGF.UI.AddUIGroup("Example", 0);
             // 先打开底层窗口；Update 等它加载完成后才允许打开上层。
-            bottom = QGF.UI.OpenUIForm(AssetName, "Example", "底层：背包");
+            bottom = QGF.UI.OpenUIForm(AssetName, "Example", "Base: Inventory");
             // pauseCovered 只影响同组被覆盖的窗口，不会暂停整个游戏。
-            openButton.onClick.AddListener(() => top = QGF.UI.OpenUIForm(AssetName, "Example", pauseToggle.isOn, "上层：确认"));
+            openButton.onClick.AddListener(() => top = QGF.UI.OpenUIForm(AssetName, "Example", pauseToggle.isOn, "Overlay: Confirm"));
             closeButton.onClick.AddListener(() => QGF.UI.CloseUIForm(top));
             refocusButton.onClick.AddListener(() =>
             {
@@ -33,7 +33,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // Refocus 将窗口移到同组顶层，保留打开序号。
                 if (contextToggle.isOn)
                 {
-                    QGF.UI.RefocusUIForm(form, "再次查看背包");
+                    QGF.UI.RefocusUIForm(form, "View inventory again");
                 }
                 else
                 {
@@ -54,8 +54,8 @@ namespace UnityQGameFramework.Examples.Modules
             var upper = QGF.UI.GetUIForm(top);
             var view = lower == null ? null : (CoverWindowExampleView)lower.Logic;
             var group = QGF.UI.GetUIGroup("Example");
-            stateText.text = $"组内窗口：{group.UIFormCount}    当前顶层：{group.CurrentUIForm?.SerialId}\n" + $"背包：{(view == null ? "加载中" : view.Visible ? "显示" : "隐藏")}    上层窗口：{(upper == null ? "未打开" : top.ToString())}";
-            callbacksText.text = view == null ? "正在加载背包" : $"背包更新：{view.ActiveSeconds:F1} 秒\n覆盖 / 揭开：{view.CoverCalls} / {view.RevealCalls}\n" + $"暂停 / 恢复：{view.PauseCalls} / {view.ResumeCalls}\n重新聚焦：{view.RefocusCalls}    数据：{view.RefocusData ?? "无"}";
+            stateText.text = $"Forms in group: {group.UIFormCount}    Top form: {group.CurrentUIForm?.SerialId}\n" + $"Inventory: {(view == null ? "Loading" : view.Visible ? "Shown" : "Hidden")}    Overlay: {(upper == null ? "Not open" : top.ToString())}";
+            callbacksText.text = view == null ? "Loading inventory" : $"Inventory updates: {view.ActiveSeconds:F1} s\nCover / Reveal: {view.CoverCalls} / {view.RevealCalls}\n" + $"Pause / Resume: {view.PauseCalls} / {view.ResumeCalls}\nRefocus: {view.RefocusCalls}    Data: {view.RefocusData ?? "None"}";
             bool pending = QGF.UI.IsLoadingUIForm(top);
             openButton.interactable = lower != null && upper == null && !pending;
             closeButton.interactable = upper != null;

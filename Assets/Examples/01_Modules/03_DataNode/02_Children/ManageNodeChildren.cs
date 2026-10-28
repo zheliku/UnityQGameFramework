@@ -39,7 +39,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // 全树清空后重新创建 Inventory，再添加子节点并交给它管理数据。
                 var inventory = QGF.DataNode.GetOrAddNode("Inventory", QGF.DataNode.GetOrAddNode("Example"));
                 var item = inventory.GetOrAddChild("Item" + ++nextId);
-                item.SetData((Variable)(VarString)"药水");
+                item.SetData((Variable)(VarString)"Potion");
             });
             removeNameButton.onClick.AddListener(() =>
             {
@@ -73,10 +73,10 @@ namespace UnityQGameFramework.Examples.Modules
             }
 
             var inventory = QGF.DataNode.GetNode("Example/Inventory");
-            string text = "根节点的分支：" + QGF.DataNode.Root.ChildCount;
+            string text = "Root branches: " + QGF.DataNode.Root.ChildCount;
             children.Clear();
             // GetAllChild 支持写入 List 或返回数组，下面对照两种结果。
-            inventory?.GetAllChild(children);
+            inventory?.GetAllChildNonAlloc(children);
             // 节点可以继续添加；界面只预览前四个，避免长列表挤出面板。
             for (int i = 0; i < Mathf.Min(children.Count, 4); i++)
             {
@@ -86,11 +86,11 @@ namespace UnityQGameFramework.Examples.Modules
 
             if (children.Count > 4)
             {
-                text += $"\n另有 {children.Count - 4} 个节点";
+                text += $"\nAdditional {children.Count - 4} nodes";
             }
 
             childrenText.text = text;
-            countText.text = inventory == null ? "Inventory 尚未创建，添加物品会重新创建它。" : $"子节点：{inventory.ChildCount}，数组结果：{inventory.GetAllChild().Length}\n" + $"Item1：{(inventory.HasChild("Item1") ? inventory.GetChild("Item1").ToDataString() : "不存在")}";
+            countText.text = inventory == null ? "Inventory does not exist. Adding an item will create it again." : $"Children: {inventory.ChildCount}; array result: {inventory.GetAllChild().Length}\n" + $"Item1：{(inventory.HasChild("Item1") ? inventory.GetChild("Item1").ToDataString() : "Missing")}";
             removeNameButton.interactable = children.Count > 0;
             removeIndexButton.interactable = children.Count > 0;
             clearNodeButton.interactable = inventory != null;

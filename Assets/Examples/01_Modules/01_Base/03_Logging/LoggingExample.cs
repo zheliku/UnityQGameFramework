@@ -36,10 +36,10 @@ namespace UnityQGameFramework.Examples.Modules
 #if ENABLE_LOG || ENABLE_ERROR_LOG || ENABLE_DEBUG_AND_ABOVE_LOG || ENABLE_INFO_AND_ABOVE_LOG || ENABLE_WARNING_AND_ABOVE_LOG || ENABLE_ERROR_AND_ABOVE_LOG
             errorButton.interactable = true;
 #endif
-            statusText.text = $"日志级别：Debug {(debugButton.interactable ? "可用" : "未编译")} / "
-                + $"Info {(infoButton.interactable ? "可用" : "未编译")} / "
-                + $"Warning {(warningButton.interactable ? "可用" : "未编译")} / "
-                + $"Error {(errorButton.interactable ? "可用" : "未编译")}";
+            statusText.text = $"Log levels: Debug {(debugButton.interactable ? "Available" : "Not compiled")} / "
+                + $"Info {(infoButton.interactable ? "Available" : "Not compiled")} / "
+                + $"Warning {(warningButton.interactable ? "Available" : "Not compiled")} / "
+                + $"Error {(errorButton.interactable ? "Available" : "Not compiled")}";
             // 输出到 Console。未编译的级别不可点击，不替宿主项目开启日志宏。
             debugButton.onClick.AddListener(() => Log.Debug(messageInput.text));
             infoButton.onClick.AddListener(() => Log.Info(messageInput.text));

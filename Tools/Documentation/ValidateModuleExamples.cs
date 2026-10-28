@@ -152,7 +152,7 @@ public static class ValidateModuleExamples
                 Field<InputField>("jsonInput").text = "{\"Name\":\"手动修改\",\"Level\":9}";
                 Click("deserializeButton");
                 await Task.Delay(80);
-                Require(Field<InputField>("nameInput").text == "手动修改" && Field<Text>("levelText").text == "等级：9", "Edited JSON restores object");
+                Require(Field<InputField>("nameInput").text == "手动修改" && Field<Text>("levelText").text == "Level: 9", "Edited JSON restores object");
                 break;
             case "LoggingExample": break; // 不主动制造 Error 日志；按钮按日志编译宏显示。
             case "ReadConfigValues":
@@ -193,7 +193,7 @@ public static class ValidateModuleExamples
             case "QueryRowsExample":
                 Require(QGF.DataTable.IsLoaded, "Query table loaded");
                 Field<InputField>("idInput").text = "999999";
-                Require(Field<Text>("selectedText").text == "没有这个 Id。", "Missing Id"); break;
+                Require(Field<Text>("selectedText").text == "ID not found.", "Missing Id"); break;
             case "LoadCubePrefab":
                 await Wait(() => Field<GameObject>("first") != null && Field<GameObject>("second") != null);
                 Click("removeButton"); await Task.Delay(80); Require(Field<GameObject>("second") != null, "Other instance survives");
@@ -225,8 +225,8 @@ public static class ValidateModuleExamples
                 Click("downloadButton"); await Wait(() => Field<int>("serial") == 0);
                 Require(File.Exists(Field<string>("path")), "Downloaded file exists"); break;
             case "ConnectNetworkExample":
-                Click("connectButton"); await Wait(() => Field<Text>("stateText").text == "已连接");
-                Click("closeButton"); await Wait(() => Field<Text>("stateText").text.Contains("已断开")); break;
+                Click("connectButton"); await Wait(() => Field<Text>("stateText").text == "Connected");
+                Click("closeButton"); await Wait(() => Field<Text>("stateText").text.Contains("Disconnected")); break;
             case "InspectDebuggerExample":
                 Field<Toggle>("activeToggle").isOn = false; Require(!QGF.Debugger.ActiveWindow, "Debugger visibility"); break;
             default:

@@ -21,7 +21,7 @@ namespace UnityQGameFramework.Examples.Modules
         private LocalHttpServer server;
         private int serial;
         private float started, elapsed;
-        private string state = "尚未请求";
+        private string state = "No request yet";
         private void Start()
         {
             server = new LocalHttpServer(response.bytes);
@@ -41,7 +41,7 @@ namespace UnityQGameFramework.Examples.Modules
             // 返回任务序号；结果事件用它确认本次请求。
             serial = QGF.WebRequest.AddWebRequest(uri);
             started = Time.realtimeSinceStartup;
-            responseText.text = "等待响应正文……";
+            responseText.text = "Waiting for the response body…";
         }
 
         private void OnResult(object sender, GameEventArgs args)
@@ -51,11 +51,11 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 byte[] bytes = success.GetWebResponseBytes();
                 responseText.text = Encoding.UTF8.GetString(bytes).Trim();
-                state = $"完成 · {bytes.Length} 字节";
+                state = $"Complete · {bytes.Length} bytes";
             }
             else if (args is WebRequestFailureEventArgs failure && failure.SerialId == serial)
             {
-                state = "失败：" + failure.ErrorMessage;
+                state = "Failed: " + failure.ErrorMessage;
             }
             else
             {
@@ -69,7 +69,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void LateUpdate()
         {
-            stateText.text = serial == 0 ? $"{state} · {elapsed:F2} 秒" : $"请求 #{serial} · 等待 {Time.realtimeSinceStartup - started:F2} 秒";
+            stateText.text = serial == 0 ? $"{state} · {elapsed:F2} s" : $"Request #{serial} · Waiting {Time.realtimeSinceStartup - started:F2} s";
             requestButton.interactable = server != null && serial == 0;
         }
 

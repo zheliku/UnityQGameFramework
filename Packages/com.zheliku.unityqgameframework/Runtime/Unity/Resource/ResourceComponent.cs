@@ -700,7 +700,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="decryptResourceCallback">要设置的解密资源回调函数。</param>
         /// <remarks>旧 UGF 资源管线的扩展点。YooAsset 解密请在 IResourcePackageInitializer 中配置官方解密服务。</remarks>
-        [Obsolete("YooAsset 解密请使用 IResourcePackageInitializer 或 InitializePackageAsync 的官方选项重载。")]
+        [Obsolete("Configure YooAsset decryption through IResourcePackageInitializer or the native-options overload of InitializePackageAsync.")]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void SetDecryptResourceCallback(DecryptResourceCallback decryptResourceCallback)
         {
@@ -877,11 +877,11 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有加载资源任务的信息。
         /// </summary>
-        /// <param name="results">所有加载资源任务的信息。</param>
+        /// <param name="results">所有加载资源任务的信息；填充前清空，容量不足时仍会扩容。</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void GetAllLoadAssetInfos(List<TaskInfo> results)
+        public void GetAllLoadAssetInfosNonAlloc(List<TaskInfo> results)
         {
-            m_ResourceManager.GetAllLoadAssetInfos(results);
+            m_ResourceManager.GetAllLoadAssetInfosNonAlloc(results);
         }
 
         /// <summary>
@@ -1374,11 +1374,11 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有资源组。
         /// </summary>
-        /// <param name="results">所有资源组。</param>
+        /// <param name="results">所有资源组；填充前清空，容量不足时仍会扩容。</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void GetAllResourceGroups(List<IResourceGroup> results)
+        public void GetAllResourceGroupsNonAlloc(List<IResourceGroup> results)
         {
-            m_ResourceManager.GetAllResourceGroups(results);
+            m_ResourceManager.GetAllResourceGroupsNonAlloc(results);
         }
 
         /// <summary>

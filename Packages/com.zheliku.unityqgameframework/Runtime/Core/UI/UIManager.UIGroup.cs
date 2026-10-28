@@ -252,8 +252,8 @@ namespace UnityQGameFramework.Core.UI
             /// 从界面组中获取界面。
             /// </summary>
             /// <param name="uiFormAssetName">界面资源名称。</param>
-            /// <param name="results">要获取的界面。</param>
-            public void GetUIForms(string uiFormAssetName, List<IUIForm> results)
+            /// <param name="results">要获取的界面；填充前清空，容量不足时仍会扩容。</param>
+            public void GetUIFormsNonAlloc(string uiFormAssetName, List<IUIForm> results)
             {
                 if (string.IsNullOrEmpty(uiFormAssetName))
                 {
@@ -293,8 +293,8 @@ namespace UnityQGameFramework.Core.UI
             /// <summary>
             /// 从界面组中获取所有界面。
             /// </summary>
-            /// <param name="results">界面组中的所有界面。</param>
-            public void GetAllUIForms(List<IUIForm> results)
+            /// <param name="results">界面组中的所有界面；填充前清空，容量不足时仍会扩容。</param>
+            public void GetAllUIFormsNonAlloc(List<IUIForm> results)
             {
                 if (results == null)
                 {

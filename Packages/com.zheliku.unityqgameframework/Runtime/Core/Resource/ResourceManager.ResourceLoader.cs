@@ -799,10 +799,10 @@ namespace UnityQGameFramework.Core.Resource
             /// <summary>
             /// 获取所有加载资源任务的信息。
             /// </summary>
-            /// <param name="results">所有加载资源任务的信息。</param>
-            public void GetAllLoadAssetInfos(List<TaskInfo> results)
+            /// <param name="results">所有加载资源任务的信息；填充前清空，容量不足时仍会扩容。</param>
+            public void GetAllLoadAssetInfosNonAlloc(List<TaskInfo> results)
             {
-                m_TaskPool.GetAllTaskInfos(results);
+                m_TaskPool.GetAllTaskInfosNonAlloc(results);
             }
 
             /// <summary>

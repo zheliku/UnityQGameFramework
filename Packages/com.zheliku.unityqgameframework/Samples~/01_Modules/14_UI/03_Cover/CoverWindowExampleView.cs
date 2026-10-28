@@ -66,12 +66,12 @@ namespace UnityQGameFramework.Examples.Modules
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
-            caption = userData as string ?? "窗口";
+            caption = userData as string ?? "Window";
             ActiveSeconds = 0;
             CoverCalls = RevealCalls = PauseCalls = ResumeCalls = RefocusCalls = 0;
             RefocusData = null;
             var panel = (RectTransform)title.transform.parent;
-            bool upper = caption.StartsWith("上层");
+            bool upper = caption.StartsWith("Overlay");
             // 错开窗口，只留窄角交叠，让两层状态都能看清。
             panel.anchorMin = panel.anchorMax = new Vector2(upper ? .83f : .63f, upper ? .60f : .40f);
             panel.GetComponent<Image>().color = upper ? new Color(.07f, .25f, .32f, .92f) : new Color(.03f, .09f, .13f, .85f);
@@ -136,7 +136,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             base.OnUpdate(elapsed, realElapsed);
             ActiveSeconds += elapsed;
-            title.text = $"{caption}\n更新 {ActiveSeconds:F1} 秒\n深度 {UIForm.DepthInUIGroup}";
+            title.text = $"{caption}\nUpdates {ActiveSeconds:F1} s\nDepth {UIForm.DepthInUIGroup}";
         }
 
         /// <summary>

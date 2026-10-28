@@ -1079,7 +1079,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5168\u90E8\u8D44\u6E90"
+  m_Text: "All Resources"
 --- !u!222 &380472892
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1780,7 +1780,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u4e0b\u8f7d\u5b8c\u6210\u540e\u81ea\u52a8\u52a0\u8f7d Cube"
+  m_Text: "Load Cube after Download"
 --- !u!222 &707746095
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2558,9 +2558,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 896263134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &896263136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2740,7 +2740,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "2. \u4e0b\u8f7d\u6240\u9009\u6807\u7b7e / \u91cd\u8bd5"
+  m_Text: "2. Download Selected Tags / Retry"
 --- !u!222 &988073570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3001,7 +3001,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5e76\u53d1\u4e0b\u8f7d\uff1a1"
+  m_Text: "Concurrent Downloads: 1"
 --- !u!222 &1115225648
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3598,7 +3598,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "4. \u52A0\u8F7D Cube"
+  m_Text: "4. Load Cube"
 --- !u!222 &1211357733
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3698,7 +3698,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "04  HTTP \u8D44\u6E90\u66F4\u65B0"
+  m_Text: "04  HTTP Resource Updates"
 --- !u!222 &1272729341
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4686,7 +4686,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u505C\u6B62\u5B89\u6392\u540E\u7EED\u8D44\u6E90"
+  m_Text: "Stop Scheduling Resources"
 --- !u!222 &1513593939
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4852,7 +4852,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5f52\u8fd8 Cube / \u6e05\u7406\u5185\u5b58"
+  m_Text: "Release Cube / Unused Memory"
 --- !u!222 &1601513597
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5534,7 +5534,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6A21\u62DF\u4E0B\u8F7D\u5931\u8D25\uFF08404\uFF09"
+  m_Text: "Simulate Download Failure (404)"
 --- !u!222 &1932696184
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5613,7 +5613,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "1. \u521d\u59cb\u5316\u8054\u673a\u5305"
+  m_Text: "1. Initialize Host Package"
 --- !u!222 &1979131034
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -39,10 +39,10 @@ namespace UnityQGameFramework.Examples.Modules
             }
 
             bool working = fsm.CurrentState is Working;
-            stateText.text = working ? "当前状态：工作" : "当前状态：等待";
-            timeText.text = $"停留 {fsm.CurrentStateTime:F1} 秒";
+            stateText.text = working ? "Current state: Working" : "Current state: Waiting";
+            timeText.text = $"Elapsed {fsm.CurrentStateTime:F1} s";
             progress.value = working ? Mathf.Clamp01(fsm.CurrentStateTime / 2f) * 100 : 0;
-            completedText.text = $"已完成：{completed} 件";
+            completedText.text = $"Completed: {completed} items";
             workButton.interactable = !working;
         }
 

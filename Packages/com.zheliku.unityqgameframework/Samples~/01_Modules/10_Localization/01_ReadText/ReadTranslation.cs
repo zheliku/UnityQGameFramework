@@ -19,7 +19,7 @@ namespace UnityQGameFramework.Examples.Modules
         private void Start()
         {
             // 语言决定读取 TOML 中哪个子树。
-            QGF.Localization.Language = Language.ChineseSimplified;
+            QGF.Localization.Language = Language.English;
             QGF.Localization.ParseData(dictionary.text);
             titleText.text = QGF.Localization.GetString("Game.Name");
             rewardButton.onClick.AddListener(() => coins += 10);

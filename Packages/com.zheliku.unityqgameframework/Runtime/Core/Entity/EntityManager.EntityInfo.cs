@@ -103,8 +103,8 @@ namespace UnityQGameFramework.Core.Entity
             /// <summary>
             /// 获取全部子实体。
             /// </summary>
-            /// <param name="results">接收子实体的列表，填充前会清空。</param>
-            public void GetChildEntities(List<IEntity> results)
+            /// <param name="results">接收子实体的列表，填充前会清空；填充前清空，容量不足时仍会扩容。</param>
+            public void GetChildEntitiesNonAlloc(List<IEntity> results)
             {
                 if (results == null)
                 {

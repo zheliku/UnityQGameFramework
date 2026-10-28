@@ -331,7 +331,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u91CD\u7F6E\u5206\u6570"
+  m_Text: "Reset Score"
 --- !u!222 &121741513
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -431,7 +431,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u8DEF\u5F84\u4E0E\u76F8\u5BF9\u8282\u70B9"
+  m_Text: "01  Paths and Relative Nodes"
 --- !u!222 &210446409
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -702,7 +702,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5206\u6570 +10"
+  m_Text: "Score +10"
 --- !u!222 &517981618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1212,7 +1212,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u7528\u540C\u4E00\u8DEF\u5F84\u5199\u5165\u548C\u8BFB\u53D6\u5206\u6570\u3002"
+  m_Text: "Write and read the score using the same node path."
 --- !u!222 &1813609176
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1390,9 +1390,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131992456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &2131992458
 MonoBehaviour:
   m_ObjectHideFlags: 0

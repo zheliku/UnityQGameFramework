@@ -52,56 +52,56 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <returns>符合查询条件的数据表行。</returns>
+        /// <returns>新建的结果数组，记录本身仍由原表持有。</returns>
         T[] GetDataRows(Predicate<T> condition);
 
         /// <summary>
-        /// 获取符合条件的数据表行。
+        /// 使用调用方列表获取符合条件的数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="condition">要检查的条件。</param>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        void GetDataRows(Predicate<T> condition, List<T> results);
+        /// <param name="condition">筛选条件；复用委托可避免调用方分配。</param>
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，记录仍由原表持有。</param>
+        void GetDataRowsNonAlloc(Predicate<T> condition, List<T> results);
 
         /// <summary>
         /// 获取排序后的数据表行。
         /// </summary>
         /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <returns>排序后的数据表行。</returns>
+        /// <returns>排序后的新结果数组，不改变源表顺序和记录。</returns>
         T[] GetDataRows(Comparison<T> comparison);
 
         /// <summary>
-        /// 获取排序后的数据表行。
+        /// 使用调用方列表获取排序后的数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        void GetDataRows(Comparison<T> comparison, List<T> results);
+        /// <param name="comparison">排序比较器；复用委托可避免调用方分配。</param>
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，排序不改变源表顺序。</param>
+        void GetDataRowsNonAlloc(Comparison<T> comparison, List<T> results);
 
         /// <summary>
         /// 获取排序后的符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <returns>按指定条件筛选并排序后的数据表行。</returns>
+        /// <returns>筛选并排序后的新结果数组，不改变源表顺序和记录。</returns>
         T[] GetDataRows(Predicate<T> condition, Comparison<T> comparison);
 
         /// <summary>
-        /// 获取排序后的符合条件的数据表行。
+        /// 使用调用方列表筛选并排序数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="condition">要检查的条件。</param>
-        /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        void GetDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results);
+        /// <param name="condition">筛选条件；复用委托可避免调用方分配。</param>
+        /// <param name="comparison">排序比较器；复用委托可避免调用方分配。</param>
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，排序不改变源表顺序。</param>
+        void GetDataRowsNonAlloc(Predicate<T> condition, Comparison<T> comparison, List<T> results);
 
         /// <summary>
         /// 获取所有数据表行。
         /// </summary>
-        /// <returns>所有数据表行。</returns>
+        /// <returns>按源表顺序排列的新结果数组，记录本身仍由原表持有。</returns>
         T[] GetAllDataRows();
 
         /// <summary>
-        /// 清空并填充结果列表；记录本身仍由原表持有。
+        /// 使用调用方列表获取所有数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        void GetAllDataRows(List<T> results);
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，记录仍由原表持有。</param>
+        void GetAllDataRowsNonAlloc(List<T> results);
     }
 }

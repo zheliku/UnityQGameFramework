@@ -348,7 +348,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u8BA2\u9605\u3001\u53D1\u9001\u4E0E\u53D6\u6D88"
+  m_Text: "01  Subscribe, Fire and Unsubscribe"
 --- !u!222 &797276288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -384,9 +384,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 913315211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &913315213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +709,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D1\u9001 +10 \u91D1\u5E01"
+  m_Text: "Fire +10 Coins"
 --- !u!222 &1384291380
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -968,7 +968,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u70B9\u51FB\u6309\u94AE\u53D1\u9001\u4E00\u6761\u6D88\u606F\uFF0C\u63A5\u6536\u51FD\u6570\u7D2F\u52A0\u91D1\u5E01\u3002"
+  m_Text: "Click to fire a message; its receiver adds coins."
 --- !u!222 &1763709569
 CanvasRenderer:
   m_ObjectHideFlags: 0

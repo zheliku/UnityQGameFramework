@@ -393,7 +393,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u65F6\u95F4\u500D\u7387"
+  m_Text: "01  Time Scale"
 --- !u!222 &140266295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -652,7 +652,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u62D6\u52A8\u6ED1\u5757\uFF0C\u6BD4\u8F83\u6E38\u620F\u65F6\u95F4\u4E0E\u771F\u5B9E\u65F6\u95F4\u3002"
+  m_Text: "Drag the slider to compare game time with real time."
 --- !u!222 &484184033
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -788,9 +788,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 731687243}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &731687245
 MonoBehaviour:
   m_ObjectHideFlags: 0

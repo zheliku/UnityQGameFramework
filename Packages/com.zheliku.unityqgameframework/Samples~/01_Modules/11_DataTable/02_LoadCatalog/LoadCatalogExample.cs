@@ -29,16 +29,16 @@ namespace UnityQGameFramework.Examples.Modules
             cancelButton.onClick.AddListener(() =>
             {
                 QGF.DataTable.CancelLoadDataTables();
-                stateText.text = "已取消；迟到的资源回调不会发布这批表。";
+                stateText.text = "Canceled. Late resource callbacks will not register this batch of tables.";
             });
             unloadButton.onClick.AddListener(() =>
             {
                 QGF.DataTable.UnloadDataTables();
                 ownsTables = false;
-                rowsText.text = "尚未加载数据。";
-                stateText.text = "表已卸载。";
+                rowsText.text = "Data not loaded yet.";
+                stateText.text = "Tables unloaded.";
             });
-            stateText.text = "点击加载：从资源包读取 Tables_Catalog，完成后再查询表；不读取全局生成 Profile。";
+            stateText.text = "Click Load to read Tables_Catalog from the resource package, then query its tables. The global generation Profile is not read at runtime.";
         }
 
         private void Load()
@@ -47,7 +47,7 @@ namespace UnityQGameFramework.Examples.Modules
             // 调用返回时数据可能尚未就绪；收到成功事件后才能 GetDataTable。全局生成 Profile 不参与运行。
             ownsTables = true;
             QGF.DataTable.LoadDataTables<Tables>(CatalogAddress, this);
-            stateText.text = "正在异步加载 Catalog 和表数据…";
+            stateText.text = "Loading Catalog and table data asynchronously…";
         }
 
         private void OnLoaded(object sender, GameEventArgs args)
@@ -64,10 +64,10 @@ namespace UnityQGameFramework.Examples.Modules
             rows.Clear();
             foreach (var item in items)
             {
-                rows.AppendLine($"{item.Id}  {item.Name}  价格 {item.Price}");
+                rows.AppendLine($"{item.Id}  {item.Name}  Price {item.Price}");
             }
             rowsText.text = rows.ToString();
-            stateText.text = $"加载完成，用时 {result.Duration:F2} 秒。";
+            stateText.text = $"Loaded in {result.Duration:F2} s.";
         }
 
         private void OnFailed(object sender, GameEventArgs args)
@@ -77,7 +77,7 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 return;
             }
-            stateText.text = "加载失败：" + result.ErrorMessage;
+            stateText.text = "Load failed: " + result.ErrorMessage;
         }
 
         private void Update()

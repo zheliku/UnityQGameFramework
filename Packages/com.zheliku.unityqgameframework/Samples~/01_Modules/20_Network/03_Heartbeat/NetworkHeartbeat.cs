@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Examples.Modules
         private int misses;
         private NetworkEchoServer server;
         private INetworkChannel channel;
-        private string state = "尚未连接";
+        private string state = "Not connected";
         private void Start()
         {
             server = new NetworkEchoServer();
@@ -66,7 +66,7 @@ namespace UnityQGameFramework.Examples.Modules
             channel.ResetHeartBeatElapseSecondsWhenReceivePacket = true;
             misses = 0;
             connecting = true;
-            state = "正在连接";
+            state = "Connecting";
             channel.Connect(IPAddress.Loopback, server.Port, this);
         }
 
@@ -75,17 +75,17 @@ namespace UnityQGameFramework.Examples.Modules
             if (args is ConnectedArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
             {
                 connecting = false;
-                state = "心跳连接已建立";
+                state = "Heartbeat connection established";
             }
             else if (args is MissedHeartbeatArgs missed && ReferenceEquals(missed.NetworkChannel, channel))
             {
                 misses = missed.MissCount;
-                state = "未收到心跳响应";
+                state = "No heartbeat response received";
                 // 框架报告丢失次数；连续三次未响应时由业务关闭连接。
                 if (misses >= 3)
                 {
                     channel.Close();
-                    state = "业务已关闭失去响应的连接";
+                    state = "The application closed the unresponsive connection.";
                 }
             }
             else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
@@ -110,8 +110,8 @@ namespace UnityQGameFramework.Examples.Modules
             }
 
             timerSlider.value = channel.HeartBeatInterval > 0 ? channel.HeartBeatElapseSeconds / channel.HeartBeatInterval : 0;
-            string connection = channel.Connected ? "已连接" : "已断开";
-            counterText.text = $"间隔 {channel.HeartBeatInterval:F2} 秒 · 已等 {channel.HeartBeatElapseSeconds:F2} 秒\n" + $"协议发送 {protocol.HeartBeatsSent} · 收到响应 {protocol.HeartBeatsReceived}\n" + $"当前丢失计数 {channel.MissHeartBeatCount} · 最近通知 {misses}\n连接：{connection}";
+            string connection = channel.Connected ? "Connected" : "Disconnected";
+            counterText.text = $"Interval {channel.HeartBeatInterval:F2} s · Elapsed {channel.HeartBeatElapseSeconds:F2} s\n" + $"Heartbeats sent {protocol.HeartBeatsSent} · Replies received {protocol.HeartBeatsReceived}\n" + $"Current missed heartbeats {channel.MissHeartBeatCount} · Last notification {misses}\nConnection: {connection}";
             connectButton.interactable = !connecting && !channel.Connected;
         }
 

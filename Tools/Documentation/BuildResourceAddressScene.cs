@@ -60,7 +60,7 @@ public static class BuildResourceAddressScene
             dropdown.transform.SetSiblingIndex(sibling);
             dropdown.name = "Dropdown_Rule";
             dropdown.ClearOptions();
-            dropdown.AddOptions(new List<string> { "文件名 → Cube", "目录与文件名 → Art_Cube", "分组与文件名 → Demo_Cube" });
+            dropdown.AddOptions(new List<string> { "Filename → Cube", "Folder and Filename → Art_Cube", "Group and Filename → Demo_Cube" });
             dropdown.value = 0;
             dropdown.RefreshShownValue();
             EditorSceneManager.CloseScene(sourceScene, true);
@@ -76,14 +76,14 @@ public static class BuildResourceAddressScene
             fields.FindProperty("loadButton").objectReferenceValue = load;
             fields.FindProperty("releaseButton").objectReferenceValue = release;
             fields.ApplyModifiedPropertiesWithoutUndo();
-            load.GetComponentInChildren<Text>().text = "按地址加载 Cube";
-            release.GetComponentInChildren<Text>().text = "销毁实例并归还资产";
-            help.text = "三个包收集同一份预制体。归还后切换规则，对比地址变化。";
+            load.GetComponentInChildren<Text>().text = "Load Cube by Address";
+            release.GetComponentInChildren<Text>().text = "Destroy Instance and Release Asset";
+            help.text = "Three packages collect the same prefab. Release it, then switch rules to compare addresses.";
             foreach (Text text in scene.GetRootGameObjects().SelectMany(item => item.GetComponentsInChildren<Text>(true)))
             {
                 if (text.name == "Text_Title")
                 {
-                    text.text = "02  寻址规则与字符串地址";
+                    text.text = "02  Addressing Rules and String Addresses";
                 }
             }
             EditorSceneManager.SaveScene(scene);

@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u9884\u7559\u8BFB\u53D6\u7F13\u51B2"
+  m_Text: "Reserve Read Buffer"
 --- !u!222 &32128421
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -225,9 +225,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,7 +854,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8BFB\u53D6 Level.toml"
+  m_Text: "Read Level.toml"
 --- !u!222 &441591706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -954,7 +954,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u901A\u8FC7 Config \u8BFB\u53D6 TOML\uFF0C\u5E76\u7528 UserData \u5173\u8054\u5B8C\u6210\u4E8B\u4EF6\u3002"
+  m_Text: "Load TOML through Config and correlate completion events with UserData."
 --- !u!222 &771612972
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1090,7 +1090,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u91CA\u653E\u8BFB\u53D6\u7F13\u51B2"
+  m_Text: "Release Read Buffer"
 --- !u!222 &1090648582
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1497,7 +1497,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u5F02\u6B65\u8BFB\u53D6\u914D\u7F6E\u8D44\u4EA7"
+  m_Text: "02  Load a Configuration Asset"
 --- !u!222 &1329076127
 CanvasRenderer:
   m_ObjectHideFlags: 0

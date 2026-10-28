@@ -202,8 +202,8 @@ namespace UnityQGameFramework.Core.Network
         /// <summary>
         /// 获取所有网络频道。
         /// </summary>
-        /// <param name="results">所有网络频道。</param>
-        public void GetAllNetworkChannels(List<INetworkChannel> results)
+        /// <param name="results">所有网络频道；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllNetworkChannelsNonAlloc(List<INetworkChannel> results)
         {
             if (results == null)
             {

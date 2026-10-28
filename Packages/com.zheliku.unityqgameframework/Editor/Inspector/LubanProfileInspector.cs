@@ -26,12 +26,12 @@ namespace UnityQGameFramework.Editor
             string path = AssetDatabase.GetAssetPath(profile.ConfigurationFile);
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
             {
-                EditorGUILayout.HelpBox("请指定 Config 根目录中的 luban.conf。", MessageType.Info);
+                EditorGUILayout.HelpBox("Assign the luban.conf file in the Config folder.", MessageType.Info);
                 return;
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("生成参数", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Generation Options", EditorStyles.boldLabel);
             Configuration conf = null;
             try
             {
@@ -39,13 +39,13 @@ namespace UnityQGameFramework.Editor
                 var selected = Array.Find(conf.targets ?? Array.Empty<ExportTarget>(), t => t.name == profile.Target);
                 if (selected == null)
                 {
-                    EditorGUILayout.HelpBox("luban.conf 中不存在此 target：" + profile.Target, MessageType.Warning);
+                    EditorGUILayout.HelpBox("Target not found in luban.conf: " + profile.Target, MessageType.Warning);
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("命名空间", selected.topModule ?? string.Empty);
-                    EditorGUILayout.LabelField("入口类", selected.manager ?? string.Empty);
-                    EditorGUILayout.LabelField("分组", string.Join(", ", selected.groups ?? Array.Empty<string>()));
+                    EditorGUILayout.LabelField("Namespace", selected.topModule ?? string.Empty);
+                    EditorGUILayout.LabelField("Entry Class", selected.manager ?? string.Empty);
+                    EditorGUILayout.LabelField("Groups", string.Join(", ", selected.groups ?? Array.Empty<string>()));
                 }
             }
             catch (Exception exception)
@@ -55,7 +55,7 @@ namespace UnityQGameFramework.Editor
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("编辑配置"))
+                if (GUILayout.Button("Edit Configuration"))
                 {
                     EditorUtility.OpenWithDefaultApp(Path.GetFullPath(path));
                 }
@@ -63,7 +63,7 @@ namespace UnityQGameFramework.Editor
                 SchemaFile tableSchema = Array.Find(conf?.schemaFiles ?? Array.Empty<SchemaFile>(), schema => schema.type == "table");
                 using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(tableSchema?.fileName)))
                 {
-                    if (GUILayout.Button("表定义"))
+                    if (GUILayout.Button("Table Schema"))
                     {
                         string schemaPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(path), tableSchema.fileName));
                         Selection.activeObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(FileUtil.GetProjectRelativePath(schemaPath));

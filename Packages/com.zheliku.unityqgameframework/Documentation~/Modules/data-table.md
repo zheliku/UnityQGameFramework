@@ -37,8 +37,8 @@ Catalog 是运行时数据清单，不是缓存。`LubanProfile` 只供编辑器
 
 | schema 定义 | 查询方式 |
 | --- | --- |
-| map，整数、字符串、长整数或枚举键 | `table.GetDataRow(key)`、`table.HasDataRow(key)` |
-| list，复合索引 | 生成 `table.GetDataRow(key1, key2, ...)` |
+| map，整数、字符串、长整数或枚举键 | `table[key]`、`table.GetDataRow(key)`、`table.HasDataRow(key)` |
+| list，复合索引 | 生成 `table[(key1, key2, ...)]`、`table.GetDataRow(key1, key2, ...)` |
 | list，多个独立索引 | 生成 `table.GetByXxx(key)` |
 | 无主键 list | `DataList`、枚举、条件查询 |
 | one | `Data`；`Count` 为 1 |
@@ -48,7 +48,20 @@ Catalog 是运行时数据清单，不是缓存。`LubanProfile` 只供编辑器
 
 [表模式示例](../../Samples~/01_Modules/11_DataTable/06_TableModes/TableModesExample.cs) 使用官方 Excel schema 展示上述用法。`__tables__.xlsx` 显式登记每张表，`DataTableModes.xlsx` 保存别名、关卡、规则和提示。`TbItemIndex` 复用 `Item.xlsx` 的行结构，并增加 Name、Price 两个独立索引；它是在 schema 中声明的另一张表，不是额外的查询管理器。
 
-`GetDataRow(key)` 缺键时返回 default：class 为 null，struct 为默认值。Luban 原生 `Get`、`GetOrDefault` 和索引器保留各自的行为。
+`table[key]` 缺键时抛出 `KeyNotFoundException`，适合确认键一定存在的路径；`GetDataRow(key)` 缺键时返回 default：class 为 null，struct 为默认值。Luban 原生 `Get`、`GetOrDefault` 和索引器保留各自的行为。没有主键的 list 表和 one 表不生成索引器，分别使用 `DataList` 和 `Data`。
+
+索引器直接定义在生成的具体表中，键类型由 schema 决定。`DataTable<T>` 和 `IDataTable<T>` 只保留所有表通用的遍历、筛选和排序，不再增加带键类型的接口或基类。
+
+```csharp
+// 已知键存在时，直接按键取得原表记录；跨表引用也指向同一行对象。
+var item = QGF.DataTable.GetDataTable<TbItem>()[1];
+var alias = QGF.DataTable.GetDataTable<TbItemAlias>()["Potion"];
+var stage = QGF.DataTable.GetDataTable<TbStage>()[(1, 2)];
+var relatedItem = alias.ItemId_Ref;
+
+// 用户输入可能没有对应记录，使用返回 null 的查询。
+var optionalItem = QGF.DataTable.GetDataTable<TbItem>().GetDataRow(inputId);
+```
 
 ## 筛选与排序
 
@@ -56,13 +69,16 @@ Catalog 是运行时数据清单，不是缓存。`LubanProfile` 只供编辑器
 var affordable = items.GetDataRows(row => row.Price <= 100);
 var sorted = items.GetDataRows(row => row.Price <= 100,
     (a, b) => a.Price.CompareTo(b.Price));
+var reusable = new System.Collections.Generic.List<DRItem>();
+items.GetDataRowsNonAlloc(row => row.Price <= 100,
+    (a, b) => a.Price.CompareTo(b.Price), reusable);
 ```
 
-条件查询遍历记录。高频查找应在 schema 中定义索引。排序只改变结果数组或调用方提供的 `List<T>`，不改变 `DataList` 的源表顺序；列表重载会先清空结果列表。
+条件查询遍历记录。高频查找应在 schema 中定义索引。排序只改变结果数组或调用方提供的 `List<T>`，不改变 `DataList` 的源表顺序；`NonAlloc` 方法会先清空结果列表，复用容量和委托时可避免这条查询路径的 GC 分配，列表容量不足时仍会扩容。
 
 同一行结构可用于多张表，每张表用自己的 Tb 类型登记。手动构造同一种表的额外实例时可传入 name，查询使用 `GetDataTable<TbXxx>(name)`。
 
-表类型在运行时才能确定时，可使用 `HasDataTable(Type, name)`、`GetDataTable(Type, name)` 和 `DestroyDataTable(Type, name)`。`GetAllDataTables()` 返回数组；带 List 参数的重载先清空再填充传入的列表，适合重复刷新工具面板。
+表类型在运行时才能确定时，可使用 `HasDataTable(Type, name)`、`GetDataTable(Type, name)` 和 `RemoveDataTable(Type, name)`。`GetAllDataTables()` 返回数组；`GetAllDataTablesNonAlloc(List<DataTableBase>)` 先清空再填充传入的列表，适合重复刷新工具面板。
 
 ## 异步加载和卸载
 
@@ -78,17 +94,17 @@ int requestId = QGF.DataTable.LoadDataTables<Tables>(catalogAssetName, this);
 
 使用 UniTask 时可等待 `QGF.DataTable.LoadDataTablesAsync<Tables>(catalogAssetName, cancellationToken: token)`；完成后仍通过 `GetDataTable<TbXxx>()` 查询。失败抛出异常，取消抛出 `OperationCanceledException`。
 
-`IsLoading` 表示正在加载，`IsLoaded` 表示整组表已发布，`Count` 包括所有已登记的 map、list、one 表。`UnloadDataTables()` 取消在途请求并移除该组表的登记；业务保存的旧表和记录引用应在切换配置时更新。
+`IsLoading` 表示正在加载，`IsLoaded` 表示整组表已完成加载，`Count` 包括所有已加入管理器的 map、list、one 表。`UnloadDataTables()` 取消在途请求并移除该组表；业务保存的旧表和记录引用应在切换配置时更新。
 
-`DestroyDataTable<TbXxx>()` 只移除登记，不改写表对象及其跨表引用。`RegisterDataTables` 支持手动构造的表，整批冲突时不登记。
+`RemoveDataTable<TbXxx>()` 只移除登记，不改写表对象及其跨表引用。`AddDataTables` 支持手动构造的表，整批冲突时不登记。
 
 ## 与 IDataProvider 的边界
 
-`IDataProvider<T>` 保留给 Config 和 Localization。它适合“读取一份资源、交给一个 Helper 解析、发布读取事件”的流程，因此可以同时支持文本、字节片段、进度和依赖资源。
+`IDataProvider<T>` 保留给 Config 和 Localization。它适合“读取一份资源、交给一个 Helper 解析、发送读取事件”的流程，因此可以同时支持文本、字节片段、进度和依赖资源。
 
 Luban 表不是这个模型：一次加载先读取 Catalog，再按 Catalog 读取多份 bytes，由生成的 `Tables` 构造所有 `TbXxx`，解析跨表引用，校验 schema 版本，最后原子登记整组表。它没有独立有意义的 `ParseData(string)`，也不能把一份 Catalog 的完成事件等同于单个文本资源的完成事件。
 
-因此当前不新增 `LubanTableProvider : IDataProvider<T>`。`DataTableComponent` 就是 Luban 的加载与发布边界；`TbXxx` 是运行时表对象。Config、Localization 和 DataTable 仍然通过各自清晰的组件接口协作，不共享不匹配的解析抽象。
+因此当前不新增 `LubanTableProvider : IDataProvider<T>`。`DataTableComponent` 就是 Luban 的加载与加入管理器边界；`TbXxx` 是运行时表对象。Config、Localization 和 DataTable 仍然通过各自清晰的组件接口协作，不共享不匹配的解析抽象。
 
 Catalog 的资源加载使用 QGF.Resource 的 YooAsset 后端；编辑器模拟、离线和远程模式共用同一套表解析与登记流程。
 
@@ -100,4 +116,4 @@ Profile 决定源目录、target、namespace 和输出位置，组件上的 Cata
 
 Config 和 Localization 使用 TOML，依赖共享的数据提供器与 Resource、Event，不依赖 DataTable。结构化配置使用 Luban，少量参数和翻译字典仍由各自模块管理。
 
-源码：[DataTableComponent](../../Runtime/Unity/DataTable/DataTableComponent.cs)、[DataTable](../../Runtime/Core/DataTable/DataTableManager.DataTable.cs)、[Catalog](../../Runtime/Unity/DataTable/LubanDataTableCatalog.cs)。
+源码：[DataTableComponent](../../Runtime/Unity/DataTable/DataTableComponent.cs)、[DataTable](../../Runtime/Core/DataTable/DataTable.cs)、[Catalog](../../Runtime/Unity/DataTable/LubanDataTableCatalog.cs)。

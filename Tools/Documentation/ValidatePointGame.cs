@@ -63,7 +63,7 @@ public static class ValidatePointGame
             }
             PointGameView view = null;
             await Wait(() => (view = UnityEngine.Object.FindFirstObjectByType<PointGameView>()) != null
-                && (string)Get(Get(view, "Game"), "Phase") == "菜单", "launch to menu");
+                && (string)Get(Get(view, "Game"), "Phase") == "Menu", "launch to menu");
             var gameView = EditorWindow.GetWindow(Type.GetType("UnityEditor.GameView,UnityEditor"));
             gameView.Focus();
             object game = Get(view, "Game");

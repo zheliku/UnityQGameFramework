@@ -29,7 +29,7 @@ namespace UnityQGameFramework.Examples.Modules
         private DownloadHttpServer server;
         private string path;
         private int serial;
-        private string state = "尚未下载";
+        private string state = "Not downloaded";
         private void Start()
         {
             byte[] bytes = payload.bytes;
@@ -49,7 +49,7 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 DeleteFiles();
                 received = resumedFrom = 0;
-                state = "已清理，下次从头下载";
+                state = "Cleared. The next download starts from the beginning.";
             });
         }
 
@@ -70,7 +70,7 @@ namespace UnityQGameFramework.Examples.Modules
             resumedFrom = 0;
             matched = false;
             serial = QGF.Download.AddDownload(path, server.Url("/slow"), this);
-            state = "已提交；等待开始事件";
+            state = "Submitted; waiting for the start event";
         }
 
         private void Cancel()
@@ -89,7 +89,7 @@ namespace UnityQGameFramework.Examples.Modules
             }
 
             received = File.Exists(path + ".download") ? new FileInfo(path + ".download").Length : 0;
-            state = removed ? cancelMode.value == 0 ? "已取消，保留临时文件。再次开始将续传。" : "已取消并清理，下次从头下载。" : "任务已经结束";
+            state = removed ? cancelMode.value == 0 ? "Canceled; temporary file retained. Start again to resume." : "Canceled and cleared. The next download starts from the beginning." : "The task has already finished.";
         }
 
         private void OnEvent(object sender, GameEventArgs args)
@@ -97,7 +97,7 @@ namespace UnityQGameFramework.Examples.Modules
             if (args is DownloadStartEventArgs start && start.SerialId == serial)
             {
                 resumedFrom = received = start.CurrentLength;
-                state = resumedFrom == 0 ? "从头下载" : $"从 {resumedFrom:N0} 字节继续下载";
+                state = resumedFrom == 0 ? "Downloading from the start" : $"Resuming from {resumedFrom:N0} bytes";
                 return;
             }
 
@@ -111,11 +111,11 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 received = success.CurrentLength;
                 matched = File.ReadAllBytes(path).SequenceEqual(payload.bytes);
-                state = matched ? "完成 · 文件内容一致" : "完成 · 文件内容不一致";
+                state = matched ? "Complete · File contents match" : "Complete · File contents differ";
             }
             else if (args is DownloadFailureEventArgs failure && failure.SerialId == serial)
             {
-                state = "失败：" + failure.ErrorMessage;
+                state = "Failed: " + failure.ErrorMessage;
             }
             else
             {
@@ -128,15 +128,15 @@ namespace UnityQGameFramework.Examples.Modules
         private void LateUpdate()
         {
             progressSlider.value = totalLength == 0 ? 0 : (float)received / totalLength;
-            stateText.text = $"{state}\n{received:N0} / {totalLength:N0} 字节 · {progressSlider.value:P0}";
+            stateText.text = $"{state}\n{received:N0} / {totalLength:N0} bytes · {progressSlider.value:P0}";
             if (server == null)
             {
                 return;
             }
 
-            string finalFile = File.Exists(path) ? "已保存" : "无";
-            string temporaryFile = File.Exists(path + ".download") ? $"可续传 · {received:N0} 字节" : "无";
-            fileText.text = $"本次起点 {resumedFrom:N0} · 服务器收到 Range 起点 {server.LastRange}\n" + $"正式文件：{finalFile} · 临时文件：{temporaryFile}";
+            string finalFile = File.Exists(path) ? "Saved" : "None";
+            string temporaryFile = File.Exists(path + ".download") ? $"Resumable · {received:N0} bytes" : "None";
+            fileText.text = $"Resume offset {resumedFrom:N0} · Server Range start {server.LastRange}\n" + $"Final file: {finalFile} · Temporary file: {temporaryFile}";
             downloadButton.interactable = clearButton.interactable = serial == 0;
             cancelButton.interactable = serial != 0;
         }

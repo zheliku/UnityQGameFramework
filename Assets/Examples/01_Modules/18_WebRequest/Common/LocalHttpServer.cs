@@ -119,7 +119,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // /echo-bytes 的二进制验收由下方原样响应，不经过字符串转换。
                 string text = Encoding.UTF8.GetString(received);
                 string field = contentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase) ? Uri.UnescapeDataString(text.Substring(text.IndexOf('=') + 1).Replace("+", " ")) : text;
-                body = Encoding.UTF8.GetBytes($"{method} {path}\nContent-Type: {contentType}\n收到 {received.Length} 字节\n正文：{text}\n解码内容：{field}");
+                body = Encoding.UTF8.GetBytes($"{method} {path}\nContent-Type: {contentType}\nReceived {received.Length} bytes\nBody: {text}\nDecoded: {field}");
             }
 
             if (path == "/echo-bytes")

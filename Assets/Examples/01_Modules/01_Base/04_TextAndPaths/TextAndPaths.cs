@@ -36,7 +36,7 @@ namespace UnityQGameFramework.Examples.Modules
             directoryButton.onClick.AddListener(CheckDirectories);
             cleanupButton.onClick.AddListener(Cleanup);
             cleanupButton.interactable = false;
-            directoryText.text = "点击检查目录，观察空目录与含文件目录的区别。";
+            directoryText.text = "Inspect the folder to compare empty folders with folders containing files.";
             Format();
         }
 
@@ -44,13 +44,13 @@ namespace UnityQGameFramework.Examples.Modules
         {
             if (!int.TryParse(countInput.text, out int count))
             {
-                resultText.text = "数量请输入整数。";
+                resultText.text = "Enter an integer quantity.";
                 return;
             }
 
             // Text.Format 使用 Base 安装的 Helper；这里对照一、二、三个参数的重载。
-            resultText.text = Utility.Text.Format("玩家：{0}", nameInput.text) + "\n" + Utility.Text.Format("{0} 获得 {1} 个能量", nameInput.text, count) + "\n" + Utility.Text.Format("{0}：{1} × {2} = ", nameInput.text, count, 10) + (long)count * 10 + "\n" // Regular 只统一斜杠；Remote 为不含协议的路径添加 file:///。
-            + "统一分隔符：" + Utility.Path.GetRegularPath(pathInput.text) + "\n" + "远程格式：" + Utility.Path.GetRemotePath(pathInput.text);
+            resultText.text = Utility.Text.Format("Player: {0}", nameInput.text) + "\n" + Utility.Text.Format("{0} gained {1} energy", nameInput.text, count) + "\n" + Utility.Text.Format("{0}：{1} × {2} = ", nameInput.text, count, 10) + (long)count * 10 + "\n" // Regular 只统一斜杠；Remote 为不含协议的路径添加 file:///。
+            + "Normalized separators: " + Utility.Path.GetRegularPath(pathInput.text) + "\n" + "Server format: " + Utility.Path.GetRemotePath(pathInput.text);
         }
 
         private void CheckDirectories()
@@ -69,16 +69,16 @@ namespace UnityQGameFramework.Examples.Modules
                 File.WriteAllText(ownedFile, "QGF path example");
                 // 递归清理空目录。含文件的目录会保留，因此根目录返回 false。
                 bool removed = Utility.Path.RemoveEmptyDirectory(directory);
-                directoryText.text = $"{directory}\n根目录：{(removed ? "已移除" : "含文件，保留")}\n" + $"空目录：{(Directory.Exists(IoPath.Combine(directory, "Empty")) ? "仍存在" : "已移除")}\n" + $"含文件目录：{(File.Exists(ownedFile) ? "已保留" : "已删除")}";
+                directoryText.text = $"{directory}\nRoot folder: {(removed ? "Removed" : "Contains files; retained")}\n" + $"Empty folder: {(Directory.Exists(IoPath.Combine(directory, "Empty")) ? "Still exists" : "Removed")}\n" + $"Nonempty folder: {(File.Exists(ownedFile) ? "Retained" : "Deleted")}";
                 cleanupButton.interactable = true;
             }
             catch (IOException)
             {
-                directoryText.text = "临时目录读写失败，请检查目录权限。";
+                directoryText.text = "Cannot read or write the temporary folder. Check folder permissions.";
             }
             catch (UnauthorizedAccessException)
             {
-                directoryText.text = "没有临时目录的读写权限。";
+                directoryText.text = "Permission denied when reading or writing the temporary folder.";
             }
         }
 
@@ -100,7 +100,7 @@ namespace UnityQGameFramework.Examples.Modules
                 bool removed = Utility.Path.RemoveEmptyDirectory(directory);
                 if (directoryText != null)
                 {
-                    directoryText.text = $"删除 keep.txt 后，根目录：{(removed ? "已移除" : "仍有内容")}\n{directory}";
+                    directoryText.text = $"Root folder after deleting keep.txt: {(removed ? "Removed" : "Contains files")}\n{directory}";
                 }
 
                 if (cleanupButton != null)
@@ -117,14 +117,14 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 if (directoryText != null)
                 {
-                    directoryText.text = "临时文件暂时无法清理。";
+                    directoryText.text = "The temporary file could not be deleted.";
                 }
             }
             catch (UnauthorizedAccessException)
             {
                 if (directoryText != null)
                 {
-                    directoryText.text = "没有临时文件的清理权限。";
+                    directoryText.text = "Permission denied when deleting the temporary file.";
                 }
             }
         }

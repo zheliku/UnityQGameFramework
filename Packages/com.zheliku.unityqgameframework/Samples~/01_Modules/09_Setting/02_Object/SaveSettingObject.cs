@@ -21,7 +21,7 @@ namespace UnityQGameFramework.Examples.Modules
         private const string Key = "Pilot";
         private readonly Pilot fallback = new Pilot
         {
-            Name = "新飞行员",
+            Name = "New Pilot",
             Level = 1
         };
         private Pilot loaded;
@@ -58,20 +58,20 @@ namespace UnityQGameFramework.Examples.Modules
                 // 默认 JSON Helper 序列化字段；设置中保存序列化结果。
                 QGF.Setting.SetObject<Pilot>(Key, pilot);
                 QGF.Setting.Save();
-                resultText.text = $"已保存 {pilot.Name}，等级 {pilot.Level}。";
+                resultText.text = $"Saved {pilot.Name}; level {pilot.Level}。";
             });
             readButton.onClick.AddListener(() =>
             {
                 // 缺键时直接返回 fallback 本身；有键时反序列化为新的 Pilot。
                 loaded = QGF.Setting.GetObject(Key, fallback);
-                resultText.text = $"{(ReferenceEquals(loaded, fallback) ? "默认对象" : "读取对象")}：{loaded.Name}，等级 {loaded.Level}。";
+                resultText.text = $"{(ReferenceEquals(loaded, fallback) ? "Default Object" : "Read Object")}：{loaded.Name}; level {loaded.Level}。";
             });
             removeButton.onClick.AddListener(() =>
             {
                 QGF.Setting.RemoveSetting(Key);
                 QGF.Setting.Save();
                 loaded = null;
-                resultText.text = "已移除 Pilot，可用默认值重载读取。";
+                resultText.text = "Pilot removed. Read it with the default-value overload.";
             });
             ready = true;
         }
@@ -86,7 +86,7 @@ namespace UnityQGameFramework.Examples.Modules
             bool exists = QGF.Setting.HasSetting(Key);
             readButton.interactable = true;
             removeButton.interactable = exists;
-            stateText.text = $"待保存等级 {(int)levelSlider.value}    Pilot {(exists ? "已存在" : "未创建")}";
+            stateText.text = $"Level to save {(int)levelSlider.value}    Pilot {(exists ? "Exists" : "Not created")}";
         }
     }
 }

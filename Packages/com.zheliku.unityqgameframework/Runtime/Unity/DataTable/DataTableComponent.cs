@@ -55,7 +55,7 @@ namespace UnityQGameFramework.Runtime
         public bool IsLoading { get; private set; }
 
         /// <summary>
-        /// 是否已发布完整表集；业务查询仍通过 GetDataTable。
+        /// 是否已完成整组表的加载。
         /// </summary>
         public bool IsLoaded
         {
@@ -84,7 +84,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 从 Inspector 引用同步构造并发布表，结果通知通过 Event 队列分发。
+        /// 同步加载 Inspector 指定的 Catalog，结果通知通过 Event 队列分发。
         /// </summary>
         /// <typeparam name="T">生成的数据表加载器类型。</typeparam>
         /// <param name="userData">用户自定义数据。</param>
@@ -109,7 +109,7 @@ namespace UnityQGameFramework.Runtime
             }
             try
             {
-                PublishTables<T>(m_LubanCatalog);
+                LoadTablesFromCatalog<T>(m_LubanCatalog);
             }
             catch (Exception exception)
             {
@@ -121,12 +121,12 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 构造并校验整组数据表，成功后统一替换登记。
+        /// 解析并校验 Catalog 中的数据表，成功后一次性加入管理器。
         /// </summary>
         /// <typeparam name="T">Luban 生成的数据表加载器类型。</typeparam>
         /// <param name="catalog">生成的数据表目录及二进制数据。</param>
         /// <param name="request">当前异步加载请求；直接加载时可为空。</param>
-        private void PublishTables<T>(LubanDataTableCatalog catalog, LoadRequest request = null) where T : IDataTableLoader, new()
+        private void LoadTablesFromCatalog<T>(LubanDataTableCatalog catalog, LoadRequest request = null) where T : IDataTableLoader, new()
         {
             IDataTableLoader tableLoader = new T();
             if (tableLoader.SchemaHash != catalog.SchemaHash)
@@ -135,7 +135,7 @@ namespace UnityQGameFramework.Runtime
             }
             Dictionary<string, TextAsset> assets = catalog.GetAssets();
             var buffers = new List<ByteBuf>();
-            IReadOnlyList<DataTableBase> tables = tableLoader.Load(file =>
+            IReadOnlyList<DataTableBase> tables = tableLoader.CreateTables(file =>
             {
                 if (!assets.TryGetValue(file, out TextAsset bytes))
                 {
@@ -164,21 +164,21 @@ namespace UnityQGameFramework.Runtime
                     throw new OperationCanceledException("The data-table request was cancelled.");
                 }
             }
-            m_DataTableManager.RegisterDataTables(tables);
+            m_DataTableManager.AddDataTables(tables);
             m_LoadedTables = tables;
         }
 
         /// <summary>
-        /// 整批登记已构造的表对象；任意表冲突时不登记整批。
+        /// 添加已构造的数据表，存在冲突时不添加任何表。
         /// </summary>
-        /// <param name="tables">要登记的数据表。</param>
-        public void RegisterDataTables(IEnumerable<DataTableBase> tables)
+        /// <param name="tables">已构造的数据表；不读取文件，不改变整组表的加载状态。</param>
+        public void AddDataTables(IEnumerable<DataTableBase> tables)
         {
-            m_DataTableManager.RegisterDataTables(tables);
+            m_DataTableManager.AddDataTables(tables);
         }
 
         /// <summary>
-        /// 异步加载 Catalog，解析 Luban 引用后发布整组表。
+        /// 异步加载 Catalog，解析整组数据表及表间引用。
         /// </summary>
         /// <typeparam name="T">生成的数据表加载器类型。</typeparam>
         /// <param name="catalogAssetName">数据表目录资源名称。</param>
@@ -273,7 +273,7 @@ namespace UnityQGameFramework.Runtime
                         {
                             throw new InvalidOperationException("The asset is not a Luban data-table catalog.");
                         }
-                        PublishTables<T>(catalog, request);
+                        LoadTablesFromCatalog<T>(catalog, request);
                     }
                     catch (Exception exception)
                     {
@@ -328,7 +328,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 使待完成请求失效；迟到回调释放资产，不再发布表或结果事件。
+        /// 取消当前加载；迟到回调只释放资产，不再添加表或发送结果事件。
         /// </summary>
         public void CancelLoadDataTables()
         {
@@ -353,7 +353,7 @@ namespace UnityQGameFramework.Runtime
             {
                 if (ReferenceEquals(m_DataTableManager.GetDataTable(table.Type, table.Name), table))
                 {
-                    m_DataTableManager.DestroyDataTable(table);
+                    m_DataTableManager.RemoveDataTable(table);
                 }
             }
             m_LoadedTables = null;
@@ -455,10 +455,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有数据表。
         /// </summary>
-        /// <param name="results">接收所有数据表的结果列表。</param>
-        public void GetAllDataTables(List<DataTableBase> results)
+        /// <param name="results">接收所有数据表的结果列表；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllDataTablesNonAlloc(List<DataTableBase> results)
         {
-            m_DataTableManager.GetAllDataTables(results);
+            m_DataTableManager.GetAllDataTablesNonAlloc(results);
         }
 
         /// <summary>
@@ -467,9 +467,9 @@ namespace UnityQGameFramework.Runtime
         /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        public bool DestroyDataTable<T>(string name = null) where T : DataTableBase
+        public bool RemoveDataTable<T>(string name = null) where T : DataTableBase
         {
-            return m_DataTableManager.DestroyDataTable<T>(name);
+            return m_DataTableManager.RemoveDataTable<T>(name);
         }
 
         /// <summary>
@@ -478,9 +478,9 @@ namespace UnityQGameFramework.Runtime
         /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        public bool DestroyDataTable(Type tableType, string name = null)
+        public bool RemoveDataTable(Type tableType, string name = null)
         {
-            return m_DataTableManager.DestroyDataTable(tableType, name);
+            return m_DataTableManager.RemoveDataTable(tableType, name);
         }
 
         /// <summary>
@@ -488,9 +488,9 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="table">要移除的数据表实例。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        public bool DestroyDataTable(DataTableBase table)
+        public bool RemoveDataTable(DataTableBase table)
         {
-            return m_DataTableManager.DestroyDataTable(table);
+            return m_DataTableManager.RemoveDataTable(table);
         }
     }
 }

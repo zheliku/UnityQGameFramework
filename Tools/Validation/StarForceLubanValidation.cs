@@ -66,17 +66,17 @@ public static class StarForceLubanValidation
         Require(entities.Min(row => row.Id) == 10000 && entities.Max(row => row.Id) == 70002, "Min/max ID queries.");
         Require(entities.GetDataRows(row => row.Id >= 70000).Length == 3, "Predicate query.");
         var resultList = new List<StarForce.DREntity> { entities.GetDataRow(10000) };
-        entities.GetDataRows(row => row.Id >= 70000, (a, b) => b.Id.CompareTo(a.Id), resultList);
+        entities.GetDataRowsNonAlloc(row => row.Id >= 70000, (a, b) => b.Id.CompareTo(a.Id), resultList);
         Require(resultList.Count == 3 && resultList[0].Id == 70002, "List overload clears and sorts.");
         Require(entities.Count() == entities.Count && component.HasDataTable(typeof(StarForce.TbEntity)), "Enumeration and type lookup.");
         var manager = FrameworkEntry.GetModule<IDataTableManager>();
         var named = new StarForce.TbEntity(new ByteBuf(component.Catalog.GetAssets()["tbentity"].bytes), "Validation");
-        manager.RegisterDataTables(new[] { named });
+        manager.AddDataTables(new[] { named });
         Require(ReferenceEquals(component.GetDataTable<StarForce.TbEntity>("Validation"), named), "Named table lookup.");
         var pending = new StarForce.TbEntity(new ByteBuf(component.Catalog.GetAssets()["tbentity"].bytes), "Pending");
-        Expect<FrameworkException>(() => manager.RegisterDataTables(new DataTableBase[] { pending, named }));
+        Expect<FrameworkException>(() => manager.AddDataTables(new DataTableBase[] { pending, named }));
         Require(!component.HasDataTable<StarForce.TbEntity>("Pending"), "Duplicate registration must be atomic.");
-        component.DestroyDataTable((DataTableBase)named);
+        component.RemoveDataTable((DataTableBase)named);
 
         var catalog = component.Catalog;
         string path = AssetDatabase.GetAssetPath(catalog);
@@ -136,7 +136,7 @@ public static class StarForceLubanValidation
         /// </summary>
         /// <param name="loader">数据文件加载方法。</param>
         /// <returns>本检查始终抛出异常。</returns>
-        public IReadOnlyList<DataTableBase> Load(Func<string, ByteBuf> loader)
+        public IReadOnlyList<DataTableBase> CreateTables(Func<string, ByteBuf> loader)
         {
             throw new InvalidDataException("Expected validation failure");
         }

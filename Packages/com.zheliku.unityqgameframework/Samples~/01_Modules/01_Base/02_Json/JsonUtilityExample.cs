@@ -54,7 +54,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            levelText.text = $"等级：{player.Level}";
+            levelText.text = $"Level: {player.Level}";
         }
     }
 }

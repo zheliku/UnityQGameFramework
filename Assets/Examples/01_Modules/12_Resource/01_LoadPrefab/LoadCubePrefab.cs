@@ -19,7 +19,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private async void Start()
         {
-            stateText.text = "正在加载预制体";
+            stateText.text = "Loading prefab";
             removeButton.onClick.AddListener(() => Destroy(first));
             releaseButton.onClick.AddListener(Release);
             var resources = QGF.Resource;
@@ -33,14 +33,14 @@ namespace UnityQGameFramework.Examples.Modules
                 asset = await resources.LoadAssetAsync<GameObject>(assetPath, cancellationToken: destroyCancellationToken);
                 first = Instantiate(asset, new Vector3(2, -1, 0), Quaternion.Euler(20, 35, 0));
                 second = Instantiate(asset, new Vector3(4, 1, 0), Quaternion.Euler(20, 35, 0));
-                stateText.text = "一个资产，两个实例。销毁左边，观察右边是否还在。\n路径：" + assetPath;
+                stateText.text = "One asset, two instances. Destroy the left instance and observe the right.\nPath: " + assetPath;
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
             }
             catch (Exception exception)
             {
-                stateText.text = "加载失败：" + exception.Message;
+                stateText.text = "Load failed: " + exception.Message;
             }
         }
 
@@ -55,7 +55,7 @@ namespace UnityQGameFramework.Examples.Modules
                 await UniTask.NextFrame(destroyCancellationToken);
                 QGF.Resource.UnloadAsset(asset);
                 asset = null;
-                stateText.text = "两个实例已销毁，资产引用已归还";
+                stateText.text = "Both instances destroyed and asset reference released.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -64,8 +64,8 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            assetText.text = asset == null ? "未持有资产引用" : $"资产：{asset.name}（{asset.GetInstanceID()}）";
-            instancesText.text = $"左边：{(first == null ? "无" : first.GetInstanceID().ToString())}\n右边：{(second == null ? "无" : second.GetInstanceID().ToString())}";
+            assetText.text = asset == null ? "No asset reference held" : $"Asset: {asset.name}（{asset.GetInstanceID()}）";
+            instancesText.text = $"Left: {(first == null ? "None" : first.GetInstanceID().ToString())}\nRight: {(second == null ? "None" : second.GetInstanceID().ToString())}";
             removeButton.interactable = first != null && !releasing;
             releaseButton.interactable = asset != null && !releasing;
         }

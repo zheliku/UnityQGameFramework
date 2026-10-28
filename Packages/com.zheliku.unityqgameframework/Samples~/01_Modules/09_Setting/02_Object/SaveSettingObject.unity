@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &129594789
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1115,7 +1115,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u4FDD\u5B58\u4E0E\u8BFB\u53D6\u5BF9\u8C61"
+  m_Text: "02  Save and Read an Object"
 --- !u!222 &1039779829
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1548,7 +1548,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.6509804, g: 0.90588236, b: 0.9607843, a: 1}
   m_CustomCaretColor: 1
   m_SelectionColor: {r: 0.15, g: 0.6, b: 0.8, a: 0.3}
-  m_Text: "\u5C0F\u98DE\u884C\u5458"
+  m_Text: "Young Pilot"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -1618,9 +1618,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219220725}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1219220727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1965,7 +1965,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8BFB\u53D6\u5BF9\u8C61"
+  m_Text: "Read Object"
 --- !u!222 &1612912291
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2065,7 +2065,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u4FDD\u5B58\u4E00\u4E2A Pilot \u5BF9\u8C61\uFF0C\u91CD\u65B0\u8BFB\u53D6\u65F6\u81EA\u52A8\u53CD\u5E8F\u5217\u5316\u3002"
+  m_Text: "Save a Pilot object and deserialize it when reading again."
 --- !u!222 &1635920408
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2144,7 +2144,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u79FB\u9664\u5BF9\u8C61"
+  m_Text: "Remove Object"
 --- !u!222 &1878079298
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2223,7 +2223,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u4FDD\u5B58\u5BF9\u8C61"
+  m_Text: "Save Object"
 --- !u!222 &1941906010
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -14,10 +14,10 @@ namespace UnityQGameFramework.Core.DataTable
         int Count { get; }
 
         /// <summary>
-        /// 先检查整批冲突，再一次性登记。
+        /// 添加已构造的数据表，存在冲突时不添加任何表。
         /// </summary>
-        /// <param name="tables">要登记的数据表。</param>
-        void RegisterDataTables(IEnumerable<DataTableBase> tables);
+        /// <param name="tables">已构造的数据表；此方法不读取文件或解析数据。</param>
+        void AddDataTables(IEnumerable<DataTableBase> tables);
 
         /// <summary>
         /// 检查是否存在数据表。
@@ -60,8 +60,8 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取所有数据表。
         /// </summary>
-        /// <param name="results">接收所有数据表的结果列表。</param>
-        void GetAllDataTables(List<DataTableBase> results);
+        /// <param name="results">接收所有数据表的结果列表；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllDataTablesNonAlloc(List<DataTableBase> results);
 
         /// <summary>
         /// 移除数据表登记。
@@ -69,7 +69,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        bool DestroyDataTable<T>(string name = null) where T : DataTableBase;
+        bool RemoveDataTable<T>(string name = null) where T : DataTableBase;
 
         /// <summary>
         /// 移除数据表登记。
@@ -77,13 +77,13 @@ namespace UnityQGameFramework.Core.DataTable
         /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        bool DestroyDataTable(Type tableType, string name = null);
+        bool RemoveDataTable(Type tableType, string name = null);
 
         /// <summary>
         /// 只移除相同的已登记实例，不影响同名替代对象。
         /// </summary>
         /// <param name="table">要移除的数据表实例。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        bool DestroyDataTable(DataTableBase table);
+        bool RemoveDataTable(DataTableBase table);
     }
 }

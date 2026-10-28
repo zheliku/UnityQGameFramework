@@ -243,7 +243,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.6509804, g: 0.90588236, b: 0.9607843, a: 1}
   m_CustomCaretColor: 1
   m_SelectionColor: {r: 0.15, g: 0.6, b: 0.8, a: 0.3}
-  m_Text: "\u4F60\u597D QGF"
+  m_Text: "Hello QGF"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u6587\u5B57\u5E76\u53D1\u9001\uFF0C\u67E5\u770B\u670D\u52A1\u5668\u5B9E\u9645\u6536\u5230\u7684\u5B57\u6BB5\u3002"
+  m_Text: "Enter text, send it and inspect the fields received by the server."
 --- !u!222 &294074396
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -711,7 +711,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  POST \u8868\u5355"
+  m_Text: "03  POST a Form"
 --- !u!222 &741999733
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -882,7 +882,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D1\u9001\u8868\u5355"
+  m_Text: "Send Form"
 --- !u!222 &1174655781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1008,7 +1008,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &1493952720
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1166,9 +1166,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825216915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1825216917
 MonoBehaviour:
   m_ObjectHideFlags: 0

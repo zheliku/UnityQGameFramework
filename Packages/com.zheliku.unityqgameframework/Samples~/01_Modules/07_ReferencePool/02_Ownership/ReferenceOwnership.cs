@@ -46,8 +46,8 @@ namespace UnityQGameFramework.Examples.Modules
 
             // GetNode 未找到时返回 null，不会创建节点。
             bool hasNode = QGF.DataNode.GetNode("Example/Owned") != null;
-            localText.text = local == null ? "本地：没有持有变量" : $"本地持有：{local.Value}，本地负责归还";
-            nodeText.text = hasNode ? $"节点持有：{QGF.DataNode.GetData<VarInt32>("Example/Owned").Value}，DataNode 负责归还" : "节点：没有持有变量";
+            localText.text = local == null ? "Local: no variable held" : $"Local owner: {local.Value}; local code owns release";
+            nodeText.text = hasNode ? $"Node owner: {QGF.DataNode.GetData<VarInt32>("Example/Owned").Value}; DataNode owns release" : "Node: no variable held";
             acquireButton.interactable = local == null;
             releaseButton.interactable = transferButton.interactable = local != null;
             removeButton.interactable = hasNode;

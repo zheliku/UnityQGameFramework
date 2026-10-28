@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u9500\u6BC1\u5B9E\u4F8B\u5E76\u5F52\u8FD8\u8D44\u6E90"
+  m_Text: "Destroy Instance and Release Resource"
 --- !u!222 &32128421
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -225,9 +225,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -809,7 +809,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u521D\u59CB\u5316\u8D44\u6E90\u5305"
+  m_Text: "Initialize Package"
 --- !u!222 &441591706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -909,7 +909,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u8d44\u6e90\u5305\u4e0e\u663e\u5f0f\u53e5\u67c4"
+  m_Text: "02  Packages and Explicit Handles"
 --- !u!222 &771612972
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1556,7 +1556,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u52A0\u8F7D\u5E76\u521B\u5EFA Cube"
+  m_Text: "Load and Instantiate Cube"
 --- !u!222 &1449275567
 CanvasRenderer:
   m_ObjectHideFlags: 0

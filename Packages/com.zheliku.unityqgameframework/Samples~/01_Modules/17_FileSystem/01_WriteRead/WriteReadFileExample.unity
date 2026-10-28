@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5199\u5165"
+  m_Text: "Write"
 --- !u!222 &11712909
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -690,9 +690,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 896263134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &896263136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,7 +814,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u5199\u5165\u4E0E\u8BFB\u53D6\u5BB9\u5668"
+  m_Text: "01  Write and Read a Container"
 --- !u!222 &988073571
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1046,7 +1046,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &1339818699
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1125,7 +1125,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8BFB\u53D6"
+  m_Text: "Read"
 --- !u!222 &1501166650
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1534,7 +1534,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u4FEE\u6539\u6587\u5B57\u540E\u5199\u5165\uFF0C\u518D\u8BFB\u53D6\u5BB9\u5668\u4E2D\u7684\u540C\u4E00\u4E2A\u6587\u4EF6\u3002"
+  m_Text: "Edit the text, write it, then read the same file from the container."
 --- !u!222 &1825635121
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace UnityQGameFramework.Core.DataTable
 {
     /// <summary>
-    /// Luban 表的公共查询实现，不再另外持有一份字典或记录。
+    /// 数据表的公共查询实现。
     /// </summary>
     /// <typeparam name="T">数据表行的类型。</typeparam>
     public abstract class DataTable<T> : DataTableBase, IDataTable<T>
@@ -41,6 +41,13 @@ namespace UnityQGameFramework.Core.DataTable
         public abstract IEnumerator<T> GetEnumerator();
 
         /// <summary>
+        /// 按源表顺序获取指定位置的记录。
+        /// </summary>
+        /// <param name="index">从零开始的记录位置。</param>
+        /// <returns>指定位置的记录。</returns>
+        protected abstract T GetRow(int index);
+
+        /// <summary>
         /// 获取数据表记录的枚举器。
         /// </summary>
         /// <returns>按当前表顺序遍历记录的枚举器。</returns>
@@ -60,8 +67,9 @@ namespace UnityQGameFramework.Core.DataTable
             {
                 throw new ArgumentNullException(nameof(condition));
             }
-            foreach (T row in this)
+            for (int i = 0; i < Count; i++)
             {
+                T row = GetRow(i);
                 if (condition(row))
                 {
                     return true;
@@ -81,8 +89,9 @@ namespace UnityQGameFramework.Core.DataTable
             {
                 throw new ArgumentNullException(nameof(condition));
             }
-            foreach (T row in this)
+            for (int i = 0; i < Count; i++)
             {
+                T row = GetRow(i);
                 if (condition(row))
                 {
                     return row;
@@ -95,20 +104,20 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
-        /// <returns>符合查询条件的数据表行。</returns>
+        /// <returns>新建的结果数组，记录本身仍由原表持有。</returns>
         public T[] GetDataRows(Predicate<T> condition)
         {
             var results = new List<T>();
-            GetDataRows(condition, results);
+            GetDataRowsNonAlloc(condition, results);
             return results.ToArray();
         }
 
         /// <summary>
-        /// 获取符合条件的数据表行。
+        /// 使用调用方列表获取符合条件的数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="condition">要检查的条件。</param>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        public void GetDataRows(Predicate<T> condition, List<T> results)
+        /// <param name="condition">筛选条件；复用委托可避免调用方分配。</param>
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，记录仍由原表持有。</param>
+        public void GetDataRowsNonAlloc(Predicate<T> condition, List<T> results)
         {
             if (condition == null)
             {
@@ -121,20 +130,20 @@ namespace UnityQGameFramework.Core.DataTable
         /// 获取排序后的数据表行。
         /// </summary>
         /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <returns>排序后的数据表行。</returns>
+        /// <returns>排序后的新结果数组，不改变源表顺序和记录。</returns>
         public T[] GetDataRows(Comparison<T> comparison)
         {
             var results = new List<T>(Count);
-            GetDataRows(comparison, results);
+            GetDataRowsNonAlloc(comparison, results);
             return results.ToArray();
         }
 
         /// <summary>
-        /// 获取排序后的数据表行。
+        /// 使用调用方列表获取排序后的数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        public void GetDataRows(Comparison<T> comparison, List<T> results)
+        /// <param name="comparison">排序比较器；复用委托可避免调用方分配。</param>
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，排序不改变源表顺序。</param>
+        public void GetDataRowsNonAlloc(Comparison<T> comparison, List<T> results)
         {
             if (comparison == null)
             {
@@ -149,21 +158,21 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <returns>按指定条件筛选并排序后的数据表行。</returns>
+        /// <returns>筛选并排序后的新结果数组，不改变源表顺序和记录。</returns>
         public T[] GetDataRows(Predicate<T> condition, Comparison<T> comparison)
         {
             var results = new List<T>();
-            GetDataRows(condition, comparison, results);
+            GetDataRowsNonAlloc(condition, comparison, results);
             return results.ToArray();
         }
 
         /// <summary>
-        /// 获取排序后的符合条件的数据表行。
+        /// 使用调用方列表筛选并排序数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="condition">要检查的条件。</param>
-        /// <param name="comparison">数据表行的排序比较器。</param>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        public void GetDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results)
+        /// <param name="condition">筛选条件；复用委托可避免调用方分配。</param>
+        /// <param name="comparison">排序比较器；复用委托可避免调用方分配。</param>
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，排序不改变源表顺序。</param>
+        public void GetDataRowsNonAlloc(Predicate<T> condition, Comparison<T> comparison, List<T> results)
         {
             if (condition == null)
             {
@@ -180,7 +189,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取所有数据表行。
         /// </summary>
-        /// <returns>所有数据表行。</returns>
+        /// <returns>按源表顺序排列的新结果数组，记录本身仍由原表持有。</returns>
         public T[] GetAllDataRows()
         {
             var results = new List<T>(Count);
@@ -189,10 +198,10 @@ namespace UnityQGameFramework.Core.DataTable
         }
 
         /// <summary>
-        /// 获取所有数据表行。
+        /// 使用调用方列表获取所有数据表行，不创建结果数组。
         /// </summary>
-        /// <param name="results">接收数据表行的结果列表。</param>
-        public void GetAllDataRows(List<T> results)
+        /// <param name="results">填充前清空的结果列表；容量不足时仍会扩容，记录仍由原表持有。</param>
+        public void GetAllDataRowsNonAlloc(List<T> results)
         {
             Collect(null, results);
         }
@@ -209,9 +218,10 @@ namespace UnityQGameFramework.Core.DataTable
                 throw new ArgumentNullException(nameof(results));
             }
             results.Clear();
-            // 按生成表的原始顺序枚举；排序只改变结果列表。
-            foreach (T row in this)
+            // 直接按索引读取，避免 IEnumerable<T> 路径的枚举器装箱。
+            for (int i = 0; i < Count; i++)
             {
+                T row = GetRow(i);
                 if (condition == null || condition(row))
                 {
                     results.Add(row);

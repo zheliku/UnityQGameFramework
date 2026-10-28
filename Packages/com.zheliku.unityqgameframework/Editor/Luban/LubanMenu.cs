@@ -1,12 +1,11 @@
 using System;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace UnityQGameFramework.Editor
 {
     /// <summary>
-    /// 提供配置表生成和编译器选择入口。
+    /// 提供配置表生成入口。
     /// </summary>
     public static class LubanMenu
     {
@@ -47,11 +46,6 @@ namespace UnityQGameFramework.Editor
             {
                 LubanProfile profile = LubanWorkspace.EnsureInitialized();
                 Debug.Log("Luban generating: " + AssetDatabase.GetAssetPath(profile));
-                if (string.IsNullOrWhiteSpace(LubanGenerator.LocalGenerator) && !File.Exists(LubanGenerator.DefaultGenerator))
-                {
-                    await LubanGenerator.InstallAsync();
-                }
-
                 await LubanGenerator.GenerateAsync(profile);
             }
             catch (Exception exception)
@@ -91,26 +85,6 @@ namespace UnityQGameFramework.Editor
             {
                 Debug.LogException(exception);
             }
-        }
-
-        /// <summary>
-        /// 选择本地 Luban 编译器。
-        /// </summary>
-        public static void SelectLocalCompiler()
-        {
-            string path = EditorUtility.OpenFilePanel("选择 Luban " + LubanGenerator.Version + " 的 Luban.dll", string.Empty, "dll");
-            if (!string.IsNullOrEmpty(path))
-            {
-                LubanGenerator.LocalGenerator = path;
-            }
-        }
-
-        /// <summary>
-        /// 改用下载的官方 Luban 编译器。
-        /// </summary>
-        public static void UseDownloadedCompiler()
-        {
-            LubanGenerator.LocalGenerator = string.Empty;
         }
     }
 }

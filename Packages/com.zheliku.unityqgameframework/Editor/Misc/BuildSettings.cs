@@ -7,13 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Tomlyn;
+using Tomlyn.Model;
 using UnityEditor;
 using UnityEngine;
 
 namespace UnityQGameFramework.Editor
 {
     /// <summary>
-    /// 保存资源构建相关的编辑器设置。
+    /// 管理构建场景列表。
     /// </summary>
     internal static class BuildSettings
     {
@@ -46,11 +48,11 @@ namespace UnityQGameFramework.Editor
                 string[] paths = ReadScenePaths(includeSearchPaths);
                 // Validate the complete list before replacing the host project's scenes.
                 EditorBuildSettings.scenes = Array.ConvertAll(paths, path => new EditorBuildSettingsScene(path, true));
-                Debug.Log("QGF 已更新构建场景：" + paths.Length);
+                Debug.Log("QGF build scenes updated: " + paths.Length);
             }
             catch (Exception exception)
             {
-                Debug.LogWarning("QGF 未修改构建场景：" + exception.Message);
+                Debug.LogWarning("QGF build scenes were not changed: " + exception.Message);
             }
         }
 
@@ -64,17 +66,22 @@ namespace UnityQGameFramework.Editor
             string configuration = Type.GetConfigurationPath<BuildSettingsConfigPathAttribute>() ?? Path.Combine(Application.dataPath, "UnityQGameFramework/Configs/BuildSettings.toml");
             if (!File.Exists(configuration))
             {
-                throw new FileNotFoundException("未找到构建场景配置。", configuration);
+                throw new FileNotFoundException("Build scene configuration was not found.", configuration);
             }
 
-            var settings = EditorToml.Read(configuration).Table("BuildSettings");
-            var scenes = new List<string>();
-            foreach (string scene in settings.Strings("DefaultScenes"))
+            var model = Toml.ToModel(File.ReadAllText(configuration));
+            if (!model.TryGetValue("BuildSettings", out object value) || !(value is TomlTable settings))
             {
-                string path = ConfigurationPath.ResolveAssetPath(configuration, scene);
+                throw new InvalidDataException("TOML 'BuildSettings' must be a table.");
+            }
+
+            var scenes = new List<string>();
+            foreach (string scene in ReadPaths(settings, "DefaultScenes"))
+            {
+                string path = ResolveAssetPath(configuration, scene);
                 if (AssetDatabase.LoadAssetAtPath<SceneAsset>(path) == null)
                 {
-                    throw new FileNotFoundException("场景不存在。", path);
+                    throw new FileNotFoundException("The scene does not exist.", path);
                 }
 
                 if (!scenes.Contains(path))
@@ -85,9 +92,9 @@ namespace UnityQGameFramework.Editor
 
             if (includeSearchPaths)
             {
-                foreach (string directory in settings.Strings("SearchScenePaths"))
+                foreach (string directory in ReadPaths(settings, "SearchScenePaths"))
                 {
-                    string folder = ConfigurationPath.ResolveAssetPath(configuration, directory);
+                    string folder = ResolveAssetPath(configuration, directory);
                     if (!AssetDatabase.IsValidFolder(folder))
                     {
                         throw new DirectoryNotFoundException(folder);
@@ -105,10 +112,60 @@ namespace UnityQGameFramework.Editor
 
             if (scenes.Count == 0)
             {
-                throw new InvalidDataException("配置未指定任何有效场景，不会清空当前场景列表。");
+                throw new InvalidDataException("The configuration contains no valid scenes. The current scene list was preserved.");
             }
 
             return scenes.ToArray();
+        }
+
+        /// <summary>
+        /// 读取场景配置中的路径数组。
+        /// </summary>
+        /// <param name="settings">构建场景配置。</param>
+        /// <param name="key">路径数组的配置键。</param>
+        /// <returns>路径数组；配置键缺失时返回空数组。</returns>
+        private static string[] ReadPaths(TomlTable settings, string key)
+        {
+            if (!settings.TryGetValue(key, out object value))
+            {
+                return Array.Empty<string>();
+            }
+
+            if (!(value is TomlArray array) || array.Any(item => !(item is string)))
+            {
+                throw new InvalidDataException("TOML '" + key + "' must be a string array.");
+            }
+
+            return array.Cast<string>().ToArray();
+        }
+
+        /// <summary>
+        /// 将配置中的相对路径解析为项目资产路径。
+        /// </summary>
+        /// <param name="configuration">构建配置文件路径。</param>
+        /// <param name="path">项目路径或相对于配置文件的路径。</param>
+        /// <returns>位于 Assets 内的项目资产路径。</returns>
+        private static string ResolveAssetPath(string configuration, string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentException("The configured asset path must not be empty.");
+            }
+
+            path = path.Replace('\\', '/');
+            string full = Path.GetFullPath(path == "Assets" || path.StartsWith("Assets/", StringComparison.Ordinal) ? path : Path.Combine(Path.GetDirectoryName(Path.GetFullPath(configuration)), path));
+            string assets = Path.GetFullPath(Application.dataPath);
+            if (full.Equals(assets, StringComparison.OrdinalIgnoreCase))
+            {
+                return "Assets";
+            }
+
+            if (!full.StartsWith(assets + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("The configured asset path must be inside Assets: " + path);
+            }
+
+            return "Assets/" + full.Substring(assets.Length + 1).Replace('\\', '/');
         }
     }
 }

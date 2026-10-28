@@ -21,7 +21,7 @@ namespace UnityQGameFramework.Examples.Modules.Editor
         {
             DrawDefaultInspector();
             EditorGUILayout.Space();
-            if (!GUILayout.Button("构建远程资源示例"))
+            if (!GUILayout.Button("Build Remote Resources Example"))
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace UnityQGameFramework.Examples.Modules.Editor
                 RemoteFolder = output
             };
             File.WriteAllText(record, JsonUtility.ToJson(fixture, true));
-            UnityQGameFramework.Core.FrameworkLog.Info("资源更新示例已构建：" + output);
+            UnityQGameFramework.Core.FrameworkLog.Info("Resource update example built: " + output);
             return fixture;
         }
 

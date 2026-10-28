@@ -258,11 +258,11 @@ namespace StarForce
             GameEntry.BuiltinData.OpenDialog(new DialogParams
             {
                 Mode = 2,
-                Title = "资源加载失败",
+                Title = "Resource loading failed",
                 Message = Utility.Text.Format("{0}\n{1}", loadKey, errorMessage),
-                ConfirmText = "重试",
+                ConfirmText = "Retry",
                 OnClickConfirm = userData => RetryFailedLoads(),
-                CancelText = "退出",
+                CancelText = "Quit",
                 OnClickCancel = userData => UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit)
             });
         }

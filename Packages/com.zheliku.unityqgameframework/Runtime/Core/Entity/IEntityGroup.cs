@@ -86,8 +86,8 @@ namespace UnityQGameFramework.Core.Entity
         /// 从实体组中获取实体。
         /// </summary>
         /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="results">要获取的实体。</param>
-        void GetEntities(string entityAssetName, List<IEntity> results);
+        /// <param name="results">要获取的实体；填充前清空，容量不足时仍会扩容。</param>
+        void GetEntitiesNonAlloc(string entityAssetName, List<IEntity> results);
 
         /// <summary>
         /// 从实体组中获取所有实体。
@@ -98,8 +98,8 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 从实体组中获取所有实体。
         /// </summary>
-        /// <param name="results">实体组中的所有实体。</param>
-        void GetAllEntities(List<IEntity> results);
+        /// <param name="results">实体组中的所有实体；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllEntitiesNonAlloc(List<IEntity> results);
 
         /// <summary>
         /// 设置实体实例是否被加锁。

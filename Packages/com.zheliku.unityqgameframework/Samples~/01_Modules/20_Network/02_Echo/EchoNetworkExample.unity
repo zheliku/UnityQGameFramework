@@ -146,9 +146,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9654485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &9654487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +478,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Tcp \xB7 \u5F02\u6B65\u63A5\u6536"
+  m_Text: "Tcp · Async Receive"
 --- !u!222 &152511027
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -740,7 +740,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u6D88\u606F\u56DE\u663E"
+  m_Text: "02  Message Echo"
 --- !u!222 &323225910
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1215,7 +1215,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &466969241
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1482,7 +1482,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D1\u9001\u9ED8\u8BA4\u5904\u7406\u5668\u901A\u77E5"
+  m_Text: "Send Default Handler Notification"
 --- !u!222 &530076541
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1561,7 +1561,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u670D\u52A1\u5668\u62C6\u5206\u54CD\u5E94"
+  m_Text: "Fragment Server Responses"
 --- !u!222 &578630634
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1661,7 +1661,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u540C\u5E27\u53D1\u9001\u4E24\u6761\u6587\u672C\uFF0C\u6BD4\u8F83\u5B8C\u6574\u54CD\u5E94\u4E0E\u62C6\u5206\u54CD\u5E94\u3002"
+  m_Text: "Send two messages in one frame. Compare complete and fragmented responses."
 --- !u!222 &603109858
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2697,7 +2697,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D1\u9001\u4E24\u4EFD\u6587\u672C"
+  m_Text: "Send Two Messages"
 --- !u!222 &1199264377
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3435,7 +3435,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8FDE\u63A5 / \u91CD\u5EFA"
+  m_Text: "Connect / Recreate"
 --- !u!222 &1656092144
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3946,7 +3946,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &2039921763
 CanvasRenderer:
   m_ObjectHideFlags: 0

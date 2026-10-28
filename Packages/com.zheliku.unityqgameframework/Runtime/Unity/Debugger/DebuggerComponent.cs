@@ -329,22 +329,22 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取记录的所有日志。
         /// </summary>
-        /// <param name="results">要获取的日志。</param>
+        /// <param name="results">要获取的日志；填充前清空，容量不足时仍会扩容。</param>
         /// <remarks>清空并填充结果列表，按记录顺序返回。日志结点由调试器持有，需要长期保存时复制字段。</remarks>
-        public void GetRecentLogs(List<LogNode> results)
+        public void GetRecentLogsNonAlloc(List<LogNode> results)
         {
-            m_ConsoleWindow.GetRecentLogs(results);
+            m_ConsoleWindow.GetRecentLogsNonAlloc(results);
         }
 
         /// <summary>
         /// 获取记录的最近日志。
         /// </summary>
-        /// <param name="results">要获取的日志。</param>
+        /// <param name="results">要获取的日志；填充前清空，容量不足时仍会扩容。</param>
         /// <param name="count">要获取最近日志的数量。</param>
         /// <remarks>清空并填充结果列表，返回末尾的 count 条，保留记录顺序。</remarks>
-        public void GetRecentLogs(List<LogNode> results, int count)
+        public void GetRecentLogsNonAlloc(List<LogNode> results, int count)
         {
-            m_ConsoleWindow.GetRecentLogs(results, count);
+            m_ConsoleWindow.GetRecentLogsNonAlloc(results, count);
         }
 
         /// <summary>

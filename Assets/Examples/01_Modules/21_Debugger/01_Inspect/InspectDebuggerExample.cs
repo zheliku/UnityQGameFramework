@@ -40,7 +40,7 @@ namespace UnityQGameFramework.Examples.Modules
                 PlaceWindow();
             }
 
-            stateText.text = "在右侧调试窗口查看时间、场景和环境信息。";
+            stateText.text = "Inspect time, scene and environment information in the debugger on the right.";
         }
     }
 }

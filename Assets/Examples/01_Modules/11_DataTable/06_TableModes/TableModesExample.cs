@@ -33,26 +33,29 @@ namespace UnityQGameFramework.Examples.Modules
         private void ShowAliases()
         {
             TbItemAlias aliases = QGF.DataTable.GetDataTable<TbItemAlias>();
-            DRItemAlias alias = aliases.GetDataRow("Potion");
+            // 已有记录的键一定存在，可直接使用索引器；输入可能缺键时用 GetDataRow。
+            string key = aliases.DataList[0].Key;
+            DRItemAlias alias = aliases[key];
 
             // ItemId 的类型定义为 int#ref=TbItem，生成的 ItemId_Ref 在加载时自动解析。
             DRItem item = alias.ItemId_Ref;
-            bool shared = ReferenceEquals(item, QGF.DataTable.GetDataTable<TbItem>().GetDataRow(alias.ItemId));
-            m_StateText.text = "map 表的键可以是 string，不限于整数 Id。";
-            m_DetailsText.text = $"字符串键：{alias.Key}\n关联道具：{item.Name}\n价格：{item.Price}\n引用与 TbItem 的记录相同：{shared}";
+            bool shared = ReferenceEquals(item, QGF.DataTable.GetDataTable<TbItem>()[alias.ItemId]);
+            m_StateText.text = "Map keys can be strings; integer IDs are not required.";
+            m_DetailsText.text = $"String key: {alias.Key}\nRelated item: {item.Name}\nPrice: {item.Price}\nSame reference as the TbItem row: {shared}";
         }
 
         private void ShowIndexes()
         {
-            // __tables__.xlsx 中的 Level+Wave 生成复合键签名，两个值共同定位一行。
-            DRStage stage = QGF.DataTable.GetDataTable<TbStage>().GetDataRow(1, 2);
+            // __tables__.xlsx 中的 Level+Wave 生成元组索引器，两个值共同定位一行。
+            DRStage stage = QGF.DataTable.GetDataTable<TbStage>()[(1, 2)];
 
             // Name,Price 表示两个独立索引；同一 DRItem 行结构也可用于不同的表。
             TbItemIndex items = QGF.DataTable.GetDataTable<TbItemIndex>();
-            DRItem byName = items.GetByName("回复药");
+            string name = items.DataList[0].Name;
+            DRItem byName = items.GetByName(name);
             DRItem byPrice = items.GetByPrice(50);
-            m_StateText.text = "索引由 Excel schema 决定，查询不需要遍历表。";
-            m_DetailsText.text = $"复合键 (1, 2)：奖励 {stage.RewardItemId_Ref.Name}\n按 Name：{byName.Name} / {byName.Price}\n按 Price=50：{byPrice.Name}";
+            m_StateText.text = "Indexes are defined in the Excel schema. Indexed queries do not scan the table.";
+            m_DetailsText.text = $"Composite key (1, 2): Reward {stage.RewardItemId_Ref.Name}\nBy Name: {byName.Name} / {byName.Price}\nBy Price=50: {byPrice.Name}";
         }
 
         private void ShowModes()
@@ -61,8 +64,8 @@ namespace UnityQGameFramework.Examples.Modules
             TbRules rules = QGF.DataTable.GetDataTable<TbRules>();
             TbMessage messages = QGF.DataTable.GetDataTable<TbMessage>();
             m_Text.Clear();
-            m_Text.AppendLine($"one：{rules.Data.Title}，玩家上限 {rules.Data.MaxPlayers}，行数 {rules.Count}");
-            m_Text.AppendLine($"list：{messages.Count} 条提示");
+            m_Text.AppendLine($"one: {rules.Data.Title}; player limit {rules.Data.MaxPlayers}; rows {rules.Count}");
+            m_Text.AppendLine($"list: {messages.Count} notifications");
             foreach (DRMessage message in messages)
             {
                 m_Text.AppendLine($"  {message.Priority}  {message.Text}");
@@ -70,8 +73,8 @@ namespace UnityQGameFramework.Examples.Modules
 
             // 无主键 list 不生成虚构 Id，仍可遍历或使用 QGF 的条件查询。
             DRMessage selected = messages.GetDataRow(message => message.Priority == 2);
-            m_Text.AppendLine("条件查询：" + selected.Text);
-            m_StateText.text = "表模式可以不同，获取表的入口相同。";
+            m_Text.AppendLine("Predicate query: " + selected.Text);
+            m_StateText.text = "Different table modes share the same table access API.";
             m_DetailsText.text = m_Text.ToString();
         }
 

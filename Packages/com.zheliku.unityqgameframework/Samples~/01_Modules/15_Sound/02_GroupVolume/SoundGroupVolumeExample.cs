@@ -84,7 +84,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            string state = !HasAgent ? "音乐组当前没有播放声音。" : $"最终音量：{agent.Volume:F2} = 组 {music.Volume:F2} × 单声道 {voiceVolumeSlider.value:F2}\n" + $"组静音：{(music.Mute ? "是" : "否")}    单声道静音：{(agent.MuteInSoundGroup ? "是" : "否")}\n" + $"最终状态：{(agent.Mute ? "静音" : "有声")}";
+            string state = !HasAgent ? "No sound is playing in the music group." : $"Final volume: {agent.Volume:F2} = Group {music.Volume:F2} × Voice {voiceVolumeSlider.value:F2}\n" + $"Group muted: {(music.Mute ? "Yes" : "No")}    Voice muted: {(agent.MuteInSoundGroup ? "Yes" : "No")}\n" + $"Final state: {(agent.Mute ? "Muted" : "Audible")}";
             outputText.text = state;
             playButton.interactable = !HasAgent && !QGF.Sound.IsLoadingSound(serialId);
             stopButton.interactable = HasAgent;

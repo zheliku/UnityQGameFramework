@@ -18,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Start()
         {
-            stateText.text = "初始化 Raw 包，读取文件，再提取偏移 8 开始的 16 个字节。";
+            stateText.text = "Initialize the Raw package, read the file, then extract 16 bytes starting at offset 8.";
             initializeButton.onClick.AddListener(Initialize);
             readButton.onClick.AddListener(ReadFile);
         }
@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 await QGF.Resource.InitializePackageAsync(ResourceExamplePaths.RawPackageName, destroyCancellationToken);
                 initialized = true;
-                stateText.text = "原生文件包已就绪。";
+                stateText.text = "Raw file package ready.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -56,9 +56,9 @@ namespace UnityQGameFramework.Examples.Modules
                 int length = Math.Min(16, Math.Max(0, bytes.Length - offset));
                 result = new byte[length];
                 Buffer.BlockCopy(bytes, Math.Min(offset, bytes.Length), result, 0, length);
-                pathText.text = $"资源包：{ResourceExamplePaths.RawPackageName}\n完整文件：{bytes.Length} 字节；本次片段：{length} 字节";
+                pathText.text = $"Resource package: {ResourceExamplePaths.RawPackageName}\nFull file: {bytes.Length} bytes; selected segment: {length} bytes";
                 bytesText.text = BitConverter.ToString(result);
-                stateText.text = "文件内容属于本次读取；片段提取由业务代码完成。";
+                stateText.text = "The returned contents belong to this read. Application code extracts the segment.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {

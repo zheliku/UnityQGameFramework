@@ -53,7 +53,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            stateText.text = $"新建 {created}  复用 {reused}  借出 {borrowed.Count}";
+            stateText.text = $"Created {created}  Reused {reused}  Spawned {borrowed.Count}";
             spawnButton.interactable = borrowed.Count < 6;
             returnButton.interactable = borrowed.Count > 0;
         }

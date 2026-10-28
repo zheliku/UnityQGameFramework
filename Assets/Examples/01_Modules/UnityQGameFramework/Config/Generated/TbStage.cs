@@ -20,6 +20,16 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 public partial class TbStage : UnityQGameFramework.Core.DataTable.DataTable<DRStage>
 {
     /// <summary>
+    /// 按源表顺序获取指定位置的记录。
+    /// </summary>
+    /// <param name="index">从零开始的记录位置。</param>
+    /// <returns>指定位置的记录。</returns>
+    protected override DRStage GetRow(int index)
+    {
+        return _dataList[index];
+    }
+
+    /// <summary>
     /// 获取数据表行数。
     /// </summary>
     public override int Count
@@ -72,6 +82,19 @@ public partial class TbStage : UnityQGameFramework.Core.DataTable.DataTable<DRSt
         get
         {
             return _dataList;
+        }
+    }
+
+    /// <summary>
+    /// 获取复合主键对应的记录；键不存在时抛出 KeyNotFoundException。
+    /// </summary>
+    /// <param name="key">按表定义字段顺序排列的复合键。</param>
+    /// <returns>复合键对应的原表记录。</returns>
+    public DRStage this[(int, int) key]
+    {
+        get
+        {
+            return _dataMapUnion[key];
         }
     }
 

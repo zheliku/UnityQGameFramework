@@ -168,10 +168,10 @@ namespace DocumentationVerification
                 files.DestroyFileSystem(container, false);
                 checks.Add("FileSystem container write/close/reopen/read");
 
-                var tables = ((UnityQGameFramework.Runtime.IDataTableLoader)new UnityQGameFramework.Config.Tables()).Load(name => new ByteBuf(
+                var tables = ((UnityQGameFramework.Runtime.IDataTableLoader)new UnityQGameFramework.Config.Tables()).CreateTables(name => new ByteBuf(
                     File.ReadAllBytes("Artifacts~/Documentation/ItemFixture/Data/" + name + ".bytes")));
                 var dataTables = FrameworkEntry.GetModule<IDataTableManager>();
-                dataTables.RegisterDataTables(tables);
+                dataTables.AddDataTables(tables);
                 var view = dataTables.GetDataTable<UnityQGameFramework.Config.TbItem>();
                 Require(view.Count == 3 && view.GetDataRow(1).Price == 20
                     && view.GetDataRow(1).Name == "回复药" && !view.GetDataRow(1).IsFree, "Excel example data");

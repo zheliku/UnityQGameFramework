@@ -98,10 +98,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有网络频道。
         /// </summary>
-        /// <param name="results">所有网络频道。</param>
-        public void GetAllNetworkChannels(List<INetworkChannel> results)
+        /// <param name="results">所有网络频道；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllNetworkChannelsNonAlloc(List<INetworkChannel> results)
         {
-            m_NetworkManager.GetAllNetworkChannels(results);
+            m_NetworkManager.GetAllNetworkChannelsNonAlloc(results);
         }
 
         /// <summary>

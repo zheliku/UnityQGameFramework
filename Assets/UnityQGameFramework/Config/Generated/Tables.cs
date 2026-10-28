@@ -32,15 +32,15 @@ public partial class Tables : IDataTableLoader
     {
         get
         {
-            return "d63142ff93b036ed9607bf96ed5cb6a7bcbdb21ab08bffcdd6d84126108e4d50";
+            return "7e64c019089d03ef3261bf5d5aac1d230b2ca471665275281f391f67e6f0a454";
         }
     }
     /// <summary>
-    /// 加载数据表并解析表间引用。
+    /// 构造数据表并解析表间引用；不读取资源、不修改 DataTableComponent 登记。
     /// </summary>
     /// <param name="loader">读取指定数据文件的加载方法。</param>
     /// <returns>已完成解析的数据表。</returns>
-    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.Load(System.Func<string, ByteBuf> loader)
+    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.CreateTables(System.Func<string, ByteBuf> loader)
     {
         TbItem = new TbItem(loader("tbitem"));
         ResolveRef();

@@ -273,7 +273,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u7A97\u53E3"
+  m_Text: "Window"
 --- !u!1 &8757699159969678107
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // 以叠加方式加载，框架和操作面板保留在当前场景。
                 QGF.Scene.LoadScene(RoomAddress);
                 ownsRoom = true;
-                stateText.text = "正在加载";
+                stateText.text = "Loading";
             });
             unloadButton.onClick.AddListener(() => QGF.Scene.UnloadScene(RoomAddress));
         }
@@ -45,7 +45,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             if (args is LoadSceneSuccessEventArgs loaded && loaded.SceneAssetName == RoomAddress)
             {
-                stateText.text = "房间已加载";
+                stateText.text = "Room loaded";
             }
             else if (args is LoadSceneFailureEventArgs failed && failed.SceneAssetName == RoomAddress)
             {
@@ -54,12 +54,12 @@ namespace UnityQGameFramework.Examples.Modules
             }
             else if (args is UnloadSceneSuccessEventArgs unloaded && unloaded.SceneAssetName == RoomAddress)
             {
-                stateText.text = "房间已卸载";
+                stateText.text = "Room unloaded";
                 ownsRoom = false;
             }
             else if (args is UnloadSceneFailureEventArgs failure && failure.SceneAssetName == RoomAddress)
             {
-                stateText.text = "卸载失败，可以重试。";
+                stateText.text = "Unload failed. Try again.";
             }
         }
 

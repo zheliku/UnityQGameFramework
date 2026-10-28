@@ -156,7 +156,7 @@ namespace UnityQGameFramework.Core
         public TaskInfo[] GetTaskInfos(string tag)
         {
             List<TaskInfo> results = new List<TaskInfo>();
-            GetTaskInfos(tag, results);
+            GetTaskInfosNonAlloc(tag, results);
             return results.ToArray();
         }
 
@@ -164,8 +164,8 @@ namespace UnityQGameFramework.Core
         /// 根据任务的标签获取任务的信息。
         /// </summary>
         /// <param name="tag">要获取信息的任务的标签。</param>
-        /// <param name="results">任务的信息。</param>
-        public void GetTaskInfos(string tag, List<TaskInfo> results)
+        /// <param name="results">任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetTaskInfosNonAlloc(string tag, List<TaskInfo> results)
         {
             if (results == null)
             {
@@ -216,8 +216,8 @@ namespace UnityQGameFramework.Core
         /// <summary>
         /// 获取所有任务的信息。
         /// </summary>
-        /// <param name="results">所有任务的信息。</param>
-        public void GetAllTaskInfos(List<TaskInfo> results)
+        /// <param name="results">所有任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllTaskInfosNonAlloc(List<TaskInfo> results)
         {
             if (results == null)
             {

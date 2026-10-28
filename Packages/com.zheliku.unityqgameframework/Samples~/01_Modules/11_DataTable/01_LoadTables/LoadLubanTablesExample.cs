@@ -19,15 +19,15 @@ namespace UnityQGameFramework.Examples.Modules
             // Tables 是生成的解析代码。同步加载成功后整组表已就绪，一次启动只需加载一次。
             if (!QGF.DataTable.LoadDataTables<Tables>())
             {
-                rowsText.text = "加载失败，请查看 Console，并检查 DataTableComponent 的 Catalog 与生成代码是否匹配。";
+                rowsText.text = "Loading failed. Check Console and ensure the DataTableComponent Catalog matches the generated code.";
                 return;
             }
             // 返回已登记的生成表本身，不再解析或复制数据。
             var items = QGF.DataTable.GetDataTable<TbItem>();
-            rowsText.text = $"已从 {QGF.DataTable.Catalog.name} 加载 {QGF.DataTable.Count} 张表。\nTbItem 的记录：\n";
+            rowsText.text = $"Loaded from {QGF.DataTable.Catalog.name} Load {QGF.DataTable.Count} tables.\nTbItem rows:\n";
             foreach (var item in items)
             {
-                rowsText.text += $"{item.Id}  {item.Name}  价格 {item.Price}\n";
+                rowsText.text += $"{item.Id}  {item.Name}  Price {item.Price}\n";
             }
         }
 

@@ -210,7 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u663E\u793A\u4E00\u4E2A\u65CB\u8F6C\u7684 Cube\u3002\u9690\u85CF\u540E\u518D\u663E\u793A\uFF0C\u7531\u5B9E\u4F53\u7EC4\u590D\u7528\u5B9E\u4F8B\u3002"
+  m_Text: "Show a rotating Cube. Hide and show it again to reuse the entity instance."
 --- !u!222 &552519417
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -617,9 +617,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 913315211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &913315213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -867,7 +867,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u663E\u793A\u4E0E\u9690\u85CF\u5B9E\u4F53"
+  m_Text: "01  Show and Hide an Entity"
 --- !u!222 &1259862090
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u9690\u85CF Cube"
+  m_Text: "Hide Cube"
 --- !u!222 &1763709568
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1685,7 +1685,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u663E\u793A Cube"
+  m_Text: "Show Cube"
 --- !u!222 &2136119305
 CanvasRenderer:
   m_ObjectHideFlags: 0

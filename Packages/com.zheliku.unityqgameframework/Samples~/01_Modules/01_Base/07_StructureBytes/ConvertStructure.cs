@@ -43,7 +43,7 @@ namespace UnityQGameFramework.Examples.Modules
             freeButton.onClick.AddListener(() =>
             {
                 Utility.Marshal.FreeCachedHGlobal();
-                resultText.text = "已释放共用缓存。";
+                resultText.text = "Shared buffer released.";
             });
             Convert();
         }
@@ -52,7 +52,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             if (!int.TryParse(idInput.text, out int id) || !float.TryParse(speedInput.text, NumberStyles.Float, CultureInfo.InvariantCulture, out float speed))
             {
-                resultText.text = "请输入整数和小数。";
+                resultText.text = "Enter an integer and a decimal.";
                 return;
             }
 
@@ -66,12 +66,12 @@ namespace UnityQGameFramework.Examples.Modules
             // 结构体写入带包头的缓冲区，再从同一偏移还原。
             Utility.Marshal.StructureToBytes(record, bytes, 2);
             Record restored = Utility.Marshal.BytesToStructure<Record>(bytes, 2);
-            resultText.text = $"结构体 {size} 字节，偏移 2\n缓冲区：{BitConverter.ToString(bytes)}\n" + $"还原：Id {restored.Id}，Speed {restored.Speed.ToString("R", CultureInfo.InvariantCulture)}";
+            resultText.text = $"Structure {size} bytes, offset 2\nBuffer: {BitConverter.ToString(bytes)}\n" + $"Restored: Id {restored.Id}，Speed {restored.Speed.ToString("R", CultureInfo.InvariantCulture)}";
         }
 
         private void Update()
         {
-            cacheText.text = $"共用非托管缓存：{Utility.Marshal.CachedHGlobalSize} 字节";
+            cacheText.text = $"Shared unmanaged buffer: {Utility.Marshal.CachedHGlobalSize} bytes";
         }
     }
 }

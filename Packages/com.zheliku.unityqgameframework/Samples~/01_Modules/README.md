@@ -6,11 +6,13 @@
 
 ## 运行前准备
 
+宿主需启用 Input System：在 Player Settings 的 Active Input Handling 选择 Input System Package (New) 或 Both。示例不会替项目修改该设置。
+
 等待 Unity 编译完成后，打开表格中的场景并点击 Play。普通模块场景不需要手动构建资源包，也不需要在 YooAsset 收集器窗口点击 `Fix` 或 `Save`；QGF 会使用本 Sample 的原生配置自动生成 Editor Simulation。
 
 `11_DataTable` 的生成 C#、Catalog 和二进制表已随示例提供，直接运行即可。修改 Excel 后，在 `QGF > Settings` 选择本 Sample 的 Luban Profile，再执行 `QGF > Generate Tables`。
 
-`12_Resource/01_LoadPrefab`、`02_AddressRules`、`03_Package` 和 `04_Binary` 可直接运行。运行 `05_Update` 前先停止 Play，选中场景中的 `UpdateRemoteResources` 对象，在 Inspector 点击 `构建远程资源示例`；该按钮会构建本地 HTTP 示例需要的资源并写入 `Library/QgfExamples/YooAsset/<Unity版本>`。构建记录与当前 Unity 版本不一致时需要重新执行。
+`12_Resource/01_LoadPrefab`、`02_AddressRules`、`03_Package` 和 `04_Binary` 可直接运行。运行 `05_Update` 前先停止 Play，选中场景中的 `UpdateRemoteResources` 对象，在 Inspector 点击 `Build Remote Resources Example`；该按钮会构建本地 HTTP 示例需要的资源并写入 `Library/QgfExamples/YooAsset/<Unity版本>`。构建记录与当前 Unity 版本不一致时需要重新执行。
 
 `QGF > Resource > Packages` 打开 YooAsset 原生窗口，选择或双击本 Sample 的 `UnityQGameFramework/Resource/YooAssetCollector.asset` 切换到对应面板；其中的寻址规则、分组和构建选项就是实际使用的配置。修改后用窗口自己的 `Save` 保存，`Fix` 只在 GUID 路径失效时使用。
 
@@ -30,7 +32,7 @@
 
 Catalog 不是缓存，不能当作临时文件删除；它与 bytes 一起构成运行时数据。全局 Profile 只决定生成目标，不会自动替换场景组件的 Catalog。因此你切换全局 Profile 后，当前场景仍可使用原来指定的示例数据。
 
-编辑 Excel 时：在 `QGF > Settings` 选择上表的 Profile，执行 `QGF > Generate Tables`，等待 Unity 编译完成。要让场景改用另一份生成结果，再把那份 `Data/Catalog.asset` 拖到场景 QGF 对象的 DataTableComponent，或点 **使用全局 Catalog**。加载器 `Tables` 必须来自同一套生成代码；结构不匹配时会拒绝加载。
+编辑 Excel 时：在 `QGF > Settings` 选择上表的 Profile，执行 `QGF > Generate Tables`，等待 Unity 编译完成。要让场景改用另一份生成结果，再把那份 `Data/Catalog.asset` 拖到场景 QGF 对象的 DataTableComponent，或点 **Use Global Catalog**。加载器 `Tables` 必须来自同一套生成代码；结构不匹配时会拒绝加载。
 
 ### 需要 Initialize 吗
 

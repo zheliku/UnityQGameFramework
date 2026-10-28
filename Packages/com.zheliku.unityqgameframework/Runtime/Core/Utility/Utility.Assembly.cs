@@ -41,7 +41,7 @@ namespace UnityQGameFramework.Core
             /// <summary>
             /// 获取已加载的程序集中的所有类型。
             /// </summary>
-            /// <param name="results">已加载的程序集中的所有类型。</param>
+            /// <param name="results">接收已加载程序集中的所有类型；填充前清空，反射枚举仍会创建临时数组。</param>
             public static void GetTypes(List<Type> results)
             {
                 if (results == null)

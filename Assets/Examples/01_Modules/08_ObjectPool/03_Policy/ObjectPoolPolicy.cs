@@ -35,7 +35,7 @@ namespace UnityQGameFramework.Examples.Modules
                     keep = null;
                 }
 
-                resultText.text = "已执行 ReleaseAllUnused。";
+                resultText.text = "ReleaseAllUnused completed.";
             });
         }
 
@@ -45,7 +45,7 @@ namespace UnityQGameFramework.Examples.Modules
             Register("Temp B", new Vector3(3.5f, 0, 0));
             keep = Register("Keep", new Vector3(5, 0, 0));
             ProtectKeep(protectKeep.isOn);
-            resultText.text = "三个 Cube 已登记；执行回收观察 Keep 是否保留。";
+            resultText.text = "Three Cubes registered. Release unused objects and observe whether Keep remains.";
         }
 
         private PolicyCubeItem Register(string name, Vector3 position)
@@ -77,7 +77,7 @@ namespace UnityQGameFramework.Examples.Modules
 
             var infos = ((ObjectPoolBase)pool).GetAllObjectInfos();
             bool keepExists = System.Array.Exists(infos, info => info.Name == "Keep");
-            stateText.text = $"登记 {pool.Count} · 可释放 {pool.CanReleaseCount}\n" + (pool.Count == 0 ? "尚未创建 Cube" : $"Keep：{(keepExists ? protectKeep.isOn ? "已保护" : "可回收" : "已回收")}");
+            stateText.text = $"Registered {pool.Count} · Releasable {pool.CanReleaseCount}\n" + (pool.Count == 0 ? "No Cube created yet" : $"Keep：{(keepExists ? protectKeep.isOn ? "Protected" : "Recyclable" : "Recycled")}");
             createButton.interactable = pool.Count == 0;
             protectKeep.interactable = keep != null;
             releaseButton.interactable = pool.CanReleaseCount > 0;

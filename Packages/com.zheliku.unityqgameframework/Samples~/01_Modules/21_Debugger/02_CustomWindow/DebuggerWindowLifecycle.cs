@@ -31,13 +31,13 @@ namespace UnityQGameFramework.Examples.Modules
                 // 最后的参数传给 Initialize；路径中的 / 创建窗口组。
                 QGF.Debugger.RegisterDebuggerWindow(WindowPath, window, (int)initialValueSlider.value);
                 QGF.Debugger.SelectDebuggerWindow(WindowPath);
-                resultText.text = "已注册并选中计数窗口。";
+                resultText.text = "Counter window registered and selected.";
             });
             unregisterButton.onClick.AddListener(() =>
             {
                 // 注销会调用 Shutdown，移除后的路径查询返回 null。
                 bool removed = QGF.Debugger.UnregisterDebuggerWindow(WindowPath);
-                resultText.text = removed ? "已注销计数窗口。" : "窗口尚未注册。";
+                resultText.text = removed ? "Counter window unregistered." : "The window is not registered.";
             });
             selectButton.onClick.AddListener(() => QGF.Debugger.SelectDebuggerWindow(WindowPath));
             timeButton.onClick.AddListener(() => QGF.Debugger.SelectDebuggerWindow("Information/Other/Time"));
@@ -57,7 +57,7 @@ namespace UnityQGameFramework.Examples.Modules
             bool registered = ReferenceEquals(QGF.Debugger.GetDebuggerWindow(WindowPath), window);
             registerButton.interactable = !registered;
             unregisterButton.interactable = selectButton.interactable = incrementButton.interactable = registered;
-            stateText.text = $"{(registered ? "已注册" : "未注册")}    初始值 {(int)initialValueSlider.value}\n" + $"计数 {window.Count}    页面更新 {window.ActiveSeconds:F1} 秒\n" + $"Initialize {window.InitializeCalls} 次    Shutdown {window.ShutdownCalls} 次\n" + $"页签进入 {window.EnterCalls} 次    离开 {window.LeaveCalls} 次";
+            stateText.text = $"{(registered ? "Registered" : "Not registered")}    Initial value {(int)initialValueSlider.value}\n" + $"Count {window.Count}    Active for {window.ActiveSeconds:F1} s\n" + $"Initialize {window.InitializeCalls} times    Shutdown {window.ShutdownCalls} times\n" + $"Tab entries {window.EnterCalls} times    Leave {window.LeaveCalls} times";
         }
 
         private void OnDestroy()
@@ -152,8 +152,8 @@ namespace UnityQGameFramework.Examples.Modules
             /// </summary>
             public void OnDraw()
             {
-                GUILayout.Label("计数：" + Count);
-                GUILayout.Label($"页面更新：{ActiveSeconds:F1} 秒");
+                GUILayout.Label("Count: " + Count);
+                GUILayout.Label($"Active for: {ActiveSeconds:F1} s");
                 if (GUILayout.Button("+1", GUILayout.Height(36)))
                 {
                     Count++;

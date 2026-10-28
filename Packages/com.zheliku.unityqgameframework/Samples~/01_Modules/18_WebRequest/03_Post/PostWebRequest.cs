@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Examples.Modules
                 form.AddField("message", messageInput.text, Encoding.UTF8);
                 // WWWForm 处理字段编码；AddWebRequest 提交 POST 并返回任务序号。
                 serial = QGF.WebRequest.AddWebRequest(server.Url("/echo"), form);
-                responseText.text = "等待服务器回显";
+                responseText.text = "Waiting for server echo";
             });
         }
 
@@ -42,7 +42,7 @@ namespace UnityQGameFramework.Examples.Modules
             }
             else if (args is WebRequestFailureEventArgs failure && failure.SerialId == serial)
             {
-                responseText.text = "失败：" + failure.ErrorMessage;
+                responseText.text = "Failed: " + failure.ErrorMessage;
             }
             else
             {

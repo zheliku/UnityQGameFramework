@@ -210,7 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u81EA\u5B9A\u4E49\u8C03\u8BD5\u7A97\u53E3"
+  m_Text: "02  Custom Debugger Window"
 --- !u!222 &81614767
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -381,7 +381,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8BA1\u6570 +1"
+  m_Text: "Count +1"
 --- !u!222 &164588828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1178,7 +1178,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u67E5\u770B\u8BA1\u6570\u9875"
+  m_Text: "Select Counter Tab"
 --- !u!222 &928638236
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1257,7 +1257,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u67E5\u770B\u65F6\u95F4\u9875"
+  m_Text: "Select Time Tab"
 --- !u!222 &1063950711
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1357,7 +1357,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6CE8\u518C\u7A97\u53E3\u540E\uFF0C\u6BD4\u8F83\u6309\u94AE\u9009\u9875\u4E0E\u9876\u90E8\u9875\u7B7E\u5207\u6362\u3002"
+  m_Text: "Register the window, then compare button selection with the top tabs."
 --- !u!222 &1082973037
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1393,9 +1393,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162949803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1162949805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1993,7 +1993,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6CE8\u518C\u65F6\u7684\u521D\u59CB\u8BA1\u6570"
+  m_Text: "Initial Counter"
 --- !u!222 &1388181981
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2072,7 +2072,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6CE8\u9500\u7A97\u53E3"
+  m_Text: "Unregister Window"
 --- !u!222 &1410658713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2808,7 +2808,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6CE8\u518C\u7A97\u53E3"
+  m_Text: "Register Window"
 --- !u!222 &1999721056
 CanvasRenderer:
   m_ObjectHideFlags: 0

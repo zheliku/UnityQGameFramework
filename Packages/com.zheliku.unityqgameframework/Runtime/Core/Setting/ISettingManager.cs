@@ -45,8 +45,8 @@ namespace UnityQGameFramework.Core.Setting
         /// <summary>
         /// 获取所有游戏配置项的名称。
         /// </summary>
-        /// <param name="results">所有游戏配置项的名称。</param>
-        void GetAllSettingNames(List<string> results);
+        /// <param name="results">所有游戏配置项的名称；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllSettingNamesNonAlloc(List<string> results);
 
         /// <summary>
         /// 检查是否存在指定游戏配置项。

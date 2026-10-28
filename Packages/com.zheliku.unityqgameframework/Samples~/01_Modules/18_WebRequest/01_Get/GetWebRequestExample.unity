@@ -381,7 +381,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D1\u9001 GET"
+  m_Text: "Send GET"
 --- !u!222 &232539540
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -481,7 +481,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u672C\u673A\u670D\u52A1\u8FD4\u56DE JSON\u3002\u516B\u79CD\u91CD\u8F7D\u7684\u8BF7\u6C42\u5185\u5BB9\u76F8\u540C\uFF0C\u9644\u52A0\u53C2\u6570\u7528\u4E8E\u7BA1\u7406\u4EFB\u52A1\u3002"
+  m_Text: "The local server returns JSON. Request overloads share the same payload; extra arguments control task management."
 --- !u!222 &269638780
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -687,9 +687,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 731687243}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &731687245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1394,7 +1394,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  GET \u4E0E\u54CD\u5E94\u6B63\u6587"
+  m_Text: "01  GET and Response Body"
 --- !u!222 &2131583786
 CanvasRenderer:
   m_ObjectHideFlags: 0

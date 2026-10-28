@@ -23,7 +23,7 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         {
             base.OnEnter(owner);
             game = (PointGameData)owner.GetData<VarObject>("Game").Value;
-            game.Phase = "游玩";
+            game.Phase = "Play";
             game.Remaining = game.Duration;
             game.Lives = game.InitialLives;
             game.Score = 0;

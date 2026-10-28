@@ -79,7 +79,7 @@ namespace QgfDocs
 }
 ```
 
-场景需要已配置 ResourceSettings 的框架预制体、摄像机和 EventSystem。EventSystem 的输入模块要与项目输入后端匹配：旧输入使用 StandaloneInputModule，Input System 使用其对应 UI 输入模块。运行后可看到窗口并通过按钮关闭。
+场景需要已配置 ResourceSettings 的框架预制体、摄像机和 EventSystem。QGF 示例直接使用 Unity Input System 的 `InputSystemUIInputModule`，项目 UI 输入由该官方模块处理。运行后可看到窗口并通过按钮关闭。
 
 ## 序列号与资源名
 

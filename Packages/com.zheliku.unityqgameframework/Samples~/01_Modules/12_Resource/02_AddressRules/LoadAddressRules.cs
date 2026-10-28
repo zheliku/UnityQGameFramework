@@ -32,7 +32,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             loadButton.onClick.AddListener(Load);
             releaseButton.onClick.AddListener(Release);
-            stateText.text = "选择寻址规则，再加载同一个 Cube。无需先初始化包。";
+            stateText.text = "Choose an addressing rule, then load the same Cube. Package initialization is automatic.";
         }
 
         private async void Load()
@@ -46,14 +46,14 @@ namespace UnityQGameFramework.Examples.Modules
                 // 指定包名后，QGF 自动初始化对应包；这里不需要 GUID 或编辑器 API。
                 asset = await QGF.Resource.LoadAssetAsync<GameObject>(address, loadedPackage, cancellationToken: destroyCancellationToken);
                 instance = Instantiate(asset, new Vector3(3, -1, 0), Quaternion.Euler(20, 35, 0));
-                stateText.text = "已用地址 " + address + " 加载 Cube。归还后可切换规则对比。";
+                stateText.text = "Loaded using address " + address + " to load Cube. Release it to compare another rule.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
             }
             catch (Exception exception)
             {
-                stateText.text = "加载失败：" + exception.Message;
+                stateText.text = "Load failed: " + exception.Message;
             }
             finally
             {
@@ -71,7 +71,7 @@ namespace UnityQGameFramework.Examples.Modules
                 await UniTask.NextFrame(destroyCancellationToken);
                 QGF.Resource.UnloadAsset(asset, loadedPackage);
                 asset = null;
-                stateText.text = "资产已归还，可以切换规则。";
+                stateText.text = "Asset released. You can switch addressing rules.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -85,7 +85,7 @@ namespace UnityQGameFramework.Examples.Modules
         private void Update()
         {
             int index = ruleDropdown.value;
-            ruleText.text = "规则：" + Rules[index] + "\n地址：" + Addresses[index] + "\n包：" + PackageNames[index];
+            ruleText.text = "Rule: " + Rules[index] + "\nAddress: " + Addresses[index] + "\nPackage: " + PackageNames[index];
             ruleDropdown.interactable = !busy && asset == null;
             loadButton.interactable = !busy && asset == null;
             releaseButton.interactable = !busy && asset != null;

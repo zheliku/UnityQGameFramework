@@ -18,12 +18,12 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Text stateText, dataText;
         internal bool ConfirmRequested, FinishRequested;
-        internal string LoadedLevel = "尚未选择关卡";
+        internal string LoadedLevel = "No level selected";
         internal bool HasLevelData;
         private void Start()
         {
             levelChoice.ClearOptions();
-            levelChoice.AddOptions(new System.Collections.Generic.List<string> { "森林", "沙漠" });
+            levelChoice.AddOptions(new System.Collections.Generic.List<string> { "Forest", "Desert" });
             confirmButton.onClick.AddListener(() => ConfirmRequested = true);
             finishButton.onClick.AddListener(() => FinishRequested = true);
         }
@@ -32,8 +32,8 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // ProcedureComponent 驱动流程状态机；当前流程由它持有。
             bool selecting = QGF.Procedure.CurrentProcedure is ExampleSelect03;
-            stateText.text = selecting ? "选择关卡" : "读取已交接的关卡数据";
-            dataText.text = $"已交接：{LoadedLevel}\n流程数据 Level：{(HasLevelData ? "保留中" : "已移除")}";
+            stateText.text = selecting ? "Select Level" : "Read the transferred level data";
+            dataText.text = $"Transferred: {LoadedLevel}\nProcedure data Level: {(HasLevelData ? "Retained" : "Removed")}";
             confirmButton.interactable = selecting;
             finishButton.interactable = !selecting && QGF.Procedure.CurrentProcedure != null;
             levelChoice.interactable = selecting;

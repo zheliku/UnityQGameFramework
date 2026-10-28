@@ -45,8 +45,8 @@ namespace Luban.Validation
                 Require(config.GetString("Game.Id") == "Star Force" && config.GetInt("Scene.Menu") == 1 && config.GetInt("Scene.Main") == 2,
                     "TOML Config changed the original global settings.");
                 var assets = catalog.GetAssets();
-                var tables = ((IDataTableLoader)new StarForce.Tables()).Load(name => new UnityQGameFramework.Luban.ByteBuf(assets[name].bytes));
-                component.RegisterDataTables(tables);
+                var tables = ((IDataTableLoader)new StarForce.Tables()).CreateTables(name => new UnityQGameFramework.Luban.ByteBuf(assets[name].bytes));
+                component.AddDataTables(tables);
                 bundle.Unload(true);
                 Require(component.GetDataTable<StarForce.TbEntity>().GetDataRow(10000).AssetName == "PlayerShip", "Parsed rows depended on released Unity assets.");
                 Require(m_Errors == 0, "Player logged errors.");

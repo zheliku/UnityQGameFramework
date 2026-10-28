@@ -24,9 +24,9 @@ namespace UnityQGameFramework.Examples.Modules
             // 本场景单独使用 Config。清空后重新解析 Inspector 中的 TOML。
             QGF.Config.RemoveAllConfigs();
             QGF.Config.ParseData(config.text);
-            valuesText.text = $"游戏：{QGF.Config.GetString("Game.Title")}\n"
-                + $"生命：{QGF.Config.GetInt("Player.MaxHp")}\n"
-                + $"速度：{QGF.Config.GetFloat("Player.Speed")}";
+            valuesText.text = $"Game: {QGF.Config.GetString("Game.Title")}\n"
+                + $"Health: {QGF.Config.GetInt("Player.MaxHp")}\n"
+                + $"Speed: {QGF.Config.GetFloat("Player.Speed")}";
         }
     }
 }

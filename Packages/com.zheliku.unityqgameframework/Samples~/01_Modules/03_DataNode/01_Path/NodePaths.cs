@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            treeText.text = $"Example / Battle / Score\n分数：{QGF.DataNode.GetData<VarInt32>(ScorePath).Value}";
+            treeText.text = $"Example / Battle / Score\nScore: {QGF.DataNode.GetData<VarInt32>(ScorePath).Value}";
         }
     }
 }

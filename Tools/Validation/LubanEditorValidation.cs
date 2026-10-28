@@ -50,7 +50,7 @@ public static class LubanEditorValidation
             var catalog = AssetDatabase.LoadAssetAtPath<LubanDataTableCatalog>(Root + "/Data Moved/Catalog.asset");
             Require(catalog.GetAssets().Count == 11, "Catalog references did not follow the move.");
             IDataTableLoader loader = new StarForce.Tables();
-            var tables = loader.Load(name => new UnityQGameFramework.Luban.ByteBuf(catalog.GetAssets()[name].bytes));
+            var tables = loader.CreateTables(name => new UnityQGameFramework.Luban.ByteBuf(catalog.GetAssets()[name].bytes));
             var entities = (StarForce.TbEntity)tables.Single(table => table is StarForce.TbEntity);
             Require(loader.SchemaHash == catalog.SchemaHash && entities.GetDataRow(10000).AssetName == "PlayerShip", "Moved catalog could not be parsed.");
         }

@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Examples.Modules
             writeButton.onClick.AddListener(() =>
             {
                 bool saved = container.WriteFile(FileName, Encoding.UTF8.GetBytes(contentInput.text));
-                resultText.text = saved ? "已写入容器" : "写入失败";
+                resultText.text = saved ? "Written to the container" : "Write failed";
             });
             readButton.onClick.AddListener(() =>
             {

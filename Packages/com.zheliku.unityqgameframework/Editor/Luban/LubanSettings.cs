@@ -50,7 +50,7 @@ namespace UnityQGameFramework.Editor
                 string path = AssetDatabase.GetAssetPath(value);
                 if (value != null && !path.StartsWith("Assets/", StringComparison.Ordinal))
                 {
-                    throw new ArgumentException("请选择保存在 Assets 中的 LubanProfile。");
+                    throw new ArgumentException("Select a LubanProfile saved inside Assets.");
                 }
 
                 m_ProfileGuid = value == null ? string.Empty : AssetDatabase.AssetPathToGUID(path);

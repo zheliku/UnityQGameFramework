@@ -57,18 +57,18 @@ namespace UnityQGameFramework.Examples.PointPointPoint
 
         private void Render()
         {
-            phase.text = "启动 → 菜单 → 游玩 → 结算    当前：" + Game.Phase;
-            menu.SetActive(Game.Phase == "菜单");
-            play.SetActive(Game.Phase == "游玩");
-            result.SetActive(Game.Phase == "结算");
-            rules.text = $"在 {Game.Duration:0} 秒内点中 {Game.TargetCount} 个目标。";
-            record.text = $"点空扣分并失去一次机会。最高分：{Game.BestScore}";
-            status.text = $"剩余 {Game.Remaining:F1} 秒    命中 {Game.Hits}/{Game.TargetCount}    机会 {Game.Lives}    分数 {Game.Score}";
+            phase.text = "Launch → Menu → Play → Result    Current: " + Game.Phase;
+            menu.SetActive(Game.Phase == "Menu");
+            play.SetActive(Game.Phase == "Play");
+            result.SetActive(Game.Phase == "Result");
+            rules.text = $"{Game.Duration:0} seconds to hit {Game.TargetCount} targets.";
+            record.text = $"Missing a target costs points and one life. Best: {Game.BestScore}";
+            status.text = $"Remaining {Game.Remaining:F1} s    Hits {Game.Hits}/{Game.TargetCount}    Lives {Game.Lives}    Score {Game.Score}";
             target.anchoredPosition = new Vector2(
                 (board.rect.width - target.rect.width) * Game.TargetX / 100f,
                 -(board.rect.height - target.rect.height) * Game.TargetY / 100f);
             resultTitle.text = Game.Result;
-            resultScore.text = $"本局 {Game.Score} 分    最高 {Game.BestScore} 分";
+            resultScore.text = $"This round {Game.Score} points    Best {Game.BestScore} points";
         }
     }
 }

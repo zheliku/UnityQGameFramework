@@ -30,12 +30,12 @@ namespace UnityQGameFramework.Examples.Modules
         {
             if (!int.TryParse(value, out int id))
             {
-                selectedText.text = "请输入整数 Id。";
+                selectedText.text = "Enter an integer ID.";
                 return;
             }
             // 按整数主键查询；找不到时返回 null。
             var item = items.GetDataRow(id);
-            selectedText.text = item == null ? "没有这个 Id。" : $"{item.Name}  价格 {item.Price}";
+            selectedText.text = item == null ? "ID not found." : $"{item.Name}  Price {item.Price}";
         }
 
         private void OnDestroy()

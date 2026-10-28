@@ -128,7 +128,7 @@ namespace UnityQGameFramework.Editor
         {
             if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
             {
-                Debug.LogWarning("目录不存在：" + folder);
+                Debug.LogWarning("Folder does not exist: " + folder);
                 return;
             }
             // A trailing separator asks the OS to display this directory's contents.

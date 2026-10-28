@@ -190,10 +190,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有实体组。
         /// </summary>
-        /// <param name="results">所有实体组。</param>
-        public void GetAllEntityGroups(List<IEntityGroup> results)
+        /// <param name="results">所有实体组；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllEntityGroupsNonAlloc(List<IEntityGroup> results)
         {
-            m_EntityManager.GetAllEntityGroups(results);
+            m_EntityManager.GetAllEntityGroupsNonAlloc(results);
         }
 
         /// <summary>
@@ -288,8 +288,8 @@ namespace UnityQGameFramework.Runtime
         /// 获取实体。
         /// </summary>
         /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="results">要获取的实体。</param>
-        public void GetEntities(string entityAssetName, List<Entity> results)
+        /// <param name="results">要获取的实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetEntitiesNonAlloc(string entityAssetName, List<Entity> results)
         {
             if (results == null)
             {
@@ -298,7 +298,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             results.Clear();
-            m_EntityManager.GetEntities(entityAssetName, m_InternalEntityResults);
+            m_EntityManager.GetEntitiesNonAlloc(entityAssetName, m_InternalEntityResults);
             foreach (IEntity entity in m_InternalEntityResults)
             {
                 results.Add((Entity)entity);
@@ -324,8 +324,8 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有已加载的实体。
         /// </summary>
-        /// <param name="results">所有已加载的实体。</param>
-        public void GetAllLoadedEntities(List<Entity> results)
+        /// <param name="results">所有已加载的实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadedEntitiesNonAlloc(List<Entity> results)
         {
             if (results == null)
             {
@@ -334,7 +334,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             results.Clear();
-            m_EntityManager.GetAllLoadedEntities(m_InternalEntityResults);
+            m_EntityManager.GetAllLoadedEntitiesNonAlloc(m_InternalEntityResults);
             foreach (IEntity entity in m_InternalEntityResults)
             {
                 results.Add((Entity)entity);
@@ -353,10 +353,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取所有正在加载实体的编号。
         /// </summary>
-        /// <param name="results">所有正在加载实体的编号。</param>
-        public void GetAllLoadingEntityIds(List<int> results)
+        /// <param name="results">所有正在加载实体的编号；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadingEntityIdsNonAlloc(List<int> results)
         {
-            m_EntityManager.GetAllLoadingEntityIds(results);
+            m_EntityManager.GetAllLoadingEntityIdsNonAlloc(results);
         }
 
         /// <summary>
@@ -623,8 +623,8 @@ namespace UnityQGameFramework.Runtime
         /// 获取所有子实体。
         /// </summary>
         /// <param name="parentEntityId">要获取所有子实体的父实体的实体编号。</param>
-        /// <param name="results">所有子实体。</param>
-        public void GetChildEntities(int parentEntityId, List<IEntity> results)
+        /// <param name="results">所有子实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetChildEntitiesNonAlloc(int parentEntityId, List<IEntity> results)
         {
             if (results == null)
             {
@@ -633,7 +633,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             results.Clear();
-            m_EntityManager.GetChildEntities(parentEntityId, m_InternalEntityResults);
+            m_EntityManager.GetChildEntitiesNonAlloc(parentEntityId, m_InternalEntityResults);
             foreach (IEntity entity in m_InternalEntityResults)
             {
                 results.Add((Entity)entity);
@@ -661,8 +661,8 @@ namespace UnityQGameFramework.Runtime
         /// 获取所有子实体。
         /// </summary>
         /// <param name="parentEntity">要获取所有子实体的父实体。</param>
-        /// <param name="results">所有子实体。</param>
-        public void GetChildEntities(IEntity parentEntity, List<IEntity> results)
+        /// <param name="results">所有子实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetChildEntitiesNonAlloc(IEntity parentEntity, List<IEntity> results)
         {
             if (results == null)
             {
@@ -671,7 +671,7 @@ namespace UnityQGameFramework.Runtime
             }
 
             results.Clear();
-            m_EntityManager.GetChildEntities(parentEntity, m_InternalEntityResults);
+            m_EntityManager.GetChildEntitiesNonAlloc(parentEntity, m_InternalEntityResults);
             foreach (IEntity entity in m_InternalEntityResults)
             {
                 results.Add((Entity)entity);

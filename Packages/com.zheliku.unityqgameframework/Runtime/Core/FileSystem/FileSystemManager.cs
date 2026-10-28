@@ -261,8 +261,8 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取所有文件系统集合。
         /// </summary>
-        /// <param name="results">获取的所有文件系统集合。</param>
-        public void GetAllFileSystems(List<IFileSystem> results)
+        /// <param name="results">获取的所有文件系统集合；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllFileSystemsNonAlloc(List<IFileSystem> results)
         {
             if (results == null)
             {

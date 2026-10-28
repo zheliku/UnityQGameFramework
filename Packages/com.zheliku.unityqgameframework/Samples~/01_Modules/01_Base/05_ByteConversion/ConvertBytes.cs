@@ -24,7 +24,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             if (!int.TryParse(valueInput.text, out int value))
             {
-                resultText.text = "请输入整数。";
+                resultText.text = "Enter an integer.";
                 return;
             }
 
@@ -35,7 +35,7 @@ namespace UnityQGameFramework.Examples.Modules
             Utility.Converter.GetBytes(value, buffer, 2);
             int restored = Utility.Converter.GetInt32(buffer, 2);
             resultText.text = string.Join(Environment.NewLine,
-                $"原值：{value}", $"缓冲区：{BitConverter.ToString(buffer)}", $"还原：{restored}");
+                $"Original: {value}", $"Buffer: {BitConverter.ToString(buffer)}", $"Restored: {restored}");
         }
     }
 }

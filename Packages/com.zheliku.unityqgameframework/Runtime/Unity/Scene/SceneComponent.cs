@@ -154,10 +154,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取已加载场景的资源名称。
         /// </summary>
-        /// <param name="results">已加载场景的资源名称。</param>
-        public void GetLoadedSceneAssetNames(List<string> results)
+        /// <param name="results">已加载场景的资源名称；填充前清空，容量不足时仍会扩容。</param>
+        public void GetLoadedSceneAssetNamesNonAlloc(List<string> results)
         {
-            m_SceneManager.GetLoadedSceneAssetNames(results);
+            m_SceneManager.GetLoadedSceneAssetNamesNonAlloc(results);
         }
 
         /// <summary>
@@ -182,10 +182,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取正在加载场景的资源名称。
         /// </summary>
-        /// <param name="results">正在加载场景的资源名称。</param>
-        public void GetLoadingSceneAssetNames(List<string> results)
+        /// <param name="results">正在加载场景的资源名称；填充前清空，容量不足时仍会扩容。</param>
+        public void GetLoadingSceneAssetNamesNonAlloc(List<string> results)
         {
-            m_SceneManager.GetLoadingSceneAssetNames(results);
+            m_SceneManager.GetLoadingSceneAssetNamesNonAlloc(results);
         }
 
         /// <summary>
@@ -210,10 +210,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取正在卸载场景的资源名称。
         /// </summary>
-        /// <param name="results">正在卸载场景的资源名称。</param>
-        public void GetUnloadingSceneAssetNames(List<string> results)
+        /// <param name="results">正在卸载场景的资源名称；填充前清空，容量不足时仍会扩容。</param>
+        public void GetUnloadingSceneAssetNamesNonAlloc(List<string> results)
         {
-            m_SceneManager.GetUnloadingSceneAssetNames(results);
+            m_SceneManager.GetUnloadingSceneAssetNamesNonAlloc(results);
         }
 
         /// <summary>

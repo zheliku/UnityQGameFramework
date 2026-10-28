@@ -1,0 +1,10 @@
+{
+  "UnityGameFramework": {
+    "commit": "e7eb3ef11393df0ac504204c480cdb839752b05f",
+    "archiveSha256": "f3d620aa96ce1dfc9113aa6d4377c6a925fbea40ab5278b6d3a9392d89a7081c"
+  },
+  "GameFramework": {
+    "commit": "d0c010b05167c58e92350449d04864a91ca13fd2",
+    "archiveSha256": "68441944e8d5915adf5d22429b84dd5a5ede0400a8af48d4cb8a4cc51792a226"
+  }
+}

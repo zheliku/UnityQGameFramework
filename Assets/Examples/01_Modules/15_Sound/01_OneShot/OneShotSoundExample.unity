@@ -210,8 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u70B9\u51FB\u64AD\u653E\u3002\u8D44\u6E90\u52A0\u8F7D\u548C\u58F0\u97F3\u4EE3\u7406\u7531
-    Sound \u6A21\u5757\u7BA1\u7406\u3002"
+  m_Text: "Click Play. Sound manages resource loading and sound agents."
 --- !u!222 &70735735
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -533,7 +532,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u64AD\u653E\u63D0\u793A\u97F3"
+  m_Text: "01  Play a Sound"
 --- !u!222 &251302055
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1145,7 +1144,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u64AD\u653E\u63D0\u793A\u97F3"
+  m_Text: "Play Notification"
 --- !u!222 &2111044165
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1181,9 +1180,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131992456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &2131992458
 MonoBehaviour:
   m_ObjectHideFlags: 0

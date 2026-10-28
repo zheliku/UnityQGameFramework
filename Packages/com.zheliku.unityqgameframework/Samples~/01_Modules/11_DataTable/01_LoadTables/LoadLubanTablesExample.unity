@@ -226,9 +226,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,7 +572,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u52a0\u8f7d Luban \u8868"
+  m_Text: "01  Load Luban Tables"
 --- !u!222 &428916097
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -746,8 +746,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u8FD0\u884C\u540E\u8BFB\u53D6 Excel \u751F\u6210\u7684\u6570\u636E\u3002Catalog
-    \u5728\u573A\u666F\u7684 DataTable \u7EC4\u4EF6\u4E2D\u6307\u5B9A\u3002"
+  m_Text: "Read Excel-generated data at runtime. Assign the Catalog to the scene DataTable component."
 --- !u!222 &1090648583
 CanvasRenderer:
   m_ObjectHideFlags: 0

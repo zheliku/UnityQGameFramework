@@ -1519,7 +1519,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  \u628A\u5173\u5361\u9009\u62E9\u4EA4\u7ED9\u52A0\u8F7D\u6D41\u7A0B"
+  m_Text: "03  Pass Level Selection to Loading"
 --- !u!222 &1062021473
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1899,7 +1899,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u786E\u8BA4\u5173\u5361\u5E76\u4EA4\u63A5"
+  m_Text: "Confirm and Transfer Level"
 --- !u!222 &1493952720
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2337,9 +2337,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825216915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1825216917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2801,7 +2801,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u7ED3\u675F\u52A0\u8F7D\uFF0C\u6E05\u7406\u6570\u636E"
+  m_Text: "Finish Loading and Clear Data"
 --- !u!222 &2117983347
 CanvasRenderer:
   m_ObjectHideFlags: 0

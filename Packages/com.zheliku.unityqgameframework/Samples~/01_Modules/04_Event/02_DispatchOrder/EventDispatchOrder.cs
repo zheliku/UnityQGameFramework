@@ -58,8 +58,8 @@ namespace UnityQGameFramework.Examples.Modules
                 return;
             }
 
-            orderText.text = $"FireNow 的回调：第 {immediate} 步\nFireNow 返回后：第 {afterImmediate} 步\n" + $"Fire 返回后：第 {afterQueued} 步\n排队消息的回调：第 {queued} 步";
-            queueText.text = $"提交时排队：{waiting} 条\n当前排队：{QGF.Event.EventCount} 条";
+            orderText.text = $"FireNow callback: step {immediate}\nAfter FireNow returns: step {afterImmediate}\n" + $"After Fire returns: step {afterQueued}\nQueued callback: step {queued}";
+            queueText.text = $"Queued when submitted: {waiting} entries\nCurrently queued: {QGF.Event.EventCount} entries";
         }
 
         private void OnDestroy()

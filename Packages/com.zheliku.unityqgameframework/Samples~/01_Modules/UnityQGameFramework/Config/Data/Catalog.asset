@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154542dc7ab2408b82a2f89dd8596656, type: 3}
   m_Name: Catalog
   m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.LubanDataTableCatalog
-  m_SchemaHash: 52a098a613f33c14a3a88687f69819fb8d52cb64d9a033d51de2e87dcfc80baf
+  m_SchemaHash: ad4c4a76f9583795ad5f36d411aa0c981c9696d252a59bdc0666787446606d8d
   m_GeneratorVersion: 5.1.0
   m_Entries:
   - Name: tbitem

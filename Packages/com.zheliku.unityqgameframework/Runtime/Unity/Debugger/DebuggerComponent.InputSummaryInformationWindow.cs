@@ -4,6 +4,7 @@
 //------------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -22,19 +23,20 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.Label("<b>Input Summary Information</b>");
                 GUILayout.BeginVertical("box");
                 {
-                    DrawItem("Back Button Leaves App", Input.backButtonLeavesApp.ToString());
-                    DrawItem("Device Orientation", Input.deviceOrientation.ToString());
-                    DrawItem("Mouse Present", Input.mousePresent.ToString());
-                    DrawItem("Mouse Position", Input.mousePosition.ToString());
-                    DrawItem("Mouse Scroll Delta", Input.mouseScrollDelta.ToString());
-                    DrawItem("Any Key", Input.anyKey.ToString());
-                    DrawItem("Any Key Down", Input.anyKeyDown.ToString());
-                    DrawItem("Input String", Input.inputString);
-                    DrawItem("IME Is Selected", Input.imeIsSelected.ToString());
-                    DrawItem("IME Composition Mode", Input.imeCompositionMode.ToString());
-                    DrawItem("Compensate Sensors", Input.compensateSensors.ToString());
-                    DrawItem("Composition Cursor Position", Input.compositionCursorPos.ToString());
-                    DrawItem("Composition String", Input.compositionString);
+                    Mouse mouse = Mouse.current;
+                    Keyboard keyboard = Keyboard.current;
+                    DrawItem("Input Devices", InputSystem.devices.Count.ToString());
+                    DrawItem("Screen Orientation", Screen.orientation.ToString());
+                    DrawItem("Mouse Present", (mouse != null).ToString());
+                    DrawItem("Mouse Position", mouse != null ? mouse.position.ReadValue().ToString() : "N/A");
+                    DrawItem("Mouse Scroll Delta", mouse != null ? mouse.scroll.ReadValue().ToString() : "N/A");
+                    DrawItem("Keyboard Present", (keyboard != null).ToString());
+                    DrawItem("Keyboard Layout", keyboard != null ? keyboard.keyboardLayout : "N/A");
+                    DrawItem("Any Key", (keyboard != null && keyboard.anyKey.isPressed).ToString());
+                    DrawItem("Any Key Down", (keyboard != null && keyboard.anyKey.wasPressedThisFrame).ToString());
+                    DrawItem("IME Is Selected", (keyboard != null && keyboard.imeSelected.isPressed).ToString());
+                    DrawItem("Compensate Sensors", InputSystem.settings.compensateForScreenOrientation.ToString());
+                    DrawItem("Update Mode", InputSystem.settings.updateMode.ToString());
                 }
                 GUILayout.EndVertical();
             }

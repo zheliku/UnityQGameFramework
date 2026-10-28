@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u68C0\u67E5\u7A7A\u76EE\u5F55\u4E0E\u542B\u6587\u4EF6\u76EE\u5F55"
+  m_Text: "Inspect Empty and Nonempty Folders"
 --- !u!222 &11712909
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -602,7 +602,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6570\u91CF"
+  m_Text: "Quantity"
 --- !u!222 &407903920
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1167,7 +1167,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "04  \u6587\u672c\u4e0e\u8def\u5f84"
+  m_Text: "04  Text and Paths"
 --- !u!222 &890654776
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1203,9 +1203,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 896263134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &896263136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1306,7 +1306,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8DEF\u5F84"
+  m_Text: "Path"
 --- !u!222 &988073570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1542,7 +1542,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u683C\u5F0F\u5316\u6587\u672C\u4E0E\u8DEF\u5F84"
+  m_Text: "Format Text and Paths"
 --- !u!222 &1339818699
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1621,7 +1621,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5220\u9664\u793A\u4F8B\u6587\u4EF6\uFF0C\u518D\u6E05\u7406\u7A7A\u76EE\u5F55"
+  m_Text: "Delete Example File and Empty Folders"
 --- !u!222 &1501166650
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2160,7 +2160,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.6509804, g: 0.90588236, b: 0.9607843, a: 1}
   m_CustomCaretColor: 1
   m_SelectionColor: {r: 0.15, g: 0.6, b: 0.8, a: 0.3}
-  m_Text: "\u98DE\u884C\u5458"
+  m_Text: "Pilot"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -2619,7 +2619,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u73A9\u5BB6"
+  m_Text: "Player"
 --- !u!222 &2085546478
 CanvasRenderer:
   m_ObjectHideFlags: 0

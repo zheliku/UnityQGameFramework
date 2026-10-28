@@ -102,8 +102,8 @@ namespace UnityQGameFramework.Core.DataNode
         /// <summary>
         /// 获取所有子数据结点。
         /// </summary>
-        /// <param name="results">所有子数据结点。</param>
-        void GetAllChild(List<IDataNode> results);
+        /// <param name="results">所有子数据结点；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllChildNonAlloc(List<IDataNode> results);
 
         /// <summary>
         /// 根据索引移除子数据结点。

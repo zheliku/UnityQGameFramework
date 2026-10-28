@@ -46,7 +46,7 @@ namespace UnityQGameFramework.Editor
             }
             catch (Exception exception)
             {
-                Debug.LogWarning("QGF Luban 初始化未完成：" + exception.Message);
+                Debug.LogWarning("QGF Luban initialization failed: " + exception.Message);
             }
         }
 
@@ -89,11 +89,10 @@ namespace UnityQGameFramework.Editor
             {
                 if (settings.Profile == null)
                 {
-                    throw new InvalidOperationException("全局 Profile 已丢失，请在 QGF > Settings 中重新指定。");
+                    throw new InvalidOperationException("The global Profile is missing. Assign it in QGF > Settings.");
                 }
 
                 RepairStarterSchemas(settings.Profile);
-                TrackExistingWorkspace(settings.Profile);
                 return settings.Profile;
             }
 
@@ -111,7 +110,7 @@ namespace UnityQGameFramework.Editor
                 string[] guids = AssetDatabase.FindAssets("t:LubanProfile", new[] { "Assets" });
                 if (guids.Length > 1)
                 {
-                    throw new InvalidOperationException("存在多个 Profile，请在 QGF 项目设置中指定全局 Profile。");
+                    throw new InvalidOperationException("Multiple Profiles were found. Select the global Profile in QGF project settings.");
                 }
 
                 profile = guids.Length == 1 ? AssetDatabase.LoadAssetAtPath<LubanProfile>(AssetDatabase.GUIDToAssetPath(guids[0])) : Create(settings.WorkspaceRoot);
@@ -120,7 +119,6 @@ namespace UnityQGameFramework.Editor
             settings.Profile = profile;
             EditorPrefs.DeleteKey(legacyKey);
             RepairStarterSchemas(profile);
-            TrackExistingWorkspace(profile);
             return profile;
         }
 
@@ -195,35 +193,6 @@ namespace UnityQGameFramework.Editor
         }
 
         /// <summary>
-        /// 记录已有 Luban 工作区。
-        /// </summary>
-        /// <param name="profile">已有的 Luban 生成配置。</param>
-        private static void TrackExistingWorkspace(LubanProfile profile)
-        {
-            string path = AssetDatabase.GetAssetPath(profile);
-            if (!path.EndsWith("/LubanProfile.asset", StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            string root = Path.GetDirectoryName(path).Replace('\\', '/');
-            if (root.EndsWith("/Editor", StringComparison.Ordinal))
-            {
-                root = root.Substring(0, root.Length - "/Editor".Length);
-            }
-
-            if (!root.StartsWith("Assets/", StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            if (LubanGenerator.SourcePath(profile) == root + "/Source" && AssetDatabase.GetAssetPath(profile.CodeFolder) == root + "/Generated" && AssetDatabase.GetAssetPath(profile.DataFolder) == root + "/Data")
-            {
-                QgfProjectAssets.TrackWorkspace(root);
-            }
-        }
-
-        /// <summary>
         /// 查找指定根目录下的 Luban profile。
         /// </summary>
         /// <param name="root">Luban 工作区根目录。</param>
@@ -242,27 +211,27 @@ namespace UnityQGameFramework.Editor
         {
             if (string.IsNullOrWhiteSpace(root))
             {
-                throw new ArgumentException("工作区目录不能为空。");
+                throw new ArgumentException("The workspace path must not be empty.");
             }
 
             root = root.Replace('\\', '/').TrimEnd('/');
             if (!root.StartsWith("Assets/", StringComparison.Ordinal))
             {
-                throw new ArgumentException("工作区必须位于 Assets 内。");
+                throw new ArgumentException("The workspace must be inside Assets.");
             }
 
             foreach (string segment in root.Split('/'))
             {
                 if (string.IsNullOrWhiteSpace(segment) || segment == "." || segment == "..")
                 {
-                    throw new ArgumentException("工作区目录不能包含空目录段、. 或 ..。");
+                    throw new ArgumentException("The workspace path must not contain empty segments, . or ...");
                 }
             }
 
             string assets = Path.GetFullPath(Application.dataPath) + Path.DirectorySeparatorChar;
             if (!Path.GetFullPath(root).StartsWith(assets, StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException("工作区必须位于 Assets 内。");
+                throw new ArgumentException("The workspace must be inside Assets.");
             }
 
             return root;
@@ -278,7 +247,7 @@ namespace UnityQGameFramework.Editor
             root = ValidateRoot(root);
             if (Directory.Exists(root))
             {
-                throw new IOException("工作区目录已存在，请指定已有 Profile 或选择新的目录：" + root);
+                throw new IOException("The workspace already exists. Select its Profile or choose a new folder: " + root);
             }
 
             EnsureFolder(root + "/Source");
@@ -300,7 +269,6 @@ namespace UnityQGameFramework.Editor
             profile.DataFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(root + "/Data");
             AssetDatabase.CreateAsset(profile, root + "/LubanProfile.asset");
             AssetDatabase.SaveAssets();
-            QgfProjectAssets.TrackWorkspace(root);
             return profile;
         }
 
@@ -320,7 +288,7 @@ namespace UnityQGameFramework.Editor
             EnsureFolder(parent);
             if (string.IsNullOrEmpty(AssetDatabase.CreateFolder(parent, Path.GetFileName(path))))
             {
-                throw new IOException("无法创建目录：" + path);
+                throw new IOException("Failed to create folder: " + path);
             }
         }
     }

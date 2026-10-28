@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core.DataTable;
@@ -14,6 +16,10 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField] private Slider priceSlider;
         [SerializeField] private Text rowsText;
         private TbItem items;
+        private readonly List<DRItem> results = new List<DRItem>();
+        private static readonly Comparison<DRItem> ComparePrice = (left, right) => left.Price.CompareTo(right.Price);
+        private Predicate<DRItem> condition;
+        private float maximumPrice;
 
         private void Start()
         {
@@ -22,16 +28,20 @@ namespace UnityQGameFramework.Examples.Modules
                 return;
             }
             items = QGF.DataTable.GetDataTable<TbItem>();
+            // 容量和委托在启动时准备；之后反复查询复用同一份列表。
+            results.Capacity = items.Count;
+            condition = item => item.Price <= maximumPrice;
             priceSlider.onValueChanged.AddListener(Filter);
             Filter(priceSlider.value);
         }
 
         private void Filter(float price)
         {
-            // 先按条件筛选，再按价格升序排列；返回结果数组，不改动原表。
-            var rows = items.GetDataRows(item => item.Price <= price, (a, b) => a.Price.CompareTo(b.Price));
-            rowsText.text = $"价格不超过 {price:F0}：";
-            foreach (var item in rows)
+            maximumPrice = price;
+            // NonAlloc 清空并填充列表，不改动原表；GetDataRows 则返回新数组。
+            items.GetDataRowsNonAlloc(condition, ComparePrice, results);
+            rowsText.text = $"Price at most {price:F0}:";
+            foreach (var item in results)
             {
                 rowsText.text += $"\n{item.Name}  {item.Price}";
             }

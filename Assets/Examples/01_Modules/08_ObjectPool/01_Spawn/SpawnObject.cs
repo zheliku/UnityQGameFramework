@@ -35,7 +35,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            stateText.text = borrowed == null ? "左侧：空闲 Cube" : "右侧：借出的同一个 Cube";
+            stateText.text = borrowed == null ? "Left: idle Cube" : "Right: the same Cube, now spawned";
             spawnButton.interactable = borrowed == null;
             returnButton.interactable = borrowed != null;
         }

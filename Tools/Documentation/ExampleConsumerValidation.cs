@@ -24,9 +24,9 @@ public static class ExampleConsumerValidation
 
     private sealed class State
     {
-        public string folder, anchor, importedPath, movedPath, rootMetaHash;
-        public Dictionary<string, string> settings, files;
-        public bool imported, independent, moved, played, removed, backupExact, settingsUnchanged;
+        public string folder, anchor, importedPath, movedPath;
+        public Dictionary<string, string> settings;
+        public bool imported, independent, moved, played, removed, settingsUnchanged;
         public bool profileSelected, profileReset;
         public int scenes;
     }
@@ -57,7 +57,7 @@ public static class ExampleConsumerValidation
             if (!sampleToImport.Import()) throw new Exception("Sample.Import failed");
             state.importedPath = Path.GetRelativePath(Directory.GetCurrentDirectory(), sampleToImport.importPath).Replace('\\', '/');
             state.imported = true;
-            // 脚本导入会触发重载，先落盘；登记检查放到重载完成后的 MoveOne。
+            // 脚本导入会触发重载，先记录导入位置，之后再检查目录移动。
             Save(state);
         }
         finally { EditorApplication.UnlockReloadAssemblies(); }
@@ -70,7 +70,6 @@ public static class ExampleConsumerValidation
         var state = Load();
         string root = Root(state);
         if (!state.imported || state.moved) throw new Exception("Unexpected move stage");
-        Require(IsSampleTracked(state.folder, AssetDatabase.AssetPathToGUID(root)), "Imported Sample registered for backup uninstall");
         // 先验证实际依赖，不能用“导入后未报编译错误”代替独立性检查。
         var dependencies = AssetDatabase.GetDependencies(Directory.GetFiles(root, "*.unity", SearchOption.AllDirectories)
             .Select(path => path.Replace('\\', '/')).ToArray(), true);
@@ -215,7 +214,7 @@ public static class ExampleConsumerValidation
         return new { selected = AssetDatabase.GetAssetPath(profile) };
     }
 
-    // 制作中替换尚未运行的隔离导入副本，仍走正式菜单并逐文件核对备份。
+    // 替换尚未运行的隔离导入副本，仍检查删除后宿主配置和工作区保持不变。
     public static object RemoveIntermediate() => Remove(false);
 
     private static object Remove(bool requirePlayed)
@@ -227,33 +226,23 @@ public static class ExampleConsumerValidation
         string root = Root(state);
         state.profileSelected = AssetDatabase.GetAssetPath(LubanSettings.instance.Profile)
             .StartsWith(root + "/", StringComparison.Ordinal);
-        state.files = Directory.GetFiles(root, "*", SearchOption.AllDirectories)
-            .ToDictionary(path => Path.GetRelativePath(root, path).Replace('\\', '/'), Hash);
-        state.rootMetaHash = Hash(root + ".meta");
-        var backupsBefore = Directory.Exists("QgfBackup~") ? Directory.GetDirectories("QgfBackup~") : Array.Empty<string>();
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-        // 选中共享目录内的文件，验证菜单仍按整个模块 Sample 备份卸载。
-        string selection = IsModuleSample(state.folder)
-            ? root + "/Common/UI/UISprites/ButtonOutline.png" : root;
-        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(selection);
-        QgfProjectAssets.RemoveSelectedExample();
+        // 与 Project 窗口删除目录使用同一 AssetDatabase 接口，无需框架追踪或卸载菜单。
+        Require(AssetDatabase.DeleteAsset(root), "Sample folder removal failed");
         state.removed = !Directory.Exists(root);
-        var fresh = Directory.GetDirectories("QgfBackup~").Except(backupsBefore).Single();
-        string copy = Path.Combine(fresh, root);
-        state.backupExact = Directory.Exists(copy) && Hash(copy + ".meta") == state.rootMetaHash
-            && Directory.GetFiles(copy, "*", SearchOption.AllDirectories).Length == state.files.Count
-            && state.files.All(item => File.Exists(copy + "/" + item.Key)
-            && Hash(copy + "/" + item.Key) == item.Value);
         state.settingsUnchanged = state.settings.All(item => Hash(item.Key) == item.Value);
-        state.profileReset = !state.profileSelected || AssetDatabase.GetAssetPath(LubanSettings.instance.Profile)
-            == "Assets/UnityQGameFramework/Config/LubanProfile.asset";
-        Require(state.removed && state.backupExact && state.settingsUnchanged, "Uninstall/backup/settings invariants");
-        Require(state.profileReset, "Removing the selected profile must restore the default workspace");
-        Require(Directory.Exists("Assets/UnityQGameFramework/Config"), "Default workspace preserved");
+        if (state.profileSelected)
+        {
+            Require(LubanSettings.instance.Profile == null, "Deleted Sample profile must no longer resolve");
+        }
+
+        state.profileReset = !state.profileSelected || LubanSettings.instance.Profile == null;
+        Require(state.removed && state.settingsUnchanged, "Sample deletion and host settings invariants");
+        Require(state.profileReset, "Removing a selected Sample must not assign another global Profile");
         Save(state);
         File.WriteAllText("Artifacts~/ExamplesMigration/" + state.folder + ".json", JsonConvert.SerializeObject(state, Formatting.Indented));
-        return new { passed = true, state.folder, state.removed, state.backupExact, state.settingsUnchanged,
-            state.profileSelected, state.profileReset, files = state.files.Count };
+        return new { passed = true, state.folder, state.removed, state.settingsUnchanged,
+            state.profileSelected, state.profileReset };
     }
 
     private static string Root(State state)
@@ -269,18 +258,6 @@ public static class ExampleConsumerValidation
     private static JArray ModuleEntries() => JArray.Parse(File.ReadAllText("Tools/Documentation/examples-layout.json"));
 
     private static bool IsModuleSample(string folder) => folder == "01_Modules";
-
-    private static bool IsSampleTracked(string folder, string guid)
-    {
-        var state = QgfProjectAssets.instance;
-        string fieldName = IsModuleSample(folder) ? "m_ModuleSamples"
-            : folder == "00_PointPointPoint" ? "m_PointSample" : "m_Sample";
-        var field = typeof(QgfProjectAssets).GetField(fieldName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-        if (field == null) throw new MissingFieldException(typeof(QgfProjectAssets).FullName, fieldName);
-        object value = field.GetValue(state);
-        if (value is string single) return single == guid;
-        return value is IEnumerable<string> samples && samples.Contains(guid);
-    }
 
     private static void Guard()
     {

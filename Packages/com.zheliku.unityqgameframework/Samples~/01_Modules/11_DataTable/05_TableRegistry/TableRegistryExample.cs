@@ -33,7 +33,7 @@ namespace UnityQGameFramework.Examples.Modules
             m_RegisterButton.onClick.AddListener(Register);
             m_RemoveButton.onClick.AddListener(Remove);
             m_ListButton.onClick.AddListener(Refresh);
-            m_StateText.text = "默认表已加载。可额外登记一张名为 Preview 的同类型表。";
+            m_StateText.text = "Default table loaded. Register another table of the same type named Preview.";
             Refresh();
         }
 
@@ -44,17 +44,17 @@ namespace UnityQGameFramework.Examples.Modules
             m_Preview = new TbItem(new ByteBuf(bytes), PreviewName);
 
             // 管理器以“表类型 + 名称”区分实例；重复登记会失败，不会覆盖已有表。
-            QGF.DataTable.RegisterDataTables(new[] { m_Preview });
+            QGF.DataTable.AddDataTables(new[] { m_Preview });
             TbItem table = QGF.DataTable.GetDataTable<TbItem>(PreviewName);
-            m_StateText.text = $"已登记 {table.Name}，共 {table.Count} 行；默认表仍然存在。";
+            m_StateText.text = $"Registered {table.Name}; total {table.Count} rows; the default table still exists.";
             Refresh();
         }
 
         private void Remove()
         {
             // 只移除这个实例的登记，不影响同类型的默认表，也不改写外部持有的记录。
-            bool removed = QGF.DataTable.DestroyDataTable(m_Preview);
-            m_StateText.text = removed ? "Preview 已移除，默认表仍可查询。" : "Preview 尚未登记。";
+            bool removed = QGF.DataTable.RemoveDataTable(m_Preview);
+            m_StateText.text = removed ? "Preview removed. The default table is still available." : "Preview is not registered.";
             m_Preview = null;
             Refresh();
         }
@@ -62,12 +62,12 @@ namespace UnityQGameFramework.Examples.Modules
         private void Refresh()
         {
             // 列表重载先清空再填充；复用列表可避免每次刷新都创建结果数组。
-            QGF.DataTable.GetAllDataTables(m_Tables);
+            QGF.DataTable.GetAllDataTablesNonAlloc(m_Tables);
             m_Text.Clear();
             foreach (DataTableBase table in m_Tables)
             {
-                string name = string.IsNullOrEmpty(table.Name) ? "默认" : table.Name;
-                m_Text.AppendLine($"{table.Type.Name} [{name}]  {table.Count} 行  行类型：{table.RowType.Name}");
+                string name = string.IsNullOrEmpty(table.Name) ? "Default" : table.Name;
+                m_Text.AppendLine($"{table.Type.Name} [{name}]  {table.Count} rows  Row type: {table.RowType.Name}");
             }
             m_TablesText.text = m_Text.ToString();
         }
@@ -89,7 +89,7 @@ namespace UnityQGameFramework.Examples.Modules
 
             if (m_Preview != null)
             {
-                dataTable.DestroyDataTable(m_Preview);
+                dataTable.RemoveDataTable(m_Preview);
             }
             dataTable.UnloadDataTables();
         }

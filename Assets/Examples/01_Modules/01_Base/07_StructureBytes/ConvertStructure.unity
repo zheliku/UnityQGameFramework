@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u91CA\u653E\u7F13\u5B58"
+  m_Text: "Release Buffer"
 --- !u!222 &164588828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -268,7 +268,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &330777157
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -561,7 +561,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u628A\u65E0\u5F15\u7528\u7ED3\u6784\u4F53\u5199\u5165\u5E26\u504F\u79FB\u7684\u7F13\u51B2\u533A\uFF0C\u518D\u8FD8\u539F\u4E3A\u7ED3\u6784\u4F53\u3002"
+  m_Text: "Write a structure without references into a buffer at an offset, then restore it."
 --- !u!222 &557418115
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -949,7 +949,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5199\u5165\u5E76\u8FD8\u539F"
+  m_Text: "Write and Restore"
 --- !u!222 &928638236
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1028,7 +1028,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u9884\u7559\u7F13\u5B58"
+  m_Text: "Reserve Buffer"
 --- !u!222 &1063950711
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1064,9 +1064,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162949803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1162949805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1409,7 +1409,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &1410658713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1609,7 +1609,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "07  \u7ed3\u6784\u4f53\u4e0e\u5b57\u8282"
+  m_Text: "07  Structures and Bytes"
 --- !u!222 &1558682563
 CanvasRenderer:
   m_ObjectHideFlags: 0

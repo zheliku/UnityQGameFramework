@@ -268,8 +268,8 @@ namespace UnityQGameFramework.Core.FileSystem
         /// <summary>
         /// 获取所有文件信息。
         /// </summary>
-        /// <param name="results">获取的所有文件信息。</param>
-        public void GetAllFileInfos(List<FileInfo> results)
+        /// <param name="results">获取的所有文件信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllFileInfosNonAlloc(List<FileInfo> results)
         {
             if (results == null)
             {

@@ -516,7 +516,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6309\u7D22\u5F15\u79FB\u9664\u7B2C\u4E00\u4E2A\u7269\u54C1"
+  m_Text: "Remove First Item by Index"
 --- !u!222 &210446408
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -595,7 +595,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6E05\u7A7A Inventory \u7684\u5185\u5BB9"
+  m_Text: "Clear Inventory Contents"
 --- !u!222 &251302054
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -766,7 +766,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6DFB\u52A0\u7269\u54C1\u8282\u70B9"
+  m_Text: "Add Item Node"
 --- !u!222 &443040693
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -845,7 +845,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6E05\u7A7A\u672C\u793A\u4F8B\u6574\u4E2A\u8282\u70B9\u6811"
+  m_Text: "Clear This Example Tree"
 --- !u!222 &517981618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1682,7 +1682,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6309\u540D\u79F0\u79FB\u9664\u7B2C\u4E00\u4E2A\u7269\u54C1"
+  m_Text: "Remove First Item by Name"
 --- !u!222 &1755093767
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1924,7 +1924,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u7ba1\u7406\u5b50\u8282\u70b9"
+  m_Text: "02  Manage Child Nodes"
 --- !u!222 &1865638769
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2060,9 +2060,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131992456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &2131992458
 MonoBehaviour:
   m_ObjectHideFlags: 0

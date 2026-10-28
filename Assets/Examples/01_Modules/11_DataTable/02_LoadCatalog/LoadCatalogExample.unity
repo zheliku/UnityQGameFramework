@@ -288,9 +288,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +583,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D6\u6D88\u52A0\u8F7D"
+  m_Text: "Cancel Loading"
 --- !u!222 &410845253
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -662,7 +662,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5378\u8F7D\u8868"
+  m_Text: "Unload Tables"
 --- !u!222 &428916096
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -904,7 +904,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u5f02\u6b65\u52a0\u8f7d Luban \u8868"
+  m_Text: "02  Load Luban Tables Asynchronously"
 --- !u!222 &771612972
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1336,7 +1336,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u52A0\u8F7D\u8868"
+  m_Text: "Load Tables"
 --- !u!222 &1250231371
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1764,7 +1764,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "Resource \u52A0\u8F7D Catalog\uFF1B\u5B8C\u6210\u540E DataTable \u53D1\u5E03\u8868\u89C6\u56FE\u3002"
+  m_Text: "Resource loads the Catalog; DataTable registers its tables after loading."
 --- !u!222 &1792891795
 CanvasRenderer:
   m_ObjectHideFlags: 0

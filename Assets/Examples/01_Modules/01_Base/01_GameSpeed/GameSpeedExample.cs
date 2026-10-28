@@ -26,9 +26,9 @@ namespace UnityQGameFramework.Examples.Modules
         {
             gameSeconds += Time.deltaTime;
             realSeconds += Time.unscaledDeltaTime;
-            speedValueText.text = $"速度：{QGF.Base.GameSpeed:F1} 倍";
-            gameTimeText.text = $"游戏时间：{gameSeconds:F1} 秒";
-            realTimeText.text = $"真实时间：{realSeconds:F1} 秒";
+            speedValueText.text = $"Speed: {QGF.Base.GameSpeed:F1}x";
+            gameTimeText.text = $"Game time: {gameSeconds:F1} s";
+            realTimeText.text = $"Real time: {realSeconds:F1} s";
         }
 
         private void OnDestroy()

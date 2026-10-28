@@ -31,7 +31,7 @@ namespace UnityQGameFramework.Examples.Modules
         private bool connecting;
         private NetworkEchoServer server;
         private INetworkChannel channel;
-        private string state = "尚未连接";
+        private string state = "Not connected";
         private void Start()
         {
             server = new NetworkEchoServer();
@@ -41,11 +41,11 @@ namespace UnityQGameFramework.Examples.Modules
             QGF.Event.Subscribe(ErrorArgs.EventId, OnEvent);
             connectButton.onClick.AddListener(Connect);
             sendButton.onClick.AddListener(Send);
-            noticeButton.onClick.AddListener(() => channel.Send(new NetworkTextPacket { MessageId = 3, Text = "走默认处理器的通知" }));
+            noticeButton.onClick.AddListener(() => channel.Send(new NetworkTextPacket { MessageId = 3, Text = "Notification for the default handler" }));
             splitToggle.isOn = true;
             splitToggle.onValueChanged.AddListener(value => server.SplitResponses = value);
-            firstInput.text = "你好 QGF";
-            secondInput.text = "第二份消息 + &= ?";
+            firstInput.text = "Hello QGF";
+            secondInput.text = "Second message + &= ?";
         }
 
         private void Connect()
@@ -70,11 +70,11 @@ namespace UnityQGameFramework.Examples.Modules
             }));
             channel.SetDefaultHandler((sender, packet) =>
             {
-                responses.Add("默认处理器：" + ((NetworkTextPacket)packet).Text);
+                responses.Add("Default handler: " + ((NetworkTextPacket)packet).Text);
                 notices++;
             });
             connecting = true;
-            state = "正在连接";
+            state = "Connecting";
             // this 会作为 UserData 随连接事件返回，便于识别请求来源。
             channel.Connect(IPAddress.Loopback, server.Port, this);
         }
@@ -93,12 +93,12 @@ namespace UnityQGameFramework.Examples.Modules
             if (args is ConnectedArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
             {
                 connecting = false;
-                state = "已连接，可以发送";
+                state = "Connected. Ready to send.";
             }
             else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
             {
                 connecting = false;
-                state = "连接已关闭";
+                state = "Connection closed";
             }
             else if (args is ErrorArgs error && ReferenceEquals(error.NetworkChannel, channel))
             {
@@ -113,10 +113,10 @@ namespace UnityQGameFramework.Examples.Modules
             stateText.text = state;
             if (channel != null)
             {
-                stateText.text += $"\n发送排队 {channel.SendPacketCount} · 累计发送 {channel.SentPacketCount}" + $"\n接收排队 {channel.ReceivePacketCount} · 累计接收 {channel.ReceivedPacketCount}" + $"\n文本回显 {received} · 默认处理器 {notices}";
+                stateText.text += $"\nSend queue {channel.SendPacketCount} · Total sent {channel.SentPacketCount}" + $"\nReceive queue {channel.ReceivePacketCount} · Total received {channel.ReceivedPacketCount}" + $"\nText echoes {received} · Default handler {notices}";
             }
 
-            responseText.text = responses.Count == 0 ? "等待实际回包……" : string.Join("\n", responses.ConvertAll(text => text.Length == 0 ? "（空文本）" : text));
+            responseText.text = responses.Count == 0 ? "Waiting for a response packet…" : string.Join("\n", responses.ConvertAll(text => text.Length == 0 ? "(empty text)" : text));
             bool ready = channel != null && channel.Connected && !connecting;
             sendButton.interactable = noticeButton.interactable = ready;
             connectButton.interactable = server != null && !connecting;

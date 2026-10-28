@@ -7,6 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using Image = UnityEngine.UI.Image;
 using Newtonsoft.Json.Linq;
 using UnityQGameFramework.Runtime;
@@ -95,7 +96,7 @@ public static class BuildExampleScenes
                 }
                 var example = new GameObject(type.Name).AddComponent(type);
                 BuildPanel(example, (JObject)layouts[type.Name], moduleRoot);
-                new GameObject("EventSystem", typeof(EventSystem), typeof(UIInputAdapter));
+                new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
                 string[] states = type == typeof(ProcedureEntryExample) ? new[] { "ExampleLaunch01" }
                     : type == typeof(ChangeProcedureExample) ? new[] { "ExampleLaunch02", "ExampleMenu02", "ExamplePlay02" }
                     : type == typeof(ProcedureDataExample) ? new[] { "ExampleSelect03", "ExampleLoad03" }
@@ -466,7 +467,7 @@ public static class BuildExampleScenes
             {
                 var input = (InputField)value;
                 input.text = (string)control["value"] ?? string.Empty;
-                input.placeholder.GetComponent<Text>().text = (string)control["label"] ?? "输入内容";
+                input.placeholder.GetComponent<Text>().text = (string)control["label"] ?? "Enter Text";
                 if ((string)control["contentType"] == "IntegerNumber") input.contentType = InputField.ContentType.IntegerNumber;
                 if ((string)control["multiline"] == "true")
                 {
@@ -590,7 +591,7 @@ public static class BuildExampleScenes
         text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.fontSize = 24;
         text.alignment = TextAnchor.MiddleCenter;
-        text.text = "窗口";
+        text.text = "Window";
         var view = new SerializedObject(root.AddComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>());
         view.FindProperty("window").objectReferenceValue = panel.GetComponent<RectTransform>();
         view.ApplyModifiedPropertiesWithoutUndo();

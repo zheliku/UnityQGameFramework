@@ -3,14 +3,14 @@
     "script": "Assets/Examples/01_Modules/01_Base/01_GameSpeed/GameSpeedExample.cs",
     "controls": [
       {
-        "text": "01  时间倍率",
+        "text": "01  Time Scale",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "拖动滑块，比较游戏时间与真实时间。",
+        "text": "Drag the slider to compare game time with real time.",
         "objectName": "Text_Description"
       },
       {
@@ -41,18 +41,18 @@
     "script": "Assets/Examples/01_Modules/01_Base/02_Json/JsonUtilityExample.cs",
     "controls": [
       {
-        "text": "02  JSON 对象",
+        "text": "02  JSON Objects",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "修改角色后写入 JSON，再读回快照。",
+        "text": "Edit the character, write JSON, then read the snapshot.",
         "objectName": "Text_Description"
       },
       {
-        "label": "名字",
+        "label": "Name",
         "type": "InputField",
         "field": "nameInput",
         "objectName": "InputField_Name"
@@ -63,13 +63,13 @@
         "objectName": "Text_Level"
       },
       {
-        "text": "升一级",
+        "text": "Level Up",
         "type": "Button",
         "field": "levelUpButton",
         "objectName": "Button_LevelUp"
       },
       {
-        "text": "对象 → JSON",
+        "text": "Object → JSON",
         "type": "Button",
         "field": "serializeButton",
         "objectName": "Button_Serialize"
@@ -82,7 +82,7 @@
         "objectName": "InputField_Json"
       },
       {
-        "text": "JSON → 对象",
+        "text": "JSON → Object",
         "type": "Button",
         "field": "deserializeButton",
         "objectName": "Button_Deserialize"
@@ -93,7 +93,7 @@
     "script": "Assets/Examples/01_Modules/01_Base/03_Logging/LoggingExample.cs",
     "controls": [
       {
-        "text": "03  日志级别",
+        "text": "03  Log Levels",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
@@ -104,7 +104,7 @@
         "objectName": "Text_Status"
       },
       {
-        "value": "玩家进入关卡",
+        "value": "Player Entered Level",
         "type": "InputField",
         "field": "messageInput",
         "objectName": "InputField_Message"
@@ -128,13 +128,13 @@
         "objectName": "Button_Warning"
       },
       {
-        "text": "Error（会产生一条错误日志）",
+        "text": "Error (writes an error to Console)",
         "type": "Button",
         "field": "errorButton",
         "objectName": "Button_Error"
       },
       {
-        "text": "灰色级别未编译。到 QGF > Logging 选择级别，编译后重新运行。",
+        "text": "Gray levels are not compiled. Choose levels in QGF > Logging, then run again after compilation.",
         "type": "Text",
         "objectName": "Text_Description"
       }
@@ -145,19 +145,19 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  解析与查询配置",
+        "text": "01  Parse and Query Configuration",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "读取 TOML 中的字符串、整数和小数。",
+        "text": "Read strings, integers and decimals from TOML.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "parseButton",
-        "text": "重新读取",
+        "text": "Read Again",
         "objectName": "Button_Parse"
       },
       {
@@ -172,19 +172,19 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  异步读取配置资产",
+        "text": "02  Load a Configuration Asset",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "通过 Config 读取 TOML，并用 UserData 关联完成事件。",
+        "text": "Load TOML through Config and correlate completion events with UserData.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "loadButton",
-        "text": "读取 Level.toml",
+        "text": "Read Level.toml",
         "objectName": "Button_Load"
       },
       {
@@ -200,13 +200,13 @@
       {
         "type": "Button",
         "field": "reserveButton",
-        "text": "预留读取缓冲",
+        "text": "Reserve Read Buffer",
         "objectName": "Button_Reserve"
       },
       {
         "type": "Button",
         "field": "freeButton",
-        "text": "释放读取缓冲",
+        "text": "Release Read Buffer",
         "objectName": "Button_Free"
       },
       {
@@ -220,14 +220,14 @@
     "script": "Assets/Examples/01_Modules/03_DataNode/01_Path/NodePaths.cs",
     "controls": [
       {
-        "text": "01  路径与相对节点",
+        "text": "01  Paths and Relative Nodes",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "用同一路径写入和读取分数。",
+        "text": "Write and read the score using the same node path.",
         "objectName": "Text_Description"
       },
       {
@@ -236,13 +236,13 @@
         "objectName": "Text_Tree"
       },
       {
-        "text": "分数 +10",
+        "text": "Score +10",
         "type": "Button",
         "field": "relativeButton",
         "objectName": "Button_Relative"
       },
       {
-        "text": "重置分数",
+        "text": "Reset Score",
         "type": "Button",
         "field": "absoluteButton",
         "objectName": "Button_Absolute"
@@ -253,37 +253,37 @@
     "script": "Assets/Examples/01_Modules/03_DataNode/02_Children/ManageNodeChildren.cs",
     "controls": [
       {
-        "text": "02  管理子节点",
+        "text": "02  Manage Child Nodes",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
       },
       {
-        "text": "添加物品节点",
+        "text": "Add Item Node",
         "type": "Button",
         "field": "addButton",
         "objectName": "Button_Add"
       },
       {
-        "text": "按名称移除第一个物品",
+        "text": "Remove First Item by Name",
         "type": "Button",
         "field": "removeNameButton",
         "objectName": "Button_RemoveName"
       },
       {
-        "text": "按索引移除第一个物品",
+        "text": "Remove First Item by Index",
         "type": "Button",
         "field": "removeIndexButton",
         "objectName": "Button_RemoveIndex"
       },
       {
-        "text": "清空 Inventory 的内容",
+        "text": "Clear Inventory Contents",
         "type": "Button",
         "field": "clearNodeButton",
         "objectName": "Button_ClearNode"
       },
       {
-        "text": "清空本示例整个节点树",
+        "text": "Clear This Example Tree",
         "type": "Button",
         "field": "clearAllButton",
         "objectName": "Button_ClearAll"
@@ -305,13 +305,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  订阅、发送与取消",
+        "text": "01  Subscribe, Fire and Unsubscribe",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "点击按钮发送一条消息，接收函数累加金币。",
+        "text": "Click to fire a message; its receiver adds coins.",
         "objectName": "Text_Description"
       },
       {
@@ -322,7 +322,7 @@
       {
         "type": "Button",
         "field": "sendButton",
-        "text": "发送 +10 金币",
+        "text": "Fire +10 Coins",
         "objectName": "Button_Send"
       }
     ]
@@ -331,13 +331,13 @@
     "script": "Assets/Examples/01_Modules/04_Event/02_DispatchOrder/EventDispatchOrder.cs",
     "controls": [
       {
-        "text": "02  立即派发与排队",
+        "text": "02  Immediate and Queued Dispatch",
         "type": "Text",
         "title": true,
         "objectName": "Text_Title"
       },
       {
-        "text": "比较一次派发顺序",
+        "text": "Compare Dispatch Order",
         "type": "Button",
         "field": "compareButton",
         "objectName": "Button_Compare"
@@ -359,7 +359,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  等待与工作",
+        "text": "01  Waiting and Working",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -390,13 +390,13 @@
       {
         "type": "Button",
         "field": "workButton",
-        "text": "开始工作",
+        "text": "Start Work",
         "objectName": "Button_Work"
       },
       {
         "type": "Toggle",
         "field": "automatic",
-        "label": "连续工作",
+        "label": "Repeat Work",
         "objectName": "Toggle_Automatic"
       }
     ]
@@ -406,13 +406,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  状态机共享数据",
+        "text": "02  Shared State Machine Data",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "把任务数写入状态机，执行状态读取并逐秒减少它。",
+        "text": "Store task count in the state machine; the processing state reads and decrements it each second.",
         "objectName": "Text_Description"
       },
       {
@@ -420,25 +420,25 @@
         "field": "jobsInput",
         "objectName": "InputField_JobsInput",
         "value": "3",
-        "label": "任务数"
+        "label": "Task Count"
       },
       {
         "type": "Button",
         "field": "loadButton",
         "objectName": "Button_LoadButton",
-        "text": "写入任务"
+        "text": "Set Task Count"
       },
       {
         "type": "Button",
         "field": "runButton",
         "objectName": "Button_RunButton",
-        "text": "开始执行"
+        "text": "Start Processing"
       },
       {
         "type": "Button",
         "field": "clearButton",
         "objectName": "Button_ClearButton",
-        "text": "移除任务"
+        "text": "Remove Task"
       },
       {
         "type": "Text",
@@ -462,13 +462,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  用名称管理多台状态机",
+        "text": "03  Named State Machines",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "Left 和 Right 使用同一个 owner 类型，通过名称分别创建、查询和销毁。",
+        "text": "Left and Right share an owner type. Create, query and destroy each by name.",
         "objectName": "Text_Description"
       },
       {
@@ -490,13 +490,13 @@
         "type": "Button",
         "field": "destroyButton",
         "objectName": "Button_DestroyButton",
-        "text": "销毁 Left"
+        "text": "Destroy Left"
       },
       {
         "type": "Button",
         "field": "recreateButton",
         "objectName": "Button_RecreateButton",
-        "text": "重新创建 Left"
+        "text": "Recreate Left"
       },
       {
         "type": "Text",
@@ -510,7 +510,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  从入口流程开始",
+        "text": "01  Entrance Procedure",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -534,7 +534,7 @@
       },
       {
         "type": "Text",
-        "text": "在 QGF / Procedure 查看已注册流程和入口。",
+        "text": "Inspect registered procedures and the entrance in QGF / Procedure.",
         "objectName": "Text_Description"
       }
     ]
@@ -544,7 +544,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  菜单与游玩",
+        "text": "02  Menu and Play",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -557,13 +557,13 @@
       {
         "type": "Button",
         "field": "enterButton",
-        "text": "进入游玩",
+        "text": "Enter Play",
         "objectName": "Button_Enter"
       },
       {
         "type": "Button",
         "field": "backButton",
-        "text": "返回菜单",
+        "text": "Return to Menu",
         "objectName": "Button_Back"
       },
       {
@@ -579,7 +579,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  把关卡选择交给加载流程",
+        "text": "03  Pass Level Selection to Loading",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -591,13 +591,13 @@
       {
         "type": "Button",
         "field": "confirmButton",
-        "text": "确认关卡并交接",
+        "text": "Confirm and Transfer Level",
         "objectName": "Button_Confirm"
       },
       {
         "type": "Button",
         "field": "finishButton",
-        "text": "结束加载，清理数据",
+        "text": "Finish Loading and Clear Data",
         "objectName": "Button_Finish"
       },
       {
@@ -619,20 +619,20 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  借出、归还、再借出",
+        "text": "01  Acquire, Release and Reuse",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Button",
         "field": "acquireButton",
-        "text": "借一个货箱",
+        "text": "Acquire a Crate",
         "objectName": "Button_Acquire"
       },
       {
         "type": "Button",
         "field": "releaseButton",
-        "text": "归还手中的货箱",
+        "text": "Release Held Crate",
         "objectName": "Button_Release"
       },
       {
@@ -660,7 +660,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  谁负责归还变量",
+        "text": "02  Variable Ownership",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -679,25 +679,25 @@
       {
         "type": "Button",
         "field": "acquireButton",
-        "text": "在本地取得变量 7",
+        "text": "Acquire Local Variable 7",
         "objectName": "Button_Acquire"
       },
       {
         "type": "Button",
         "field": "releaseButton",
-        "text": "本地归还",
+        "text": "Release Locally",
         "objectName": "Button_Release"
       },
       {
         "type": "Button",
         "field": "transferButton",
-        "text": "把变量交给节点",
+        "text": "Transfer Variable to Node",
         "objectName": "Button_Transfer"
       },
       {
         "type": "Button",
         "field": "removeButton",
-        "text": "删除节点，由模块归还",
+        "text": "Remove Node and Release",
         "objectName": "Button_Remove"
       }
     ]
@@ -707,13 +707,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  保存计数",
+        "text": "01  Save a Counter",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "增加计数后停止并重新运行，观察保存的值。",
+        "text": "Increment the counter, stop, then run again to read the saved value.",
         "objectName": "Text_Description"
       },
       {
@@ -725,13 +725,13 @@
         "type": "Button",
         "field": "saveButton",
         "objectName": "Button_SaveButton",
-        "text": "+1 并保存"
+        "text": "+1 and Save"
       },
       {
         "type": "Button",
         "field": "resetButton",
         "objectName": "Button_ResetButton",
-        "text": "清除计数"
+        "text": "Clear Counter"
       }
     ]
   },
@@ -741,12 +741,12 @@
       {
         "type": "Text",
         "objectName": "Text_Title",
-        "text": "02  保存与读取对象",
+        "text": "02  Save and Read an Object",
         "title": true
       },
       {
         "type": "Text",
-        "text": "保存一个 Pilot 对象，重新读取时自动反序列化。",
+        "text": "Save a Pilot object and deserialize it when reading again.",
         "objectName": "Text_Description"
       },
       {
@@ -763,7 +763,7 @@
         "type": "InputField",
         "objectName": "InputField_NameInput",
         "field": "nameInput",
-        "value": "小飞行员"
+        "value": "Young Pilot"
       },
       {
         "type": "Slider",
@@ -777,19 +777,19 @@
         "type": "Button",
         "objectName": "Button_SaveButton",
         "field": "saveButton",
-        "text": "保存对象"
+        "text": "Save Object"
       },
       {
         "type": "Button",
         "objectName": "Button_ReadButton",
         "field": "readButton",
-        "text": "读取对象"
+        "text": "Read Object"
       },
       {
         "type": "Button",
         "objectName": "Button_RemoveButton",
         "field": "removeButton",
-        "text": "移除对象"
+        "text": "Remove Object"
       }
     ]
   },
@@ -798,7 +798,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  查询与格式化翻译",
+        "text": "01  Query and Format Translations",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -817,7 +817,7 @@
         "type": "Button",
         "field": "rewardButton",
         "objectName": "Button_RewardButton",
-        "text": "+10 金币"
+        "text": "+10 Coins"
       },
       {
         "type": "Text",
@@ -832,7 +832,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  切换语言",
+        "text": "02  Switch Languages",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -846,7 +846,7 @@
         "type": "Button",
         "field": "action2Button",
         "objectName": "Button_Action2Button",
-        "text": "简体中文"
+        "text": "Simplified Chinese"
       },
       {
         "type": "Text",
@@ -862,31 +862,31 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  异步加载 Luban 表",
+        "text": "02  Load Luban Tables Asynchronously",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "Resource 加载 Catalog；完成后 DataTable 发布表视图。",
+        "text": "Resource loads the Catalog; DataTable registers its tables after loading.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "loadButton",
-        "text": "加载表",
+        "text": "Load Tables",
         "objectName": "Button_Load"
       },
       {
         "type": "Button",
         "field": "cancelButton",
-        "text": "取消加载",
+        "text": "Cancel Loading",
         "objectName": "Button_Cancel"
       },
       {
         "type": "Button",
         "field": "unloadButton",
-        "text": "卸载表",
+        "text": "Unload Tables",
         "objectName": "Button_Unload"
       },
       {
@@ -909,13 +909,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  按 Id 查询",
+        "text": "03  Query by ID",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "输入物品 Id，读取一条记录。",
+        "text": "Enter an item ID to query one row.",
         "objectName": "Text_Description"
       },
       {
@@ -936,7 +936,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  资产与实例的生命周期",
+        "text": "01  Asset and Instance Lifetimes",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -958,13 +958,13 @@
       {
         "type": "Button",
         "field": "removeButton",
-        "text": "销毁左边实例",
+        "text": "Destroy Left Instance",
         "objectName": "Button_Remove"
       },
       {
         "type": "Button",
         "field": "releaseButton",
-        "text": "销毁剩余实例并归还资产",
+        "text": "Destroy Remaining Instances and Release Asset",
         "objectName": "Button_Release"
       }
     ]
@@ -974,13 +974,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  显示与隐藏实体",
+        "text": "01  Show and Hide an Entity",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "显示一个旋转的 Cube。隐藏后再显示，由实体组复用实例。",
+        "text": "Show a rotating Cube. Hide and show it again to reuse the entity instance.",
         "objectName": "Text_Description"
       },
       {
@@ -992,13 +992,13 @@
         "type": "Button",
         "field": "showButton",
         "objectName": "Button_ShowButton",
-        "text": "显示 Cube"
+        "text": "Show Cube"
       },
       {
         "type": "Button",
         "field": "hideButton",
         "objectName": "Button_HideButton",
-        "text": "隐藏 Cube"
+        "text": "Hide Cube"
       }
     ]
   },
@@ -1007,7 +1007,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  实例复用与缓存保留",
+        "text": "02  Instance Reuse and Retention",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -1036,14 +1036,14 @@
       {
         "type": "Toggle",
         "field": "lockedToggle",
-        "label": "锁定本次实例，保留空闲缓存",
+        "label": "Lock Instance to Retain Idle Cache",
         "value": "false",
         "objectName": "Toggle_Locked"
       },
       {
         "type": "Button",
         "field": "recycleButton",
-        "text": "隐藏，等待，再显示",
+        "text": "Hide, Wait and Show Again",
         "objectName": "Button_Recycle"
       }
     ]
@@ -1053,13 +1053,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  打开与关闭窗口",
+        "text": "01  Open and Close a Window",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "窗口使用 UIFormLogic 处理打开、关闭和显示层级。",
+        "text": "UIFormLogic handles opening, closing and display order.",
         "objectName": "Text_Description"
       },
       {
@@ -1071,13 +1071,13 @@
         "type": "Button",
         "field": "openButton",
         "objectName": "Button_OpenButton",
-        "text": "打开背包"
+        "text": "Open Inventory"
       },
       {
         "type": "Button",
         "field": "closeButton",
         "objectName": "Button_CloseButton",
-        "text": "关闭背包"
+        "text": "Close Inventory"
       }
     ]
   },
@@ -1087,7 +1087,7 @@
       {
         "type": "Text",
         "objectName": "Text_Title",
-        "text": "02  窗口复用与缓存",
+        "text": "02  Window Reuse and Caching",
         "title": true
       },
       {
@@ -1117,13 +1117,13 @@
         "type": "Toggle",
         "objectName": "Toggle_Locked",
         "field": "lockedToggle",
-        "text": "锁定缓存实例"
+        "text": "Lock Cached Instance"
       },
       {
         "type": "Button",
         "objectName": "Button_Reopen",
         "field": "reopenButton",
-        "text": "关闭后重新打开"
+        "text": "Close and Reopen"
       }
     ]
   },
@@ -1133,7 +1133,7 @@
       {
         "type": "Text",
         "objectName": "Text_Title",
-        "text": "03  覆盖、暂停与置顶",
+        "text": "03  Cover, Pause and Focus",
         "title": true
       },
       {
@@ -1150,33 +1150,33 @@
         "type": "Toggle",
         "objectName": "Toggle_Pause",
         "field": "pauseToggle",
-        "text": "打开上层时暂停下层",
+        "text": "Pause Covered Form",
         "value": "true"
       },
       {
         "type": "Button",
         "objectName": "Button_Open",
         "field": "openButton",
-        "text": "打开上层窗口"
+        "text": "Open Overlay"
       },
       {
         "type": "Button",
         "objectName": "Button_Close",
         "field": "closeButton",
-        "text": "关闭上层窗口"
+        "text": "Close Overlay"
       },
       {
         "type": "Toggle",
         "objectName": "Toggle_Context",
         "field": "contextToggle",
-        "text": "置顶时携带数据",
+        "text": "Focus with User Data",
         "value": "true"
       },
       {
         "type": "Button",
         "objectName": "Button_Refocus",
         "field": "refocusButton",
-        "text": "将背包移到顶层"
+        "text": "Focus Inventory"
       }
     ]
   },
@@ -1185,20 +1185,20 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  播放提示音",
+        "text": "01  Play a Sound",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "点击播放。资源加载和声音代理由 Sound 模块管理。",
+        "text": "Click Play. Sound manages resource loading and sound agents.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "playButton",
         "objectName": "Button_PlayButton",
-        "text": "播放提示音"
+        "text": "Play Notification"
       },
       {
         "type": "Text",
@@ -1212,13 +1212,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  声音组与单声道音量",
+        "text": "02  Group and Voice Volume",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "组音量与单声道音量相乘；任意一级静音都会静音。",
+        "text": "Group and voice volumes multiply. Muting either level silences the sound.",
         "objectName": "Text_Description"
       },
       {
@@ -1228,7 +1228,7 @@
       },
       {
         "type": "Text",
-        "text": "音乐组音量",
+        "text": "Music Group Volume",
         "row": "group",
         "objectName": "Text_GroupVolume"
       },
@@ -1241,7 +1241,7 @@
       },
       {
         "type": "Text",
-        "text": "单声道音量",
+        "text": "Voice Volume",
         "row": "voice",
         "objectName": "Text_VoiceVolume"
       },
@@ -1255,27 +1255,27 @@
       {
         "type": "Toggle",
         "field": "groupMuteToggle",
-        "text": "音乐组静音",
+        "text": "Mute Music Group",
         "value": false,
         "objectName": "Toggle_GroupMute"
       },
       {
         "type": "Toggle",
         "field": "voiceMuteToggle",
-        "text": "单声道静音",
+        "text": "Mute Voice",
         "value": false,
         "objectName": "Toggle_VoiceMute"
       },
       {
         "type": "Button",
         "field": "playButton",
-        "text": "播放音乐",
+        "text": "Play Music",
         "objectName": "Button_Play"
       },
       {
         "type": "Button",
         "field": "stopButton",
-        "text": "停止音乐组",
+        "text": "Stop Music Group",
         "objectName": "Button_Stop"
       }
     ]
@@ -1285,13 +1285,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  加载与卸载房间",
+        "text": "01  Load and Unload a Room",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "加载后右侧出现房间，卸载后移除。",
+        "text": "Loading shows a room on the right; unloading removes it.",
         "objectName": "Text_Description"
       },
       {
@@ -1303,13 +1303,13 @@
         "type": "Button",
         "field": "loadButton",
         "objectName": "Button_LoadButton",
-        "text": "加载房间"
+        "text": "Load Room"
       },
       {
         "type": "Button",
         "field": "unloadButton",
         "objectName": "Button_UnloadButton",
-        "text": "卸载房间"
+        "text": "Unload Room"
       }
     ]
   },
@@ -1318,13 +1318,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  顺序切关",
+        "text": "02  Switch Rooms in Sequence",
         "objectName": "Text_Title",
         "title": true
       },
       {
         "type": "Text",
-        "text": "先卸载旧房间，完成后加载新房间。",
+        "text": "Unload the previous room before loading the next.",
         "objectName": "Text_Description"
       },
       {
@@ -1336,7 +1336,7 @@
         "type": "Button",
         "field": "switchButton",
         "objectName": "Button_SwitchButton",
-        "text": "切到另一个房间"
+        "text": "Switch Room"
       }
     ]
   },
@@ -1345,13 +1345,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  写入与读取容器",
+        "text": "01  Write and Read a Container",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "修改文字后写入，再读取容器中的同一个文件。",
+        "text": "Edit the text, write it, then read the same file from the container.",
         "objectName": "Text_Description"
       },
       {
@@ -1364,13 +1364,13 @@
         "type": "Button",
         "field": "writeButton",
         "objectName": "Button_WriteButton",
-        "text": "写入"
+        "text": "Write"
       },
       {
         "type": "Button",
         "field": "readButton",
         "objectName": "Button_ReadButton",
-        "text": "读取"
+        "text": "Read"
       },
       {
         "type": "Text",
@@ -1384,19 +1384,19 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  GET 与响应正文",
+        "text": "01  GET and Response Body",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "本机服务返回 JSON。八种重载的请求内容相同，附加参数用于管理任务。",
+        "text": "The local server returns JSON. Request overloads share the same payload; extra arguments control task management.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "requestButton",
-        "text": "发送 GET",
+        "text": "Send GET",
         "row": "request",
         "objectName": "Button_RequestButton"
       },
@@ -1418,25 +1418,25 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  取消排队中的请求",
+        "text": "02  Cancel a Queued Request",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "正在执行的 hold 被取消后，排队任务仍按优先级运行。",
+        "text": "Canceling the active hold request lets queued tasks continue in priority order.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "enqueueButton",
-        "text": "创建请求队列",
+        "text": "Create Request Queue",
         "objectName": "Button_Enqueue"
       },
       {
         "type": "Button",
         "field": "cancelButton",
-        "text": "取消 hold 请求",
+        "text": "Cancel Hold Request",
         "objectName": "Button_Cancel"
       },
       {
@@ -1462,26 +1462,26 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  下载到文件",
+        "text": "01  Download to a File",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "HTTP 响应先写入 .download，成功后才替换正式文件。",
+        "text": "HTTP writes to .download first; the final file is replaced only after success.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "downloadButton",
-        "text": "下载文件",
+        "text": "Download File",
         "row": "action",
         "objectName": "Button_DownloadButton"
       },
       {
         "type": "Button",
         "field": "clearButton",
-        "text": "清理文件",
+        "text": "Clear Files",
         "row": "action",
         "objectName": "Button_ClearButton"
       },
@@ -1510,13 +1510,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  字节进度与写盘",
+        "text": "02  Download Progress and File Writes",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "观察已接收字节、百分比和汇总速度。",
+        "text": "Observe received bytes, percentage and total download speed.",
         "objectName": "Text_Description"
       },
       {
@@ -1528,7 +1528,7 @@
       {
         "type": "Button",
         "field": "downloadButton",
-        "text": "开始下载",
+        "text": "Start Download",
         "row": "action",
         "objectName": "Button_DownloadButton"
       },
@@ -1559,40 +1559,40 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  取消与断点续传",
+        "text": "03  Cancel and Resume a Download",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "下载一部分后取消，再次开始可从临时文件续传。",
+        "text": "Cancel a partial download, then start again to resume from the temporary file.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "downloadButton",
-        "text": "开始 / 继续",
+        "text": "Start / Resume",
         "row": "action",
         "objectName": "Button_DownloadButton"
       },
       {
         "type": "Button",
         "field": "clearButton",
-        "text": "清理文件",
+        "text": "Clear Files",
         "row": "action",
         "objectName": "Button_ClearButton"
       },
       {
         "type": "Dropdown",
         "field": "cancelMode",
-        "choices": "保留临时文件|清理临时文件",
+        "choices": "Keep Temporary File|Delete Temporary File",
         "row": "cancel",
         "objectName": "Dropdown_CancelMode"
       },
       {
         "type": "Button",
         "field": "cancelButton",
-        "text": "取消本次下载",
+        "text": "Cancel Download",
         "row": "cancel",
         "objectName": "Button_CancelButton"
       },
@@ -1623,13 +1623,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  连接 TCP 通道",
+        "text": "01  Connect a TCP Channel",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "连接本机服务器，断开后可以重新连接。",
+        "text": "Connect to the local server, disconnect and reconnect.",
         "objectName": "Text_Description"
       },
       {
@@ -1641,13 +1641,13 @@
         "type": "Button",
         "field": "connectButton",
         "objectName": "Button_ConnectButton",
-        "text": "连接"
+        "text": "Connect"
       },
       {
         "type": "Button",
         "field": "closeButton",
         "objectName": "Button_CloseButton",
-        "text": "断开"
+        "text": "Disconnect"
       }
     ]
   },
@@ -1656,26 +1656,26 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  消息回显",
+        "text": "02  Message Echo",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "同帧发送两条文本，比较完整响应与拆分响应。",
+        "text": "Send two messages in one frame. Compare complete and fragmented responses.",
         "objectName": "Text_Description"
       },
       {
         "type": "Dropdown",
         "field": "serviceMode",
-        "choices": "Tcp · 异步接收|TcpWithSyncReceive · 同步接收",
+        "choices": "Tcp · Async Receive|TcpWithSyncReceive · Sync Receive",
         "row": "connect",
         "objectName": "Dropdown_ServiceMode"
       },
       {
         "type": "Button",
         "field": "connectButton",
-        "text": "连接 / 重建",
+        "text": "Connect / Recreate",
         "row": "connect",
         "objectName": "Button_ConnectButton"
       },
@@ -1694,21 +1694,21 @@
       {
         "type": "Toggle",
         "field": "splitToggle",
-        "text": "服务器拆分响应",
+        "text": "Fragment Server Responses",
         "row": "send",
         "objectName": "Toggle_SplitToggle"
       },
       {
         "type": "Button",
         "field": "sendButton",
-        "text": "发送两份文本",
+        "text": "Send Two Messages",
         "row": "send",
         "objectName": "Button_SendButton"
       },
       {
         "type": "Button",
         "field": "noticeButton",
-        "text": "发送默认处理器通知",
+        "text": "Send Default Handler Notification",
         "row": "send",
         "objectName": "Button_NoticeButton"
       },
@@ -1731,20 +1731,20 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  查看运行信息",
+        "text": "01  Runtime Information",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "调试窗口在开发版本中提供运行时诊断。",
+        "text": "The debugger provides runtime diagnostics in development builds.",
         "objectName": "Text_Description"
       },
       {
         "type": "Toggle",
         "field": "activeToggle",
         "objectName": "Toggle_ActiveToggle",
-        "text": "显示调试窗口",
+        "text": "Show Debugger",
         "value": true
       },
       {
@@ -1760,13 +1760,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  空间声音",
+        "text": "03  Spatial Sound",
         "objectName": "Text_Title",
         "title": true
       },
       {
         "type": "Text",
-        "text": "移动声源，调整最大距离、2D/3D 混合和声相。",
+        "text": "Move the source and adjust maximum distance, 2D/3D blend and stereo pan.",
         "objectName": "Text_Description"
       },
       {
@@ -1777,7 +1777,7 @@
       },
       {
         "type": "Text",
-        "text": "标记偏移（米）",
+        "text": "Marker Offset (m)",
         "objectName": "Text_Position",
         "row": "Position"
       },
@@ -1792,7 +1792,7 @@
       },
       {
         "type": "Text",
-        "text": "最大距离（米）",
+        "text": "Maximum Distance (m)",
         "objectName": "Text_Distance",
         "row": "Distance"
       },
@@ -1807,7 +1807,7 @@
       },
       {
         "type": "Text",
-        "text": "2D → 3D 混合",
+        "text": "2D → 3D Blend",
         "objectName": "Text_Blend",
         "row": "Blend"
       },
@@ -1820,7 +1820,7 @@
       },
       {
         "type": "Text",
-        "text": "2D 声相：左 → 右",
+        "text": "2D Stereo Pan: Left → Right",
         "objectName": "Text_Pan",
         "row": "Pan"
       },
@@ -1838,14 +1838,14 @@
         "field": "playButton",
         "objectName": "Button_PlayButton",
         "row": "Actions",
-        "text": "应用坐标并播放"
+        "text": "Apply Position and Play"
       },
       {
         "type": "Button",
         "field": "stopButton",
         "objectName": "Button_StopButton",
         "row": "Actions",
-        "text": "停止"
+        "text": "Stop"
       }
     ]
   },
@@ -1854,13 +1854,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  读取文件片段",
+        "text": "02  Read File Segments",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "按源偏移和长度读取容器内的 ASCII 文件。",
+        "text": "Read an ASCII file from the container using a source offset and length.",
         "objectName": "Text_Description"
       },
       {
@@ -1870,12 +1870,12 @@
       },
       {
         "type": "Text",
-        "text": "源文件偏移（字节）",
+        "text": "Source Offset (Bytes)",
         "objectName": "Text_OffsetLabel"
       },
       {
         "type": "Text",
-        "text": "读取长度（字节）",
+        "text": "Read Length (Bytes)",
         "objectName": "Text_LengthLabel"
       },
       {
@@ -1898,7 +1898,7 @@
         "type": "Button",
         "field": "readButton",
         "objectName": "Button_ReadButton",
-        "text": "读取所选范围"
+        "text": "Read Selected Range"
       },
       {
         "type": "Text",
@@ -1912,13 +1912,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  借出与归还",
+        "text": "01  Spawn and Unspawn",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "借出后 Cube 移到右侧，归还后回到左侧。反复操作会复用同一个实例。",
+        "text": "Spawn moves Cube right; unspawn returns it left. Repeating the actions reuses the same instance.",
         "objectName": "Text_Description"
       },
       {
@@ -1930,13 +1930,13 @@
         "type": "Button",
         "field": "spawnButton",
         "objectName": "Button_SpawnButton",
-        "text": "借出 Cube"
+        "text": "Spawn Cube"
       },
       {
         "type": "Button",
         "field": "returnButton",
         "objectName": "Button_ReturnButton",
-        "text": "归还 Cube"
+        "text": "Unspawn Cube"
       }
     ],
     "cameraX": 1.5
@@ -1946,13 +1946,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  池空时由工厂创建",
+        "text": "02  Create with a Factory When Empty",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "先借出多个，再归还并借出：有空闲时复用，池空时由业务创建。",
+        "text": "Spawn several, unspawn, then spawn again. Idle objects are reused; a factory creates objects when the pool is empty.",
         "objectName": "Text_Description"
       },
       {
@@ -1964,13 +1964,13 @@
         "type": "Button",
         "field": "spawnButton",
         "objectName": "Button_SpawnButton",
-        "text": "借出 Cube"
+        "text": "Spawn Cube"
       },
       {
         "type": "Button",
         "field": "returnButton",
         "objectName": "Button_ReturnButton",
-        "text": "归还一个"
+        "text": "Unspawn One"
       }
     ]
   },
@@ -1979,32 +1979,32 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  锁定对象，控制回收",
+        "text": "03  Lock Objects and Control Release",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "创建三个 Cube，锁定 Keep 后执行一次回收。",
+        "text": "Create three Cubes, lock Keep, then release unused objects.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "createButton",
-        "text": "创建三个 Cube",
+        "text": "Create Three Cubes",
         "objectName": "Button_CreateButton"
       },
       {
         "type": "Toggle",
         "field": "protectKeep",
-        "text": "保护 Keep",
+        "text": "Protect Keep",
         "value": true,
         "objectName": "Toggle_ProtectKeep"
       },
       {
         "type": "Button",
         "field": "releaseButton",
-        "text": "回收空闲 Cube",
+        "text": "Release Idle Cubes",
         "objectName": "Button_ReleaseButton"
       },
       {
@@ -2026,26 +2026,26 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  POST 表单",
+        "text": "03  POST a Form",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "输入文字并发送，查看服务器实际收到的字段。",
+        "text": "Enter text, send it and inspect the fields received by the server.",
         "objectName": "Text_Description"
       },
       {
         "type": "InputField",
         "field": "messageInput",
         "objectName": "InputField_MessageInput",
-        "value": "你好 QGF"
+        "value": "Hello QGF"
       },
       {
         "type": "Button",
         "field": "formButton",
         "objectName": "Button_FormButton",
-        "text": "发送表单"
+        "text": "Send Form"
       },
       {
         "type": "Text",
@@ -2059,33 +2059,33 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  心跳响应与丢失",
+        "text": "03  Heartbeat Replies and Misses",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "关闭服务器响应，观察连续丢失三次后业务关闭连接。",
+        "text": "Disable server replies and observe the application closing the connection after three missed heartbeats.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "connectButton",
-        "text": "连接心跳服务器",
+        "text": "Connect Heartbeat Server",
         "row": "connect",
         "objectName": "Button_Connect"
       },
       {
         "type": "Toggle",
         "field": "replyToggle",
-        "text": "服务器回复心跳",
+        "text": "Server Replies to Heartbeats",
         "value": true,
         "row": "reply",
         "objectName": "Toggle_Reply"
       },
       {
         "type": "Text",
-        "text": "心跳间隔",
+        "text": "Heartbeat Interval",
         "row": "interval",
         "objectName": "Text_Interval"
       },
@@ -2100,7 +2100,7 @@
       },
       {
         "type": "Text",
-        "text": "本次等待进度",
+        "text": "Wait Progress",
         "row": "timer",
         "objectName": "Text_Timer"
       },
@@ -2130,18 +2130,18 @@
       {
         "type": "Text",
         "objectName": "Text_Title",
-        "text": "02  自定义调试窗口",
+        "text": "02  Custom Debugger Window",
         "title": true
       },
       {
         "type": "Text",
         "objectName": "Text_Description",
-        "text": "注册窗口后，比较按钮选页与顶部页签切换。"
+        "text": "Register the window, then compare button selection with the top tabs."
       },
       {
         "type": "Text",
         "objectName": "Text_Description",
-        "text": "注册时的初始计数"
+        "text": "Initial Counter"
       },
       {
         "type": "Slider",
@@ -2155,35 +2155,35 @@
         "type": "Button",
         "objectName": "Button_RegisterButton",
         "field": "registerButton",
-        "text": "注册窗口",
+        "text": "Register Window",
         "row": "Register"
       },
       {
         "type": "Button",
         "objectName": "Button_UnregisterButton",
         "field": "unregisterButton",
-        "text": "注销窗口",
+        "text": "Unregister Window",
         "row": "Register"
       },
       {
         "type": "Button",
         "objectName": "Button_SelectButton",
         "field": "selectButton",
-        "text": "查看计数页",
+        "text": "Select Counter Tab",
         "row": "Page"
       },
       {
         "type": "Button",
         "objectName": "Button_TimeButton",
         "field": "timeButton",
-        "text": "查看时间页",
+        "text": "Select Time Tab",
         "row": "Page"
       },
       {
         "type": "Button",
         "objectName": "Button_IncrementButton",
         "field": "incrementButton",
-        "text": "计数 +1"
+        "text": "Count +1"
       },
       {
         "type": "Text",
@@ -2202,26 +2202,26 @@
     "controls": [
       {
         "type": "Text",
-        "text": "03  资源包与显式句柄",
+        "text": "03  Packages and Explicit Handles",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Button",
         "field": "initializeButton",
-        "text": "初始化资源包",
+        "text": "Initialize Package",
         "objectName": "Button_Initialize"
       },
       {
         "type": "Button",
         "field": "loadButton",
-        "text": "加载并创建 Cube",
+        "text": "Load and Instantiate Cube",
         "objectName": "Button_Load"
       },
       {
         "type": "Button",
         "field": "releaseButton",
-        "text": "销毁实例并归还资源",
+        "text": "Destroy Instance and Release Resource",
         "objectName": "Button_Release"
       },
       {
@@ -2247,25 +2247,25 @@
     "controls": [
       {
         "type": "Text",
-        "text": "04  原生文件与独立字节数据",
+        "text": "04  Raw Files and Independent Bytes",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "从已打包到文件系统的二进制资源中读取指定区间。",
+        "text": "Read a byte range from a binary resource in a file-system container.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "initializeButton",
-        "text": "初始化资源包",
+        "text": "Initialize Package",
         "objectName": "Button_Initialize"
       },
       {
         "type": "Button",
         "field": "readButton",
-        "text": "读取 Archive 片段",
+        "text": "Read Archive Segment",
         "objectName": "Button_Read"
       },
       {
@@ -2294,70 +2294,70 @@
       {
         "type": "Text",
         "objectName": "Text_Title",
-        "text": "05  HTTP 资源更新",
+        "text": "05  HTTP Resource Updates",
         "title": true
       },
       {
         "type": "Button",
         "objectName": "Button_VersionButton",
         "field": "versionButton",
-        "text": "1. 初始化联机包",
+        "text": "1. Initialize Host Package",
         "column": 1
       },
       {
         "type": "Dropdown",
         "objectName": "Dropdown_ConcurrencyMode",
         "field": "concurrencyMode",
-        "choices": "并发下载：1|并发下载：2|并发下载：4",
+        "choices": "Concurrent Downloads: 1|Concurrent Downloads: 2|Concurrent Downloads: 4",
         "column": 1
       },
       {
         "type": "Toggle",
         "objectName": "Toggle_AutoLoad",
         "field": "autoLoadToggle",
-        "text": "下载完成后自动加载 Cube",
+        "text": "Load Cube after Download",
         "column": 1
       },
       {
         "type": "Button",
         "objectName": "Button_CheckButton",
         "field": "checkButton",
-        "text": "归还 Cube / 清理内存",
+        "text": "Release Cube / Unused Memory",
         "column": 1
       },
       {
         "type": "Dropdown",
         "objectName": "Dropdown_GroupMode",
         "field": "groupMode",
-        "choices": "全部资源|Base：Cube|Data：二进制文件",
+        "choices": "All Resources|Base: Cube|Data: Binary File",
         "column": 1
       },
       {
         "type": "Toggle",
         "objectName": "Toggle_FailureToggle",
         "field": "failureToggle",
-        "text": "模拟下载失败（404）",
+        "text": "Simulate Download Failure (404)",
         "column": 1
       },
       {
         "type": "Button",
         "objectName": "Button_UpdateButton",
         "field": "updateButton",
-        "text": "2. 下载所选标签 / 重试",
+        "text": "2. Download Selected Tags / Retry",
         "column": 1
       },
       {
         "type": "Button",
         "objectName": "Button_StopButton",
         "field": "stopButton",
-        "text": "停止安排后续资源",
+        "text": "Stop Scheduling Resources",
         "column": 1
       },
       {
         "type": "Button",
         "objectName": "Button_LoadButton",
         "field": "loadButton",
-        "text": "4. 加载 Cube",
+        "text": "4. Load Cube",
         "column": 1
       },
       {
@@ -2391,35 +2391,35 @@
     "controls": [
       {
         "type": "Text",
-        "text": "04  文本与路径",
+        "text": "04  Text and Paths",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "InputField",
         "field": "nameInput",
-        "label": "玩家",
-        "value": "飞行员",
+        "label": "Player",
+        "value": "Pilot",
         "objectName": "InputField_Name"
       },
       {
         "type": "InputField",
         "field": "countInput",
-        "label": "数量",
+        "label": "Quantity",
         "value": "3",
         "objectName": "InputField_Count"
       },
       {
         "type": "InputField",
         "field": "pathInput",
-        "label": "路径",
+        "label": "Path",
         "value": "C:\\Game\\Configs\\Game.toml",
         "objectName": "InputField_Path"
       },
       {
         "type": "Button",
         "field": "formatButton",
-        "text": "格式化文本与路径",
+        "text": "Format Text and Paths",
         "objectName": "Button_Format"
       },
       {
@@ -2430,13 +2430,13 @@
       {
         "type": "Button",
         "field": "directoryButton",
-        "text": "检查空目录与含文件目录",
+        "text": "Inspect Empty and Nonempty Folders",
         "objectName": "Button_Directory"
       },
       {
         "type": "Button",
         "field": "cleanupButton",
-        "text": "删除示例文件，再清理空目录",
+        "text": "Delete Example File and Empty Folders",
         "objectName": "Button_Cleanup"
       },
       {
@@ -2451,13 +2451,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "05  字节转换与偏移",
+        "text": "05  Byte Conversion and Offsets",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "演示一个整数如何写入已有缓冲区并从偏移位置还原。",
+        "text": "Write an integer into an existing buffer, then restore it from an offset.",
         "objectName": "Text_Description"
       },
       {
@@ -2471,7 +2471,7 @@
         "type": "Button",
         "field": "convertButton",
         "objectName": "Button_ConvertButton",
-        "text": "写入并还原"
+        "text": "Write and Restore"
       },
       {
         "type": "Text",
@@ -2485,13 +2485,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "06  可复现随机数",
+        "text": "06  Reproducible Random Numbers",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "抽取一个 [min, max) 整数；设置相同种子可以复现结果。",
+        "text": "Draw an integer in [min, max). The same seed reproduces the sequence.",
         "objectName": "Text_Description"
       },
       {
@@ -2513,19 +2513,19 @@
         "field": "seedInput",
         "objectName": "InputField_SeedInput",
         "value": "123",
-        "label": "种子"
+        "label": "Seed"
       },
       {
         "type": "Button",
         "field": "drawButton",
         "objectName": "Button_DrawButton",
-        "text": "抽取一次"
+        "text": "Draw Once"
       },
       {
         "type": "Button",
         "field": "seedButton",
         "objectName": "Button_SeedButton",
-        "text": "应用种子"
+        "text": "Apply Seed"
       },
       {
         "type": "Text",
@@ -2544,13 +2544,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "07  结构体与字节",
+        "text": "07  Structures and Bytes",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "把无引用结构体写入带偏移的缓冲区，再还原为结构体。",
+        "text": "Write a structure without references into a buffer at an offset, then restore it.",
         "objectName": "Text_Description"
       },
       {
@@ -2569,19 +2569,19 @@
         "type": "Button",
         "field": "convertButton",
         "objectName": "Button_ConvertButton",
-        "text": "写入并还原"
+        "text": "Write and Restore"
       },
       {
         "type": "Button",
         "field": "reserveButton",
         "objectName": "Button_ReserveButton",
-        "text": "预留缓存"
+        "text": "Reserve Buffer"
       },
       {
         "type": "Button",
         "field": "freeButton",
         "objectName": "Button_FreeButton",
-        "text": "释放缓存"
+        "text": "Release Buffer"
       },
       {
         "type": "Text",
@@ -2601,13 +2601,13 @@
     "controls": [
       {
         "type": "Text",
-        "text": "01  加载 Luban 表",
+        "text": "01  Load Luban Tables",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "运行后读取 Excel 生成的数据。Catalog 在场景的 DataTable 组件中指定。",
+        "text": "Read Excel-generated data at runtime. Assign the Catalog to the scene DataTable component.",
         "objectName": "Text_Description"
       },
       {
@@ -2623,7 +2623,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "04  条件筛选与排序",
+        "text": "04  Filter and Sort Rows",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2648,31 +2648,31 @@
     "controls": [
       {
         "type": "Text",
-        "text": "05  具名表与登记管理",
+        "text": "05  Named Tables and Registration",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "按表类型和名称区分实例；移除 Preview 不影响默认表。",
+        "text": "Type and name identify tables. Removing Preview preserves the default table.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "m_RegisterButton",
-        "text": "登记 Preview",
+        "text": "Register Preview",
         "objectName": "Button_Register"
       },
       {
         "type": "Button",
         "field": "m_RemoveButton",
-        "text": "移除 Preview",
+        "text": "Remove Preview",
         "objectName": "Button_Remove"
       },
       {
         "type": "Button",
         "field": "m_ListButton",
-        "text": "列出数据表",
+        "text": "List Tables",
         "objectName": "Button_List"
       },
       {
@@ -2693,31 +2693,31 @@
     "controls": [
       {
         "type": "Text",
-        "text": "06  表模式、索引与引用",
+        "text": "06  Table Modes, Indexes and References",
         "title": true,
         "objectName": "Text_Title"
       },
       {
         "type": "Text",
-        "text": "所有表都从 QGF.DataTable 获取；键和表模式由 Excel 定义。",
+        "text": "Access all tables through QGF.DataTable. Excel defines their keys and modes.",
         "objectName": "Text_Description"
       },
       {
         "type": "Button",
         "field": "m_AliasesButton",
-        "text": "字符串与引用",
+        "text": "String Keys and References",
         "objectName": "Button_Aliases"
       },
       {
         "type": "Button",
         "field": "m_IndexesButton",
-        "text": "索引查询",
+        "text": "Index Queries",
         "objectName": "Button_Indexes"
       },
       {
         "type": "Button",
         "field": "m_ModesButton",
-        "text": "单例与列表",
+        "text": "Singleton and List",
         "objectName": "Button_Modes"
       },
       {
@@ -2737,7 +2737,7 @@
     "controls": [
       {
         "type": "Text",
-        "text": "02  寻址规则与字符串地址",
+        "text": "02  Addressing Rules and String Addresses",
         "title": true,
         "objectName": "Text_Title"
       },
@@ -2745,9 +2745,9 @@
         "type": "Dropdown",
         "field": "ruleDropdown",
         "options": [
-          "文件名 → Cube",
-          "目录与文件名 → Art_Cube",
-          "分组与文件名 → Demo_Cube"
+          "Filename → Cube",
+          "Folder and Filename → Art_Cube",
+          "Group and Filename → Demo_Cube"
         ],
         "objectName": "Dropdown_Rule"
       },
@@ -2764,13 +2764,13 @@
       {
         "type": "Button",
         "field": "loadButton",
-        "text": "按地址加载 Cube",
+        "text": "Load Cube by Address",
         "objectName": "Button_Load"
       },
       {
         "type": "Button",
         "field": "releaseButton",
-        "text": "销毁实例并归还资产",
+        "text": "Destroy Instance and Release Asset",
         "objectName": "Button_Release"
       }
     ]

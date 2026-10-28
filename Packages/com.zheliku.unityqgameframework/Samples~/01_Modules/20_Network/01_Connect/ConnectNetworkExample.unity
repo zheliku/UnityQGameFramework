@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8FDE\u63A5"
+  m_Text: "Connect"
 --- !u!222 &164588828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -605,7 +605,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u8FDE\u63A5 TCP \u901A\u9053"
+  m_Text: "01  Connect a TCP Channel"
 --- !u!222 &928638237
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -741,9 +741,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162949803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1162949805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,7 +865,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u8FDE\u63A5\u672C\u673A\u670D\u52A1\u5668\uFF0C\u65AD\u5F00\u540E\u53EF\u4EE5\u91CD\u65B0\u8FDE\u63A5\u3002"
+  m_Text: "Connect to the local server, disconnect and reconnect."
 --- !u!222 &1166864152
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1133,7 +1133,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u65AD\u5F00"
+  m_Text: "Disconnect"
 --- !u!222 &1461282272
 CanvasRenderer:
   m_ObjectHideFlags: 0

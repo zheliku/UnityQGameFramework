@@ -67,7 +67,7 @@ namespace UnityQGameFramework.Core.Resource
         /// <summary>
         /// 获取资源组集合包含的资源名称列表。
         /// </summary>
-        /// <param name="results">资源组包含的资源名称列表。</param>
-        void GetResourceNames(List<string> results);
+        /// <param name="results">资源组包含的资源名称列表；填充前清空，容量不足时仍会扩容。</param>
+        void GetResourceNamesNonAlloc(List<string> results);
     }
 }

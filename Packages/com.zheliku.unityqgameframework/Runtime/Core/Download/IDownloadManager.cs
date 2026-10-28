@@ -97,8 +97,8 @@ namespace UnityQGameFramework.Core.Download
         /// 根据下载任务的标签获取下载任务的信息。
         /// </summary>
         /// <param name="tag">要获取信息的下载任务的标签。</param>
-        /// <param name="results">下载任务的信息。</param>
-        void GetDownloadInfos(string tag, List<TaskInfo> results);
+        /// <param name="results">下载任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        void GetDownloadInfosNonAlloc(string tag, List<TaskInfo> results);
 
         /// <summary>
         /// 获取所有下载任务的信息。
@@ -109,8 +109,8 @@ namespace UnityQGameFramework.Core.Download
         /// <summary>
         /// 获取所有下载任务的信息。
         /// </summary>
-        /// <param name="results">所有下载任务的信息。</param>
-        void GetAllDownloadInfos(List<TaskInfo> results);
+        /// <param name="results">所有下载任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllDownloadInfosNonAlloc(List<TaskInfo> results);
 
         /// <summary>
         /// 增加下载任务。

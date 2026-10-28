@@ -28,7 +28,7 @@ namespace UnityQGameFramework.Editor
                     "QGF",
                     "Luban",
                     "Profile",
-                    "配置表"
+                    "Data Tables"
                 }
             };
         }
@@ -49,7 +49,7 @@ namespace UnityQGameFramework.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    string root = EditorGUILayout.DelayedTextField("新配置目录", settings.WorkspaceRoot);
+                    string root = EditorGUILayout.DelayedTextField("New Workspace", settings.WorkspaceRoot);
                     if (root != settings.WorkspaceRoot)
                     {
                         try
@@ -62,7 +62,7 @@ namespace UnityQGameFramework.Editor
                         }
                     }
 
-                    if (GUILayout.Button("创建", GUILayout.Width(60)))
+                    if (GUILayout.Button("Create", GUILayout.Width(60)))
                     {
                         LubanMenu.CreateWorkspace();
                     }
@@ -71,11 +71,11 @@ namespace UnityQGameFramework.Editor
 
             if (settings.HasProfile && settings.Profile == null)
             {
-                EditorGUILayout.HelpBox("Profile 已丢失，请重新指定。", MessageType.Warning);
+                EditorGUILayout.HelpBox("The selected Profile is missing. Assign an existing Profile.", MessageType.Warning);
             }
 
             EditorGUILayout.Space();
-            s_Advanced = EditorGUILayout.Foldout(s_Advanced, "高级", true);
+            s_Advanced = EditorGUILayout.Foldout(s_Advanced, "Advanced", true);
             if (!s_Advanced)
             {
                 return;
@@ -83,21 +83,7 @@ namespace UnityQGameFramework.Editor
 
             using (new EditorGUI.DisabledScope(!LubanMenu.CanGenerate))
             {
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    string path = EditorGUILayout.DelayedTextField(new GUIContent("本地编译器", "留空时自动下载 Luban " + LubanGenerator.Version), LubanGenerator.LocalGenerator);
-                    if (path != LubanGenerator.LocalGenerator)
-                    {
-                        LubanGenerator.LocalGenerator = path;
-                    }
-
-                    if (GUILayout.Button("选择", GUILayout.Width(60)))
-                    {
-                        LubanMenu.SelectLocalCompiler();
-                    }
-                }
-
-                int timeout = EditorGUILayout.DelayedIntField("超时秒数", LubanGenerator.ProcessTimeoutSeconds);
+                int timeout = EditorGUILayout.DelayedIntField("Process Timeout (Seconds)", LubanGenerator.ProcessTimeoutSeconds);
                 if (timeout != LubanGenerator.ProcessTimeoutSeconds)
                 {
                     try

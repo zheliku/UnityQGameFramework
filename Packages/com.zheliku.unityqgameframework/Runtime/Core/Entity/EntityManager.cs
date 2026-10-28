@@ -292,8 +292,8 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取所有实体组。
         /// </summary>
-        /// <param name="results">所有实体组。</param>
-        public void GetAllEntityGroups(List<IEntityGroup> results)
+        /// <param name="results">所有实体组；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllEntityGroupsNonAlloc(List<IEntityGroup> results)
         {
             if (results == null)
             {
@@ -444,8 +444,8 @@ namespace UnityQGameFramework.Core.Entity
         /// 获取实体。
         /// </summary>
         /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="results">要获取的实体。</param>
-        public void GetEntities(string entityAssetName, List<IEntity> results)
+        /// <param name="results">要获取的实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetEntitiesNonAlloc(string entityAssetName, List<IEntity> results)
         {
             if (string.IsNullOrEmpty(entityAssetName))
             {
@@ -486,8 +486,8 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取所有已加载的实体。
         /// </summary>
-        /// <param name="results">所有已加载的实体。</param>
-        public void GetAllLoadedEntities(List<IEntity> results)
+        /// <param name="results">所有已加载的实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadedEntitiesNonAlloc(List<IEntity> results)
         {
             if (results == null)
             {
@@ -520,8 +520,8 @@ namespace UnityQGameFramework.Core.Entity
         /// <summary>
         /// 获取所有正在加载实体的编号。
         /// </summary>
-        /// <param name="results">所有正在加载实体的编号。</param>
-        public void GetAllLoadingEntityIds(List<int> results)
+        /// <param name="results">所有正在加载实体的编号；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllLoadingEntityIdsNonAlloc(List<int> results)
         {
             if (results == null)
             {
@@ -844,8 +844,8 @@ namespace UnityQGameFramework.Core.Entity
         /// 获取所有子实体。
         /// </summary>
         /// <param name="parentEntityId">要获取所有子实体的父实体的实体编号。</param>
-        /// <param name="results">所有子实体。</param>
-        public void GetChildEntities(int parentEntityId, List<IEntity> results)
+        /// <param name="results">所有子实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetChildEntitiesNonAlloc(int parentEntityId, List<IEntity> results)
         {
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
@@ -853,7 +853,7 @@ namespace UnityQGameFramework.Core.Entity
                 throw new FrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId));
             }
 
-            parentEntityInfo.GetChildEntities(results);
+            parentEntityInfo.GetChildEntitiesNonAlloc(results);
         }
 
         /// <summary>
@@ -875,15 +875,15 @@ namespace UnityQGameFramework.Core.Entity
         /// 获取所有子实体。
         /// </summary>
         /// <param name="parentEntity">要获取所有子实体的父实体。</param>
-        /// <param name="results">所有子实体。</param>
-        public void GetChildEntities(IEntity parentEntity, List<IEntity> results)
+        /// <param name="results">所有子实体；填充前清空，容量不足时仍会扩容。</param>
+        public void GetChildEntitiesNonAlloc(IEntity parentEntity, List<IEntity> results)
         {
             if (parentEntity == null)
             {
                 throw new FrameworkException("Parent entity is invalid.");
             }
 
-            GetChildEntities(parentEntity.Id, results);
+            GetChildEntitiesNonAlloc(parentEntity.Id, results);
         }
 
         /// <summary>

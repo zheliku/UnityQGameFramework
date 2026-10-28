@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a6ce29ba5f941b091d369e1b791d4cd, type: 3}
   m_Name: LubanProfile
   m_EditorClassIdentifier: UnityQGameFramework.Editor::UnityQGameFramework.Editor.LubanProfile
+  m_LegacySourceFolder: {fileID: 0}
   ConfigurationFile: {fileID: 102900000, guid: 22843d2bf2ce4c8397e30504b0c05854, type: 3}
   CodeFolder: {fileID: 102900000, guid: ae9a2ff3997d40db9d938d3508c403f2, type: 3}
   DataFolder: {fileID: 102900000, guid: 4aae55f396da4c40a3721802b7a3e148, type: 3}

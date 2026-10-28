@@ -26,11 +26,18 @@ var documentedTypes = sources.SelectMany(path => options.SelectMany(option => CS
     .Where(type => type.GetLeadingTrivia().ToFullString().Contains("<summary>", StringComparison.Ordinal))
     .Select(TypeKey).ToHashSet(StringComparer.Ordinal);
 var issues = new List<StyleIssue>();
+var languageIssues = new List<LanguageIssue>();
 int files = 0;
 foreach (string path in sources)
 {
     string source = File.ReadAllText(path);
     files++;
+    if (options.All(option => !CSharpSyntaxTree.ParseText(source, option).GetRoot().DescendantTokens()
+        .Any(token => !token.IsKind(SyntaxKind.EndOfFileToken))))
+    {
+        issues.Add(new StyleIssue(Path.GetRelativePath(root, path).Replace('\\', '/'), 1, string.Empty, "empty_source_file"));
+    }
+
     foreach (CSharpParseOptions option in options)
     {
         SyntaxTree tree = CSharpSyntaxTree.ParseText(source, option);
@@ -197,6 +204,14 @@ foreach (string path in sources)
         }
         foreach (SyntaxToken token in tree.GetRoot().DescendantTokens())
         {
+            if ((token.IsKind(SyntaxKind.StringLiteralToken) || token.IsKind(SyntaxKind.InterpolatedStringTextToken)
+                || token.IsKind(SyntaxKind.IdentifierToken) || token.IsKind(SyntaxKind.Utf8StringLiteralToken))
+                && Regex.IsMatch(token.ValueText, "[\u3400-\u9fff\uac00-\ud7af\u3040-\u30ff]"))
+            {
+                languageIssues.Add(new LanguageIssue(Path.GetRelativePath(root, path).Replace('\\', '/'),
+                    tree.GetLineSpan(token.Span).StartLinePosition.Line + 1, token.SpanStart, token.Span.Length, token.Text));
+            }
+
             if ((!token.IsKind(SyntaxKind.OpenBraceToken) && !token.IsKind(SyntaxKind.CloseBraceToken))
                 || token.Parent is not (BlockSyntax or BaseTypeDeclarationSyntax or BaseNamespaceDeclarationSyntax or SwitchStatementSyntax or AccessorListSyntax)
                 || token.Parent is AccessorListSyntax accessorList && accessorList.Accessors.All(accessor => accessor.Body == null && accessor.ExpressionBody == null))
@@ -212,8 +227,11 @@ foreach (string path in sources)
     }
 }
 issues = issues.Distinct().ToList();
+languageIssues = languageIssues.Distinct().ToList();
+issues.AddRange(languageIssues.Select(issue => new StyleIssue(issue.Path, issue.Line, issue.Text, "code_not_english")));
 string report = Path.Combine(root, "Artifacts~/CodeStyle/audit.json");
 Directory.CreateDirectory(Path.GetDirectoryName(report)!);
+File.WriteAllText(Path.Combine(Path.GetDirectoryName(report)!, "language.json"), JsonSerializer.Serialize(languageIssues, new JsonSerializerOptions { WriteIndented = true }));
 var coverage = directories.ToDictionary(directory => Path.GetRelativePath(root, directory).Replace('\\', '/'),
     directory => sources.Count(path => path.StartsWith(Path.GetFullPath(directory) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)));
 var excluded = new { thirdParty = thirdParty.Length, generated = generated.Length };
@@ -287,3 +305,13 @@ static bool IsGenerated(string source)
 /// <param name="Member">成员名称或语法节点类型。</param>
 /// <param name="Rule">未满足的规则。</param>
 internal sealed record StyleIssue(string Path, int Line, string Member, string Rule);
+
+/// <summary>
+/// 自有代码中需要翻译的标识符或字符串。
+/// </summary>
+/// <param name="Path">相对项目的源文件路径。</param>
+/// <param name="Line">字符串所在行号。</param>
+/// <param name="Start">字符串在源文件中的偏移。</param>
+/// <param name="Length">字符串的源文本长度。</param>
+/// <param name="Text">包含引号及转义字符的源文本。</param>
+internal sealed record LanguageIssue(string Path, int Line, int Start, int Length, string Text);

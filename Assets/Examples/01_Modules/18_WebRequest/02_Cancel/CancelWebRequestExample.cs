@@ -56,7 +56,7 @@ namespace UnityQGameFramework.Examples.Modules
                 QGF.WebRequest.AddWebRequest(server.Url("/low"), "Example.Queue", 0, this);
                 QGF.WebRequest.AddWebRequest(server.Url("/high"), "Example.Queue", 10, this);
                 QGF.WebRequest.AddWebRequest(server.Url("/other"), "Example.Other", 5, this);
-                resultText.text = "取消正在执行的 hold；后续任务仍按优先级执行。";
+                resultText.text = "Cancel the active hold request. Remaining tasks run in priority order.";
             }
             catch (OperationCanceledException)when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -70,7 +70,7 @@ namespace UnityQGameFramework.Examples.Modules
         private void Cancel()
         {
             // 移除任务后不会发出成功或失败事件，业务界面在这里结束自己的等待。
-            resultText.text = QGF.WebRequest.RemoveWebRequest(hold) ? "hold 请求已取消。" : "hold 请求已不在队列中。";
+            resultText.text = QGF.WebRequest.RemoveWebRequest(hold) ? "The hold request was canceled." : "The hold request is no longer queued.";
         }
 
         private void OnStart(object sender, GameEventArgs args)
@@ -98,16 +98,16 @@ namespace UnityQGameFramework.Examples.Modules
                 return;
             }
 
-            QGF.WebRequest.GetAllWebRequestInfos(tasks);
-            var rows = new StringBuilder($"代理 {QGF.WebRequest.TotalAgentCount} · 工作 {QGF.WebRequest.WorkingAgentCount} · " + $"空闲 {QGF.WebRequest.FreeAgentCount} · 排队 {QGF.WebRequest.WaitingTaskCount}\n");
+            QGF.WebRequest.GetAllWebRequestInfosNonAlloc(tasks);
+            var rows = new StringBuilder($"Agents {QGF.WebRequest.TotalAgentCount} · Working {QGF.WebRequest.WorkingAgentCount} · " + $"Idle {QGF.WebRequest.FreeAgentCount} · Queued {QGF.WebRequest.WaitingTaskCount}\n");
             foreach (var task in tasks)
             {
-                string status = task.Status == TaskStatus.Doing ? "执行中" : "等待中";
-                rows.AppendLine($"#{task.SerialId}  {new Uri(task.Description).AbsolutePath}  {status}  优先级 {task.Priority}  {task.Tag}");
+                string status = task.Status == TaskStatus.Doing ? "Running" : "Waiting";
+                rows.AppendLine($"#{task.SerialId}  {new Uri(task.Description).AbsolutePath}  {status}  Priority {task.Priority}  {task.Tag}");
             }
 
             queueText.text = rows.ToString();
-            orderText.text = "实际开始顺序：" + string.Join(" → ", order) + $"\n结果回调：{callbacks} 次";
+            orderText.text = "Actual start order: " + string.Join(" → ", order) + $"\nResult callbacks: {callbacks} times";
             enqueueButton.interactable = !adding && QGF.WebRequest.WorkingAgentCount + QGF.WebRequest.WaitingTaskCount == 0;
             cancelButton.interactable = !adding && !enqueueButton.interactable;
         }

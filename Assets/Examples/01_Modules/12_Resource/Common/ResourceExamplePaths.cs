@@ -57,7 +57,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             get
             {
-                return "先停止运行，选中 UpdateRemoteResources 对象并在 Inspector 点击“构建远程资源示例”。";
+                return "Stop Play Mode, select UpdateRemoteResources, and click Build Remote Resources Example in the Inspector.";
             }
         }
 

@@ -579,7 +579,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6E05\u7406\u6587\u4EF6"
+  m_Text: "Clear Files"
 --- !u!222 &318134415
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1389,7 +1389,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u4E0B\u8F7D\u4E00\u90E8\u5206\u540E\u53D6\u6D88\uFF0C\u518D\u6B21\u5F00\u59CB\u53EF\u4ECE\u4E34\u65F6\u6587\u4EF6\u7EED\u4F20\u3002"
+  m_Text: "Cancel a partial download, then start again to resume from the temporary file."
 --- !u!222 &1095984756
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1799,7 +1799,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5F00\u59CB / \u7EE7\u7EED"
+  m_Text: "Start / Resume"
 --- !u!222 &1372509481
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2249,7 +2249,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4FDD\u7559\u4E34\u65F6\u6587\u4EF6"
+  m_Text: "Keep Temporary File"
 --- !u!222 &1503379315
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2396,9 +2396,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1525764646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1525764648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2607,7 +2607,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  \u53D6\u6D88\u4E0E\u65AD\u70B9\u7EED\u4F20"
+  m_Text: "03  Cancel and Resume a Download"
 --- !u!222 &1712581789
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3220,7 +3220,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D6\u6D88\u672C\u6B21\u4E0B\u8F7D"
+  m_Text: "Cancel Download"
 --- !u!222 &1915591221
 CanvasRenderer:
   m_ObjectHideFlags: 0

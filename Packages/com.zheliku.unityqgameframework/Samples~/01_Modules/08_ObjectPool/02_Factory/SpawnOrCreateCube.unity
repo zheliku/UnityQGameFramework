@@ -210,7 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u5148\u501F\u51FA\u591A\u4E2A\uFF0C\u518D\u5F52\u8FD8\u5E76\u501F\u51FA\uFF1A\u6709\u7A7A\u95F2\u65F6\u590D\u7528\uFF0C\u6C60\u7A7A\u65F6\u7531\u4E1A\u52A1\u521B\u5EFA\u3002"
+  m_Text: "Spawn several, unspawn, then spawn again. Idle objects are reused; a factory creates objects when the pool is empty."
 --- !u!222 &552519417
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -618,9 +618,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 913315211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &913315213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,7 +960,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u6C60\u7A7A\u65F6\u7531\u5DE5\u5382\u521B\u5EFA"
+  m_Text: "02  Create with a Factory When Empty"
 --- !u!222 &1259862090
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1549,7 +1549,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5F52\u8FD8\u4E00\u4E2A"
+  m_Text: "Unspawn One"
 --- !u!222 &1763709568
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1787,7 +1787,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u501F\u51FA Cube"
+  m_Text: "Spawn Cube"
 --- !u!222 &2136119305
 CanvasRenderer:
   m_ObjectHideFlags: 0

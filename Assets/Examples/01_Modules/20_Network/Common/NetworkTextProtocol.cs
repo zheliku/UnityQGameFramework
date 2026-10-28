@@ -187,13 +187,13 @@ namespace UnityQGameFramework.Examples.Modules
         {
             if (!(packet is NetworkTextPacket text))
             {
-                throw new InvalidDataException("未知消息类型。");
+                throw new InvalidDataException("Unknown message type.");
             }
 
             byte[] bytes = Utf8.GetBytes(text.Text ?? string.Empty);
             if (bytes.Length > 65532)
             {
-                throw new InvalidDataException("消息超过 65532 字节。");
+                throw new InvalidDataException("The message exceeds 65532 bytes.");
             }
 
             using (var writer = new BinaryWriter(destination, Utf8, true))
@@ -221,7 +221,7 @@ namespace UnityQGameFramework.Examples.Modules
                 int length = reader.ReadInt32();
                 if (length < 4 || length > 65536)
                 {
-                    throw new InvalidDataException("非法包体长度。");
+                    throw new InvalidDataException("Invalid packet body length.");
                 }
 
                 return new Header(length);
@@ -262,7 +262,7 @@ namespace UnityQGameFramework.Examples.Modules
 
                 if (id != 1 && id != 3)
                 {
-                    throw new InvalidDataException("未知消息 Id。");
+                    throw new InvalidDataException("Unknown message ID.");
                 }
 
                 // 解析成功后才借出接收 Packet；通道在主线程分发后归还它。

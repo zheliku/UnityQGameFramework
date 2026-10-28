@@ -21,7 +21,7 @@ public static class QgfLogValidation
     public static object Run()
     {
         ILogHandler original = Debug.unityLogger.logHandler;
-        var formatter = typeof(UnityQGameFramework.Editor.ResourceBuildService).Assembly.GetType("UnityQGameFramework.Editor.LogInitializer", true);
+        var formatter = typeof(DefaultLogHelper);
         FieldInfo theme = formatter.GetField("s_DarkTheme", BindingFlags.Static | BindingFlags.NonPublic);
         bool originalTheme = (bool)theme.GetValue(null);
         var handler = new CaptureHandler();

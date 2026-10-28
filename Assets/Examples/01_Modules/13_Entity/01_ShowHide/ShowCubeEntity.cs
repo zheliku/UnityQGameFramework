@@ -33,7 +33,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             bool loading = QGF.Entity.IsLoadingEntity(1);
             var entity = QGF.Entity.GetEntity(1);
-            stateText.text = failure ?? (loading ? "正在加载" : entity == null ? "未显示" : "已显示：旋转的 Cube");
+            stateText.text = failure ?? (loading ? "Loading" : entity == null ? "Not shown" : "Shown: rotating Cube");
             showButton.interactable = !loading && entity == null;
             hideButton.interactable = entity != null;
         }

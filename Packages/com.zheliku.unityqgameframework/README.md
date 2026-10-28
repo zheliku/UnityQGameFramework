@@ -26,6 +26,6 @@ DataTableComponent 自动初始化；在业务 `Start` 或启动流程中用 `Lo
 - [StarForce](Documentation~/05-starforce.md)：从启动流程读到飞机、武器和血条。
 - [UGF 到 QGF](Documentation~/04-changes-from-ugf.md)：当前改动与架构迁移进度。
 
-`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的可选安装入口。
+`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的用途与 Git URL，复制后通过 Package Manager 安装。
 
 源码采用 [MIT](LICENSE.md)，第三方内容见 [许可声明](<Third%20Party%20Notices.md>)。

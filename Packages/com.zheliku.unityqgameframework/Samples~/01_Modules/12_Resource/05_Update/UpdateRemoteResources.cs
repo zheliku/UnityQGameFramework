@@ -50,7 +50,7 @@ namespace UnityQGameFramework.Examples.Modules
             });
             loadButton.onClick.AddListener(LoadCube);
             failureToggle.onValueChanged.AddListener(value => server.RejectResources = value);
-            stateText.text = "先初始化联机包，再选择标签下载。可开启 404 故障后重试。";
+            stateText.text = "Initialize the Host package, then download by tag. Enable the 404 fault to test retries.";
         }
 
         private async void Initialize()
@@ -59,14 +59,14 @@ namespace UnityQGameFramework.Examples.Modules
             try
             {
                 package = await QGF.Resource.InitializePackageAsync(ResourceExamplePaths.RemotePackageName, options, cancellationToken: destroyCancellationToken);
-                stateText.text = "版本和清单已加载，资源文件尚未下载。";
+                stateText.text = "Version and manifest loaded. Resource files have not been downloaded yet.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
             }
             catch (Exception exception)
             {
-                stateText.text = "初始化失败，可重试：" + exception.Message;
+                stateText.text = "Initialization failed. Retry: " + exception.Message;
             }
             finally
             {
@@ -88,10 +88,10 @@ namespace UnityQGameFramework.Examples.Modules
                 await QGF.Resource.DownloadResourcesAsync(downloader, destroyCancellationToken);
                 if (cancelled)
                 {
-                    stateText.text = "下载已取消。再次下载时只请求尚未完成的文件。";
+                    stateText.text = "Download canceled. Retry downloads only the remaining files.";
                     return;
                 }
-                stateText.text = "所选标签下载完成。再次点击可观察缓存命中。";
+                stateText.text = "Selected tags downloaded. Download again to observe cache hits.";
                 if (autoLoadToggle.isOn)
                 {
                     LoadCube();
@@ -103,8 +103,8 @@ namespace UnityQGameFramework.Examples.Modules
             catch (Exception exception)
             {
                 stateText.text = cancelled
-                    ? "下载已取消。再次下载时只请求尚未完成的文件。"
-                    : "下载失败。关闭 404 开关后可重试：" + exception.Message;
+                    ? "Download canceled. Retry downloads only the remaining files."
+                    : "Download failed. Disable the 404 fault to retry: " + exception.Message;
             }
             finally
             {
@@ -125,7 +125,7 @@ namespace UnityQGameFramework.Examples.Modules
                 // 指定所属包借用资产，归还时也指定同一包。
                 asset = await QGF.Resource.LoadAssetAsync<GameObject>(ResourceExamplePaths.RemoteCubeAddress, ResourceExamplePaths.RemotePackageName, cancellationToken: destroyCancellationToken);
                 instance = Instantiate(asset, new Vector3(3, -2, 0), Quaternion.Euler(20, 35, 0));
-                stateText.text = "已从联机包加载 Cube。";
+                stateText.text = "Cube loaded from the Host package.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -154,7 +154,7 @@ namespace UnityQGameFramework.Examples.Modules
                 }
                 // 清理内存不删除磁盘缓存，下次下载仍可命中已经下载的文件。
                 await QGF.Resource.UnloadUnusedAssetsAsync(destroyCancellationToken);
-                stateText.text = "实例与资产已归还，未使用资源已清理；磁盘缓存保留。";
+                stateText.text = "Instances and assets released; unused resources cleared. Disk cache retained.";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {
@@ -178,14 +178,14 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 return;
             }
-            serverText.text = $"本地地址：{server.Url}\nHTTP 请求：{server.Requests} 次";
+            serverText.text = $"Local address: {server.Url}\nHTTP requests: {server.Requests} times";
             if (ready)
             {
-                groupsText.text = $"包：{package.PackageName}\n清单版本：{package.GetPackageVersion()}\nBase 资产：{package.GetAssetInfos("Base").Length}；Data 资产：{package.GetAssetInfos("Data").Length}";
+                groupsText.text = $"Package: {package.PackageName}\nManifest version: {package.GetPackageVersion()}\nBase asset: {package.GetAssetInfos("Base").Length}; Data asset: {package.GetAssetInfos("Data").Length}";
             }
             if (downloader != null)
             {
-                transferText.text = $"文件：{downloader.CurrentDownloadCount}/{downloader.TotalDownloadCount}\n字节：{downloader.CurrentDownloadBytes}/{downloader.TotalDownloadBytes}";
+                transferText.text = $"File: {downloader.CurrentDownloadCount}/{downloader.TotalDownloadCount}\nBytes: {downloader.CurrentDownloadBytes}/{downloader.TotalDownloadBytes}";
             }
         }
 

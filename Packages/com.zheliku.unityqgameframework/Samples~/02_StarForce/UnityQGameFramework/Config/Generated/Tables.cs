@@ -72,15 +72,15 @@ public partial class Tables : IDataTableLoader
     {
         get
         {
-            return "b2dd1904381f946eed9e4febd5d144fe15aaf89e6a6ff616204353a33b8ed8cb";
+            return "545e32bf65f2994b276ce315374891875f8e8aa4813542dfc7647d6c953d5ca6";
         }
     }
     /// <summary>
-    /// 加载数据表并解析表间引用。
+    /// 构造数据表并解析表间引用；不读取资源、不修改 DataTableComponent 登记。
     /// </summary>
     /// <param name="loader">读取指定数据文件的加载方法。</param>
     /// <returns>已完成解析的数据表。</returns>
-    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.Load(System.Func<string, ByteBuf> loader)
+    System.Collections.Generic.IReadOnlyList<DataTableBase> IDataTableLoader.CreateTables(System.Func<string, ByteBuf> loader)
     {
         TbAircraft = new TbAircraft(loader("tbaircraft"));
         TbArmor = new TbArmor(loader("tbarmor"));

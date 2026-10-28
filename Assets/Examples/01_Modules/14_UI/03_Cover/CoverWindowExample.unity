@@ -759,7 +759,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5C06\u80CC\u5305\u79FB\u5230\u9876\u5C42"
+  m_Text: "Focus Inventory"
 --- !u!222 &591472463
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1277,9 +1277,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162949803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1162949805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1380,7 +1380,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u7F6E\u9876\u65F6\u643A\u5E26\u6570\u636E"
+  m_Text: "Focus with User Data"
 --- !u!222 &1166864151
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1580,7 +1580,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5173\u95ED\u4E0A\u5C42\u7A97\u53E3"
+  m_Text: "Close Overlay"
 --- !u!222 &1410658713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1810,7 +1810,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6253\u5F00\u4E0A\u5C42\u65F6\u6682\u505C\u4E0B\u5C42"
+  m_Text: "Pause Covered Form"
 --- !u!222 &1625065958
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2417,7 +2417,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6253\u5F00\u4E0A\u5C42\u7A97\u53E3"
+  m_Text: "Open Overlay"
 --- !u!222 &1999721056
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2517,7 +2517,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  \u8986\u76D6\u3001\u6682\u505C\u4E0E\u7F6E\u9876"
+  m_Text: "03  Cover, Pause and Focus"
 --- !u!222 &2093046673
 CanvasRenderer:
   m_ObjectHideFlags: 0

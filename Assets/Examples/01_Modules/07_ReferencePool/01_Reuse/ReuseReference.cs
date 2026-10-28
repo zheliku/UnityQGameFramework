@@ -30,14 +30,14 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            heldText.text = held == null ? "手中：没有货箱" : $"手中：货箱 #{held.Id}";
-            previousText.text = previousId == 0 ? "尚未归还过" : $"上次归还：#{previousId}";
-            poolText.text = "空闲：0    借出：0";
+            heldText.text = held == null ? "Holding: no crate" : $"Holding: crate #{held.Id}";
+            previousText.text = previousId == 0 ? "Never released" : $"Last released: #{previousId}";
+            poolText.text = "Idle: 0    Spawned: 0";
             foreach (var info in ReferencePool.GetAllReferencePoolInfos())
             {
                 if (info.Type == typeof(Cargo))
                 {
-                    poolText.text = $"空闲：{info.UnusedReferenceCount}    借出：{info.UsingReferenceCount}";
+                    poolText.text = $"Idle: {info.UnusedReferenceCount}    Spawned: {info.UsingReferenceCount}";
                 }
             }
 

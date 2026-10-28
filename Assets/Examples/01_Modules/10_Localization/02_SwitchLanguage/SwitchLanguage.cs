@@ -18,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             action1Button.onClick.AddListener(() => Apply(Language.English));
             action2Button.onClick.AddListener(() => Apply(Language.ChineseSimplified));
-            Apply(Language.ChineseSimplified);
+            Apply(Language.English);
         }
 
         private void Apply(Language language)

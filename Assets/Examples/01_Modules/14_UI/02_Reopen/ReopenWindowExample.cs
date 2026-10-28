@@ -33,7 +33,7 @@ namespace UnityQGameFramework.Examples.Modules
             QGF.UI.InstancePriority = 0;
             reopenButton.onClick.AddListener(CloseAndReopen);
             // 返回值是打开请求的序号；窗口加载完后 GetUIForm 才能取得实例。
-            serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"第 {++openCount} 次打开");
+            serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"Open #{++openCount}");
             ready = true;
         }
 
@@ -61,7 +61,7 @@ namespace UnityQGameFramework.Examples.Modules
 
                 remaining = 0;
                 // 每次打开都会产生新序号；是否复用旧 GameObject 由实例池的缓存状态决定。
-                serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"第 {++openCount} 次打开");
+                serialId = QGF.UI.OpenUIForm(AssetName, "Example", $"Open #{++openCount}");
             }
             catch (OperationCanceledException)when (cancellation.IsCancellationRequested)
             {
@@ -84,11 +84,11 @@ namespace UnityQGameFramework.Examples.Modules
             }
 
             var form = QGF.UI.GetUIForm(serialId);
-            string source = previousInstance == 0 ? "首次创建" : form != null && form.gameObject.GetInstanceID() == previousInstance ? "复用上次实例" : "新建实例";
-            stateText.text = changing ? $"窗口已关闭，等待 {remaining:F1} 秒" : form == null ? "正在加载" : $"本次序号：{serialId}    上次序号：{previousSerial}\n" + $"实例：{form.gameObject.GetInstanceID()}\n本次来源：{source}";
+            string source = previousInstance == 0 ? "First creation" : form != null && form.gameObject.GetInstanceID() == previousInstance ? "Reusing the previous instance" : "New instance";
+            stateText.text = changing ? $"Window closed; waiting {remaining:F1} s" : form == null ? "Loading" : $"Current serial: {serialId}    Previous serial: {previousSerial}\n" + $"Instance: {form.gameObject.GetInstanceID()}\nInstance source: {source}";
             var view = form == null ? null : (ReopenWindowExampleView)form.Logic;
-            lifecycleText.text = view == null ? string.Empty : $"本实例 OnInit：{view.InitCalls}    OnOpen：{view.OpenCalls}\n" + $"OnClose：{view.CloseCalls}    OnRecycle：{view.RecycleCalls}";
-            policyText.text = $"空闲过期：{QGF.UI.InstanceExpireTime:F1} 秒    本次等待：{idleSlider.value:F1} 秒\n锁定后，过期也保留缓存实例";
+            lifecycleText.text = view == null ? string.Empty : $"Instance OnInit: {view.InitCalls}    OnOpen：{view.OpenCalls}\n" + $"OnClose：{view.CloseCalls}    OnRecycle：{view.RecycleCalls}";
+            policyText.text = $"Idle timeout: {QGF.UI.InstanceExpireTime:F1} s    Wait this time: {idleSlider.value:F1} s\nLocked instances remain cached after their idle timeout.";
             reopenButton.interactable = form != null && !changing;
             idleSlider.interactable = lockedToggle.interactable = !changing;
         }

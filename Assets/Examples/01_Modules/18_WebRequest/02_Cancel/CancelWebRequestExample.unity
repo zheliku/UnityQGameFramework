@@ -568,7 +568,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u53D6\u6D88 hold \u8BF7\u6C42"
+  m_Text: "Cancel Hold Request"
 --- !u!222 &822775704
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -930,7 +930,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u521B\u5EFA\u8BF7\u6C42\u961F\u5217"
+  m_Text: "Create Request Queue"
 --- !u!222 &1424035968
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1132,7 +1132,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6B63\u5728\u6267\u884C\u7684 hold \u88AB\u53D6\u6D88\u540E\uFF0C\u6392\u961F\u4EFB\u52A1\u4ECD\u6309\u4F18\u5148\u7EA7\u8FD0\u884C\u3002"
+  m_Text: "Canceling the active hold request lets queued tasks continue in priority order."
 --- !u!222 &1503975602
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1168,9 +1168,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1525764646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1525764648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,7 +1434,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u53d6\u6d88\u6392\u961f\u4e2d\u7684\u8bf7\u6c42"
+  m_Text: "02  Cancel a Queued Request"
 --- !u!222 &1915591222
 CanvasRenderer:
   m_ObjectHideFlags: 0

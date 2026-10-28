@@ -27,7 +27,7 @@ namespace UnityQGameFramework.Examples.Modules
                 }
 
                 serialId = QGF.Sound.PlaySound(AssetName, "Prompt");
-                outputText.text = "已请求播放提示音";
+                outputText.text = "Requested notification sound playback";
             });
         }
 

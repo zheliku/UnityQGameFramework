@@ -30,7 +30,7 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 // 只移除本次要重读的键，避免重复加载同名项。
                 QGF.Config.RemoveConfig("Level.Name");
-                stateText.text = "读取中";
+                stateText.text = "Reading";
                 loadButton.interactable = false;
                 // 字符串地址来自 YooAsset 的“分组名_文件名”规则；Config 负责解析 TOML。
                 QGF.Config.ReadData(ConfigAddress, this);
@@ -39,7 +39,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void Update()
         {
-            cacheText.text = $"读取缓冲：{QGF.Config.CachedBytesSize} 字节";
+            cacheText.text = $"Read buffer: {QGF.Config.CachedBytesSize} bytes";
         }
 
         private void OnLoaded(object sender, GameEventArgs args)
@@ -49,8 +49,8 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 return;
             }
-            stateText.text = "已读取：" + QGF.Config.GetString("Level.Name");
-            contextText.text = ReferenceEquals(e.UserData, this) ? "UserData：当前对象" : "UserData：未设置";
+            stateText.text = "Read: " + QGF.Config.GetString("Level.Name");
+            contextText.text = ReferenceEquals(e.UserData, this) ? "UserData: current object" : "UserData: not set";
             loadButton.interactable = true;
         }
 
@@ -61,7 +61,7 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 return;
             }
-            stateText.text = "读取失败：" + e.ErrorMessage;
+            stateText.text = "Read failed: " + e.ErrorMessage;
             loadButton.interactable = true;
         }
 

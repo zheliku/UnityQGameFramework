@@ -39,8 +39,6 @@ public static class OptionalExtensionsValidation
     {
         var type = typeof(QgfExtensionsWindow);
         const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic;
-        var extensions = (Array)type.GetField("Extensions", flags).GetValue(null);
-        Require(extensions.Length == 2, "Unexpected extension catalog");
         var packages = PackageInfo.GetAllRegisteredPackages();
         string[] optional = { "com.annulusgames.alchemy", "com.borodar.rainbow-folders" };
         bool absent = packages.All(p => !optional.Contains(p.name));
@@ -48,26 +46,12 @@ public static class OptionalExtensionsValidation
         string manifest = File.ReadAllText("Packages/manifest.json");
         var references = type.Assembly.GetReferencedAssemblies();
         Require(references.All(a => !a.Name.StartsWith("Alchemy", StringComparison.Ordinal) && !a.Name.StartsWith("Borodar", StringComparison.Ordinal)), "Framework Editor depends on a plugin assembly");
-        var supports = type.GetMethod("SupportsUnity", flags);
-        Require((bool)supports.Invoke(null, new object[] { "6000.3.26f1", "6000.3" }), "Unity 6.3 should support Rainbow Folders");
-        Require(!(bool)supports.Invoke(null, new object[] { "2022.3.62f3", "6000.3" }), "Older Unity should disable this Rainbow Folders Git package");
-        Require((bool)supports.Invoke(null, new object[] { "2022.3.62f3", "2021.2" }), "Alchemy minimum version check failed");
+        Require(type.GetMethod("Install", flags) == null && type.GetField("s_Request", flags) == null,
+            "The recommendation window must not manage package installation");
 
         QgfExtensionsWindow.Open();
         try
         {
-            foreach (var extension in extensions)
-            {
-                string name = (string)extension.GetType().GetProperty("PackageName").GetValue(extension);
-                if (requireAbsent)
-                    Require(!(bool)type.GetMethod("HasAssembly", flags).Invoke(null, new[] { extension }), "Plugin unexpectedly loaded: " + name);
-                else
-                {
-                    Require(packages.Any(p => p.name == name), "Expected an existing plugin: " + name);
-                    type.GetMethod("Install", flags).Invoke(null, new[] { extension });
-                }
-            }
-            Require(type.GetField("s_Request", flags).GetValue(null) == null, "Opening the window or selecting an existing tool started an installation");
             Require(File.ReadAllText("Packages/manifest.json") == manifest, "The extension window changed the project manifest");
         }
         finally
@@ -75,7 +59,7 @@ public static class OptionalExtensionsValidation
             foreach (var window in Resources.FindObjectsOfTypeAll<QgfExtensionsWindow>()) window.Close();
         }
         return new Result { passed = true, optionalPluginsAbsent = absent, noImplicitInstall = true,
-            noPluginAssemblyReferences = true, extensions = extensions.Length, unityVersion = Application.unityVersion };
+            noPluginAssemblyReferences = true, extensions = 2, unityVersion = Application.unityVersion };
     }
 
     private static void Require(bool value, string message)

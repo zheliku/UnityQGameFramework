@@ -21,7 +21,7 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         {
             base.OnEnter(owner);
             game = (PointGameData)owner.GetData<VarObject>("Game").Value;
-            game.Phase = "菜单";
+            game.Phase = "Menu";
             game.StartRequested = false;
             // 打开预制体，并将本局数据作为 userData 交给 UIForm。
             formId = QGF.UI.OpenUIForm(game.FormAsset, "Game", game);

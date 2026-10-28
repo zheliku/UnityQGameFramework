@@ -18,9 +18,9 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // Procedure 组件完成初始化前，CurrentProcedure 为 null。
             var procedure = QGF.Procedure.CurrentProcedure;
-            currentText.text = procedure == null ? "等待框架启动" : "入口：" + procedure.GetType().Name;
-            elapsedText.text = $"当前流程停留：{QGF.Procedure.CurrentProcedureTime:F1} 秒";
-            enteredText.text = $"OnEnter 已执行：{Entered} 次";
+            currentText.text = procedure == null ? "Waiting for framework startup" : "Entry: " + procedure.GetType().Name;
+            elapsedText.text = $"Time in current procedure: {QGF.Procedure.CurrentProcedureTime:F1} s";
+            enteredText.text = $"OnEnter calls: {Entered} times";
         }
     }
 

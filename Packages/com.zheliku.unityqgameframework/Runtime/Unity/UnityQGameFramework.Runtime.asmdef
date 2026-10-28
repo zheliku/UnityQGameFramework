@@ -5,6 +5,7 @@
         "UnityQGameFramework.Core",
         "UnityQGameFramework.Luban",
         "UnityEngine.UI",
+        "Unity.InputSystem",
         "UniTask",
         "YooAsset"
     ],

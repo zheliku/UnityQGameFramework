@@ -20,6 +20,16 @@ namespace StarForce
 public partial class TbUISound : UnityQGameFramework.Core.DataTable.DataTable<DRUISound>
 {
     /// <summary>
+    /// 按源表顺序获取指定位置的记录。
+    /// </summary>
+    /// <param name="index">从零开始的记录位置。</param>
+    /// <returns>指定位置的记录。</returns>
+    protected override DRUISound GetRow(int index)
+    {
+        return _dataList[index];
+    }
+
+    /// <summary>
     /// 获取数据表行数。
     /// </summary>
     public override int Count
@@ -118,10 +128,10 @@ public partial class TbUISound : UnityQGameFramework.Core.DataTable.DataTable<DR
         return _dataMap[key];
     }
     /// <summary>
-    /// 获取数据表行。
+    /// 获取主键对应的记录；键不存在时抛出 KeyNotFoundException。
     /// </summary>
     /// <param name="key">数据表主键。</param>
-    /// <returns>数据表行。</returns>
+    /// <returns>主键对应的原表记录。</returns>
     public DRUISound this[int key]
     {
         get

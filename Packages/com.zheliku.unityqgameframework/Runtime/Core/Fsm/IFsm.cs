@@ -103,8 +103,8 @@ namespace UnityQGameFramework.Core.Fsm
         /// <summary>
         /// 获取有限状态机的所有状态。
         /// </summary>
-        /// <param name="results">有限状态机的所有状态。</param>
-        void GetAllStates(List<FsmState<T>> results);
+        /// <param name="results">有限状态机的所有状态；填充前清空，容量不足时仍会扩容。</param>
+        void GetAllStatesNonAlloc(List<FsmState<T>> results);
 
         /// <summary>
         /// 是否存在有限状态机数据。

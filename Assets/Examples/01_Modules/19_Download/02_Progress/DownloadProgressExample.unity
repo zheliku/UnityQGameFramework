@@ -146,9 +146,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9654485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &9654487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,7 +424,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5F00\u59CB\u4E0B\u8F7D"
+  m_Text: "Start Download"
 --- !u!222 &131374884
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2250,7 +2250,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u5B57\u8282\u8FDB\u5EA6\u4E0E\u5199\u76D8"
+  m_Text: "02  Download Progress and File Writes"
 --- !u!222 &1533485169
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3052,7 +3052,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u89C2\u5BDF\u5DF2\u63A5\u6536\u5B57\u8282\u3001\u767E\u5206\u6BD4\u548C\u6C47\u603B\u901F\u5EA6\u3002"
+  m_Text: "Observe received bytes, percentage and total download speed."
 --- !u!222 &2075288936
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "com.unity.ugui": "1.0.0",
+    "com.unity.inputsystem": "1.7.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.assetbundle": "1.0.0",
@@ -37,18 +38,18 @@
   },
   "samples": [
     {
-      "displayName": "00 · 点点点",
-      "description": "从启动、菜单到游玩、结算与最高分保存。",
+      "displayName": "00 · PointPointPoint",
+      "description": "A complete clicker game with startup, menus, gameplay, results and a saved high score.",
       "path": "Samples~/00_PointPointPoint"
     },
     {
-      "displayName": "01 · 模块示例",
-      "description": "按模块查看 QGF 的常用调用；每个场景只演示一项核心功能。",
+      "displayName": "01 · Modules",
+      "description": "Common QGF module APIs, with one focused feature per scene.",
       "path": "Samples~/01_Modules"
     },
     {
       "displayName": "02 · StarForce",
-      "description": "多模块协作的射击游戏；使用 URP 项目运行 Launcher 场景。",
+      "description": "A multi-module shooter. Run the Launcher scene in a URP project.",
       "path": "Samples~/02_StarForce"
     }
   ]

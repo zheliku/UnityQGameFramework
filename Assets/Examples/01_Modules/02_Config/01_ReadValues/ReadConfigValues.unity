@@ -348,7 +348,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u8BFB\u53D6 TOML \u4E2D\u7684\u5B57\u7B26\u4E32\u3001\u6574\u6570\u548C\u5C0F\u6570\u3002"
+  m_Text: "Read strings, integers and decimals from TOML."
 --- !u!222 &87496443
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -688,7 +688,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u91CD\u65B0\u8BFB\u53D6"
+  m_Text: "Read Again"
 --- !u!222 &1174655781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -788,7 +788,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u89E3\u6790\u4E0E\u67E5\u8BE2\u914D\u7F6E"
+  m_Text: "01  Parse and Query Configuration"
 --- !u!222 &1493952721
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -824,9 +824,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825216915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1825216917
 MonoBehaviour:
   m_ObjectHideFlags: 0

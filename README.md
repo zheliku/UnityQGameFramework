@@ -51,6 +51,8 @@ python Tools/Documentation/check_docs.py
 
 消费项目已安装官方 UniTask 或 YooAsset 时，可分别追加 `--external-dependency unitask`、`--external-dependency yooasset` 生成排除对应内置副本的包。输出的 `external-dependencies.json` 列出消费项目需要安装的官方 Git URL；默认 Git 包仍包含两个插件，不能与官方副本同时安装。
 
+逐文件比较官方 UGF 与当前包，运行 `python Tools/Review/compare_ugf.py`，然后在 VS Code 打开 `Artifacts~/UgfComparison/UGF-QGF.code-workspace`。对应文件按当前路径排列，移动或改名仍显示为 `M`；原始路径、提交和文件哈希见同目录的 `file-map.json`。后续运行时追加 `--refresh`，旧对照副本会先保存到 `History`，主仓库的 Git 索引不变。
+
 ## 文档与扩展
 
 - [运行机制](Packages/com.zheliku.unityqgameframework/Documentation~/00-runtime.md)：初始化、统一更新与关闭。
@@ -58,7 +60,7 @@ python Tools/Documentation/check_docs.py
 - [StarForce 导读](Packages/com.zheliku.unityqgameframework/Documentation~/05-starforce.md)：飞机、武器、UI 和数据表的协作。
 - [UGF 到 QGF](Packages/com.zheliku.unityqgameframework/Documentation~/04-changes-from-ugf.md)：当前改动与架构迁移进度。
 
-`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的可选安装入口。
+`QGF > Extensions` 提供 Alchemy 和 Rainbow Folders 2 的用途与 Git URL，复制后通过 Package Manager 安装。
 
 ## 来源与许可
 

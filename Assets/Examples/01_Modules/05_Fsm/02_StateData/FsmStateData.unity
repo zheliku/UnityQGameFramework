@@ -456,7 +456,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u4EFB\u52A1\u6570"
+  m_Text: "Task Count"
 --- !u!222 &140266294
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -635,7 +635,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5F00\u59CB\u6267\u884C"
+  m_Text: "Start Processing"
 --- !u!222 &269638779
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -857,7 +857,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u72B6\u6001\u673A\u5171\u4EAB\u6570\u636E"
+  m_Text: "02  Shared State Machine Data"
 --- !u!222 &459745321
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1206,9 +1206,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 731687243}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &731687245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1517,7 +1517,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u79FB\u9664\u4EFB\u52A1"
+  m_Text: "Remove Task"
 --- !u!222 &1230973279
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1596,7 +1596,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5199\u5165\u4EFB\u52A1"
+  m_Text: "Set Task Count"
 --- !u!222 &1328062549
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1696,7 +1696,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u628A\u4EFB\u52A1\u6570\u5199\u5165\u72B6\u6001\u673A\uFF0C\u6267\u884C\u72B6\u6001\u8BFB\u53D6\u5E76\u9010\u79D2\u51CF\u5C11\u5B83\u3002"
+  m_Text: "Store task count in the state machine; the processing state reads and decrements it each second."
 --- !u!222 &1731817980
 CanvasRenderer:
   m_ObjectHideFlags: 0

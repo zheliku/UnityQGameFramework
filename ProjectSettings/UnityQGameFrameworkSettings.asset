@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21c190f2209c8742bd695ec11a69e6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityQGameFramework.Editor::UnityQGameFramework.Editor.LubanSettings
-  m_ProfileGuid: 906119631107fb24e972b7d2866f3523
+  m_ProfileGuid: d259c9d764a9da64392b904fd537ec40
   m_WorkspaceRoot: Assets/UnityQGameFramework/Config

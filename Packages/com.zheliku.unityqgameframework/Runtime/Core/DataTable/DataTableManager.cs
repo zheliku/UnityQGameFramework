@@ -44,10 +44,10 @@ namespace UnityQGameFramework.Core.DataTable
         }
 
         /// <summary>
-        /// 整批登记数据表，存在冲突时不登记。
+        /// 添加已构造的数据表，存在冲突时不添加任何表。
         /// </summary>
-        /// <param name="tables">要登记的数据表。</param>
-        public void RegisterDataTables(IEnumerable<DataTableBase> tables)
+        /// <param name="tables">已构造的数据表；此方法不读取文件或解析数据。</param>
+        public void AddDataTables(IEnumerable<DataTableBase> tables)
         {
             if (tables == null)
             {
@@ -131,15 +131,18 @@ namespace UnityQGameFramework.Core.DataTable
         /// <summary>
         /// 获取所有数据表。
         /// </summary>
-        /// <param name="results">接收所有数据表的结果列表。</param>
-        public void GetAllDataTables(List<DataTableBase> results)
+        /// <param name="results">接收所有数据表的结果列表；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllDataTablesNonAlloc(List<DataTableBase> results)
         {
             if (results == null)
             {
                 throw new ArgumentNullException(nameof(results));
             }
             results.Clear();
-            results.AddRange(m_DataTables.Values);
+            foreach (var pair in m_DataTables)
+            {
+                results.Add(pair.Value);
+            }
         }
 
         /// <summary>
@@ -148,9 +151,9 @@ namespace UnityQGameFramework.Core.DataTable
         /// <typeparam name="T">数据表的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        public bool DestroyDataTable<T>(string name = null) where T : DataTableBase
+        public bool RemoveDataTable<T>(string name = null) where T : DataTableBase
         {
-            return DestroyDataTable(typeof(T), name);
+            return RemoveDataTable(typeof(T), name);
         }
 
         /// <summary>
@@ -159,7 +162,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// <param name="tableType">数据表类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        public bool DestroyDataTable(Type tableType, string name = null)
+        public bool RemoveDataTable(Type tableType, string name = null)
         {
             return m_DataTables.Remove(Key(tableType, name));
         }
@@ -169,7 +172,7 @@ namespace UnityQGameFramework.Core.DataTable
         /// </summary>
         /// <param name="table">要移除的数据表实例。</param>
         /// <returns>是否成功移除数据表登记。</returns>
-        public bool DestroyDataTable(DataTableBase table)
+        public bool RemoveDataTable(DataTableBase table)
         {
             if (table == null)
             {

@@ -210,7 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u8BFB\u53D6\u957F\u5EA6\uFF08\u5B57\u8282\uFF09"
+  m_Text: "Read Length (Bytes)"
 --- !u!222 &3798173
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1124,7 +1124,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u8bfb\u53d6\u6587\u4ef6\u7247\u6bb5"
+  m_Text: "02  Read File Segments"
 --- !u!222 &1062021473
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1314,7 +1314,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8BFB\u53D6\u6240\u9009\u8303\u56F4"
+  m_Text: "Read Selected Range"
 --- !u!222 &1174655781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1753,7 +1753,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6E90\u6587\u4EF6\u504F\u79FB\uFF08\u5B57\u8282\uFF09"
+  m_Text: "Source Offset (Bytes)"
 --- !u!222 &1671041017
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1864,9 +1864,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825216915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1825216917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2090,8 +2090,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u6309\u6E90\u504F\u79FB\u548C\u957F\u5EA6\u8BFB\u53D6\u5BB9\u5668\u5185\u7684
-    ASCII \u6587\u4EF6\u3002"
+  m_Text: "Read an ASCII file from the container using a source offset and length."
 --- !u!222 &1889507055
 CanvasRenderer:
   m_ObjectHideFlags: 0

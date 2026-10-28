@@ -41,6 +41,24 @@ using Luban = UnityQGameFramework.Luban;
 {{~end~}}
 public partial class {{__name}} : UnityQGameFramework.Core.DataTable.DataTable<{{declaring_type_name value_type}}>
 {
+    /// <summary>
+    /// 按源表顺序获取指定位置的记录。
+    /// </summary>
+    /// <param name="index">从零开始的记录位置。</param>
+    /// <returns>指定位置的记录。</returns>
+    protected override {{declaring_type_name value_type}} GetRow(int index)
+    {
+        {{~if __table.is_map_table || __table.is_list_table~}}
+        return _dataList[index];
+        {{~else~}}
+        if (index != 0)
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(index));
+        }
+        return _data;
+        {{~end~}}
+    }
+
     {{~if !__table.is_map_table && !__table.is_list_table~}}
     /// <summary>
     /// 获取数据表行数。
@@ -184,10 +202,10 @@ public partial class {{__name}} : UnityQGameFramework.Core.DataTable.DataTable<{
         return _dataMap[key];
     }
     /// <summary>
-    /// 获取数据表行。
+    /// 获取主键对应的记录；键不存在时抛出 KeyNotFoundException。
     /// </summary>
     /// <param name="key">数据表主键。</param>
-    /// <returns>数据表行。</returns>
+    /// <returns>主键对应的原表记录。</returns>
     public {{declaring_type_name value_type}} this[{{declaring_type_name key_type}} key]
     {
         get
@@ -267,6 +285,19 @@ public partial class {{__name}} : UnityQGameFramework.Core.DataTable.DataTable<{
     }
 
     {{~if __table.is_union_index~}}
+    /// <summary>
+    /// 获取复合主键对应的记录；键不存在时抛出 KeyNotFoundException。
+    /// </summary>
+    /// <param name="key">按表定义字段顺序排列的复合键。</param>
+    /// <returns>复合键对应的原表记录。</returns>
+    public {{declaring_type_name value_type}} this[({{array.each __table.index_list @index_type_name | array.join ', '}}) key]
+    {
+        get
+        {
+            return _dataMapUnion[key];
+        }
+    }
+
     /// <summary>
     /// 获取复合键对应的数据表行。
     /// </summary>

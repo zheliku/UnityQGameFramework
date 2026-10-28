@@ -275,9 +275,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,7 +399,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "03  \u65e5\u5fd7\u7ea7\u522b"
+  m_Text: "03  Log Levels"
 --- !u!222 &107649093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -584,7 +584,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u7070\u8272\u7EA7\u522B\u672A\u7F16\u8BD1\u3002\u5230 QGF > Logging \u9009\u62E9\u7EA7\u522B\uFF0C\u7F16\u8BD1\u540E\u91CD\u65B0\u8FD0\u884C\u3002"
+  m_Text: "Gray levels are not compiled. Choose levels in QGF > Logging, then run again after compilation."
 --- !u!222 &395432962
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1284,7 +1284,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "Error\uFF08\u4F1A\u4EA7\u751F\u4E00\u6761\u9519\u8BEF\u65E5\u5FD7\uFF09"
+  m_Text: "Error (writes an error to Console)"
 --- !u!222 &1090648582
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1417,7 +1417,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.6509804, g: 0.90588236, b: 0.9607843, a: 1}
   m_CustomCaretColor: 1
   m_SelectionColor: {r: 0.15, g: 0.6, b: 0.8, a: 0.3}
-  m_Text: "\u73A9\u5BB6\u8FDB\u5165\u5173\u5361"
+  m_Text: "Player Entered Level"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -1772,7 +1772,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8F93\u5165\u5185\u5BB9"
+  m_Text: "Enter Text"
 --- !u!222 &1329076126
 CanvasRenderer:
   m_ObjectHideFlags: 0

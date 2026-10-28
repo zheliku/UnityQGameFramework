@@ -180,10 +180,10 @@ namespace UnityQGameFramework.Core.WebRequest
         /// 根据 Web 请求任务的标签获取 Web 请求任务的信息。
         /// </summary>
         /// <param name="tag">要获取信息的 Web 请求任务的标签。</param>
-        /// <param name="results">Web 请求任务的信息。</param>
-        public void GetAllWebRequestInfos(string tag, List<TaskInfo> results)
+        /// <param name="results">Web 请求任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllWebRequestInfosNonAlloc(string tag, List<TaskInfo> results)
         {
-            m_TaskPool.GetTaskInfos(tag, results);
+            m_TaskPool.GetTaskInfosNonAlloc(tag, results);
         }
 
         /// <summary>
@@ -198,10 +198,10 @@ namespace UnityQGameFramework.Core.WebRequest
         /// <summary>
         /// 获取所有 Web 请求任务的信息。
         /// </summary>
-        /// <param name="results">所有 Web 请求任务的信息。</param>
-        public void GetAllWebRequestInfos(List<TaskInfo> results)
+        /// <param name="results">所有 Web 请求任务的信息；填充前清空，容量不足时仍会扩容。</param>
+        public void GetAllWebRequestInfosNonAlloc(List<TaskInfo> results)
         {
-            m_TaskPool.GetAllTaskInfos(results);
+            m_TaskPool.GetAllTaskInfosNonAlloc(results);
         }
 
         /// <summary>

@@ -27,8 +27,8 @@ namespace UnityQGameFramework.Examples.Modules
         {
             // ProcedureComponent 驱动流程状态机；当前流程由它持有。
             var current = QGF.Procedure.CurrentProcedure;
-            currentText.text = $"启动 → 菜单 ⇄ 游玩\n当前：{current?.GetType().Name}\n停留：{QGF.Procedure.CurrentProcedureTime:F1} 秒";
-            enteredText.text = $"进入菜单：{MenuVisits} 次    进入游玩：{PlayVisits} 次";
+            currentText.text = $"Launch → Menu ⇄ Play\nCurrent: {current?.GetType().Name}\nElapsed: {QGF.Procedure.CurrentProcedureTime:F1} s";
+            enteredText.text = $"Menu entries: {MenuVisits} times    Enter Play: {PlayVisits} times";
             enterButton.interactable = current is ExampleMenu02;
             backButton.interactable = current is ExamplePlay02;
         }

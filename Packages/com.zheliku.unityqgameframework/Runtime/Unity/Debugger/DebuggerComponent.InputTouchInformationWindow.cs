@@ -3,8 +3,10 @@
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
 //------------------------------------------------------------
 
-using UnityQGameFramework.Core;
+using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -23,41 +25,48 @@ namespace UnityQGameFramework.Runtime
                 GUILayout.Label("<b>Input Touch Information</b>");
                 GUILayout.BeginVertical("box");
                 {
-                    DrawItem("Touch Supported", Input.touchSupported.ToString());
-                    DrawItem("Touch Pressure Supported", Input.touchPressureSupported.ToString());
-                    DrawItem("Stylus Touch Supported", Input.stylusTouchSupported.ToString());
-                    DrawItem("Simulate Mouse With Touches", Input.simulateMouseWithTouches.ToString());
-                    DrawItem("Multi Touch Enabled", Input.multiTouchEnabled.ToString());
-                    DrawItem("Touch Count", Input.touchCount.ToString());
-                    DrawItem("Touches", GetTouchesString(Input.touches));
+                    Touchscreen screen = Touchscreen.current;
+                    string touches = GetTouchesString(screen, out int count);
+                    DrawItem("Touchscreen Present", (screen != null).ToString());
+                    DrawItem("Touch Slots", screen != null ? screen.touches.Count.ToString() : "0");
+                    DrawItem("Touch Count", count.ToString());
+                    DrawItem("Touches", touches);
                 }
                 GUILayout.EndVertical();
             }
 
             /// <summary>
-            /// 格式化单个触摸点。
+            /// 格式化当前正在进行的触摸点。
             /// </summary>
-            /// <param name="touch">触摸点数据。</param>
-            /// <returns>触摸点位置、阶段等信息文本。</returns>
-            private string GetTouchString(Touch touch)
+            /// <param name="screen">当前触摸屏；未连接时为空。</param>
+            /// <param name="count">正在进行的触摸点数量。</param>
+            /// <returns>触摸点编号、位置、位移、压力和阶段；没有触摸时返回空字符串。</returns>
+            private string GetTouchesString(Touchscreen screen, out int count)
             {
-                return Utility.Text.Format("{0}, {1}, {2}, {3}, {4}", touch.position, touch.deltaPosition, touch.rawPosition, touch.pressure, touch.phase);
-            }
-
-            /// <summary>
-            /// 格式化触摸点数组。
-            /// </summary>
-            /// <param name="touches">触摸点数组。</param>
-            /// <returns>触摸点列表文本。</returns>
-            private string GetTouchesString(Touch[] touches)
-            {
-                string[] touchStrings = new string[touches.Length];
-                for (int i = 0; i < touches.Length; i++)
+                count = 0;
+                if (screen == null)
                 {
-                    touchStrings[i] = GetTouchString(touches[i]);
+                    return string.Empty;
                 }
 
-                return string.Join("; ", touchStrings);
+                var text = new StringBuilder();
+                foreach (TouchControl touch in screen.touches)
+                {
+                    if (!touch.isInProgress)
+                    {
+                        continue;
+                    }
+
+                    if (count++ > 0)
+                    {
+                        text.Append("; ");
+                    }
+                    text.Append(touch.touchId.ReadValue()).Append(": ").Append(touch.position.ReadValue())
+                        .Append(", ").Append(touch.delta.ReadValue()).Append(", ").Append(touch.pressure.ReadValue())
+                        .Append(", ").Append(touch.phase.ReadValue());
+                }
+
+                return text.ToString();
             }
         }
     }

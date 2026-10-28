@@ -97,9 +97,9 @@ class Program
     static void Main()
     {
         var tables = new Tables();
-        var loaded = ((IDataTableLoader)tables).Load(Load);
+        var loaded = ((IDataTableLoader)tables).CreateTables(Load);
         var manager = FrameworkEntry.GetModule<IDataTableManager>();
-        manager.RegisterDataTables(loaded);
+        manager.AddDataTables(loaded);
         Check(manager.Count == 12, "All map/list/one/struct tables must be registered.");
         Check(ReferenceEquals(manager.GetDataTable<TbItem>(), tables.TbItem), "The registry holds the generated table itself.");
         Check(ReferenceEquals(tables.TbItem.GetDataRow(1), tables.TbItem.DataMap[1]), "No copied records.");
@@ -110,6 +110,13 @@ class Program
         Check(manager.GetDataTable<TbKind>().HasDataRow(Kind.Weapon), "Enum key.");
         Check(manager.GetDataTable<TbNumber>().GetDataRow(7).Code == 7, "Integer key without an Id field.");
         Check(manager.GetDataTable<TbValue>().GetDataRow(20).Amount == 42, "Value-type record.");
+        Check(ReferenceEquals(tables.TbItem[1], tables.TbItem.DataMap[1]), "Integer indexer returns the source row.");
+        Check(tables.TbText["hello"].Name == "World", "String indexer.");
+        Check(tables.TbLong[5000000000L].Key == 5000000000L, "Int64 indexer.");
+        Check(tables.TbKind[Kind.Weapon].Key == Kind.Weapon, "Enum indexer.");
+        Check(tables.TbValue[20].Amount == 42, "Value-type record indexer.");
+        Check(tables.TbStage[(1, 2)].Name == "Two", "Composite indexer.");
+        Check(ReferenceEquals(tables.TbUse[10].ItemId_Ref, tables.TbItem[1]), "Indexers and resolved references share a row.");
         Check(manager.GetDataTable<TbGlobal>().Data.Title == "Fixture" && tables.TbGlobal.Single().Title == "Fixture", "Singleton table and enumeration.");
         Check(tables.TbGlobal.Count == 1 && tables.TbGlobal.Data.Count == 5 && tables.TbGlobal.Name == "" && tables.TbGlobal.Data.Name == "Global", "Singleton fields do not collide with table metadata.");
         Check(manager.GetDataTable<TbList>().GetDataRow(x => x.Name == "List").Name == "List", "List without a fabricated key.");
@@ -118,18 +125,19 @@ class Program
         Check(tables.TbItem.GetDataRow(-1) == null && !tables.TbItem.HasDataRow(-1) && tables.TbText.GetDataRow("missing") == null && tables.TbStage.GetDataRow(99, 1) == null, "Missing keys.");
         Check(tables.TbValue.GetDataRow(-1).Equals(default(ValueRow)), "Missing value-type record.");
         Reject<KeyNotFoundException>(() => tables.TbItem.Get(-1));
+        Reject<KeyNotFoundException>(() => { var missing = tables.TbItem[-1]; });
         var results = new List<Item> { tables.TbItem.GetDataRow(1) };
-        tables.TbItem.GetDataRows(row => row.Id >= 1, (a,b) => b.Id.CompareTo(a.Id), results);
+        tables.TbItem.GetDataRowsNonAlloc(row => row.Id >= 1, (a,b) => b.Id.CompareTo(a.Id), results);
         Check(results.Count == 2 && results[0].Id == 3 && tables.TbItem.DataList[0].Id == 1, "Filtering/sorting preserves table order.");
         Check(tables.TbItem.HasDataRow(row => row.Values.Count == 2), "Containers and predicate query.");
         var named = new TbItem(Load("tbitem"), "Named");
-        manager.RegisterDataTables(new[] { named });
+        manager.AddDataTables(new[] { named });
         Check(ReferenceEquals(manager.GetDataTable<TbItem>("Named"), named), "Named generated instance.");
         var pending = new TbItem(Load("tbitem"), "Pending");
-        Reject<FrameworkException>(() => manager.RegisterDataTables(new DataTableBase[] { pending, named }));
+        Reject<FrameworkException>(() => manager.AddDataTables(new DataTableBase[] { pending, named }));
         Check(!manager.HasDataTable<TbItem>("Pending"), "Registration is atomic.");
-        Check(!manager.DestroyDataTable(new TbItem(Load("tbitem"), "Named")), "A different instance cannot remove a registered table.");
-        Check(manager.DestroyDataTable(named) && !manager.HasDataTable<TbItem>("Named"), "Instance removal.");
+        Check(!manager.RemoveDataTable(new TbItem(Load("tbitem"), "Named")), "A different instance cannot remove a registered table.");
+        Check(manager.RemoveDataTable(named) && !manager.HasDataTable<TbItem>("Named"), "Instance removal.");
         Check(manager.GetAllDataTables().All(table => table.Count > 0 && table.Type != table.RowType), "Complete metadata and row enumeration.");
         Reject<ArgumentException>(() => manager.GetDataTable(typeof(Item)));
         FrameworkEntry.Shutdown();

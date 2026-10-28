@@ -311,7 +311,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5F52\u8FD8\u624B\u4E2D\u7684\u8D27\u7BB1"
+  m_Text: "Release Held Crate"
 --- !u!222 &353478408
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -635,7 +635,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "01  \u501F\u51FA\u3001\u5F52\u8FD8\u3001\u518D\u501F\u51FA"
+  m_Text: "01  Acquire, Release and Reuse"
 --- !u!222 &782492539
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -813,9 +813,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219220725}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1219220727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,7 +916,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u501F\u4E00\u4E2A\u8D27\u7BB1"
+  m_Text: "Acquire a Crate"
 --- !u!222 &1325189721
 CanvasRenderer:
   m_ObjectHideFlags: 0

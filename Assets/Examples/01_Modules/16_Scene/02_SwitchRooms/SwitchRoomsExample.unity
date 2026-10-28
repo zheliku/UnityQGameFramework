@@ -348,7 +348,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u987A\u5E8F\u5207\u5173"
+  m_Text: "02  Switch Rooms in Sequence"
 --- !u!222 &797276288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -420,9 +420,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 913315211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &913315213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,7 +821,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5207\u5230\u53E6\u4E00\u4E2A\u623F\u95F4"
+  m_Text: "Switch Room"
 --- !u!222 &1384291380
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1113,7 +1113,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u5148\u5378\u8F7D\u65E7\u623F\u95F4\uFF0C\u5B8C\u6210\u540E\u52A0\u8F7D\u65B0\u623F\u95F4\u3002"
+  m_Text: "Unload the previous room before loading the next."
 --- !u!222 &1763709569
 CanvasRenderer:
   m_ObjectHideFlags: 0

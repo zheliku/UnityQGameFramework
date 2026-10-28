@@ -115,7 +115,7 @@ namespace UnityQGameFramework.Examples.Modules
             // Helper 是 Unity 播放对象；Volume 不包含音频系统计算的距离衰减。
             var source = active ? (SoundAgentHelperBase)agent.Helper : null;
             float distance = active ? Vector3.Distance(source.transform.position, listenerMarker.position) : 0;
-            stateText.text = active ? $"序号：{serialId}    距离：{distance:F1}/{agent.MaxDistance:F1} 米\n3D 混合：{agent.SpatialBlend:F2}    声相：{agent.PanStereo:F2}\n" + (Vector3.Distance(source.transform.position, sourceMarker.position) > .01f ? "坐标已改变，点击播放应用。" : "固定坐标播放中。") : QGF.Sound.IsLoadingSound(serialId) ? "正在加载" : "已停止";
+            stateText.text = active ? $"Serial: {serialId}    Distance: {distance:F1}/{agent.MaxDistance:F1} m\n3D blend: {agent.SpatialBlend:F2}    Stereo pan: {agent.PanStereo:F2}\n" + (Vector3.Distance(source.transform.position, sourceMarker.position) > .01f ? "Position changed. Click Play to apply." : "Playing at a fixed position.") : QGF.Sound.IsLoadingSound(serialId) ? "Loading" : "Stopped";
             playButton.interactable = !QGF.Sound.IsLoadingSound(serialId);
             stopButton.interactable = active;
         }

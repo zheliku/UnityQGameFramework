@@ -16,10 +16,10 @@ namespace UnityQGameFramework.Runtime
         string SchemaHash { get; }
 
         /// <summary>
-        /// 加载数据表并解析表间引用。
+        /// 构造数据表并解析表间引用；不读取资源、不修改 DataTableComponent 登记。
         /// </summary>
         /// <param name="loader">读取指定数据文件的加载方法。</param>
         /// <returns>已完成解析的数据表。</returns>
-        IReadOnlyList<DataTableBase> Load(Func<string, ByteBuf> loader);
+        IReadOnlyList<DataTableBase> CreateTables(Func<string, ByteBuf> loader);
     }
 }

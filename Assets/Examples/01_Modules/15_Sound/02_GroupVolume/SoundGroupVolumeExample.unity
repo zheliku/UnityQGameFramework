@@ -678,7 +678,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u97F3\u4E50\u7EC4\u97F3\u91CF"
+  m_Text: "Music Group Volume"
 --- !u!222 &503705826
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -757,7 +757,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u97F3\u4E50\u7EC4\u9759\u97F3"
+  m_Text: "Mute Music Group"
 --- !u!222 &552519416
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1347,7 +1347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5355\u58F0\u9053\u9759\u97F3"
+  m_Text: "Mute Voice"
 --- !u!222 &797276287
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1559,9 +1559,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 913315211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &913315213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1773,7 +1773,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u64AD\u653E\u97F3\u4E50"
+  m_Text: "Play Music"
 --- !u!222 &1132346639
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2110,7 +2110,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u7EC4\u97F3\u91CF\u4E0E\u5355\u58F0\u9053\u97F3\u91CF\u76F8\u4E58\uFF1B\u4EFB\u610F\u4E00\u7EA7\u9759\u97F3\u90FD\u4F1A\u9759\u97F3\u3002"
+  m_Text: "Group and voice volumes multiply. Muting either level silences the sound."
 --- !u!222 &1309427173
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2225,7 +2225,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u505C\u6B62\u97F3\u4E50\u7EC4"
+  m_Text: "Stop Music Group"
 --- !u!222 &1384291380
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3120,7 +3120,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u5355\u58F0\u9053\u97F3\u91CF"
+  m_Text: "Voice Volume"
 --- !u!222 &2116996639
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3295,7 +3295,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u58f0\u97f3\u7ec4\u4e0e\u5355\u58f0\u9053\u97f3\u91cf"
+  m_Text: "02  Group and Voice Volume"
 --- !u!222 &2143215618
 CanvasRenderer:
   m_ObjectHideFlags: 0

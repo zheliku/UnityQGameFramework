@@ -22,7 +22,7 @@ namespace UnityQGameFramework.Examples.Modules
         private DownloadHttpServer server;
         private string path;
         private int serial;
-        private string state = "尚未下载";
+        private string state = "Not downloaded";
         private void Start()
         {
             server = new DownloadHttpServer(payload.bytes);
@@ -36,7 +36,7 @@ namespace UnityQGameFramework.Examples.Modules
             clearButton.onClick.AddListener(() =>
             {
                 DeleteFiles();
-                state = "已清理";
+                state = "Cleared";
                 contentText.text = "";
             });
         }
@@ -52,7 +52,7 @@ namespace UnityQGameFramework.Examples.Modules
             string uri = server.Url("/payload");
             // 返回任务序号；结果事件用它确认本次请求。
             serial = QGF.Download.AddDownload(path, uri);
-            state = $"任务 #{serial} 等待下载";
+            state = $"Task #{serial} waiting to download";
             contentText.text = "";
         }
 
@@ -61,12 +61,12 @@ namespace UnityQGameFramework.Examples.Modules
             // 全局事件先匹配 SerialId；没有传 UserData 的重载也能区分本次任务。
             if (args is DownloadSuccessEventArgs success && success.SerialId == serial)
             {
-                state = $"完成 · {success.CurrentLength} 字节";
+                state = $"Complete · {success.CurrentLength} bytes";
                 contentText.text = File.ReadAllText(path).Trim(); // 成功时临时文件已转为正式文件。
             }
             else if (args is DownloadFailureEventArgs failure && failure.SerialId == serial)
             {
-                state = "失败：" + failure.ErrorMessage;
+                state = "Failed: " + failure.ErrorMessage;
             }
             else
             {
@@ -79,9 +79,9 @@ namespace UnityQGameFramework.Examples.Modules
         private void LateUpdate()
         {
             stateText.text = state;
-            string finalFile = File.Exists(path) ? "已保存" : "无";
-            string temporaryFile = File.Exists(path + ".download") ? "下载中" : "无";
-            pathText.text = $"保存路径：{path}\n正式文件：{finalFile} · 临时文件：{temporaryFile}";
+            string finalFile = File.Exists(path) ? "Saved" : "None";
+            string temporaryFile = File.Exists(path + ".download") ? "Downloading" : "None";
+            pathText.text = $"Save path: {path}\nFinal file: {finalFile} · Temporary file: {temporaryFile}";
             downloadButton.interactable = clearButton.interactable = server != null && serial == 0;
         }
 

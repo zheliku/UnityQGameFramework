@@ -25,7 +25,7 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 failure = null;
                 // 返回本次窗口序号；标题通过 userData 交给 UIFormLogic.OnOpen。
-                serialId = QGF.UI.OpenUIForm(AssetName, "Example", "背包");
+                serialId = QGF.UI.OpenUIForm(AssetName, "Example", "Inventory");
             });
             closeButton.onClick.AddListener(() => QGF.UI.CloseUIForm(serialId));
         }
@@ -34,7 +34,7 @@ namespace UnityQGameFramework.Examples.Modules
         {
             bool loading = QGF.UI.IsLoadingUIForm(serialId);
             bool opened = QGF.UI.GetUIForm(serialId) != null;
-            stateText.text = failure ?? (loading ? "正在加载" : opened ? "窗口已打开" : "窗口已关闭");
+            stateText.text = failure ?? (loading ? "Loading" : opened ? "Window open" : "Window closed");
             openButton.interactable = !loading && !opened;
             closeButton.interactable = opened;
         }

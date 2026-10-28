@@ -213,12 +213,12 @@ public static class ValidateDebuggerExamples
             bool infoCompiled = LogCompiled(example, "Info"), warningCompiled = LogCompiled(example, "Warning");
             input.text = "dbg-test-中文 + & =";
             await Click(button("infoButton"), mouse);
-            debugger.GetRecentLogs(logs);
+            debugger.GetRecentLogsNonAlloc(logs);
             Require(logs.Any(entry => entry.LogMessage == input.text && entry.LogType == LogType.Log) == infoCompiled,
                 "QGF Info follows example assembly compilation symbols");
             input.text = "dbg-test-warning";
             await Click(button("warningButton"), mouse);
-            debugger.GetRecentLogs(logs);
+            debugger.GetRecentLogsNonAlloc(logs);
             Require(logs.Any(entry => entry.LogMessage == input.text && entry.LogType == LogType.Warning) == warningCompiled,
                 "QGF Warning follows example assembly compilation symbols");
             if (logs.Count == 0) Require(text("logsText").text.Contains("QGF > Logging"), "Empty log view explains logging configuration");
@@ -236,13 +236,13 @@ public static class ValidateDebuggerExamples
             slider("countSlider").value = 2;
             await Task.Delay(150);
             logs.Add(new DebuggerComponent.LogNode());
-            debugger.GetRecentLogs(logs, 2);
+            debugger.GetRecentLogsNonAlloc(logs, 2);
             Require(logs.Count == 2 && logs[0].LogMessage == "dbg-test-order-1" && logs[1].LogMessage == "dbg-test-order-2", "Count query replaces list with latest entries in order");
             Require(logs.All(entry => entry.LogFrameCount > 0 && Math.Abs((entry.LogTime - DateTime.UtcNow).TotalSeconds) < 30), "Captured frame and UTC time");
             Require(text("logsText").text.Contains("dbg-test-order-2") && !text("logsText").text.Contains("dbg-test-order-0"), "Live bounded log view replaces old results");
             dropdown("queryMode").value = 1;
             await Task.Delay(150);
-            debugger.GetRecentLogs(logs);
+            debugger.GetRecentLogsNonAlloc(logs);
             Require(logs.Count(entry => entry.LogMessage.StartsWith("dbg-test-")) == 3 + (infoCompiled ? 1 : 0) + (warningCompiled ? 1 : 0)
                 && text("logsText").text.Contains("dbg-test-中文") == infoCompiled, "All query matches enabled log levels and fixture entries");
             Require(!slider("countSlider").interactable, "All log mode disables the count control");

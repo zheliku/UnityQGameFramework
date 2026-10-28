@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u9500\u6BC1\u5B9E\u4F8B\u5E76\u5F52\u8FD8\u8D44\u4EA7"
+  m_Text: "Destroy Instance and Release Asset"
 --- !u!222 &32128421
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -225,9 +225,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 50026056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &50026058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,7 +673,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "\u4E09\u4E2A\u5305\u6536\u96C6\u540C\u4E00\u4EFD\u9884\u5236\u4F53\u3002\u5F52\u8FD8\u540E\u5207\u6362\u89C4\u5219\uFF0C\u5BF9\u6BD4\u5730\u5740\u53D8\u5316\u3002"
+  m_Text: "Three packages collect the same prefab. Release it, then switch rules to compare addresses."
 --- !u!222 &395432962
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1448,7 +1448,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u5BFB\u5740\u89C4\u5219\u4E0E\u5B57\u7B26\u4E32\u5730\u5740"
+  m_Text: "02  Addressing Rules and String Addresses"
 --- !u!222 &771612972
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2398,7 +2398,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u6309\u5730\u5740\u52A0\u8F7D Cube"
+  m_Text: "Load Cube by Address"
 --- !u!222 &1449275567
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2828,7 +2828,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6587\u4EF6\u540D \u2192 Cube"
+  m_Text: "Filename → Cube"
 --- !u!222 &1948192656
 CanvasRenderer:
   m_ObjectHideFlags: 0

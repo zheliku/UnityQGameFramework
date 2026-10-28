@@ -20,13 +20,13 @@ namespace UnityQGameFramework.Examples.Modules
             // Subscribe 建立监听；Fire 将消息加入队列，框架更新时派发。
             QGF.Event.Subscribe(CoinsAdded.EventId, OnCoinsAdded);
             sendButton.onClick.AddListener(() => QGF.Event.Fire(this, CoinsAdded.Create(10)));
-            coinsText.text = "金币：0";
+            coinsText.text = "Coins: 0";
         }
 
         private void OnCoinsAdded(object sender, GameEventArgs args)
         {
             coins += ((CoinsAdded)args).Amount;
-            coinsText.text = $"金币：{coins}";
+            coinsText.text = $"Coins: {coins}";
         }
 
         private void OnDestroy()

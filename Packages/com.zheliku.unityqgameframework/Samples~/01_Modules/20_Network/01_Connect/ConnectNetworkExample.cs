@@ -34,7 +34,7 @@ namespace UnityQGameFramework.Examples.Modules
             connectButton.onClick.AddListener(() =>
             {
                 connecting = true;
-                stateText.text = "正在连接";
+                stateText.text = "Connecting";
                 channel.Connect(IPAddress.Loopback, server.Port);
             });
             closeButton.onClick.AddListener(() => channel.Close());
@@ -45,15 +45,15 @@ namespace UnityQGameFramework.Examples.Modules
             // 全局事件先确认通道，避免处理其他业务连接的结果。
             if (args is ConnectedArgs connected && ReferenceEquals(connected.NetworkChannel, channel))
             {
-                stateText.text = "已连接";
+                stateText.text = "Connected";
             }
             else if (args is ClosedArgs closed && ReferenceEquals(closed.NetworkChannel, channel))
             {
-                stateText.text = "已断开，可以重新连接";
+                stateText.text = "Disconnected. You can connect again.";
             }
             else if (args is ErrorArgs error && ReferenceEquals(error.NetworkChannel, channel))
             {
-                stateText.text = "连接失败：" + error.SocketErrorCode;
+                stateText.text = "Connection failed: " + error.SocketErrorCode;
                 channel.Close();
             }
             else

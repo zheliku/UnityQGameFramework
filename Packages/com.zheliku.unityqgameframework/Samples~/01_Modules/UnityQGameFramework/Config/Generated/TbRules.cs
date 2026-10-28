@@ -20,6 +20,20 @@ namespace UnityQGameFramework.Examples.Modules.TableData
 public partial class TbRules : UnityQGameFramework.Core.DataTable.DataTable<DRRules>
 {
     /// <summary>
+    /// 按源表顺序获取指定位置的记录。
+    /// </summary>
+    /// <param name="index">从零开始的记录位置。</param>
+    /// <returns>指定位置的记录。</returns>
+    protected override DRRules GetRow(int index)
+    {
+        if (index != 0)
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(index));
+        }
+        return _data;
+    }
+
+    /// <summary>
     /// 获取数据表行数。
     /// </summary>
     public override int Count

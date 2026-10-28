@@ -405,7 +405,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5F00\u59CB"
+  m_Text: "Start"
 --- !u!1 &1965329729283954978
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,7 +600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u70B9\u6211"
+  m_Text: "Click Me"
 --- !u!1 &2653644500578796108
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,7 +879,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u70B9\u70B9\u70B9"
+  m_Text: "PointPointPoint"
 --- !u!1 &3211711290781442535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,7 +1196,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u8FD4\u56DE\u83DC\u5355"
+  m_Text: "Return to Menu"
 --- !u!1 &7018253135472624214
 GameObject:
   m_ObjectHideFlags: 0

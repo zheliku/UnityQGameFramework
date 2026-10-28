@@ -26,13 +26,13 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 bool removed = QGF.Fsm.DestroyFsm<NamedMachines>("Left");
                 left = null;
-                resultText.text = removed ? "Left 已销毁，Right 继续运行。" : "Left 不存在。";
+                resultText.text = removed ? "Left destroyed. Right is still running." : "Left does not exist.";
             });
             recreateButton.onClick.AddListener(() =>
             {
                 left = QGF.Fsm.CreateFsm("Left", this, new Idle());
                 left.Start<Idle>();
-                resultText.text = "新的 Left 已创建。";
+                resultText.text = "A new Left was created.";
             });
         }
 
@@ -40,9 +40,9 @@ namespace UnityQGameFramework.Examples.Modules
         {
             bool hasLeft = QGF.Fsm.HasFsm<NamedMachines>("Left");
             bool hasRight = QGF.Fsm.HasFsm<NamedMachines>("Right");
-            leftText.text = hasLeft ? $"Left：{QGF.Fsm.GetFsm<NamedMachines>("Left").CurrentStateTime:F1} 秒" : "Left：已销毁";
-            rightText.text = hasRight ? $"Right：{QGF.Fsm.GetFsm<NamedMachines>("Right").CurrentStateTime:F1} 秒" : "Right：已销毁";
-            machinesText.text = $"管理器当前有 {QGF.Fsm.Count} 台状态机。";
+            leftText.text = hasLeft ? $"Left：{QGF.Fsm.GetFsm<NamedMachines>("Left").CurrentStateTime:F1} s" : "Left: destroyed";
+            rightText.text = hasRight ? $"Right：{QGF.Fsm.GetFsm<NamedMachines>("Right").CurrentStateTime:F1} s" : "Right: destroyed";
+            machinesText.text = $"Manager contains {QGF.Fsm.Count} state machines.";
             destroyButton.interactable = hasLeft;
             recreateButton.interactable = !hasLeft;
         }

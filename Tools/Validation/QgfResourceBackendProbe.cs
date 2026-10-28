@@ -419,13 +419,13 @@ public static class QgfResourceBackendProbe
         }
 
         /// <summary>
-        /// 解析数据后取消请求。
+        /// 构造数据后取消请求。
         /// </summary>
         /// <param name="loader">数据文件加载方法。</param>
         /// <returns>已解析但不应登记的数据表。</returns>
-        public IReadOnlyList<UnityQGameFramework.Core.DataTable.DataTableBase> Load(Func<string, UnityQGameFramework.Luban.ByteBuf> loader)
+        public IReadOnlyList<UnityQGameFramework.Core.DataTable.DataTableBase> CreateTables(Func<string, UnityQGameFramework.Luban.ByteBuf> loader)
         {
-            var result = ((IDataTableLoader)new Tables()).Load(loader);
+            var result = ((IDataTableLoader)new Tables()).CreateTables(loader);
             GameEntry.GetComponent<DataTableComponent>().CancelLoadDataTables();
             return result;
         }

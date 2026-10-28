@@ -530,7 +530,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5728\u672C\u5730\u53D6\u5F97\u53D8\u91CF 7"
+  m_Text: "Acquire Local Variable 7"
 --- !u!222 &294074395
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1312,7 +1312,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.05
-  m_Text: "02  \u8c01\u8d1f\u8d23\u5f52\u8fd8\u53d8\u91cf"
+  m_Text: "02  Variable Ownership"
 --- !u!222 &1321967890
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1441,7 +1441,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u672C\u5730\u5F52\u8FD8"
+  m_Text: "Release Locally"
 --- !u!222 &1493952720
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1577,9 +1577,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825216915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a293e67aa81b7b42bbcdd43d00d4603, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityQGameFramework.Runtime::UnityQGameFramework.Runtime.UIInputAdapter
+  m_EditorClassIdentifier: UnityEngine.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
 --- !u!114 &1825216917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1782,7 +1782,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u5220\u9664\u8282\u70B9\uFF0C\u7531\u6A21\u5757\u5F52\u8FD8"
+  m_Text: "Remove Node and Release"
 --- !u!222 &2014617237
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1861,7 +1861,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "\u628A\u53D8\u91CF\u4EA4\u7ED9\u8282\u70B9"
+  m_Text: "Transfer Variable to Node"
 --- !u!222 &2117983347
 CanvasRenderer:
   m_ObjectHideFlags: 0

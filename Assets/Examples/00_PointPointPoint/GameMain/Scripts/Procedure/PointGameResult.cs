@@ -21,18 +21,18 @@ namespace UnityQGameFramework.Examples.PointPointPoint
         {
             base.OnEnter(owner);
             game = (PointGameData)owner.GetData<VarObject>("Game").Value;
-            game.Phase = "结算";
+            game.Phase = "Result";
             if (game.Hits >= game.TargetCount)
             {
-                game.Result = "完成！";
+                game.Result = "Complete!";
             }
             else if (game.Lives <= 0)
             {
-                game.Result = "机会用完了";
+                game.Result = "No lives left";
             }
             else
             {
-                game.Result = "时间到";
+                game.Result = "Time is up";
             }
 
             game.MenuRequested = false;

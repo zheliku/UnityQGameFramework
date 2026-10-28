@@ -80,7 +80,7 @@ Base 的 `06_TextAndPaths` 到 `09_Compression` 提供以下操作：
 
 `10_Random` 把非负整数、带上界整数、指定范围整数、[0, 1) 小数和随机字节放在同一界面。轨道标记表示本次结果在范围中的位置，字节模式显示首字节的位置。整数范围含下界、不含上界，两端相同时返回边界值。`SetSeed` 重设框架共用的随机序列；相同种子与调用顺序可以重现结果。示例只在点击“应用全局种子”时重设，不在启动时自动设置。StarForce 的敌人位置和配置选择也使用 `Utility.Random`。
 
-`11_TypeLookup` 使用 `Utility.Assembly.GetType` 查找完整类型名，显示所属程序集与基类。Base 创建 Helper、Procedure 创建流程时也用这条查找路径。GetType 先按 .NET 规则解析名称，再遍历已加载程序集；包含程序集名称时也按 .NET 规则解析。`GetAssemblies` 返回当前已加载的程序集；`GetTypes()` 和 List 重载枚举其中的类型，List 入口会清空容器。只有字符串引用的类型在 Player 中需要通过直接引用或 link.xml 保留。
+`11_TypeLookup` 使用 `Utility.Assembly.GetType` 查找完整类型名，显示所属程序集与基类。Base 创建 Helper、Procedure 创建流程时也用这条查找路径。GetType 先按 .NET 规则解析名称，再遍历已加载程序集；包含程序集名称时也按 .NET 规则解析。`GetAssemblies` 返回当前已加载的程序集；`GetTypes()` 返回数组，`GetTypes(List<Type>)` 清空并填充调用方列表。两者内部的反射枚举都会分配临时数组，因此不使用 NonAlloc 命名。只有字符串引用的类型在 Player 中需要通过直接引用或 link.xml 保留。
 
 `12_StructureBytes` 用一个 `int + float`、`Sequential / Pack=1` 的结构体演示三种写入和两种读取重载。结构体没有引用字段，布局固定为 8 字节；带包头时读写使用相同偏移。与 Converter 一样，跨平台格式还需约定字节序和布局。Marshal 的共用非托管缓存按 4096 字节块扩容；`EnsureCachedHGlobalSize` 预留容量，`CachedHGlobalSize` 查看当前容量，`FreeCachedHGlobal` 释放它。下一次转换会重新申请；返回的 byte[] 独立于该缓存。示例在主线程顺序调用，退出时由 Base 关闭框架并统一释放缓存。
 

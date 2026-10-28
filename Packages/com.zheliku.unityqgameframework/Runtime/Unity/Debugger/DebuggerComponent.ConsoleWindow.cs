@@ -485,8 +485,8 @@ namespace UnityQGameFramework.Runtime
             /// <summary>
             /// 获取最近保留的日志记录。
             /// </summary>
-            /// <param name="results">用于接收日志记录的列表。</param>
-            public void GetRecentLogs(List<LogNode> results)
+            /// <param name="results">用于接收日志记录的列表；填充前清空，容量不足时仍会扩容。</param>
+            public void GetRecentLogsNonAlloc(List<LogNode> results)
             {
                 if (results == null)
                 {
@@ -504,9 +504,9 @@ namespace UnityQGameFramework.Runtime
             /// <summary>
             /// 获取最近保留的日志记录。
             /// </summary>
-            /// <param name="results">用于接收日志记录的列表。</param>
+            /// <param name="results">用于接收日志记录的列表；填充前清空，容量不足时仍会扩容。</param>
             /// <param name="count">最多获取的日志条数。</param>
-            public void GetRecentLogs(List<LogNode> results, int count)
+            public void GetRecentLogsNonAlloc(List<LogNode> results, int count)
             {
                 if (results == null)
                 {

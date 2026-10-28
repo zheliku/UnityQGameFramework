@@ -82,7 +82,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             {
                 get
                 {
-                    GetCanReleaseObjects(m_CachedCanReleaseObjects);
+                    GetCanReleaseObjectsNonAlloc(m_CachedCanReleaseObjects);
                     return m_CachedCanReleaseObjects.Count;
                 }
             }
@@ -487,7 +487,7 @@ namespace UnityQGameFramework.Core.ObjectPool
                 }
 
                 m_AutoReleaseTime = 0f;
-                GetCanReleaseObjects(m_CachedCanReleaseObjects);
+                GetCanReleaseObjectsNonAlloc(m_CachedCanReleaseObjects);
                 List<T> toReleaseObjects = releaseObjectFilterCallback(m_CachedCanReleaseObjects, toReleaseCount, expireTime);
                 if (toReleaseObjects == null || toReleaseObjects.Count <= 0)
                 {
@@ -506,7 +506,7 @@ namespace UnityQGameFramework.Core.ObjectPool
             public override void ReleaseAllUnused()
             {
                 m_AutoReleaseTime = 0f;
-                GetCanReleaseObjects(m_CachedCanReleaseObjects);
+                GetCanReleaseObjectsNonAlloc(m_CachedCanReleaseObjects);
                 foreach (T toReleaseObject in m_CachedCanReleaseObjects)
                 {
                     ReleaseObject(toReleaseObject);
@@ -588,8 +588,8 @@ namespace UnityQGameFramework.Core.ObjectPool
             /// <summary>
             /// 收集当前允许释放的对象。
             /// </summary>
-            /// <param name="results">接收可释放对象的列表，填充前会清空。</param>
-            private void GetCanReleaseObjects(List<T> results)
+            /// <param name="results">接收可释放对象的列表，填充前会清空；填充前清空，容量不足时仍会扩容。</param>
+            private void GetCanReleaseObjectsNonAlloc(List<T> results)
             {
                 if (results == null)
                 {

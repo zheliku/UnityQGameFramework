@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added a VS Code review workspace generator at `Tools/Review/compare_ugf.py`. It aligns the locked UGF and GameFramework sources to current QGF paths so moved files remain one `M` diff; the generated inventory records upstream commits and hashes.
+
 - ResourceSettings 使用英文 Inspector 和 YooAsset 原生 EPlayMode；每包只保留一个 Play Mode，编辑器与 Player 统一读取。旧双字段配置保留原 Player 模式，示例默认模拟，构建应用前明确选择离线或联机等模式。
 - 指定 Collector 后同步原生窗口、包列表和默认包；原生 Save 后同步包增删并保留同名包的运行参数。
 - YooAsset 原生 Builder 增加 Batch Build，多选或全选包后使用每个包的原生设置依次构建，首包复制目录与原生单包构建一致；保留刷新后的构建结果。
@@ -22,6 +24,18 @@
 - QGF 编辑器日志显示调用方法及可点击的文件行号；四个等级使用更明亮的深浅主题色，正文沿用 Console 原生颜色，不再重复输出时间。Player 保留纯文本时间，异常直接保留原类型和堆栈。
 
 ### Fixed
+
+- Removed `QgfProjectAssets` and the QGF uninstall/backup menus. Samples are ordinary Package Manager imports and can be removed from the Project window without framework-owned project-asset tracking.
+- Removed local Luban compiler selection. The pinned compiler is downloaded and cached automatically in `Library`; the project no longer stores a machine-specific compiler path.
+- Translated framework and Sample runtime/editor strings to English while retaining Chinese source XML documentation and explanatory comments.
+- Simplified the Extensions window to descriptions and copyable Git URLs. Dependency installation, updates and removal remain in Package Manager.
+- Merged editor log initialization and formatting into DefaultLogHelper; removed the delegate bridge, empty LogRedirection file and single-file editor logging folder.
+- Added typed Luban key indexers for primary-key and composite-key tables, and renamed list-filling APIs with `NonAlloc` suffixes to distinguish reusable result buffers from array-returning methods.
+- Kept key indexers directly on generated tables and removed the unused keyed `IDataTable<TKey, T>` interface. The table-mode example now demonstrates string, integer and composite-key indexers alongside resolved references.
+- Kept reflection-based `Utility.Assembly.GetTypes(List<Type>)` under its original name: reusing the output list does not avoid reflection's temporary arrays.
+- Renamed DataTable operations to `CreateTables`, `AddDataTables`, `RemoveDataTable` and `LoadTablesFromCatalog`; the names now describe construction, manager ownership and Catalog loading separately.
+- Removed the QGF UI input adapter and UI link file. Samples use Unity Input System's `InputSystemUIInputModule` directly.
+- Migrated Debugger input pages and StarForce mouse controls to Input System; removed the remaining legacy input calls and fallback branch.
 
 - 移除 QGF 对 YooAsset Collector 的自定义 Inspector，恢复原生配置字段显示；保留双击打开官方收集窗口的入口。
 - YooAsset 原生收集与构建窗口的背景按 Unity 深浅主题适配，修复浅色主题下深底深字和黑色边框。
@@ -84,7 +98,7 @@
 - 模块示例继续按真实任务整理：移除 API 重载选择器和重复的启动等待；对象池保留具名工厂和回收策略，Luban 保留条件筛选与排序示例。
 - 资源包加载、Luban 异步加载、二进制片段、请求队列、下载优先级和声音组均收敛为清晰操作路径；模块程序集自动引用 UniTask。
 - 配置与语言字典的异步读取示例固定使用带 UserData 的入口，移除只用于切换重载的下拉框，保留语言切换与失败恢复。
-- 明确框架组件的启动顺序，使默认顺序的业务 Start 可以直接调用模块。同步 LoadDataTables 返回是否成功，生成表统一从 DataTable 查询，组件保留 RegisterDataTables 入口。
+- 明确框架组件的启动顺序，使默认顺序的业务 Start 可以直接调用模块。同步 LoadDataTables 返回是否成功，生成表统一从 DataTable 查询，组件保留 AddDataTables 入口。
 - 更新 Sample 分组、卸载根目录识别与打包检查，补充 Luban 生成流程及两种查询入口的适用范围。
 - 精简模块文档的重复说明，补充 DataNode 和 StarForce 主流程的调用注释，修正 StarForce 的菜单与战斗场景加载说明。
 
@@ -119,7 +133,7 @@
 - ResourceComponent 支持在 Awake 或启用前设置解密回调；变体示例在创建加载代理前注册，修复初始化被拒绝的问题。
 - StarForce 更新前使用场景携带的对话框，预加载后交给 UI 模块；移除自动确认，保留取消操作，防止重复点击触发多次回调，并保留外部暂停状态。
 - 修正 StarForce 弹窗宽度和正文间距；启动翻译集中在内置字典，避免预加载时出现重复键。
-- 修复示例下拉列表行高、文字对比度和选中状态；StarForce 启动场景改用 UIInputAdapter，支持当前启用的原生输入模块。
+- 修复示例下拉列表行高、文字对比度和选中状态；StarForce 启动场景改用官方 Input System UI 模块。
 - StarForce 窗口、按钮和血条动画使用非缩放时间，关闭或回池时取消旧动画；暂停和切换视图后仍可完成淡出。
 - 修复 Base 时间、暂停和应用参数示例退出后，QGF 属性与 Unity 状态不一致的问题。
 - 修复 ObjectPool 示例被其他模块内部池干扰的问题；说明 `Register(item, true)` 会执行一次 OnSpawn 并计入一次借用。
