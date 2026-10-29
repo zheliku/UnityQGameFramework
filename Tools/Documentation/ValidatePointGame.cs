@@ -127,7 +127,7 @@ public static class ValidatePointGame
             await Wait(() => QGF.Procedure.CurrentProcedure is PointGamePlay, "third round");
             Set(game, "Remaining", 0.01f);
             await Wait(() => QGF.Procedure.CurrentProcedure is PointGameResult, "timeout to result");
-            Require((string)Get(game, "Result") == "时间到", "Timeout result");
+            Require((string)Get(game, "Result") == "Time is up", "Timeout result");
             Require(QGF.Event.EventHandlerCount == 0, "Unsubscribed click handlers");
             Require(reusedForm, "A single UIForm instance is reused under a new open serial ID");
         }

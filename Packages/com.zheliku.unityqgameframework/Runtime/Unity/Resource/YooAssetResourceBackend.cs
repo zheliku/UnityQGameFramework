@@ -40,8 +40,12 @@ namespace UnityQGameFramework.Runtime
             settings.GetPackage();
             m_Settings = settings;
             m_ShutdownToken = m_ShutdownCancellation.Token;
-            SetPaths(readOnlyPath, readWritePath);
-            Application.quitting += Shutdown;
+            if (string.IsNullOrEmpty(readOnlyPath) || string.IsNullOrEmpty(readWritePath))
+            {
+                throw new GameFrameworkException("Resource paths are invalid.");
+            }
+            ReadOnlyPath = readOnlyPath;
+            ReadWritePath = readWritePath;
         }
 
         /// <summary>
@@ -58,18 +62,6 @@ namespace UnityQGameFramework.Runtime
         public string ReadWritePath
         {
             get; private set;
-        }
-
-        /// <summary>
-        /// 获取默认资源包的运行模式。
-        /// </summary>
-        public ResourceMode ResourceMode
-        {
-            get
-            {
-                EPlayMode mode = m_Settings.GetPackage().PlayMode;
-                return mode == EPlayMode.HostPlayMode || mode == EPlayMode.WebPlayMode ? ResourceMode.Updatable : ResourceMode.Package;
-            }
         }
 
         /// <summary>
@@ -94,45 +86,12 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 获取正在加载的请求数量。
         /// </summary>
-        public int LoadWorkingAgentCount
+        public int LoadingCount
         {
             get
             {
                 return m_LoadingCount;
             }
-        }
-
-        /// <summary>
-        /// 设置资源目录。
-        /// </summary>
-        /// <param name="readOnlyPath">资源只读目录。</param>
-        /// <param name="readWritePath">资源读写目录。</param>
-        public void SetPaths(string readOnlyPath, string readWritePath)
-        {
-            ThrowIfShutdown();
-            if (m_Packages.Count > 0)
-            {
-                throw new GameFrameworkException("Set resource paths before creating packages.");
-            }
-            if (string.IsNullOrEmpty(readOnlyPath) || string.IsNullOrEmpty(readWritePath))
-            {
-                throw new GameFrameworkException("Resource paths are invalid.");
-            }
-            ReadOnlyPath = readOnlyPath;
-            ReadWritePath = readWritePath;
-        }
-
-        /// <summary>
-        /// 初始化默认资源包。
-        /// </summary>
-        /// <param name="callback">初始化完成回调。</param>
-        public void Initialize(InitResourcesCompleteCallback callback)
-        {
-            if (callback == null)
-            {
-                throw new GameFrameworkException("Init resources complete callback is invalid.");
-            }
-            InitializeCallbackAsync(callback).Forget();
         }
 
         /// <summary>
@@ -159,12 +118,7 @@ namespace UnityQGameFramework.Runtime
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfShutdown();
             string name = GetPackageName(packageName);
-            if (s_ShuttingDownPackages.TryGetValue(name, out YooAssetResourceBackend previous))
-            {
-                // 重载启动场景时，等待上一实例完成异步销毁，再创建同名包。
-                await ResourceOperation.WithCancellation(previous.m_ShutdownCompletion.Task, cancellationToken);
-                ThrowIfShutdown();
-            }
+            await WaitForPackageShutdownAsync(name, cancellationToken);
             PackageInfo package = CreatePackage(name);
             if (package.Destroying)
             {
@@ -395,7 +349,6 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
             m_Shutdown = true;
-            Application.quitting -= Shutdown;
             var packageNames = new List<string>(m_Packages.Keys);
             foreach (string packageName in packageNames)
             {
@@ -404,17 +357,6 @@ namespace UnityQGameFramework.Runtime
             m_ShutdownCancellation.Cancel();
             CancelPendingDownloaders();
             ShutdownAsync(packageNames).Forget();
-        }
-
-        /// <summary>
-        /// 初始化默认资源包后执行完成回调。
-        /// </summary>
-        /// <param name="callback">默认资源包初始化完成回调。</param>
-        /// <returns>等待初始化和回调完成的异步任务。</returns>
-        private async UniTask InitializeCallbackAsync(InitResourcesCompleteCallback callback)
-        {
-            await InitializePackageAsync(null, null, null, m_ShutdownToken);
-            callback();
         }
 
         /// <summary>
@@ -490,6 +432,25 @@ namespace UnityQGameFramework.Runtime
             package = new PackageInfo(settings, YooAssets.CreatePackage(name));
             m_Packages.Add(name, package);
             return package;
+        }
+
+        /// <summary>
+        /// 等待同名资源包的上一个后端完成关闭。
+        /// </summary>
+        /// <param name="packageName">资源包名称。</param>
+        /// <param name="cancellationToken">取消当前等待的标记。</param>
+        /// <returns>等待资源包所有权释放的异步任务。</returns>
+        private async UniTask WaitForPackageShutdownAsync(string packageName, CancellationToken cancellationToken)
+        {
+            if (s_ShuttingDownPackages.TryGetValue(packageName, out YooAssetResourceBackend previous))
+            {
+                // 重载启动场景时，等待上一实例完成异步销毁，再创建同名包。
+                using (var cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, m_ShutdownToken))
+                {
+                    await ResourceOperation.WithCancellation(previous.m_ShutdownCompletion.Task, cancellation.Token);
+                }
+                ThrowIfShutdown();
+            }
         }
 
         /// <summary>
@@ -611,11 +572,26 @@ namespace UnityQGameFramework.Runtime
                 }
                 foreach (PackageInfo package in m_Packages.Values)
                 {
-                    if (YooAssets.IsInitialized)
+                    string name = package.Package.PackageName;
+                    if (!YooAssets.IsInitialized || !YooAssets.TryGetPackage(name, out ResourcePackage current) || !ReferenceEquals(current, package.Package))
                     {
-                        await ResourceOperation.WaitAsync(package.Package.DestroyPackageAsync(), CancellationToken.None);
-                        YooAssets.RemovePackage(package.Package.PackageName);
+                        continue;
                     }
+                    DestroyPackageOperation operation = package.Package.DestroyPackageAsync();
+                    while (!operation.IsDone)
+                    {
+                        await UniTask.NextFrame();
+                    }
+                    // 编辑器退出 Play 时，官方驱动会销毁全部包并中止待处理操作。
+                    if (!YooAssets.IsInitialized || !YooAssets.TryGetPackage(name, out current) || !ReferenceEquals(current, package.Package))
+                    {
+                        continue;
+                    }
+                    if (operation.Status != EOperationStatus.Succeeded)
+                    {
+                        throw new GameFrameworkException(operation.Error);
+                    }
+                    YooAssets.RemovePackage(name);
                 }
             }
             catch (Exception exception)

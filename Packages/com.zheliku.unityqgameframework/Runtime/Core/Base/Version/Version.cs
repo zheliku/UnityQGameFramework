@@ -10,7 +10,7 @@ namespace UnityQGameFramework.Core
     /// </summary>
     public static partial class Version
     {
-        private const string GameFrameworkVersionString = "0.1.0-exp.8";
+        private const string GameFrameworkVersionString = "0.1.0-exp.9";
 
         private static IVersionHelper s_VersionHelper = null;
 

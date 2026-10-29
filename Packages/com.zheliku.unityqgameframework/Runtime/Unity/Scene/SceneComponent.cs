@@ -283,7 +283,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sceneAssetName">场景资源名称。</param>
         /// <param name="cancellationToken">取消标记。场景加载不能立即中止，完成后会补偿卸载。</param>
-        /// <returns>场景加载任务。</returns>
+        /// <returns>场景加载任务；组件销毁时取消等待。</returns>
         public UniTask LoadSceneAsync(string sceneAssetName, CancellationToken cancellationToken = default)
         {
             return LoadSceneAsync(sceneAssetName, DefaultPriority, cancellationToken);
@@ -295,10 +295,11 @@ namespace UnityQGameFramework.Runtime
         /// <param name="sceneAssetName">场景资源名称。</param>
         /// <param name="priority">加载场景资源的优先级。</param>
         /// <param name="cancellationToken">取消标记。场景加载不能立即中止，完成后会补偿卸载。</param>
-        /// <returns>场景加载任务。</returns>
+        /// <returns>场景加载任务；组件销毁时取消等待。</returns>
         public async UniTask LoadSceneAsync(string sceneAssetName, int priority, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            CancellationToken destroyCancellationToken = this.GetCancellationTokenOnDestroy();
             SceneAsyncRequest request = new SceneAsyncRequest();
             EventHandler<GameEventArgs> successHandler = null;
             EventHandler<GameEventArgs> failureHandler = null;
@@ -312,8 +313,17 @@ namespace UnityQGameFramework.Runtime
                 }
 
                 request.Pending = false;
-                m_EventComponent.Unsubscribe(LoadSceneSuccessEventArgs.EventId, successHandler);
-                m_EventComponent.Unsubscribe(LoadSceneFailureEventArgs.EventId, failureHandler);
+                if (m_EventComponent != null)
+                {
+                    if (m_EventComponent.Check(LoadSceneSuccessEventArgs.EventId, successHandler))
+                    {
+                        m_EventComponent.Unsubscribe(LoadSceneSuccessEventArgs.EventId, successHandler);
+                    }
+                    if (m_EventComponent.Check(LoadSceneFailureEventArgs.EventId, failureHandler))
+                    {
+                        m_EventComponent.Unsubscribe(LoadSceneFailureEventArgs.EventId, failureHandler);
+                    }
+                }
             }
 
             successHandler = (sender, eventArgs) =>
@@ -364,11 +374,11 @@ namespace UnityQGameFramework.Runtime
                 cancellationToken.ThrowIfCancellationRequested();
                 LoadScene(sceneAssetName, priority, request);
                 request.Started = true;
-                await request.Completion.Task;
+                await request.Completion.Task.AttachExternalCancellation(destroyCancellationToken);
             }
             catch
             {
-                if (request.Pending && (!request.Cancelled || !request.Started))
+                if (request.Pending && (destroyCancellationToken.IsCancellationRequested || !request.Cancelled || !request.Started))
                 {
                     Unsubscribe();
                     cancellation.Dispose();
@@ -408,7 +418,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="sceneAssetName">场景资源名称。</param>
         /// <param name="cancellationToken">取消标记。取消只取消等待，不会中止已发出的卸载。</param>
-        /// <returns>场景卸载任务。</returns>
+        /// <returns>场景卸载任务；组件销毁时取消等待。</returns>
         public UniTask UnloadSceneAsync(string sceneAssetName, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -494,17 +504,27 @@ namespace UnityQGameFramework.Runtime
         private async UniTask AwaitSceneRequestAsync(SceneAsyncRequest request, CancellationTokenRegistration cancellation,
             EventHandler<GameEventArgs> successHandler, EventHandler<GameEventArgs> failureHandler)
         {
+            CancellationToken destroyCancellationToken = this.GetCancellationTokenOnDestroy();
             try
             {
-                await request.Completion.Task;
+                await request.Completion.Task.AttachExternalCancellation(destroyCancellationToken);
             }
             catch
             {
-                if (request.Pending && (!request.Cancelled || !request.Started))
+                if (request.Pending && (destroyCancellationToken.IsCancellationRequested || !request.Cancelled || !request.Started))
                 {
                     request.Pending = false;
-                    m_EventComponent.Unsubscribe(UnloadSceneSuccessEventArgs.EventId, successHandler);
-                    m_EventComponent.Unsubscribe(UnloadSceneFailureEventArgs.EventId, failureHandler);
+                    if (m_EventComponent != null)
+                    {
+                        if (m_EventComponent.Check(UnloadSceneSuccessEventArgs.EventId, successHandler))
+                        {
+                            m_EventComponent.Unsubscribe(UnloadSceneSuccessEventArgs.EventId, successHandler);
+                        }
+                        if (m_EventComponent.Check(UnloadSceneFailureEventArgs.EventId, failureHandler))
+                        {
+                            m_EventComponent.Unsubscribe(UnloadSceneFailureEventArgs.EventId, failureHandler);
+                        }
+                    }
                     cancellation.Dispose();
                 }
                 throw;

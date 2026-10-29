@@ -76,7 +76,9 @@ namespace UnityQGameFramework.Runtime
             {
                 throw new GameFrameworkException("Scene asset name is invalid.");
             }
-            PackageInfo package = CreatePackage(packageName);
+            string actualPackageName = GetPackageName(packageName);
+            await WaitForPackageShutdownAsync(actualPackageName, cancellationToken);
+            PackageInfo package = CreatePackage(actualPackageName);
             if (package.Scenes.ContainsKey(sceneAssetName))
             {
                 throw new GameFrameworkException("Scene is already loaded or loading: " + sceneAssetName);

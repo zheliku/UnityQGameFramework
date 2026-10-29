@@ -35,6 +35,7 @@ public static class QgfResourceBackendProbe
         {
             throw new InvalidOperationException("Use an isolated validation project.");
         }
+        Directory.CreateDirectory("Artifacts~");
         s_Assertions.Clear();
         s_Errors.Clear();
         Application.logMessageReceived += OnLog;
@@ -42,6 +43,22 @@ public static class QgfResourceBackendProbe
         string error = null;
         try
         {
+            // executeMethod 早于编辑器启动的 delayCall，先让搜索索引等初始化完成。
+            await Task.Delay(1000);
+            if (File.Exists("QgfGitInstallValidation~.json"))
+            {
+                var installed = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(ResourceComponent).Assembly);
+                Require(installed.source == UnityEditor.PackageManager.PackageSource.Git && installed.version == "0.1.0-exp.9",
+                    "The consumer resolves the current QGF version through a real UPM Git dependency");
+                Require(UnityEditor.PackageManager.UI.Sample.FindByPackage(installed.name, installed.version).Count() == 3,
+                    "The Git package exposes all three Sample import registrations");
+                using (var sha = SHA256.Create())
+                {
+                    string path = Path.Combine(installed.resolvedPath, "Runtime/Unity/Resource/YooAssetResourceBackend.cs");
+                    string actual = BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(path))).Replace("-", "").ToLowerInvariant();
+                    Require(actual == File.ReadAllText("GitBackendFingerprint~.txt").Trim(), "The Git package contains the current resource backend");
+                }
+            }
             PrepareTableFixture();
             Prepare();
             if (File.Exists("ExternalDependencies~.json"))
@@ -67,6 +84,10 @@ public static class QgfResourceBackendProbe
             await UniTask.NextFrame();
             ResourceComponent resource = GameEntry.GetComponent<ResourceComponent>();
             Require(resource != null && resource.Settings != null, "ResourceComponent uses the saved settings");
+            Require(resource.HasAsset(Root + "/Content/Cube.prefab") == HasAssetResult.NotReady,
+                "An uninitialized manifest reports NotReady instead of assuming that an asset exists on disk");
+            Require(!GameEntry.GetComponent<SceneComponent>().HasScene(Root + "/Content/Target.unity"),
+                "A scene is not reported as present before its manifest is ready");
 
             using (var cancellation = new CancellationTokenSource())
             {
@@ -92,6 +113,8 @@ public static class QgfResourceBackendProbe
             }
 
             string cubePath = Root + "/Content/Cube.prefab";
+            Require(resource.HasAsset(cubePath) == HasAssetResult.Exists,
+                "An initialized manifest reports an address as present without a storage-container distinction");
             GameObject first = await resource.LoadAssetAsync<GameObject>(cubePath);
             GameObject second = await resource.LoadAssetAsync<GameObject>(cubePath);
             AssetHandle other = await resource.LoadAssetHandleAsync<GameObject>(cubePath, "QgfProbeB");
@@ -234,20 +257,23 @@ public static class QgfResourceBackendProbe
             ResourceDownloaderOperation unstartedDownloader = resource.CreateResourceDownloader(new ResourceDownloaderOptions(1, 0));
             Require(!unstartedDownloader.IsDone, "A newly created downloader remains pending until it is started or cancelled");
             UniTask<AssetHandle> interrupted = resource.LoadAssetHandleAsync<GameObject>(Root + "/Content/Cube3.prefab");
-            UnityEngine.Object.Destroy(resource.gameObject);
+            UniTask interruptedScene = scenes.LoadSceneAsync(sceneGuid);
+            UnityEngine.Object.DestroyImmediate(resource.gameObject);
+            Require(YooAssets.TryGetPackage("QgfProbeA", out _), "The previous package is still registered while its requests finish shutting down");
+            UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/QGF.prefab"));
+            ResourceComponent replacement = GameEntry.GetComponent<ResourceComponent>();
+            UniTask<GameObject> restarting = replacement.LoadAssetAsync<GameObject>(cubePath);
             var shutdownResult = await interrupted.SuppressCancellationThrow();
             Require(shutdownResult.IsCanceled, "Framework shutdown cancels an outstanding asset request");
+            Require(await interruptedScene.SuppressCancellationThrow().Timeout(TimeSpan.FromSeconds(5)),
+                "Destroying the scene component cancels its pending wait without requiring a caller token");
             Require(unstartedDownloader.IsDone, "Framework shutdown cancels a downloader that was never started");
-            await UniTask.WaitUntil(() => !YooAssets.TryGetPackage("QgfProbeA", out _)).Timeout(TimeSpan.FromSeconds(20));
-            Require(GameEntry.GetComponent<ResourceComponent>() == null, "Framework shutdown clears component and package registration");
-            UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/QGF.prefab"));
-            await UniTask.NextFrame();
-            await UniTask.NextFrame();
-            resource = GameEntry.GetComponent<ResourceComponent>();
-            GameObject restarted = await resource.LoadAssetAsync<GameObject>(cubePath);
+            GameObject restarted = await restarting.Timeout(TimeSpan.FromSeconds(20));
+            resource = replacement;
             resource.UnloadAsset(restarted);
             await resource.DestroyPackageAsync();
-            Require(resource != null, "A new framework instance can reuse package names after shutdown");
+            Require(!YooAssets.TryGetPackage("QgfProbeA", out _) && resource == GameEntry.GetComponent<ResourceComponent>(),
+                "An immediate restart waits for the previous owner before borrowing from the same package name");
             Require(s_Errors.Count == 0, "No unexpected Unity errors");
             exitCode = 0;
         }

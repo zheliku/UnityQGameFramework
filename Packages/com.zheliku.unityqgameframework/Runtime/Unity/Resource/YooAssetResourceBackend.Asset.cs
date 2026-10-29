@@ -24,13 +24,13 @@ namespace UnityQGameFramework.Runtime
             if (!m_Packages.TryGetValue(m_Settings.DefaultPackageName, out PackageInfo package) || !package.Ready || package.Destroying)
             {
                 // 查询本身不能异步等待；实际加载会初始化默认包并返回准确的失败信息。
-                return HasAssetResult.AssetOnDisk;
+                return HasAssetResult.NotReady;
             }
             if (!GetAssetInfo(package.Package, assetName, null).IsValid)
             {
                 return HasAssetResult.NotExist;
             }
-            return IsRawPackage(package.Package) ? HasAssetResult.BinaryOnDisk : HasAssetResult.AssetOnDisk;
+            return HasAssetResult.Exists;
         }
 
         /// <summary>
@@ -126,7 +126,9 @@ namespace UnityQGameFramework.Runtime
                 throw new GameFrameworkException("Asset type must derive from UnityEngine.Object.");
             }
 
-            PackageInfo package = CreatePackage(packageName);
+            string actualPackageName = GetPackageName(packageName);
+            await WaitForPackageShutdownAsync(actualPackageName, cancellationToken);
+            PackageInfo package = CreatePackage(actualPackageName);
             package.Requests++;
             m_LoadingCount++;
             AssetHandle handle = null;
@@ -242,68 +244,6 @@ namespace UnityQGameFramework.Runtime
                     handle.Release();
                 }
             }
-        }
-
-        /// <summary>
-        /// 同步读取已初始化资源包中的二进制内容。
-        /// </summary>
-        /// <param name="assetName">资产定位地址。</param>
-        /// <returns>拥有独立生命周期的文件内容。</returns>
-        public byte[] LoadBinary(string assetName)
-        {
-            ThrowIfShutdown();
-            if (!m_Packages.TryGetValue(m_Settings.DefaultPackageName, out PackageInfo package) || !package.Ready || package.Destroying)
-            {
-                throw new GameFrameworkException("Initialize the resource package before synchronous loading.");
-            }
-            Type type = IsRawPackage(package.Package) ? typeof(RawFileObject) : typeof(TextAsset);
-            AssetHandle handle = package.Package.LoadAssetSync(GetAssetInfo(package.Package, assetName, type));
-            try
-            {
-                if (handle.Status != EOperationStatus.Succeeded)
-                {
-                    throw new GameFrameworkException(handle.Error);
-                }
-                return GetBytes(handle.AssetObject);
-            }
-            finally
-            {
-                if (handle.IsValid)
-                {
-                    handle.Release();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 获取二进制内容长度。
-        /// </summary>
-        /// <param name="assetName">资产定位地址。</param>
-        /// <returns>内容长度。</returns>
-        public int GetBinaryLength(string assetName)
-        {
-            return LoadBinary(assetName).Length;
-        }
-
-        /// <summary>
-        /// 同步读取二进制内容片段。
-        /// </summary>
-        /// <param name="assetName">资产定位地址。</param>
-        /// <param name="offset">起始偏移。</param>
-        /// <param name="buffer">目标缓冲区。</param>
-        /// <param name="startIndex">缓冲区起始索引。</param>
-        /// <param name="length">要读取的字节数。</param>
-        /// <returns>实际读取的字节数。</returns>
-        public int LoadBinarySegment(string assetName, int offset, byte[] buffer, int startIndex, int length)
-        {
-            if (buffer == null || offset < 0 || startIndex < 0 || length < 0 || startIndex > buffer.Length - length)
-            {
-                throw new GameFrameworkException("Binary segment arguments are invalid.");
-            }
-            byte[] bytes = LoadBinary(assetName);
-            int count = Math.Min(length, Math.Max(bytes.Length - offset, 0));
-            Buffer.BlockCopy(bytes, Math.Min(offset, bytes.Length), buffer, startIndex, count);
-            return count;
         }
 
         /// <summary>

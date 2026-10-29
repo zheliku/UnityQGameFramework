@@ -2,8 +2,18 @@
 
 ## [Unreleased]
 
+## [0.1.0-exp.9] - 2026-10-29
+
+### Removed
+
+- Removed the legacy UGF resource loader, resource modes, version-list formats and serializers, patch/update/verification pipeline, resource groups, load-agent helpers and file-container APIs. YooAsset is now the only runtime resource implementation; Core keeps the loading callbacks used by Entity, UI, Sound, Scene, Config and Localization.
+- Removed `IResourceBackendHost`; the resource manager accepts its owned backend directly through `IResourceManager.SetResourceBackend`. Resource cache roots and play modes are configured only in `ResourceSettings`.
+
 ### Changed
 
+- Reduced `ResourceManager` to backend ownership, lifecycle and resource-call forwarding. A backend cannot be replaced after installation, and a shut-down manager rejects new requests.
+- Replaced misleading storage-specific `HasAssetResult` values with `NotExist`, `NotReady` and `Exists`. Scene existence checks now require a ready manifest; presence in a manifest does not imply that remote bundles have been downloaded.
+- Replaced legacy resource-agent and pool statistics with the actual `LoadingCount`; the Debugger displays the configured resource package instead of obsolete UGF version fields.
 - Moved Core module and helper notifications to `UnityQGameFramework.Core.Events`, while keeping foundational types and manager interfaces in Core. Runtime game event names stay unchanged; examples now use ordinary Core/Runtime imports without per-event aliases. No assembly split was added.
 - Restored UGF foundational type names, including `GameFrameworkEntry`, `GameFrameworkLinkedList`, `GameFrameworkComponent` and `GameFrameworkLog`. Core modules now share `UnityQGameFramework.Core`; update old module-level using directives accordingly.
 - Kept Core, Unity runtime and Editor assembly boundaries. Each Sample now has one root assembly named `UnityQGameFramework.Examples.*`; StarForce serialized UI bindings and linker settings use its dedicated assembly.
@@ -17,6 +27,7 @@
 
 ### Fixed
 
+- Kept the resource backend alive until pooled UI and Entity instances return their assets. Immediate framework restarts wait for the previous package owner, and pending scene waits cancel when their component is destroyed. Editor shutdown recognizes packages already removed by the official YooAsset driver.
 - Preserved resource and UI ownership during cancellation, retries and shutdown; prevented late callbacks from accessing closed services.
 - Fixed Collector/Builder theme contrast and package-list synchronization. Removed the third-party Collector Inspector override and duplicate resource build profiles.
 - Improved QGF log colors and clickable caller locations without intercepting Unity's global log handler.

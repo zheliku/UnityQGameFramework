@@ -6,38 +6,23 @@
 namespace UnityQGameFramework.Core
 {
     /// <summary>
-    /// 检查资源是否存在的结果。
+    /// 检查资源包清单中是否存在指定资产的结果。
     /// </summary>
     public enum HasAssetResult : byte
     {
         /// <summary>
-        /// 资源不存在。
+        /// 已加载的清单不包含指定资产。
         /// </summary>
         NotExist = 0,
 
         /// <summary>
-        /// 资源尚未准备完毕。
+        /// 资源包清单尚未就绪，无法判断资产是否存在。
         /// </summary>
         NotReady,
 
         /// <summary>
-        /// 存在资源且存储在磁盘上。
+        /// 清单包含指定资产，加载时仍可能需要下载资源。
         /// </summary>
-        AssetOnDisk,
-
-        /// <summary>
-        /// 存在资源且存储在文件系统里。
-        /// </summary>
-        AssetOnFileSystem,
-
-        /// <summary>
-        /// 存在二进制资源且存储在磁盘上。
-        /// </summary>
-        BinaryOnDisk,
-
-        /// <summary>
-        /// 存在二进制资源且存储在文件系统里。
-        /// </summary>
-        BinaryOnFileSystem
+        Exists
     }
 }

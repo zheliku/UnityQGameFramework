@@ -43,7 +43,7 @@ namespace UnityQGameFramework.Runtime
         {
             get
             {
-                return GetYooAssetBackend().LoadWorkingAgentCount;
+                return m_ResourceManager.LoadingCount;
             }
         }
 
@@ -62,7 +62,7 @@ namespace UnityQGameFramework.Runtime
         {
             get
             {
-                return GameFrameworkEntry.GetModule<IResourceManager>();
+                return m_ResourceManager;
             }
         }
 

@@ -29,6 +29,39 @@ public static class StarForceResourceWorkflowValidation
     private static readonly List<string> Checks = new List<string>();
 
     /// <summary>
+    /// 在隔离工程执行资源更新验证并退出编辑器。
+    /// </summary>
+    public static async void RunBatch()
+    {
+        if (!Application.dataPath.Contains("Artifacts~"))
+        {
+            throw new InvalidOperationException("Use an isolated validation project.");
+        }
+        int exitCode = 1;
+        try
+        {
+            await Task.Delay(1000);
+            await Run();
+            exitCode = 0;
+        }
+        catch (Exception exception)
+        {
+            Directory.CreateDirectory("Artifacts~/StarForceWorkflow");
+            File.WriteAllText("Artifacts~/StarForceWorkflow/check.json", JsonConvert.SerializeObject(new
+            {
+                passed = false,
+                unity = Application.unityVersion,
+                checks = Checks.ToArray(),
+                error = exception.ToString()
+            }, Formatting.Indented));
+        }
+        finally
+        {
+            EditorApplication.Exit(exitCode);
+        }
+    }
+
+    /// <summary>
     /// 验证确认下载、失败重试、取消、清理和缓存启动。
     /// </summary>
     /// <returns>检查结果。</returns>
@@ -139,7 +172,6 @@ public static class StarForceResourceWorkflowValidation
             File.Copy(FixtureRoot + "/ResourceSettings.asset.meta", "Artifacts~/StarForceWorkflow/settings-meta.txt", true);
             Application.logMessageReceived += capture;
             EditorApplication.update += observe;
-            SetCachePath();
             await Play(true);
             Application.runInBackground = true;
             await Until(() => Entry.Resource != null && Entry.Resource == Object.FindFirstObjectByType<ResourceComponent>(), "GameEntry component cache");
@@ -200,7 +232,6 @@ public static class StarForceResourceWorkflowValidation
             await Play(false);
 
             visited.Clear();
-            SetCachePath();
             await Play(true);
             Application.runInBackground = true;
             await Until(() => Entry.Procedure.CurrentProcedure is ProcedureMenu && Entry.UI.GetAllLoadedUIForms().Any(form => form.Logic is MenuForm),
@@ -250,12 +281,6 @@ public static class StarForceResourceWorkflowValidation
                 File.Delete(savePath);
             }
         }
-    }
-
-    private static void SetCachePath()
-    {
-        UnityQGameFramework.Core.GameFrameworkEntry.GetModule<IResourceManager>()
-            .SetReadWritePath(Path.GetFullPath("Artifacts~/StarForceWorkflow/Runtime"));
     }
 
     private static BuiltinDialogForm ActiveDialog()
