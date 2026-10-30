@@ -315,7 +315,7 @@ public static class QgfResourceBackendProbe
         Directory.CreateDirectory(Root + "/Raw");
         Directory.CreateDirectory(Root + "/Editor");
         File.WriteAllText(Root + "/Content/settings.txt", "[Game]\nName = \"QGF Probe\"\n");
-        File.WriteAllText(Root + "/Content/language.txt", "[English.Game]\nName = \"Hello QGF\"\n");
+        File.WriteAllText(Root + "/Content/language.txt", "[en.Game]\nName = \"Hello QGF\"\n");
         File.WriteAllBytes(Root + "/Raw/payload.bin", new byte[] { 1, 3, 5, 7 });
         AssetDatabase.Refresh();
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

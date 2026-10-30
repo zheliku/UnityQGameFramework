@@ -6,6 +6,9 @@
 using UnityQGameFramework.Core.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using SmartFormat;
+using SmartFormat.Extensions;
 
 namespace UnityQGameFramework.Core
 {
@@ -14,7 +17,9 @@ namespace UnityQGameFramework.Core
     /// </summary>
     internal sealed partial class LocalizationManager : GameFrameworkModule, ILocalizationManager
     {
-        private readonly Dictionary<string, string> m_Dictionary;
+        private Dictionary<string, string> m_Dictionary;
+        private readonly SmartFormatter m_Formatter;
+        private CultureInfo m_Culture = CultureInfo.InvariantCulture;
         private readonly DataProvider<ILocalizationManager> m_DataProvider;
         private ILocalizationHelper m_LocalizationHelper;
         private Language m_Language;
@@ -25,9 +30,102 @@ namespace UnityQGameFramework.Core
         public LocalizationManager()
         {
             m_Dictionary = new Dictionary<string, string>(StringComparer.Ordinal);
+            m_Formatter = new SmartFormatter();
+            m_Formatter.AddExtensions(new DefaultSource(), new DictionarySource());
+            m_Formatter.AddExtensions(new PluralLocalizationFormatter(), new DefaultFormatter());
             m_DataProvider = new DataProvider<ILocalizationManager>(this);
             m_LocalizationHelper = null;
             m_Language = Language.Unspecified;
+        }
+
+        /// <summary>
+        /// 完整字典提交后的语言切换事件。
+        /// </summary>
+        public event EventHandler<LanguageChangedEventArgs> LanguageChanged;
+
+        /// <summary>
+        /// 验证并一次性替换当前语言和字典。
+        /// </summary>
+        /// <param name="language">标准语言标识。</param>
+        /// <param name="dictionary">完整字典；内容会复制，调用方保留集合所有权。</param>
+        public void SetLanguage(Language language, IReadOnlyDictionary<string, string> dictionary)
+        {
+            if (language == Language.Unspecified)
+            {
+                throw new ArgumentException("Language is unspecified.", nameof(language));
+            }
+            CultureInfo culture = CultureInfo.GetCultureInfo(language.Code);
+            if (dictionary == null)
+            {
+                throw new ArgumentNullException(nameof(dictionary));
+            }
+            var next = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (KeyValuePair<string, string> entry in dictionary)
+            {
+                if (string.IsNullOrEmpty(entry.Key) || entry.Value == null)
+                {
+                    throw new GameFrameworkException("Translation keys and values must be valid.");
+                }
+                // 提交前验证占位符语法；具体参数是否匹配由实际格式化调用检查。
+                using (m_Formatter.Parser.ParseFormat(entry.Value))
+                {
+                    next.Add(entry.Key, entry.Value);
+                }
+            }
+            if (next.Count == 0)
+            {
+                throw new GameFrameworkException("The language dictionary is empty.");
+            }
+            Language previous = m_Language;
+            m_Dictionary = next;
+            m_Culture = culture;
+            m_Language = language;
+            if (LanguageChanged != null)
+            {
+                LanguageChangedEventArgs args = LanguageChangedEventArgs.Create(previous, language);
+                try
+                {
+                    foreach (EventHandler<LanguageChangedEventArgs> handler in LanguageChanged.GetInvocationList())
+                    {
+                        try
+                        {
+                            handler(this, args);
+                        }
+                        catch (Exception exception)
+                        {
+                            // 字典已经提交，通知方异常不能将成功切换误报为加载失败。
+                            GameFrameworkLog.Error(exception);
+                        }
+                    }
+                }
+                finally
+                {
+                    ReferencePool.Release(args);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用位置参数或命名字典格式化本地化文本。
+        /// </summary>
+        /// <param name="key">字典主键。</param>
+        /// <param name="arguments">格式参数；命名参数传入一个字典。</param>
+        /// <returns>格式化文本；缺失键或格式错误时返回带标记的诊断文本。</returns>
+        public string GetString(string key, params object[] arguments)
+        {
+            string value = GetRawString(key);
+            if (value == null)
+            {
+                return "<NoKey>" + key;
+            }
+            try
+            {
+                return m_Formatter.Format(m_Culture, value, arguments ?? Array.Empty<object>());
+            }
+            catch (Exception exception)
+            {
+                return "<Error>" + key + ": " + exception.Message;
+            }
         }
 
         /// <summary>
@@ -48,6 +146,7 @@ namespace UnityQGameFramework.Core
                 }
 
                 m_Language = value;
+                m_Culture = CultureInfo.GetCultureInfo(value.Code);
             }
         }
 
@@ -167,6 +266,8 @@ namespace UnityQGameFramework.Core
         /// </summary>
         internal override void Shutdown()
         {
+            LanguageChanged = null;
+            m_Dictionary.Clear();
         }
 
         /// <summary>
@@ -350,20 +451,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T>(string key, T arg)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, arg, exception);
-            }
+            return GetString(key, new object[] { arg });
         }
 
         /// <summary>
@@ -377,20 +465,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2>(string key, T1 arg1, T2 arg2)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4}", key, value, arg1, arg2, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2 });
         }
 
         /// <summary>
@@ -406,20 +481,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3>(string key, T1 arg1, T2 arg2, T3 arg3)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5}", key, value, arg1, arg2, arg3, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3 });
         }
 
         /// <summary>
@@ -437,20 +499,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6}", key, value, arg1, arg2, arg3, arg4, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4 });
         }
 
         /// <summary>
@@ -470,20 +519,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7}", key, value, arg1, arg2, arg3, arg4, arg5, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5 });
         }
 
         /// <summary>
@@ -505,20 +541,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6 });
         }
 
         /// <summary>
@@ -542,20 +565,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7 });
         }
 
         /// <summary>
@@ -581,20 +591,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 });
         }
 
         /// <summary>
@@ -622,20 +619,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 });
         }
 
         /// <summary>
@@ -665,20 +649,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 });
         }
 
         /// <summary>
@@ -710,20 +681,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11 });
         }
 
         /// <summary>
@@ -757,20 +715,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12 });
         }
 
         /// <summary>
@@ -806,20 +751,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
-            }
-            catch (Exception exception)
-            {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", key, value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13 });
         }
 
         /// <summary>
@@ -857,21 +789,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-            }
-            catch (Exception exception)
-            {
-                string args = Utility.Text.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, args, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 });
         }
 
         /// <summary>
@@ -911,21 +829,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
-            }
-            catch (Exception exception)
-            {
-                string args = Utility.Text.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}", arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
-                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, args, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15 });
         }
 
         /// <summary>
@@ -967,21 +871,7 @@ namespace UnityQGameFramework.Core
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string key, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
-            string value = GetRawString(key);
-            if (value == null)
-            {
-                return Utility.Text.Format("<NoKey>{0}", key);
-            }
-
-            try
-            {
-                return Utility.Text.Format(value, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
-            }
-            catch (Exception exception)
-            {
-                string args = Utility.Text.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
-                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, args, exception);
-            }
+            return GetString(key, new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16 });
         }
 
         /// <summary>

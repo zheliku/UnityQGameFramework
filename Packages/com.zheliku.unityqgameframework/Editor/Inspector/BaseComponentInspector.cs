@@ -56,7 +56,7 @@ namespace UnityQGameFramework.Editor
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {
-                EditorGUILayout.PropertyField(m_EditorLanguage, new GUIContent("Editor Language"));
+                LocalizationLanguageDrawer.DrawCode(EditorGUILayout.GetControlRect(), m_EditorLanguage, new GUIContent("Editor Language"));
                 EditorGUILayout.HelpBox("Used for localization testing while running in the Editor.", MessageType.Info);
 
                 EditorGUILayout.BeginVertical("box");
@@ -182,7 +182,7 @@ namespace UnityQGameFramework.Editor
         /// </summary>
         private void OnEnable()
         {
-            m_EditorLanguage = serializedObject.FindProperty("m_EditorLanguage");
+            m_EditorLanguage = serializedObject.FindProperty("m_EditorLanguageCode");
             m_TextHelperTypeName = serializedObject.FindProperty("m_TextHelperTypeName");
             m_VersionHelperTypeName = serializedObject.FindProperty("m_VersionHelperTypeName");
             m_LogHelperTypeName = serializedObject.FindProperty("m_LogHelperTypeName");

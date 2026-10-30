@@ -57,8 +57,7 @@ namespace UnityQGameFramework.Examples.Modules
                 };
                 // 默认 JSON Helper 序列化字段；设置中保存序列化结果。
                 QGF.Setting.SetObject<Pilot>(Key, pilot);
-                QGF.Setting.Save();
-                resultText.text = $"Saved {pilot.Name}; level {pilot.Level}。";
+                resultText.text = QGF.Setting.Save() ? $"Saved {pilot.Name}; level {pilot.Level}." : "Save failed. Try again.";
             });
             readButton.onClick.AddListener(() =>
             {
@@ -69,9 +68,8 @@ namespace UnityQGameFramework.Examples.Modules
             removeButton.onClick.AddListener(() =>
             {
                 QGF.Setting.RemoveSetting(Key);
-                QGF.Setting.Save();
                 loaded = null;
-                resultText.text = "Pilot removed. Read it with the default-value overload.";
+                resultText.text = QGF.Setting.Save() ? "Pilot removed. Read it with the default-value overload." : "Save failed. Try again.";
             });
             ready = true;
         }

@@ -129,9 +129,9 @@ public static class TomlWorkflowValidation
         Require(translations == 120, "Translation count changed");
         manager.RemoveAllRawStrings();
         manager.Language = Language.Korean;
-        TomlLocalizationParser.ParseAndAdd(manager, "[Korean.Game]\nName = \"게임 프레임워크\"\n");
+        TomlLocalizationParser.ParseAndAdd(manager, "[ko.Game]\nName = \"게임 프레임워크\"\n");
         Require(manager.GetString("Game.Name") == "게임 프레임워크", "Nested table did not produce dotted query key");
-        foreach (string invalidDictionary in new[] { "[Korean]\nWrong = 42", "[English]\nName = 'Missing language'", "[Korean]\n'Game.Name' = 'duplicate'\n[Korean.Game]\nName = 'duplicate too'" })
+        foreach (string invalidDictionary in new[] { "[ko]\nWrong = 42", "[en]\nName = 'Missing language'", "[ko]\n'Game.Name' = 'duplicate'\n[ko.Game]\nName = 'duplicate too'" })
         {
             bool rejected = false;
             try

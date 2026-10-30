@@ -573,6 +573,17 @@ public static class BuildExampleScenes
                 selectable.navigation = navigation;
             }
             string field = (string)control["field"];
+            string localizationKey = (string)control["localizationKey"];
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                LocalizeComponent binding = kind == "Image" ? (LocalizeComponent)go.AddComponent<LocalizeImage>() : go.AddComponent<LocalizeText>();
+                var localized = new SerializedObject(binding);
+                localized.FindProperty("m_Key").stringValue = localizationKey;
+                if (localized.FindProperty("m_FontKey") != null)
+                    localized.FindProperty("m_FontKey").stringValue = (string)control["fontKey"] ?? string.Empty;
+                localized.ApplyModifiedPropertiesWithoutUndo();
+                value = binding;
+            }
             if (field != null)
             {
                 var property = serialized.FindProperty(field);

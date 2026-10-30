@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/notofonts/noto-cjk",
+  "commit": "523d033d6cb47f4a80c58a35753646f5c3608a78",
+  "sourceSha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+  "subsetSha256": "f5c8048cf54af6d617f5795f9c4c9530f0725ba15659032937376002c35c8333",
+  "subsetFamily": "QGF Example Chinese",
+  "characters": "Printable ASCII and the localization sample dictionary characters"
+}

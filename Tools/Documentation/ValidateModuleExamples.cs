@@ -245,9 +245,19 @@ public static class ValidateModuleExamples
                 break;
             case "SwitchLanguage":
                 Click("action1Button");
-                string english = Field<Text>("outputText").text;
+                await Wait(() => QGF.Localization.Language == Language.EnglishUnitedStates && !QGF.Localization.IsChangingLanguage);
+                LocalizeText title = UnityEngine.Object.FindObjectsByType<LocalizeText>(FindObjectsSortMode.None).Single(binding => binding.Key == "Game.Name");
+                string english = title.GetComponent<Text>().text;
                 Click("action2Button");
-                Require(Field<Text>("outputText").text != english, "Dictionary reload");
+                await Wait(() => QGF.Localization.Language == Language.ChineseSimplified && !QGF.Localization.IsChangingLanguage);
+                Require(title.GetComponent<Text>().text != english, "Language event refreshes the bound text");
+                Click("rewardButton");
+                Require(Field<LocalizeText>("rewardText").GetComponent<Text>().text.Contains("1"), "Bound translation receives dynamic arguments");
+                Field<Toggle>("previewToggle").isOn = false;
+                Click("action1Button");
+                await Wait(() => QGF.Localization.Language == Language.EnglishUnitedStates && !QGF.Localization.IsChangingLanguage);
+                Field<Toggle>("previewToggle").isOn = true;
+                Require(title.GetComponent<Text>().text == english, "Re-enabled bindings read the current language");
                 break;
             case "LoadLubanTablesExample":
                 Require(QGF.DataTable.IsLoaded && QGF.DataTable.Count > 0, "Luban tables published");

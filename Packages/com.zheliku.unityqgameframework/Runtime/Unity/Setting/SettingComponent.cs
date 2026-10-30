@@ -80,9 +80,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 保存游戏配置。
         /// </summary>
-        public void Save()
+        /// <returns>是否成功持久化设置；失败时可重试。</returns>
+        public bool Save()
         {
-            m_SettingManager.Save();
+            return m_SettingManager.Save();
         }
 
         /// <summary>

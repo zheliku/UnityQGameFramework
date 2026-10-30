@@ -203,27 +203,10 @@ namespace StarForce
             m_UISoundVolumeSlider.value = GameEntry.Sound.GetVolume("UISound");
 
             m_SelectedLanguage = GameEntry.Localization.Language;
-            switch (m_SelectedLanguage)
-            {
-                case Language.English:
-                    m_EnglishToggle.isOn = true;
-                    break;
-
-                case Language.ChineseSimplified:
-                    m_ChineseSimplifiedToggle.isOn = true;
-                    break;
-
-                case Language.ChineseTraditional:
-                    m_ChineseTraditionalToggle.isOn = true;
-                    break;
-
-                case Language.Korean:
-                    m_KoreanToggle.isOn = true;
-                    break;
-
-                default:
-                    break;
-            }
+            m_EnglishToggle.isOn = m_SelectedLanguage == Language.English;
+            m_ChineseSimplifiedToggle.isOn = m_SelectedLanguage == Language.ChineseSimplified;
+            m_ChineseTraditionalToggle.isOn = m_SelectedLanguage == Language.ChineseTraditional;
+            m_KoreanToggle.isOn = m_SelectedLanguage == Language.Korean;
         }
 
         /// <summary>

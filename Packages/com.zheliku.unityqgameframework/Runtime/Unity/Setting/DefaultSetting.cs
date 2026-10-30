@@ -16,10 +16,10 @@ namespace UnityQGameFramework.Runtime
     /// </summary>
     public sealed class DefaultSetting
     {
-        private readonly SortedDictionary<string, string> m_Settings = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        private SortedDictionary<string, string> m_Settings = new SortedDictionary<string, string>(StringComparer.Ordinal);
 
         /// <summary>
-        /// 初始化本地版本资源列表的新实例。
+        /// 初始化默认游戏配置的新实例。
         /// </summary>
         public DefaultSetting()
         {
@@ -277,10 +277,10 @@ namespace UnityQGameFramework.Runtime
         /// <summary>
         /// 序列化数据。
         /// </summary>
-        /// <param name="stream">目标流。</param>
+        /// <param name="stream">调用方持有的目标流，写入后保持打开。</param>
         public void Serialize(Stream stream)
         {
-            using (BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.UTF8))
+            using (BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.UTF8, true))
             {
                 binaryWriter.Write7BitEncodedInt32(m_Settings.Count);
                 foreach (KeyValuePair<string, string> setting in m_Settings)
@@ -292,20 +292,25 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 反序列化数据。
+        /// 完整解析后替换配置；失败时保留当前数据。
         /// </summary>
-        /// <param name="stream">指定流。</param>
+        /// <param name="stream">调用方持有的输入流，读取后保持打开。</param>
         public void Deserialize(Stream stream)
         {
-            m_Settings.Clear();
-            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
+            var settings = new SortedDictionary<string, string>(StringComparer.Ordinal);
+            using (BinaryReader binaryReader = new BinaryReader(stream, new UTF8Encoding(false, true), true))
             {
                 int settingCount = binaryReader.Read7BitEncodedInt32();
+                if (settingCount < 0)
+                {
+                    throw new InvalidDataException("Setting count cannot be negative.");
+                }
                 for (int i = 0; i < settingCount; i++)
                 {
-                    m_Settings.Add(binaryReader.ReadString(), binaryReader.ReadString());
+                    settings.Add(binaryReader.ReadString(), binaryReader.ReadString());
                 }
             }
+            m_Settings = settings;
         }
     }
 }

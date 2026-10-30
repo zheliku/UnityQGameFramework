@@ -8,6 +8,7 @@
 - `BuildExampleScenes.cs` 保存模块场景。
 - `StyleExampleUi.cs` 和 `NormalizeUguiNames.cs` 更新 uGUI 样式与物体名。
 - `ConfigureExampleLayouts.cs` 为已有场景添加横竖屏布局；`ValidateExampleLayouts.cs` 检查三种分辨率下的物体可见范围和窗口避让。
+- 重建本地化场景后执行 `ConfigureLocalizationExample.Run`，保存语言配置、LocalizeText / LocalizeImage 绑定及预览启停操作；`Tools/Validation/LocalizationSampleValidation.cs` 检查真实场景交互，`LocalizationIntegrationValidation.cs` 检查失败、取消和资源所有权。
 
 修改场景后运行 `ValidateUguiExamples.cs`、相应模块检查和 `ValidatePointGame.cs`。检查报告写入隔离工程的 `Artifacts~`。
 
@@ -44,3 +45,9 @@ Git Consumer 按单份 Sample 验证 `ImportOne`、`MoveOne`、`PlayOne` 和 `Re
 `AuditExampleApi.Run` 导出公开成员清单，`check_example_api_coverage.py` 对照示例映射。组件转发、初始化入口和 Helper 回调单独标记；实际行为由各模块检查验证。
 
 `check_docs.py` 检查本地链接，并将完整 C# 示例提取到 `Artifacts~/Documentation/CompleteExamples.cs`。通过 Unity CLI 的 `script run --dry_run true` 编译此文件；模块行为直接验证实际 Sample，不再拼接旧文档中的临时类型或单独维护一份示例实现。
+
+## 现代化复核
+
+`RunModernizationBatch` 复用 LocalizationCoreValidation、LocalizationBuildValidation、SettingPersistenceValidation、LocalizationIntegrationValidation 和 LocalizationSampleValidation。将这些脚本放入隔离工程的 Assets/Editor，使用 `unity open <project> --batchmode --args "-executeMethod RunModernizationBatch.Run"`；脚本在异步检查完成后自行退出并写入 Artifacts~/modernization-final.json。不要使用附带 `-quit` 的 `unity run`，它会在异步方法结束前开始退出。
+
+独立 Player 使用 BuildLocalizationPlayer 与 LocalizationPlayerProbe。将前者放入隔离工程 Editor，后者、SettingPersistenceValidation 以及改名为 LocalizationPlayerChecks 的 Core 检查放在 Assets；需要 TMP Essential Resources。构建脚本仅修改隔离工程的资产和设置，输出高裁剪 Windows IL2CPP Player；运行结果写入可执行文件旁的 localization-player.json。

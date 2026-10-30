@@ -21,15 +21,14 @@ namespace UnityQGameFramework.Examples.Modules
             saveButton.onClick.AddListener(() =>
             {
                 QGF.Setting.SetInt("Examples.Counter", ++count); // 先修改内存。
-                QGF.Setting.Save(); // 再写入持久化文件，下次运行仍可读取。
-                countText.text = $"Saved: {count}";
+                // 保存结果用于反馈磁盘写入是否成功，失败时内存中的修改仍可重试。
+                countText.text = QGF.Setting.Save() ? $"Saved: {count}" : "Save failed. Try again.";
             });
             resetButton.onClick.AddListener(() =>
             {
                 QGF.Setting.RemoveSetting("Examples.Counter");
-                QGF.Setting.Save();
                 count = 0;
-                countText.text = "Cleared: 0";
+                countText.text = QGF.Setting.Save() ? "Cleared: 0" : "Save failed. Try again.";
             });
         }
     }

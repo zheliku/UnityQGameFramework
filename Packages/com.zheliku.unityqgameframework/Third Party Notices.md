@@ -59,6 +59,20 @@ The binary is retained to preserve the upstream compression baseline. Dependency
 - Apache-2.0; [full license](Runtime/Plugins/YooAsset/LICENSE.txt). Upstream file hashes are recorded in `Tools/Packaging/yooasset-source.json` in the development repository.
 - Unity Scriptable Build Pipeline 2.1.4 is resolved through the Unity Registry. Do not install a second YooAsset source copy alongside the bundled distribution.
 
+## SmartFormat 3.6.2 and dependencies
+
+- Official NuGet binaries, bundled unchanged from `lib/netstandard2.0`: [SmartFormat 3.6.2](https://www.nuget.org/packages/SmartFormat/3.6.2), [ZString 2.6.0](https://www.nuget.org/packages/ZString/2.6.0), and [System.Runtime.CompilerServices.Unsafe 6.0.0](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/6.0.0).
+- SmartFormat source commit: `d8d49b454b63a8d621c258f1b2f583824688d049`; ZString source commit: `3156134075b89a162fe95350a2e92a4c85ccca59`.
+- MIT; full notices: [SmartFormat](Documentation~/Licenses/SmartFormat-MIT.txt), [ZString](Documentation~/Licenses/ZString-MIT.txt), [Unsafe](Documentation~/Licenses/Unsafe-MIT.txt).
+- QGF registers positional, dictionary, plural and default formatting extensions explicitly. It does not copy vendor source or enable reflection over business objects. Binary and license hashes are recorded in `Tools/Packaging/localization-source.json` in the development repository.
+- These assemblies are bundled with QGF; avoid installing duplicate copies alongside them.
+
+## Localization sample font
+
+- `Samples~/01_Modules/10_Localization/Common/ChineseFont.otf` is a renamed character subset of Noto Sans CJK SC Regular 2.004, official commit `523d033d6cb47f4a80c58a35753646f5c3608a78` from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk/tree/523d033d6cb47f4a80c58a35753646f5c3608a78).
+- The subset retains the source copyright and license metadata, uses the family name `QGF Example Chinese`, and includes only printable ASCII plus this sample's dictionary characters.
+- SIL Open Font License 1.1; [full license](Samples~/01_Modules/10_Localization/Common/ChineseFont-OFL.txt). Source and subset hashes are recorded in `Tools/Packaging/localization-font-source.json`.
+
 ## Optional editor tools (not bundled)
 
 `QGF > Extensions` offers installation links for the following independent packages. Their source and artwork are not included in the QGF UPM package; installing QGF alone does not install them. Their upstream licenses remain applicable to separate installations.

@@ -1,0 +1,33 @@
+{
+  "packages": [
+    {
+      "package": "smartformat",
+      "version": "3.6.2",
+      "archiveSha256": "97c19914eb53124cfb9c841f1c496fcdfcb4fee4cfb1ded06ea3d2fdf1052109",
+      "assembly": "SmartFormat.dll",
+      "assemblySha256": "9e07ec5ea9c4562ac3db6924a0812f2f71f97480bca87e5a65d61b4dc1503661"
+    },
+    {
+      "package": "zstring",
+      "version": "2.6.0",
+      "archiveSha256": "f50fcbd523e623ea15c6f501233db4da6527f9456ca15ff2d8e7e1a291d7cdea",
+      "assembly": "ZString.dll",
+      "assemblySha256": "0a816223fd454f6c2790e96a854c703edb0a4e33234e7e6312ae75964fee480d"
+    },
+    {
+      "package": "system.runtime.compilerservices.unsafe",
+      "version": "6.0.0",
+      "archiveSha256": "6c41b53e70e9eee298cff3a02ce5acdd15b04125589be0273f0566026720a762",
+      "assembly": "System.Runtime.CompilerServices.Unsafe.dll",
+      "assemblySha256": "01748200f2400c742aa689f1f5101bd6298efdfd92c00c18f4fa473847235ba9"
+    }
+  ],
+  "files": {
+    "Runtime/Plugins/SmartFormat.dll": "9e07ec5ea9c4562ac3db6924a0812f2f71f97480bca87e5a65d61b4dc1503661",
+    "Runtime/Plugins/ZString.dll": "0a816223fd454f6c2790e96a854c703edb0a4e33234e7e6312ae75964fee480d",
+    "Runtime/Plugins/System.Runtime.CompilerServices.Unsafe.dll": "01748200f2400c742aa689f1f5101bd6298efdfd92c00c18f4fa473847235ba9",
+    "Documentation~/Licenses/SmartFormat-MIT.txt": "a9c4e94a9c0112634cf1f709f5e14091e9afb643e910e390f894c3c52577b68b",
+    "Documentation~/Licenses/ZString-MIT.txt": "f3e6cffb78d6d94fa37fd26ada7294c3284b6b89940b5645f93ed24cdd5b36b0",
+    "Documentation~/Licenses/Unsafe-MIT.txt": "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310"
+  }
+}

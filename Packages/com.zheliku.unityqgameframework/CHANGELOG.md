@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+### Added
+
+- An extensible, strongly typed `Language` value with familiar predefined members, configured language fallback, atomic `SetLanguageAsync`, and immediate language-change notifications. Language APIs accept only `Language`; standard codes are used at configuration boundaries. StarForce dictionaries now use the same code names.
+- SmartFormat 3.6.2 with official ZString 2.6.0 and Unsafe 6.0.0 binaries and license notices; named dictionary arguments, plural rules and culture-aware formatting use one formatter.
+- LocalizeText, LocalizeImage and optional LocalizeTmpText bindings; fonts and images follow language changes and pooled bindings unsubscribe while disabled.
+- Inspector and scene-build validation for localization dictionaries, fallback chains, format arguments and collected assets.
+
+### Changed
+
+- Create built-in Core modules through explicit factories and generate Player preservation rules from dynamic extension contracts instead of preserving entire framework assemblies.
+- Commit default settings through a same-directory temporary file and atomic replacement, recover from the previous backup, and expose save failures through SettingComponent. Setting examples customize only their file path.
+
+### Fixed
+
+- Scene loads that finish after SceneComponent destruction now complete their compensating unload through Core callbacks.
+
+
 ## [0.1.0-exp.9] - 2026-10-29
 
 ### Removed

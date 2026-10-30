@@ -4,6 +4,7 @@
     "references": [
         "UnityQGameFramework.Core",
         "UnityQGameFramework.Runtime",
+        "UniTask",
         "YooAsset",
         "YooAsset.Editor"
     ],

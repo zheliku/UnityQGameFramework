@@ -15,6 +15,28 @@ namespace UnityQGameFramework.Core
     {
         private static readonly GameFrameworkLinkedList<GameFrameworkModule> s_GameFrameworkModules = new GameFrameworkLinkedList<GameFrameworkModule>();
         private static readonly Dictionary<Type, GameFrameworkModule> s_ModuleCache = new Dictionary<Type, GameFrameworkModule>();
+        private static readonly Dictionary<Type, Func<GameFrameworkModule>> s_ModuleFactories = new Dictionary<Type, Func<GameFrameworkModule>>
+        {
+            { typeof(IConfigManager), () => new ConfigManager() },
+            { typeof(IDataNodeManager), () => new DataNodeManager() },
+            { typeof(IDataTableManager), () => new DataTableManager() },
+            { typeof(IDebuggerManager), () => new DebuggerManager() },
+            { typeof(IDownloadManager), () => new DownloadManager() },
+            { typeof(IEntityManager), () => new EntityManager() },
+            { typeof(IEventManager), () => new EventManager() },
+            { typeof(IFileSystemManager), () => new FileSystemManager() },
+            { typeof(IFsmManager), () => new FsmManager() },
+            { typeof(ILocalizationManager), () => new LocalizationManager() },
+            { typeof(INetworkManager), () => new NetworkManager() },
+            { typeof(IObjectPoolManager), () => new ObjectPoolManager() },
+            { typeof(IProcedureManager), () => new ProcedureManager() },
+            { typeof(IResourceManager), () => new ResourceManager() },
+            { typeof(ISceneManager), () => new SceneManager() },
+            { typeof(ISettingManager), () => new SettingManager() },
+            { typeof(ISoundManager), () => new SoundManager() },
+            { typeof(IUIManager), () => new UIManager() },
+            { typeof(IWebRequestManager), () => new WebRequestManager() }
+        };
 
         /// <summary>
         /// 所有游戏框架模块轮询。
@@ -65,46 +87,22 @@ namespace UnityQGameFramework.Core
                 return (T)(object)cachedModule;
             }
 
-            if (!interfaceType.FullName.StartsWith("UnityQGameFramework.Core.", StringComparison.Ordinal))
-            {
-                throw new GameFrameworkException(Utility.Text.Format("You must get a Unity Q Game Framework module, but '{0}' is not.", interfaceType.FullName));
-            }
-
-            string moduleName = Utility.Text.Format("{0}.{1}", interfaceType.Namespace, interfaceType.Name.Substring(1));
-            Type moduleType = Type.GetType(moduleName);
-            if (moduleType == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find Unity Q Game Framework module type '{0}'.", moduleName));
-            }
-
-            T module = GetModule(moduleType) as T;
-            s_ModuleCache.Add(interfaceType, (GameFrameworkModule)(object)module);
-            return module;
-        }
-
-        /// <summary>
-        /// 获取游戏框架模块。
-        /// </summary>
-        /// <param name="moduleType">要获取的游戏框架模块类型。</param>
-        /// <returns>要获取的游戏框架模块。</returns>
-        /// <remarks>如果要获取的游戏框架模块不存在，则自动创建该游戏框架模块。</remarks>
-        private static GameFrameworkModule GetModule(Type moduleType)
-        {
-            return s_ModuleCache.TryGetValue(moduleType, out GameFrameworkModule module) ? module : CreateModule(moduleType);
+            return (T)(object)CreateModule(interfaceType);
         }
 
         /// <summary>
         /// 创建游戏框架模块。
         /// </summary>
-        /// <param name="moduleType">要创建的游戏框架模块类型。</param>
+        /// <param name="interfaceType">要创建的游戏框架模块接口。</param>
         /// <returns>要创建的游戏框架模块。</returns>
-        private static GameFrameworkModule CreateModule(Type moduleType)
+        private static GameFrameworkModule CreateModule(Type interfaceType)
         {
-            GameFrameworkModule module = (GameFrameworkModule)Activator.CreateInstance(moduleType);
-            if (module == null)
+            if (!s_ModuleFactories.TryGetValue(interfaceType, out Func<GameFrameworkModule> factory))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Can not create module '{0}'.", moduleType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Unknown Unity Q Game Framework module interface '{0}'.", interfaceType.FullName));
             }
+            // 显式工厂使构造函数对 AOT 可见；模块仍按首次访问创建，并沿用 UGF 的轮询顺序。
+            GameFrameworkModule module = factory();
 
             LinkedListNode<GameFrameworkModule> current = s_GameFrameworkModules.First;
             while (current != null)
@@ -126,7 +124,7 @@ namespace UnityQGameFramework.Core
                 s_GameFrameworkModules.AddLast(module);
             }
 
-            s_ModuleCache.Add(moduleType, module);
+            s_ModuleCache.Add(interfaceType, module);
             return module;
         }
     }

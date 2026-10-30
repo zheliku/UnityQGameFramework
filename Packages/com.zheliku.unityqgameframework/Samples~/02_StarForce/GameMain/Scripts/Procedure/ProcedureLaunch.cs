@@ -65,7 +65,10 @@ namespace StarForce
                 try
                 {
                     string languageString = GameEntry.Setting.GetString(Constant.Setting.Language);
-                    language = (Language)Enum.Parse(typeof(Language), languageString);
+                    if (Language.TryParse(languageString, out Language savedLanguage))
+                    {
+                        language = savedLanguage;
+                    }
                 }
                 catch
                 {

@@ -1,0 +1,24 @@
+[en.Game]
+Name = "STAR FORCE"
+Description = "Unity Q Game Framework Demo Program"
+Website = "https://github.com/zheliku/UnityQGameFramework"
+Summary = "This project is a demo game made with Unity Q Game Framework. It's intended to demonstrate how this game framework should be used for developers' reference."
+Introduction = "Unity Q Game Framework is literally a game framework, based on Unity game engine. It encapsulates commonly used game modules during development, and, to a large degree, standardises the process, enhances the development speed and ensures the product quality."
+
+[en.Menu]
+StartButton = "START"
+SettingButton = "SETTINGS"
+AboutButton = "ABOUT"
+QuitButton = "QUIT"
+
+[en.AskQuitGame]
+Title = "CONFIRM TO QUIT"
+Message = "Are you sure to quit the game?"
+
+[en.Setting]
+Title = "SETTINGS"
+Music = "Music"
+Sound = "Sound FX"
+UISound = "UI Sound FX"
+Language = "Language"
+LanguageTips = "Language change demands restarting."

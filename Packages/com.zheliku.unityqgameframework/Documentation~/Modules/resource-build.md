@@ -46,7 +46,7 @@ ResourceComponent 只引用 ResourceSettings；默认包、每包唯一的 Play 
 
 ## 自定义初始化
 
-需要自定义加密或文件系统时，实现 IResourcePackageInitializer，在包中选择 CustomPlayMode 并填写完整类型名；返回 YooAsset 官方 InitializePackageOptions。仅通过字符串引用的类型用 Preserve 或 link.xml 防止裁剪。
+需要自定义加密或文件系统时，实现 IResourcePackageInitializer，在包中选择 CustomPlayMode 并选择完整类型名；返回 YooAsset 官方 InitializePackageOptions。构建时 QGF 按扩展契约为 Helper、流程、引用池及 YooAsset 文件系统生成类型保留清单，覆盖参与 Player 编译的源码与 DLL；无需手动保留整个框架程序集。项目通过其他反射机制访问的类型仍由项目声明保留规则。
 
 也可在首次初始化前调用 `InitializePackageAsync(packageName, options, version)` 为本次启动提供参数，不改写设置资产。后续仍使用相同的[加载与归还接口](resource.md)。
 

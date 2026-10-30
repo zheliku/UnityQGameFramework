@@ -4,6 +4,7 @@
 //------------------------------------------------------------
 
 using UnityQGameFramework.Core;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityQGameFramework.Runtime
@@ -13,6 +14,17 @@ namespace UnityQGameFramework.Runtime
     /// </summary>
     public abstract class LocalizationHelperBase : MonoBehaviour, IDataProviderHelper<ILocalizationManager>, ILocalizationHelper
     {
+        /// <summary>
+        /// 解析指定语言的字典，不修改当前管理器；默认读取 TOML。
+        /// </summary>
+        /// <param name="text">字典文本。</param>
+        /// <param name="language">标准语言标识。</param>
+        /// <returns>解析后的字典。</returns>
+        public virtual IReadOnlyDictionary<string, string> ParseDictionary(string text, Language language)
+        {
+            return TomlLocalizationParser.Parse(text, language);
+        }
+
         /// <summary>
         /// 获取系统语言。
         /// </summary>

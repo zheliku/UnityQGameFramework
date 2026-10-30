@@ -70,6 +70,15 @@ def main():
             errors.append('Bundled YooAsset differs from its pinned upstream source: ' + name)
     if yooasset.get('version') != '3.0.6' or not (yooasset_root / 'LICENSE.txt').is_file():
         errors.append('Bundled YooAsset version or license is missing.')
+    localization = json.loads((root / 'Tools/Packaging/localization-source.json').read_text(encoding='utf-8'))
+    for name, digest in localization['files'].items():
+        path = package / name
+        if not path.is_file() or file_digest(path) != digest:
+            errors.append('Bundled localization dependency differs from its official binary or license: ' + name)
+    font = json.loads((root / 'Tools/Packaging/localization-font-source.json').read_text(encoding='utf-8'))
+    font_path = package / 'Samples~/01_Modules/10_Localization/Common/ChineseFont.otf'
+    if not font_path.is_file() or file_digest(font_path) != font['subsetSha256']:
+        errors.append('Localization sample font differs from its recorded subset.')
     if manifest['name'] != package.name:
         errors.append('Package name does not match its directory.')
     optional_tools = {'com.annulusgames.alchemy', 'com.borodar.rainbow-folders'}

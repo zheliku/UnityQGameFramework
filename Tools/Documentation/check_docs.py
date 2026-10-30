@@ -91,6 +91,11 @@ def main():
                 partials.append(record)
                 (OUTPUT / "ItemExtension.cs").write_text(code, encoding="utf-8")
                 continue
+            if path.name == "01-getting-started.md" and "using UnityQGameFramework.Config;" in code:
+                record["fixture"] = "Default generated UnityQGameFramework.Config workspace"
+                partials.append(record)
+                (OUTPUT / "GameStartup.cs").write_text(code, encoding="utf-8")
+                continue
             examples.append(record)
             source.append(f'namespace QgfDocsValidation.Chapter{chapter}\n{{\n'
                           f'#line {line + 1} "{relative}"\n{code}\n'

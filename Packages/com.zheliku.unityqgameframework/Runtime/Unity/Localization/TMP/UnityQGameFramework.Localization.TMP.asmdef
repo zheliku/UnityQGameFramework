@@ -1,0 +1,11 @@
+{
+    "name": "UnityQGameFramework.Localization.TMP",
+    "rootNamespace": "UnityQGameFramework.Runtime",
+    "references": ["UnityQGameFramework.Runtime", "Unity.TextMeshPro"],
+    "defineConstraints": ["QGF_TMP"],
+    "versionDefines": [
+        {"name": "com.unity.textmeshpro", "expression": "", "define": "QGF_TMP"},
+        {"name": "com.unity.ugui", "expression": "2.0.0", "define": "QGF_TMP"}
+    ],
+    "autoReferenced": true
+}

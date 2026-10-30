@@ -849,12 +849,43 @@
         "text": "Simplified Chinese"
       },
       {
+        "type": "Button",
+        "field": "rewardButton",
+        "objectName": "Button_AddCoin",
+        "text": "Add Coin (+1)"
+      },
+      {
+        "type": "Toggle",
+        "field": "previewToggle",
+        "objectName": "Toggle_Preview",
+        "text": "Show localized preview",
+        "value": true
+      },
+      {
         "type": "Text",
-        "field": "outputText",
-        "objectName": "Text_OutputText"
+        "objectName": "Text_GameName",
+        "localizationKey": "Game.Name",
+        "fontKey": "UI.Font"
+      },
+      {
+        "type": "Text",
+        "objectName": "Text_FallbackHint",
+        "localizationKey": "Fallback.Hint",
+        "fontKey": "UI.Font"
+      },
+      {
+        "type": "Text",
+        "field": "rewardText",
+        "objectName": "Text_Reward",
+        "localizationKey": "Reward.Coins",
+        "fontKey": "UI.Font"
+      },
+      {
+        "type": "Image",
+        "objectName": "Image_LanguageBadge",
+        "localizationKey": "UI.Badge"
       }
-    ],
-    "dictionaryGuid": "5f39b12837a55954b57e36c5f456d153"
+    ]
   },
   "LoadCatalogExample": {
     "script": "Assets/Examples/01_Modules/11_DataTable/02_LoadCatalog/LoadCatalogExample.cs",

@@ -143,6 +143,24 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
+        /// 组件销毁后停止转发场景通知，未完成请求仍由各自的 Core 回调收尾。
+        /// </summary>
+        private void OnDestroy()
+        {
+            if (m_SceneManager == null)
+            {
+                return;
+            }
+
+            m_SceneManager.LoadSceneSuccess -= OnLoadSceneSuccess;
+            m_SceneManager.LoadSceneFailure -= OnLoadSceneFailure;
+            m_SceneManager.LoadSceneUpdate -= OnLoadSceneUpdate;
+            m_SceneManager.LoadSceneDependencyAsset -= OnLoadSceneDependencyAsset;
+            m_SceneManager.UnloadSceneSuccess -= OnUnloadSceneSuccess;
+            m_SceneManager.UnloadSceneFailure -= OnUnloadSceneFailure;
+        }
+
+        /// <summary>
         /// 获取已加载场景的资源名称。
         /// </summary>
         /// <returns>已加载场景的资源名称。</returns>
@@ -299,10 +317,11 @@ namespace UnityQGameFramework.Runtime
         public async UniTask LoadSceneAsync(string sceneAssetName, int priority, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            CancellationToken destroyCancellationToken = this.GetCancellationTokenOnDestroy();
-            SceneAsyncRequest request = new SceneAsyncRequest();
-            EventHandler<GameEventArgs> successHandler = null;
-            EventHandler<GameEventArgs> failureHandler = null;
+            ISceneManager manager = m_SceneManager;
+            var request = new SceneAsyncRequest();
+            var lifetime = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, this.GetCancellationTokenOnDestroy());
+            EventHandler<Core.Events.LoadSceneSuccessEventArgs> successHandler = null;
+            EventHandler<Core.Events.LoadSceneFailureEventArgs> failureHandler = null;
             CancellationTokenRegistration cancellation = default;
 
             void Unsubscribe()
@@ -313,75 +332,63 @@ namespace UnityQGameFramework.Runtime
                 }
 
                 request.Pending = false;
-                if (m_EventComponent != null)
-                {
-                    if (m_EventComponent.Check(LoadSceneSuccessEventArgs.EventId, successHandler))
-                    {
-                        m_EventComponent.Unsubscribe(LoadSceneSuccessEventArgs.EventId, successHandler);
-                    }
-                    if (m_EventComponent.Check(LoadSceneFailureEventArgs.EventId, failureHandler))
-                    {
-                        m_EventComponent.Unsubscribe(LoadSceneFailureEventArgs.EventId, failureHandler);
-                    }
-                }
+                manager.LoadSceneSuccess -= successHandler;
+                manager.LoadSceneFailure -= failureHandler;
+                cancellation.Dispose();
+                lifetime.Dispose();
             }
 
-            successHandler = (sender, eventArgs) =>
+            successHandler = (sender, args) =>
             {
-                LoadSceneSuccessEventArgs args = (LoadSceneSuccessEventArgs)eventArgs;
                 if (!ReferenceEquals(args.UserData, request))
                 {
                     return;
                 }
 
                 Unsubscribe();
-                cancellation.Dispose();
                 if (request.Cancelled)
                 {
-                    // 取消只取消等待；底层加载完成后必须归还场景句柄。
-                    UnloadSceneAsync(args.SceneAssetName).Forget();
+                    // Core 回调独立于组件寿命，销毁后到达的场景仍由原管理器补偿卸载。
+                    manager.UnloadScene(args.SceneAssetName);
                     return;
                 }
 
                 request.Completion.TrySetResult();
             };
-            failureHandler = (sender, eventArgs) =>
+            failureHandler = (sender, args) =>
             {
-                LoadSceneFailureEventArgs args = (LoadSceneFailureEventArgs)eventArgs;
                 if (!ReferenceEquals(args.UserData, request))
                 {
                     return;
                 }
 
                 Unsubscribe();
-                cancellation.Dispose();
                 if (!request.Cancelled)
                 {
                     request.Completion.TrySetException(new GameFrameworkException(args.ErrorMessage));
                 }
             };
 
-            m_EventComponent.Subscribe(LoadSceneSuccessEventArgs.EventId, successHandler);
-            m_EventComponent.Subscribe(LoadSceneFailureEventArgs.EventId, failureHandler);
-            cancellation = cancellationToken.Register(() =>
+            manager.LoadSceneSuccess += successHandler;
+            manager.LoadSceneFailure += failureHandler;
+            cancellation = lifetime.Token.Register(() =>
             {
                 request.Cancelled = true;
-                request.Completion.TrySetCanceled(cancellationToken);
+                request.Completion.TrySetCanceled(lifetime.Token);
             });
 
             try
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                LoadScene(sceneAssetName, priority, request);
+                lifetime.Token.ThrowIfCancellationRequested();
+                manager.LoadScene(sceneAssetName, priority, request);
                 request.Started = true;
-                await request.Completion.Task.AttachExternalCancellation(destroyCancellationToken);
+                await request.Completion.Task;
             }
             catch
             {
-                if (request.Pending && (destroyCancellationToken.IsCancellationRequested || !request.Cancelled || !request.Started))
+                if (request.Pending && (!request.Cancelled || !request.Started))
                 {
                     Unsubscribe();
-                    cancellation.Dispose();
                 }
                 throw;
             }

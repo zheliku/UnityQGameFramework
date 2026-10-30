@@ -14,6 +14,7 @@ namespace UnityQGameFramework.Core
     internal sealed class SettingManager : GameFrameworkModule, ISettingManager
     {
         private ISettingHelper m_SettingHelper;
+        private bool m_CanAutoSave = true;
 
         /// <summary>
         /// 初始化游戏配置管理器的新实例。
@@ -53,9 +54,12 @@ namespace UnityQGameFramework.Core
         /// </summary>
         internal override void Shutdown()
         {
-            if (m_SettingHelper != null)
+            if (m_SettingHelper != null && m_CanAutoSave)
             {
-                Save();
+                if (!Save())
+                {
+                    GameFrameworkLog.Warning("Cannot save settings during shutdown.");
+                }
             }
         }
 
@@ -71,6 +75,7 @@ namespace UnityQGameFramework.Core
             }
 
             m_SettingHelper = settingHelper;
+            m_CanAutoSave = true;
         }
 
         /// <summary>
@@ -84,7 +89,9 @@ namespace UnityQGameFramework.Core
                 throw new GameFrameworkException("Setting helper is invalid.");
             }
 
-            return m_SettingHelper.Load();
+            m_CanAutoSave = false;
+            m_CanAutoSave = m_SettingHelper.Load();
+            return m_CanAutoSave;
         }
 
         /// <summary>
@@ -98,7 +105,12 @@ namespace UnityQGameFramework.Core
                 throw new GameFrameworkException("Setting helper is invalid.");
             }
 
-            return m_SettingHelper.Save();
+            bool saved = m_SettingHelper.Save();
+            if (saved)
+            {
+                m_CanAutoSave = true;
+            }
+            return saved;
         }
 
         /// <summary>

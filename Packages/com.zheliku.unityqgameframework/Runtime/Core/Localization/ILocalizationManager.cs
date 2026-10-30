@@ -4,6 +4,10 @@
 //------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using UnityQGameFramework.Core.Events;
+
 namespace UnityQGameFramework.Core
 {
     /// <summary>
@@ -11,6 +15,26 @@ namespace UnityQGameFramework.Core
     /// </summary>
     public interface ILocalizationManager : IDataProvider<ILocalizationManager>
     {
+        /// <summary>
+        /// 完整字典提交后的语言切换事件。
+        /// </summary>
+        event EventHandler<LanguageChangedEventArgs> LanguageChanged;
+
+        /// <summary>
+        /// 验证并一次性替换当前语言和字典。
+        /// </summary>
+        /// <param name="language">标准语言标识。</param>
+        /// <param name="dictionary">完整字典；内容会复制，调用方保留集合所有权。</param>
+        void SetLanguage(Language language, IReadOnlyDictionary<string, string> dictionary);
+
+        /// <summary>
+        /// 使用位置参数或命名字典格式化本地化文本。
+        /// </summary>
+        /// <param name="key">字典主键。</param>
+        /// <param name="arguments">格式参数；命名参数传入一个字典。</param>
+        /// <returns>格式化文本；缺失键或格式错误时返回带标记的诊断文本。</returns>
+        string GetString(string key, params object[] arguments);
+
         /// <summary>
         /// 获取或设置本地化语言。
         /// </summary>

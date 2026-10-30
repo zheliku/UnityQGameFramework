@@ -170,7 +170,25 @@ namespace UnityQGameFramework.Runtime
         /// <returns>本次借用的独立资产句柄。</returns>
         public UniTask<AssetHandle> LoadAssetHandleAsync<T>(string assetName, string packageName = null, int priority = DefaultPriority, CancellationToken cancellationToken = default) where T : UnityEngine.Object
         {
-            return GetYooAssetBackend().LoadAssetAsync(assetName, typeof(T), packageName, priority, false, cancellationToken);
+            return LoadAssetHandleAsync(assetName, typeof(T), packageName, priority, cancellationToken);
+        }
+
+        /// <summary>
+        /// 按运行时类型异步加载独立资产句柄。
+        /// </summary>
+        /// <param name="assetName">资产定位地址。</param>
+        /// <param name="assetType">要加载的 Unity 资产类型。</param>
+        /// <param name="packageName">资源包名称，为空时使用默认包。</param>
+        /// <param name="priority">加载优先级。</param>
+        /// <param name="cancellationToken">取消标记。</param>
+        /// <returns>由调用方释放的独立资产句柄。</returns>
+        public UniTask<AssetHandle> LoadAssetHandleAsync(string assetName, Type assetType, string packageName = null, int priority = DefaultPriority, CancellationToken cancellationToken = default)
+        {
+            if (assetType == null || !typeof(UnityEngine.Object).IsAssignableFrom(assetType))
+            {
+                throw new ArgumentException("Asset type must derive from UnityEngine.Object.", nameof(assetType));
+            }
+            return GetYooAssetBackend().LoadAssetAsync(assetName, assetType, packageName, priority, false, cancellationToken);
         }
 
         /// <summary>

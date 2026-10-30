@@ -22,7 +22,7 @@ namespace UnityQGameFramework.Runtime
         private float m_GameSpeedBeforePause = 1f;
 
         [SerializeField]
-        private Language m_EditorLanguage = Language.Unspecified;
+        private string m_EditorLanguageCode = string.Empty;
 
         [SerializeField]
         private string m_TextHelperTypeName = "UnityQGameFramework.Runtime.DefaultTextHelper";
@@ -58,11 +58,11 @@ namespace UnityQGameFramework.Runtime
         {
             get
             {
-                return m_EditorLanguage;
+                return string.IsNullOrEmpty(m_EditorLanguageCode) ? Language.Unspecified : Language.FromCode(m_EditorLanguageCode);
             }
             set
             {
-                m_EditorLanguage = value;
+                m_EditorLanguageCode = value.Code;
             }
         }
 

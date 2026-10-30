@@ -22,12 +22,18 @@ namespace UnityQGameFramework.Examples.Modules
             QGF.Localization.Language = Language.English;
             QGF.Localization.ParseData(dictionary.text);
             titleText.text = QGF.Localization.GetString("Game.Name");
-            rewardButton.onClick.AddListener(() => coins += 10);
+            rewardButton.onClick.AddListener(() =>
+            {
+                coins += 10;
+                RefreshReward();
+            });
+            nameInput.onValueChanged.AddListener(_ => RefreshReward());
+            RefreshReward();
         }
 
-        private void Update()
+        private void RefreshReward()
         {
-            // 翻译中的 {0}、{1} 分别替换为名字和金币数，语序由翻译决定。
+            // 数据变化时才格式化；翻译中的 {0}、{1} 分别对应名字和金币数。
             rewardText.text = QGF.Localization.GetString("Reward.Coins", nameInput.text, coins);
         }
     }

@@ -18,6 +18,18 @@
 
 Excel、Profile、生成代码与 bytes 已提供。改表时在 DataTable Inspector 选择 `UnityQGameFramework/Config/LubanProfile.asset` 后 Generate；Set Global 只切换编辑器生成目标，组件 Catalog 才决定运行时数据。完整说明见包内 `Documentation~/02-data-tables.md`。
 
+## Localization
+
+01_ReadText 展示已引用字典的查询、位置参数和复数。02_SwitchLanguage 是推荐的自动绑定用法：
+
+1. 打开场景，在 QGF 的 LocalizationComponent 查看 Languages：标准语言、字典地址、回退、字体和图片都已配置。
+2. 选中 Panel_LocalizedPreview 下的 Text 和 Image，查看 LocalizeText / LocalizeImage 的 Key、Font Key；业务脚本只请求语言切换和设置金币参数。
+3. Play 后点击 English / Simplified Chinese，观察文字、徽标和字体一起切换；Add Coin 展示单复数。关闭 Show localized preview 后切换语言，再显示，观察组件重新绑定当前语言。
+
+默认 Editor Simulation 直接 Play；Resource 模块按 Collector 的 `Localization_文件名` 地址加载内容，无需提前构建。缺失的中文提示使用英文回退。Inspector 的语言名可以搜索，回退从当前已配置的语言中选择；Play 时可直接 Switch Language 测试。
+
+Player 先在原生 YooAsset Builder 构建 `QgfExamples.Modules` 并按运行模式发布资源。示例中文字体是 Noto 的小型字符子集，只覆盖本示例；项目使用自己的字体。
+
 ## 场景清单
 
 | 场景 | 内容 |

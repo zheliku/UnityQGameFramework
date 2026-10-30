@@ -15,7 +15,7 @@ namespace UnityQGameFramework.Runtime
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-900)]
     [AddComponentMenu("Unity Q Game Framework/Localization")]
-    public sealed class LocalizationComponent : GameFrameworkComponent
+    public sealed partial class LocalizationComponent : GameFrameworkComponent
     {
         private const int DefaultPriority = 0;
 
@@ -99,6 +99,8 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
+            m_LocalizationManager.LanguageChanged += OnLanguageChanged;
+
             m_LocalizationManager.ReadDataSuccess += OnReadDataSuccess;
             m_LocalizationManager.ReadDataFailure += OnReadDataFailure;
 
@@ -141,6 +143,8 @@ namespace UnityQGameFramework.Runtime
                 return;
             }
 
+            m_LocalizationHelper = localizationHelper;
+
             localizationHelper.name = "Localization Helper";
             Transform transform = localizationHelper.transform;
             transform.SetParent(this.transform);
@@ -148,7 +152,8 @@ namespace UnityQGameFramework.Runtime
 
             m_LocalizationManager.SetDataProviderHelper(localizationHelper);
             m_LocalizationManager.SetLocalizationHelper(localizationHelper);
-            m_LocalizationManager.Language = Application.isEditor && baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
+            Language language = Application.isEditor && baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
+            m_LocalizationManager.Language = language == Language.Unspecified ? Language.English : language;
             if (m_CachedBytesSize > 0)
             {
                 EnsureCachedBytesSize(m_CachedBytesSize);

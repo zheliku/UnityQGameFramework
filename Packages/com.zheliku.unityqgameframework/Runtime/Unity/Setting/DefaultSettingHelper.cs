@@ -17,6 +17,7 @@ namespace UnityQGameFramework.Runtime
     public class DefaultSettingHelper : SettingHelperBase
     {
         private const string SettingFileName = "GameFrameworkSetting.dat";
+        private bool m_PrimaryFileValid;
 
         /// <summary>
         /// 获取游戏配置项数量。
@@ -30,7 +31,7 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取游戏配置存储文件路径。
+        /// 获取初始化时确定的游戏配置存储文件路径。
         /// </summary>
         public string FilePath
         {
@@ -38,7 +39,16 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取游戏配置。
+        /// 指定文件存储位置，供项目或示例隔离各自的设置。
+        /// </summary>
+        /// <returns>配置文件的完整路径。</returns>
+        protected virtual string GetFilePath()
+        {
+            return Path.Combine(Application.persistentDataPath, SettingFileName);
+        }
+
+        /// <summary>
+        /// 获取当前游戏配置快照；成功加载会替换此实例。
         /// </summary>
         public DefaultSetting Setting
         {
@@ -54,48 +64,90 @@ namespace UnityQGameFramework.Runtime
         }
 
         /// <summary>
-        /// 加载游戏配置。
+        /// 完整读取配置；正式文件损坏时尝试上一份备份。
         /// </summary>
-        /// <returns>是否加载游戏配置成功。</returns>
+        /// <returns>文件不存在或完整读取成功时为真；全部读取失败时保留当前内存数据。</returns>
         public override bool Load()
         {
-            try
+            m_PrimaryFileValid = false;
+            bool found = false;
+            foreach (string path in new[] { FilePath, FilePath + ".bak" })
             {
-                if (!File.Exists(FilePath))
+                try
                 {
+                    using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        found = true;
+                        DefaultSetting loaded = Serializer.Deserialize(fileStream);
+                        if (loaded == null || fileStream.Position != fileStream.Length)
+                        {
+                            throw new InvalidDataException("Setting data is incomplete or contains trailing bytes.");
+                        }
+                        Setting = loaded;
+                    }
+                    m_PrimaryFileValid = path == FilePath;
                     return true;
                 }
-
-                using (FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
+                catch (FileNotFoundException)
                 {
-                    Serializer.Deserialize(fileStream);
-                    return true;
+                }
+                catch (DirectoryNotFoundException)
+                {
+                }
+                catch (Exception exception)
+                {
+                    found = true;
+                    Log.Warning("Cannot load settings at '{0}': {1}", path, exception.Message);
                 }
             }
-            catch (Exception exception)
-            {
-                Log.Warning("Load settings failure with exception '{0}'.", exception);
-                return false;
-            }
+            return !found;
         }
 
         /// <summary>
-        /// 保存游戏配置。
+        /// 写入同目录临时文件，刷新后原子替换正式文件并保留有效备份。
         /// </summary>
-        /// <returns>是否保存游戏配置成功。</returns>
+        /// <returns>是否完成写入；失败时正式文件不变。</returns>
         public override bool Save()
         {
+            string temporary = FilePath + ".tmp";
             try
             {
-                using (FileStream fileStream = new FileStream(FilePath, FileMode.Create, FileAccess.Write))
+                Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
+                using (FileStream fileStream = new FileStream(temporary, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    return Serializer.Serialize(fileStream, Setting);
+                    if (!Serializer.Serialize(fileStream, Setting))
+                    {
+                        return false;
+                    }
+                    fileStream.Flush(true);
                 }
+                if (File.Exists(FilePath))
+                {
+                    // 从备份恢复后，不把损坏的正式文件覆盖到有效备份上。
+                    File.Replace(temporary, FilePath, m_PrimaryFileValid ? FilePath + ".bak" : null);
+                }
+                else
+                {
+                    File.Move(temporary, FilePath);
+                }
+                m_PrimaryFileValid = true;
+                return true;
             }
             catch (Exception exception)
             {
-                Log.Warning("Save settings failure with exception '{0}'.", exception);
+                Log.Warning("Cannot save settings at '{0}': {1}", FilePath, exception.Message);
                 return false;
+            }
+            finally
+            {
+                try
+                {
+                    File.Delete(temporary);
+                }
+                catch (Exception exception)
+                {
+                    Log.Warning("Cannot remove temporary settings at '{0}': {1}", temporary, exception.Message);
+                }
             }
         }
 
@@ -353,7 +405,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         private void Awake()
         {
-            FilePath = Utility.Path.GetRegularPath(Path.Combine(Application.persistentDataPath, SettingFileName));
+            FilePath = Utility.Path.GetRegularPath(Path.GetFullPath(GetFilePath()));
             Setting = new DefaultSetting();
             Serializer = new DefaultSettingSerializer();
             Serializer.RegisterSerializeCallback(0, SerializeDefaultSettingCallback);
@@ -368,7 +420,7 @@ namespace UnityQGameFramework.Runtime
         /// <returns>是否成功写入本地设置。</returns>
         private bool SerializeDefaultSettingCallback(Stream stream, DefaultSetting defaultSetting)
         {
-            Setting.Serialize(stream);
+            defaultSetting.Serialize(stream);
             return true;
         }
 
@@ -379,8 +431,9 @@ namespace UnityQGameFramework.Runtime
         /// <returns>读取的本地设置。</returns>
         private DefaultSetting DeserializeDefaultSettingCallback(Stream stream)
         {
-            Setting.Deserialize(stream);
-            return Setting;
+            var setting = new DefaultSetting();
+            setting.Deserialize(stream);
+            return setting;
         }
     }
 }

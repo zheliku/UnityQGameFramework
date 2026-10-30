@@ -3,3 +3,4 @@
 *.wav -filter -diff -merge -text
 *.bytes -filter -diff -merge -text
 *.xlsx -filter -diff -merge -text
+*.otf -filter -diff -merge -text

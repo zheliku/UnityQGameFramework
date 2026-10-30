@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<linker>
-  <assembly fullname="UnityQGameFramework.Core" preserve="all" />
-  <assembly fullname="UnityQGameFramework.Runtime" preserve="all" />
-</linker>
