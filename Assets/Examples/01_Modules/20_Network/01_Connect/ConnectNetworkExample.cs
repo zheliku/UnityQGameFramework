@@ -1,3 +1,4 @@
+using TMPro;
 using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button connectButton, closeButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private NetworkEchoServer server;
         private INetworkChannel channel;
         private bool connecting;

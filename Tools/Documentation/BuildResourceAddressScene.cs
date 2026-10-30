@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,15 +51,15 @@ public static class BuildResourceAddressScene
             var oldFields = new SerializedObject(previous);
             var state = oldFields.FindProperty("stateText").objectReferenceValue;
             var rules = oldFields.FindProperty("groupsText").objectReferenceValue;
-            var help = (Text)oldFields.FindProperty("assetText").objectReferenceValue;
+            var help = (TMP_Text)oldFields.FindProperty("assetText").objectReferenceValue;
             var load = (Button)oldFields.FindProperty("loadButton").objectReferenceValue;
             var release = (Button)oldFields.FindProperty("releaseButton").objectReferenceValue;
             var initialize = (Button)oldFields.FindProperty("initializeButton").objectReferenceValue;
             Transform parent = initialize.transform.parent;
             int sibling = initialize.transform.GetSiblingIndex();
             var sourceScene = EditorSceneManager.OpenScene(root + "05_Update/UpdateRemoteResources.unity", OpenSceneMode.Additive);
-            var source = sourceScene.GetRootGameObjects().SelectMany(item => item.GetComponentsInChildren<Dropdown>(true)).First();
-            var dropdown = UnityEngine.Object.Instantiate(source.gameObject).GetComponent<Dropdown>();
+            var source = sourceScene.GetRootGameObjects().SelectMany(item => item.GetComponentsInChildren<TMP_Dropdown>(true)).First();
+            var dropdown = UnityEngine.Object.Instantiate(source.gameObject).GetComponent<TMP_Dropdown>();
             SceneManager.MoveGameObjectToScene(dropdown.gameObject, scene);
             dropdown.transform.SetParent(parent, false);
             dropdown.transform.SetSiblingIndex(sibling);
@@ -80,10 +81,10 @@ public static class BuildResourceAddressScene
             fields.FindProperty("loadButton").objectReferenceValue = load;
             fields.FindProperty("releaseButton").objectReferenceValue = release;
             fields.ApplyModifiedPropertiesWithoutUndo();
-            load.GetComponentInChildren<Text>().text = "Load Cube by Address";
-            release.GetComponentInChildren<Text>().text = "Destroy Instance and Release Asset";
+            load.GetComponentInChildren<TMP_Text>().text = "Load Cube by Address";
+            release.GetComponentInChildren<TMP_Text>().text = "Destroy Instance and Release Asset";
             help.text = "Three packages collect the same prefab. Release it, then switch rules to compare addresses.";
-            foreach (Text text in scene.GetRootGameObjects().SelectMany(item => item.GetComponentsInChildren<Text>(true)))
+            foreach (TMP_Text text in scene.GetRootGameObjects().SelectMany(item => item.GetComponentsInChildren<TMP_Text>(true)))
             {
                 if (text.name == "Text_Title")
                 {

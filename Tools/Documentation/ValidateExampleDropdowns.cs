@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -107,7 +108,7 @@ public static class ValidateExampleDropdowns
                 // 这一个示例故意延迟两秒加载，成功提示从一行变成三行后再定位控件。
                 if (pair.Name == "ShowCubeEntity")
                     await Task.Delay(2200);
-                foreach (var dropdown in UnityEngine.Object.FindObjectsByType<Dropdown>(FindObjectsSortMode.None))
+                foreach (var dropdown in UnityEngine.Object.FindObjectsByType<TMP_Dropdown>(FindObjectsSortMode.None))
                 {
                     var deadline = DateTime.UtcNow.AddSeconds(8);
                     while (!dropdown.interactable && DateTime.UtcNow < deadline)
@@ -125,7 +126,7 @@ public static class ValidateExampleDropdowns
                         throw new Exception(pair.Name + ": native mouse opens " + dropdown.name);
                     }
                     Canvas.ForceUpdateCanvases();
-                    var labels = list.GetComponentsInChildren<Toggle>().Select(t => t.GetComponentInChildren<Text>()).ToArray();
+                    var labels = list.GetComponentsInChildren<Toggle>().Select(t => t.GetComponentInChildren<TMP_Text>()).ToArray();
                     Require(labels.Length == dropdown.options.Count, pair.Name + ": option count");
                     foreach (var label in labels.Where(t => !t.canvasRenderer.cull))
                     {
@@ -188,7 +189,7 @@ public static class ValidateExampleDropdowns
         return result;
     }
 
-    private static async Task Reveal(Dropdown dropdown)
+    private static async Task Reveal(TMP_Dropdown dropdown)
     {
         Canvas.ForceUpdateCanvases();
         await Task.Delay(100);

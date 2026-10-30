@@ -7,9 +7,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityQGameFramework.Examples.Modules.Presentation;
 
-// 为已有场景补充布局组件，不重建场景中的业务引用。
+// 将布局直接保存到场景，不添加运行时展示组件。
 public static class ConfigureExampleLayouts
 {
     public static object Run()
@@ -37,28 +36,11 @@ public static class ConfigureExampleLayouts
                 if (panel.anchorMax.x >= .75f)
                     continue;
                 AddScrollbar(panel.GetComponent<ScrollRect>());
-                var component = canvas.GetComponent<ExampleSceneLayout>() ?? canvas.gameObject.AddComponent<ExampleSceneLayout>();
-                var data = new SerializedObject(component);
-                data.FindProperty("controls").objectReferenceValue = panel;
-                data.FindProperty("legend").objectReferenceValue = canvas.transform.Find("Panel_Status");
-                data.FindProperty("sceneCamera").objectReferenceValue = module.EndsWith("/14_UI", StringComparison.Ordinal) ? null : Camera.main;
-                data.ApplyModifiedPropertiesWithoutUndo();
+                panel.anchorMin = new Vector2(.025f, .05f);
+                panel.anchorMax = new Vector2(.475f, .95f);
+                panel.offsetMin = panel.offsetMax = Vector2.zero;
                 EditorSceneManager.SaveScene(scene);
                 changed.Add(path);
-                if (!module.EndsWith("/14_UI", StringComparison.Ordinal))
-                    continue;
-                string prefab = Path.GetDirectoryName(script).Replace('\\', '/') + "/Art/Window.prefab";
-                var root = PrefabUtility.LoadPrefabContents(prefab);
-                try
-                {
-                    var window = root.GetComponent<ExampleSceneLayout>() ?? root.AddComponent<ExampleSceneLayout>();
-                    var fields = new SerializedObject(window);
-                    fields.FindProperty("window").objectReferenceValue = root.transform.Find("Panel_Window");
-                    fields.ApplyModifiedPropertiesWithoutUndo();
-                    PrefabUtility.SaveAsPrefabAsset(root, prefab);
-                    changed.Add(prefab);
-                }
-                finally { PrefabUtility.UnloadPrefabContents(root); }
             }
         }
         finally

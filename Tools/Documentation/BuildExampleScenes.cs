@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -271,11 +272,6 @@ public static class BuildExampleScenes
                     var panel = canvas.GetComponentInChildren<ScrollRect>().GetComponent<RectTransform>();
                     if (panel.anchorMax.x < .75f)
                     {
-                        var view = new SerializedObject(canvas.gameObject.AddComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>());
-                        view.FindProperty("controls").objectReferenceValue = panel;
-                        view.FindProperty("legend").objectReferenceValue = canvas.transform.Find("Panel_Status");
-                        view.FindProperty("sceneCamera").objectReferenceValue = moduleRoot.EndsWith("_UI") ? null : camera;
-                        view.ApplyModifiedPropertiesWithoutUndo();
                         var scroll = panel.GetComponent<ScrollRect>();
                         var barObject = DefaultControls.CreateScrollbar(new DefaultControls.Resources());
                         barObject.name = "Scrollbar_Controls";
@@ -311,6 +307,29 @@ public static class BuildExampleScenes
         {
             scenes = count,
             independentFrameworks = true
+        };
+    }
+
+    private static void ReplaceLegacyLabels(GameObject root)
+    {
+        foreach (UnityEngine.UI.Text legacy in root.GetComponentsInChildren<UnityEngine.UI.Text>(true))
+        {
+            GameObject owner = legacy.gameObject;
+            UnityEngine.Object.DestroyImmediate(legacy);
+            owner.AddComponent<TextMeshProUGUI>();
+        }
+    }
+
+    private static TMP_DefaultControls.Resources TmpResources(DefaultControls.Resources resources)
+    {
+        return new TMP_DefaultControls.Resources
+        {
+            standard = resources.standard,
+            background = resources.background,
+            checkmark = resources.checkmark,
+            knob = resources.knob,
+            dropdown = resources.dropdown,
+            mask = resources.mask
         };
     }
 
@@ -362,7 +381,7 @@ public static class BuildExampleScenes
             dropdown = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/DropdownArrow.psd"),
             mask = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UIMask.psd")
         };
-        var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Examples/01_Modules/10_Localization/Common/ChineseFont.asset");
         var rows = new Dictionary<string, Transform>();
         Transform[] columns = null;
         foreach (JObject control in (JArray)layout["controls"])
@@ -373,11 +392,12 @@ public static class BuildExampleScenes
             switch (kind)
             {
                 case "Button":
-                    go = DefaultControls.CreateButton(resources);
+                    go = TMP_DefaultControls.CreateButton(TmpResources(resources));
                     value = go.GetComponent<Button>();
                     break;
                 case "Toggle":
                     go = DefaultControls.CreateToggle(resources);
+                    ReplaceLegacyLabels(go);
                     value = go.GetComponent<Toggle>();
                     break;
                 case "Slider":
@@ -385,20 +405,20 @@ public static class BuildExampleScenes
                     value = go.GetComponent<Slider>();
                     break;
                 case "InputField":
-                    go = DefaultControls.CreateInputField(resources);
-                    value = go.GetComponent<InputField>();
+                    go = TMP_DefaultControls.CreateInputField(TmpResources(resources));
+                    value = go.GetComponent<TMP_InputField>();
                     break;
                 case "Dropdown":
-                    go = DefaultControls.CreateDropdown(resources);
-                    value = go.GetComponent<Dropdown>();
+                    go = TMP_DefaultControls.CreateDropdown(TmpResources(resources));
+                    value = go.GetComponent<TMP_Dropdown>();
                     break;
                 case "Image":
                     go = new GameObject("Image", typeof(RectTransform), typeof(Image));
                     value = (bool?)control["marker"] == true ? (Component)go.GetComponent<RectTransform>() : go.GetComponent<Image>();
                     break;
                 case "Text":
-                    go = new GameObject("Text", typeof(RectTransform), typeof(Text));
-                    value = go.GetComponent<Text>();
+                    go = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+                    value = go.GetComponent<TMP_Text>();
                     break;
                 default:
                     throw new Exception("Unknown uGUI control: " + kind);
@@ -472,12 +492,12 @@ public static class BuildExampleScenes
             }
             foreach (var image in go.GetComponentsInChildren<Image>(true))
                 image.color = new Color(0.16f, 0.23f, 0.32f);
-            foreach (var label in go.GetComponentsInChildren<Text>(true))
+            foreach (var label in go.GetComponentsInChildren<TMP_Text>(true))
             {
                 label.font = font;
                 label.fontSize = 18;
                 label.color = new Color(0.9f, 0.92f, 0.96f);
-                label.supportRichText = false;
+                label.richText = false;
             }
             var element = go.AddComponent<LayoutElement>();
             if (rowName != null)
@@ -490,10 +510,10 @@ public static class BuildExampleScenes
             string caption = (string)control["text"] ?? (string)control["label"] ?? string.Empty;
             if (kind == "Text")
             {
-                var label = (Text)value;
+                var label = (TMP_Text)value;
                 label.text = caption;
                 label.raycastTarget = false;
-                label.verticalOverflow = VerticalWrapMode.Overflow;
+                label.overflowMode = TextOverflowModes.Overflow;
                 if ((bool?)control["title"] == true)
                 {
                     label.fontSize = 28;
@@ -501,24 +521,24 @@ public static class BuildExampleScenes
                 }
             }
             else if (kind == "Button")
-                go.GetComponentInChildren<Text>().text = caption;
+                go.GetComponentInChildren<TMP_Text>().text = caption;
             else if (kind == "Toggle")
             {
                 var toggle = (Toggle)value;
                 toggle.isOn = (bool?)control["value"] ?? false;
-                go.GetComponentInChildren<Text>().text = caption;
+                go.GetComponentInChildren<TMP_Text>().text = caption;
                 toggle.graphic.color = new Color(0.25f, 0.65f, 1f);
             }
             else if (kind == "InputField")
             {
-                var input = (InputField)value;
+                var input = (TMP_InputField)value;
                 input.text = (string)control["value"] ?? string.Empty;
-                input.placeholder.GetComponent<Text>().text = (string)control["label"] ?? "Enter Text";
+                input.placeholder.GetComponent<TMP_Text>().text = (string)control["label"] ?? "Enter Text";
                 if ((string)control["contentType"] == "IntegerNumber")
-                    input.contentType = InputField.ContentType.IntegerNumber;
+                    input.contentType = TMP_InputField.ContentType.IntegerNumber;
                 if ((string)control["multiline"] == "true")
                 {
-                    input.lineType = InputField.LineType.MultiLineNewline;
+                    input.lineType = TMP_InputField.LineType.MultiLineNewline;
                     element.preferredHeight = 110;
                     if (control["height"] != null)
                         element.preferredHeight = (float)control["height"];
@@ -541,7 +561,7 @@ public static class BuildExampleScenes
             }
             else if (kind == "Dropdown")
             {
-                var dropdown = (Dropdown)value;
+                var dropdown = (TMP_Dropdown)value;
                 if (control["choices"] != null)
                 {
                     dropdown.ClearOptions();
@@ -550,7 +570,7 @@ public static class BuildExampleScenes
                 var item = (RectTransform)dropdown.itemText.GetComponentInParent<Toggle>(true).transform;
                 item.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 40);
                 dropdown.itemText.lineSpacing = 1;
-                dropdown.itemText.verticalOverflow = VerticalWrapMode.Overflow;
+                dropdown.itemText.overflowMode = TextOverflowModes.Overflow;
             }
             else if (kind == "Image" && (bool?)control["marker"] == true)
             {
@@ -566,7 +586,7 @@ public static class BuildExampleScenes
                 element.preferredHeight = 24;
                 value = markerRect;
             }
-            if (value is Selectable selectable && !(value is InputField))
+            if (value is Selectable selectable && !(value is TMP_InputField))
             {
                 var navigation = selectable.navigation;
                 navigation.mode = Navigation.Mode.None;
@@ -648,21 +668,18 @@ public static class BuildExampleScenes
         rect.anchorMin = rect.anchorMax = new Vector2(0.77f, 0.5f);
         rect.sizeDelta = new Vector2(240, 180);
         panel.GetComponent<Image>().color = new Color(0.07f, 0.32f, 0.55f, 0.98f);
-        var label = new GameObject("Text_Title", typeof(RectTransform), typeof(Text));
+        var label = new GameObject("Text_Title", typeof(RectTransform), typeof(TextMeshProUGUI));
         label.transform.SetParent(panel.transform, false);
         rect = (RectTransform)label.transform;
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
         rect.offsetMin = new Vector2(12, 12);
         rect.offsetMax = new Vector2(-12, -12);
-        var text = label.GetComponent<Text>();
-        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        var text = label.GetComponent<TMP_Text>();
+        text.font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Examples/01_Modules/10_Localization/Common/ChineseFont.asset");
         text.fontSize = 24;
-        text.alignment = TextAnchor.MiddleCenter;
+        text.alignment = TextAlignmentOptions.Center;
         text.text = "Window";
-        var view = new SerializedObject(root.AddComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>());
-        view.FindProperty("window").objectReferenceValue = panel.GetComponent<RectTransform>();
-        view.ApplyModifiedPropertiesWithoutUndo();
         var data = new SerializedObject(root.GetComponent(viewType));
         data.FindProperty("title").objectReferenceValue = text;
         data.ApplyModifiedPropertiesWithoutUndo();

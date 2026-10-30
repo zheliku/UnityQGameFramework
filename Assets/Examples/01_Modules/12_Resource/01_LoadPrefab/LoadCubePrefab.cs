@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using Cysharp.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class LoadCubePrefab : MonoBehaviour
     {
-        [SerializeField] private Text stateText, assetText, instancesText;
+        [SerializeField] private TMP_Text stateText, assetText, instancesText;
         [SerializeField] private Button removeButton, releaseButton;
         private GameObject asset, first, second;
         private bool releasing;

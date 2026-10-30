@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,11 +12,11 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ProcedureDataExample : MonoBehaviour
     {
         [SerializeField]
-        internal Dropdown levelChoice;
+        internal TMP_Dropdown levelChoice;
         [SerializeField]
         private Button confirmButton, finishButton;
         [SerializeField]
-        private Text stateText, dataText;
+        private TMP_Text stateText, dataText;
         internal bool ConfirmRequested, FinishRequested;
         internal string LoadedLevel = "No level selected";
         internal bool HasLevelData;

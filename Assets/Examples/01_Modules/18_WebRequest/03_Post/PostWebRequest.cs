@@ -1,3 +1,4 @@
+using TMPro;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,11 +13,11 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class PostWebRequest : MonoBehaviour
     {
         [SerializeField]
-        private InputField messageInput;
+        private TMP_InputField messageInput;
         [SerializeField]
         private Button formButton;
         [SerializeField]
-        private Text responseText;
+        private TMP_Text responseText;
         private LocalHttpServer server;
         private int serial;
         private void Start()

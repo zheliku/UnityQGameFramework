@@ -60,7 +60,7 @@ public static class BuildLocalizationPlayer
             throw new InvalidOperationException("Import TMP Essential Resources before creating validation fonts.");
         }
         var scene = EditorSceneManager.OpenScene("Assets/Examples/01_Modules/10_Localization/02_SwitchLanguage/SwitchLanguage.unity");
-        const string source = "Assets/Examples/01_Modules/10_Localization/Common/ChineseFont.otf";
+        const string source = "Assets/Examples/01_Modules/10_Localization/Common/ChineseFontSource.otf";
         Font font = AssetDatabase.LoadAssetAtPath<Font>(source);
         TMP_FontAsset english = CreateFont(font, "EnglishTMP");
         TMP_FontAsset chinese = CreateFont(font, "ChineseTMP");
@@ -110,7 +110,7 @@ public static class BuildLocalizationPlayer
         textObject.transform.SetParent(preview, false);
         TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
         text.font = original;
-        LocalizeTmpText binding = textObject.AddComponent<LocalizeTmpText>();
+        LocalizeText binding = textObject.AddComponent<LocalizeText>();
         var bindingData = new SerializedObject(binding);
         bindingData.FindProperty("m_Key").stringValue = "Game.Name";
         bindingData.FindProperty("m_FontKey").stringValue = "UI.TMPFont";

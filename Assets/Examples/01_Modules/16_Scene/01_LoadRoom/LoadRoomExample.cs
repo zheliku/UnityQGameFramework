@@ -1,3 +1,4 @@
+using TMPro;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button loadButton, unloadButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private const string RoomAddress = "Scene_LoadRoom_BlueRoom";
         private bool ownsRoom;
         private void Start()

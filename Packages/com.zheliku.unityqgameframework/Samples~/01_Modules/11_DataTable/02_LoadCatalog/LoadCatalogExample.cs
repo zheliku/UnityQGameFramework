@@ -1,3 +1,4 @@
+using TMPro;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ namespace UnityQGameFramework.Examples.Modules
         private const string CatalogAddress = "Tables_Catalog";
 
         [SerializeField] private Button loadButton, cancelButton, unloadButton;
-        [SerializeField] private Text stateText, rowsText;
+        [SerializeField] private TMP_Text stateText, rowsText;
 
         private readonly StringBuilder rows = new StringBuilder();
         private bool ownsTables;

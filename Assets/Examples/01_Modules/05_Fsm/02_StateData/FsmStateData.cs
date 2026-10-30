@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,11 +12,11 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class FsmStateData : MonoBehaviour
     {
         [SerializeField]
-        private InputField jobsInput;
+        private TMP_InputField jobsInput;
         [SerializeField]
         private Button loadButton, runButton, clearButton;
         [SerializeField]
-        private Text stateText, jobsText, batchText;
+        private TMP_Text stateText, jobsText, batchText;
         private IFsm<FsmStateData> fsm;
         private bool runRequested;
         private int lastBatch;

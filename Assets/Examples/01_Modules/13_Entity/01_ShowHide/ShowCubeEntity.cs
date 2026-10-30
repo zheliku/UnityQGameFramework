@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -14,7 +15,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button showButton, hideButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private string failure;
         private void Start()
         {

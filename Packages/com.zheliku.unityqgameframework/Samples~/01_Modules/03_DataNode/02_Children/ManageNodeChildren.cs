@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,9 +24,9 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button clearAllButton;
         [SerializeField]
-        private Text countText;
+        private TMP_Text countText;
         [SerializeField]
-        private Text childrenText;
+        private TMP_Text childrenText;
         private bool viewReady;
         private readonly List<IDataNode> children = new List<IDataNode>();
         private int nextId;

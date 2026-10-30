@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,9 +152,9 @@ public static class ValidateWebRequestExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
         Require(QGF.WebRequest.TotalAgentCount == 1, "One real HTTP agent");
         Require(QGF.WebRequest.GetAllWebRequestInfos().Length == 0 && UsedForms() == 0, "No implicit requests or held contexts");
         if (name == "GetWebRequestExample")
@@ -206,7 +207,7 @@ public static class ValidateWebRequestExamples
         }
         else if (name == "PostWebRequest")
         {
-            var input = (InputField)data.FindProperty("messageInput").objectReferenceValue;
+            var input = (TMP_InputField)data.FindProperty("messageInput").objectReferenceValue;
             string special = "中文🚀 + & = % # ?\n第二行";
             input.text = special;
             Require(dropdown("requestMode").options.Count == 8, "Eight POST parameter combinations for both body kinds");

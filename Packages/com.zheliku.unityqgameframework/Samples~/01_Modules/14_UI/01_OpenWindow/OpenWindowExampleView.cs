@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -9,7 +10,7 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class OpenWindowExampleView : UIFormLogic
     {
-        [SerializeField] private Text title;
+        [SerializeField] private TMP_Text title;
         private Canvas canvas;
 
         /// <summary>

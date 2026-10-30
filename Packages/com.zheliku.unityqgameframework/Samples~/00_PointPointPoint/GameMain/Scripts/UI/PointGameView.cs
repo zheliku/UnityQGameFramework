@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -11,7 +12,7 @@ namespace UnityQGameFramework.Examples.PointPointPoint
     public sealed class PointGameView : UIFormLogic
     {
         [SerializeField] private GameObject menu, play, result;
-        [SerializeField] private Text phase, rules, record, status, resultTitle, resultScore;
+        [SerializeField] private TMP_Text phase, rules, record, status, resultTitle, resultScore;
         [SerializeField] private Button startButton, targetButton, boardButton, menuButton;
         [SerializeField] private RectTransform board, target;
         internal PointGameData Game

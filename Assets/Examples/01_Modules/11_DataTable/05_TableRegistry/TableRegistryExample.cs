@@ -1,3 +1,4 @@
+using TMPro;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
         private const string PreviewName = "Preview";
 
         [SerializeField] private Button m_RegisterButton, m_RemoveButton, m_ListButton;
-        [SerializeField] private Text m_StateText, m_TablesText;
+        [SerializeField] private TMP_Text m_StateText, m_TablesText;
 
         private readonly List<DataTableBase> m_Tables = new List<DataTableBase>();
         private readonly StringBuilder m_Text = new StringBuilder();

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -13,7 +14,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button sendButton;
         [SerializeField]
-        private Text coinsText;
+        private TMP_Text coinsText;
         private int coins;
         private void Start()
         {

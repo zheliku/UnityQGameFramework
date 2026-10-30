@@ -1,14 +1,15 @@
 {
-    "name": "UnityQGameFramework.Runtime",
-    "rootNamespace": "UnityQGameFramework.Runtime",
-    "references": [
-        "UnityQGameFramework.Core",
-        "UnityQGameFramework.Luban",
-        "UnityEngine.UI",
-        "Unity.InputSystem",
-        "UniTask",
-        "YooAsset"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": []
+  "name": "UnityQGameFramework.Runtime",
+  "rootNamespace": "UnityQGameFramework.Runtime",
+  "references": [
+    "UnityQGameFramework.Core",
+    "UnityQGameFramework.Luban",
+    "UnityEngine.UI",
+    "Unity.InputSystem",
+    "UniTask",
+    "YooAsset",
+    "Unity.TextMeshPro"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": []
 }

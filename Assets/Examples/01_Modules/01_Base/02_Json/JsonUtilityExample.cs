@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,8 +11,8 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class JsonUtilityExample : MonoBehaviour
     {
-        [SerializeField] private InputField nameInput, jsonInput;
-        [SerializeField] private Text levelText;
+        [SerializeField] private TMP_InputField nameInput, jsonInput;
+        [SerializeField] private TMP_Text levelText;
         [SerializeField] private Button levelUpButton, serializeButton, deserializeButton;
         [SerializeField] private TextAsset json;
         private PlayerSnapshot player;

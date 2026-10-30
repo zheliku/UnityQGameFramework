@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -10,7 +11,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class SaveCounter : MonoBehaviour
     {
         [SerializeField] private Button saveButton, resetButton;
-        [SerializeField] private Text countText;
+        [SerializeField] private TMP_Text countText;
         private int count;
 
         private void Start()

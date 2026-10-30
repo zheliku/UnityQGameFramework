@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -171,7 +172,7 @@ public static class ValidateSceneExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
         if (name == "LoadRoomExample")
         {

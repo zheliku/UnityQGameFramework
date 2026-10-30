@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +15,9 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button compareButton;
         [SerializeField]
-        private Text orderText;
+        private TMP_Text orderText;
         [SerializeField]
-        private Text queueText;
+        private TMP_Text queueText;
         private bool viewReady;
         private int sequence, immediate, afterImmediate, queued, afterQueued, waiting;
         private void Start()

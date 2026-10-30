@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Text;
@@ -18,7 +19,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button readButton;
         [SerializeField]
-        private Text rangeText, resultText;
+        private TMP_Text rangeText, resultText;
         private IFileSystem container;
         private string path;
         private void Start()

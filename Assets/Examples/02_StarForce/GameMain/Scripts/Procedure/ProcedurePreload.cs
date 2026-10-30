@@ -38,8 +38,6 @@ namespace StarForce
             // 先订阅结果，再发起读取；完成事件中的 UserData 用来识别本流程的请求。
             GameEntry.Event.Subscribe(LoadConfigSuccessEventArgs.EventId, OnLoadConfigSuccess);
             GameEntry.Event.Subscribe(LoadConfigFailureEventArgs.EventId, OnLoadConfigFailure);
-            GameEntry.Event.Subscribe(LoadDictionarySuccessEventArgs.EventId, OnLoadDictionarySuccess);
-            GameEntry.Event.Subscribe(LoadDictionaryFailureEventArgs.EventId, OnLoadDictionaryFailure);
 
             m_LoadedFlag.Clear();
             m_RetryActions.Clear();
@@ -58,8 +56,6 @@ namespace StarForce
         {
             GameEntry.Event.Unsubscribe(LoadConfigSuccessEventArgs.EventId, OnLoadConfigSuccess);
             GameEntry.Event.Unsubscribe(LoadConfigFailureEventArgs.EventId, OnLoadConfigFailure);
-            GameEntry.Event.Unsubscribe(LoadDictionarySuccessEventArgs.EventId, OnLoadDictionarySuccess);
-            GameEntry.Event.Unsubscribe(LoadDictionaryFailureEventArgs.EventId, OnLoadDictionaryFailure);
             m_RetryActions.Clear();
             if (m_Cancellation != null)
             {
@@ -106,10 +102,8 @@ namespace StarForce
             LoadDataTableAsync().Forget();
 
             // 字典按当前 Language 选择，与游戏参数分开加载。
-            LoadDictionary("Default");
+            LoadLanguageAsync().Forget();
 
-            // 字体加载完成后交给 UGuiForm，之后创建的界面会使用它。
-            LoadFontAsync("MainFont").Forget();
         }
 
         private void LoadConfig(string configName)
@@ -145,47 +139,30 @@ namespace StarForce
             }
         }
 
-        private void LoadDictionary(string dictionaryName)
+        private async UniTask LoadLanguageAsync()
         {
-            string dictionaryAssetName = AssetUtility.GetDictionaryAsset(dictionaryName);
-            m_LoadedFlag.Add(dictionaryAssetName, false);
-            GameEntry.Localization.ReadData(dictionaryAssetName, this);
-        }
-
-        private async UniTask LoadFontAsync(string fontName)
-        {
-            string loadKey = Utility.Text.Format("Font.{0}", fontName);
+            const string loadKey = "StarForce.Language";
             m_LoadedFlag[loadKey] = false;
             CancellationToken cancellationToken = m_Cancellation.Token;
-            Font font = null;
             try
             {
-                font = await GameEntry.Resource.LoadAssetAsync<Font>(
-                    AssetUtility.GetFontAsset(fontName),
-                    priority: Constant.AssetPriority.FontAsset,
-                    cancellationToken: cancellationToken);
-                cancellationToken.ThrowIfCancellationRequested();
-                // 主字体供后续界面共用，借用保留到框架关闭；交接前失败则在 finally 归还。
-                UGuiForm.SetMainFont(font);
-                font = null;
+                // 首次加载和运行时切换共用语言配置，字典准备成功后才通知界面。
+                GameEntry.Localization.SetLanguages(
+                    new LocalizationLanguage(Language.English, AssetUtility.GetDictionaryAsset(Language.English), Language.Unspecified,
+                        new LocalizationAssetMapping("UI.Font", AssetUtility.GetFontAsset("MainFont"), LocalizationAssetType.Font)),
+                    new LocalizationLanguage(Language.ChineseSimplified, AssetUtility.GetDictionaryAsset(Language.ChineseSimplified), Language.English),
+                    new LocalizationLanguage(Language.ChineseTraditional, AssetUtility.GetDictionaryAsset(Language.ChineseTraditional), Language.English),
+                    new LocalizationLanguage(Language.Korean, AssetUtility.GetDictionaryAsset(Language.Korean), Language.English));
+                await GameEntry.Localization.SetLanguageAsync(GameEntry.Localization.Language, cancellationToken);
                 m_LoadedFlag[loadKey] = true;
                 m_RetryActions.Remove(loadKey);
-                Log.Info("Load font '{0}' OK.", fontName);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
             }
             catch (Exception exception)
             {
-                Log.Error("Can not load font '{0}' with error message '{1}'.", fontName, exception.Message);
-                ShowLoadFailure(loadKey, exception.Message, () => LoadFontAsync(fontName).Forget());
-            }
-            finally
-            {
-                if (font != null)
-                {
-                    GameEntry.Resource.UnloadAsset(font);
-                }
+                ShowLoadFailure(loadKey, exception.Message, () => LoadLanguageAsync().Forget());
             }
         }
 
@@ -214,33 +191,6 @@ namespace StarForce
             string errorMessage = ne.ErrorMessage;
             Log.Error("Can not load config '{0}' with error message '{1}'.", configAssetName, errorMessage);
             ShowLoadFailure(configAssetName, errorMessage, () => GameEntry.Config.ReadData(configAssetName, this));
-        }
-
-        private void OnLoadDictionarySuccess(object sender, GameEventArgs e)
-        {
-            LoadDictionarySuccessEventArgs ne = (LoadDictionarySuccessEventArgs)e;
-            if (ne.UserData != this)
-            {
-                return;
-            }
-
-            m_LoadedFlag[ne.DictionaryAssetName] = true;
-            m_RetryActions.Remove(ne.DictionaryAssetName);
-            Log.Info("Load dictionary '{0}' OK.", ne.DictionaryAssetName);
-        }
-
-        private void OnLoadDictionaryFailure(object sender, GameEventArgs e)
-        {
-            LoadDictionaryFailureEventArgs ne = (LoadDictionaryFailureEventArgs)e;
-            if (ne.UserData != this)
-            {
-                return;
-            }
-
-            string dictionaryAssetName = ne.DictionaryAssetName;
-            string errorMessage = ne.ErrorMessage;
-            Log.Error("Can not load dictionary '{0}' with error message '{1}'.", dictionaryAssetName, errorMessage);
-            ShowLoadFailure(dictionaryAssetName, errorMessage, () => GameEntry.Localization.ReadData(dictionaryAssetName, this));
         }
 
         private void ShowLoadFailure(string loadKey, string errorMessage, Action retryAction)

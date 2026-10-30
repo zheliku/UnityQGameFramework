@@ -1,0 +1,58 @@
+[zh-Hant.Game]
+Name = "星際力量"
+Description = "Unity Q Game Framework 演示程式"
+Website = "https://github.com/zheliku/UnityQGameFramework"
+Summary = "這是一個使用 Unity Q Game Framework 遊戲框架製作的遊戲演示專案，目的是對此遊戲框架的使用方法做一些示範，供使用者參考。"
+Introduction = "Unity Q Game Framework 是基於 Unity 引擎的遊戲框架，主要對遊戲開發過程中常用模組進行了封裝，很大程度地規範開發過程、加快開發速度並保證產品品質。"
+
+[zh-Hant.Menu]
+StartButton = "開始"
+SettingButton = "設置"
+AboutButton = "關於"
+QuitButton = "退出"
+
+[zh-Hant.AskQuitGame]
+Title = "確認退出"
+Message = "是否確認退出遊戲？"
+
+[zh-Hant.Setting]
+Title = "設置"
+Music = "音樂"
+Sound = "音效"
+UISound = "介面音效"
+Language = "語言"
+
+[zh-Hant.Language]
+English = "英語"
+ChineseSimplified = "簡體中文"
+ChineseTraditional = "繁體中文"
+Korean = "韓語"
+
+[zh-Hant.CheckVersion]
+Tips = "正在檢查遊戲是否需要更新，請稍候……"
+
+[zh-Hant.UpdateResource]
+Tips = "{0}/{1}, {2:F1}/{3:F1} MB, {4:P0}, {5:F1} KB/s"
+Title = "資源更新"
+Message = "需要下載 {0} 個檔案，共 {1:F1} MB。現在下載嗎？"
+DownloadButton = "下載"
+RetryButton = "重試"
+QuitButton = "退出"
+Cleaning = "正在清理未使用的資源快取……"
+
+[zh-Hant.Dialog]
+ConfirmButton = "確定"
+CancelButton = "取消"
+OtherButton = ""
+
+[zh-Hant.ForceUpdate]
+Title = "強制更新"
+Message = "當前遊戲版本過舊，是否前往更新？"
+UpdateButton = "更新"
+QuitButton = "退出"
+
+[zh-Hant.UpdateResourceViaCarrierDataNetwork]
+Title = "行動網路下載"
+Message = "目前使用行動網路，需下載 {0} 個檔案，共 {1:F1} MB。是否繼續？"
+UpdateButton = "下載"
+QuitButton = "退出"

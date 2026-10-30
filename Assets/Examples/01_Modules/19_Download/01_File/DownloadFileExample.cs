@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button downloadButton, clearButton;
         [SerializeField]
-        private Text stateText, pathText, contentText;
+        private TMP_Text stateText, pathText, contentText;
         [SerializeField]
         private TextAsset payload;
         private DownloadHttpServer server;

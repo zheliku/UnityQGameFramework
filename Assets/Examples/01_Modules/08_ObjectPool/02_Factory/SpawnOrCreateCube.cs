@@ -1,3 +1,4 @@
+using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button spawnButton, returnButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private IObjectPool<GrowingCubeItem> pool;
         private readonly List<GrowingCubeItem> borrowed = new List<GrowingCubeItem>();
         private int created, reused;

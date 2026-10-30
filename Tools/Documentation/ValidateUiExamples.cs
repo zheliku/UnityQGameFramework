@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -152,8 +153,8 @@ public static class ValidateUiExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
         Func<int> serial = () => Field<int>(example, "serialId");
         if (name == "OpenWindowExample")

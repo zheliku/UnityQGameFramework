@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -15,7 +16,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button spawnButton, returnButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private IObjectPool<SpawnObjectItem> pool;
         private SpawnObjectItem borrowed;
         private void Start()

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Linq;
@@ -97,26 +98,26 @@ public static class LocalizationSampleValidation
             Button chinese = buttons.Single(button => button.name == "Button_Action2");
             Button addCoin = buttons.Single(button => button.name == "Button_AddCoin");
             Toggle preview = UnityEngine.Object.FindFirstObjectByType<Toggle>();
-            Font original = title.GetComponent<Text>().font;
+            TMP_FontAsset original = title.GetComponent<TMP_Text>().font;
             Sprite originalBadge = badge.GetComponent<Image>().sprite;
-            Require(title.GetComponent<Text>().text == "My Flying Game (US)", "Declarative text binding displays the selected region");
+            Require(title.GetComponent<TMP_Text>().text == "My Flying Game (US)", "Declarative text binding displays the selected region");
             addCoin.onClick.Invoke();
-            Require(reward.GetComponent<Text>().text == "Pilot received 1 coin", "Dynamic arguments use the English singular form");
+            Require(reward.GetComponent<TMP_Text>().text == "Pilot received 1 coin", "Dynamic arguments use the English singular form");
             addCoin.onClick.Invoke();
-            Require(reward.GetComponent<Text>().text == "Pilot received 2 coins", "Dynamic arguments use the English plural form");
+            Require(reward.GetComponent<TMP_Text>().text == "Pilot received 2 coins", "Dynamic arguments use the English plural form");
             chinese.onClick.Invoke();
             await Until(() => localization.Language == Language.ChineseSimplified && !localization.IsChangingLanguage);
-            Require(title.GetComponent<Text>().text == "我的飞行游戏" && reward.GetComponent<Text>().text == "Pilot 获得 2 金币", "Language event updates every text binding without business refresh code");
-            Require(title.GetComponent<Text>().font != original && badge.GetComponent<Image>().sprite != originalBadge,
+            Require(title.GetComponent<TMP_Text>().text == "我的飞行游戏" && reward.GetComponent<TMP_Text>().text == "Pilot 获得 2 金币", "Language event updates every text binding without business refresh code");
+            Require(title.GetComponent<TMP_Text>().font == localization.GetAsset<TMP_FontAsset>("UI.Font") && badge.GetComponent<Image>().sprite != originalBadge,
                 "The default Resource package provides the Chinese font and badge");
-            Require(hint.GetComponent<Text>().text == "This line falls back to English.", "Missing Chinese key uses the configured English fallback");
+            Require(hint.GetComponent<TMP_Text>().text == "This line falls back to English.", "Missing Chinese key uses the configured English fallback");
             preview.isOn = false;
-            Require(!title.isActiveAndEnabled && title.GetComponent<Text>().font == original && badge.GetComponent<Image>().sprite == null,
+            Require(!title.isActiveAndEnabled && title.GetComponent<TMP_Text>().font == original && badge.GetComponent<Image>().sprite == null,
                 "Disabling the preview restores its original resource references");
             english.onClick.Invoke();
             await Until(() => localization.Language == Language.EnglishUnitedStates && !localization.IsChangingLanguage);
             preview.isOn = true;
-            Require(title.GetComponent<Text>().text == "My Flying Game (US)" && reward.GetComponent<Text>().text == "Pilot received 2 coins"
+            Require(title.GetComponent<TMP_Text>().text == "My Flying Game (US)" && reward.GetComponent<TMP_Text>().text == "Pilot received 2 coins"
                 && badge.GetComponent<Image>().sprite == originalBadge, "Re-enabled bindings immediately read the current language and retain business arguments");
             return new
             {

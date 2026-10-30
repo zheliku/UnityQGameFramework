@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -186,7 +187,7 @@ public static class ValidateResourceExamples
             passed = true,
             unity = Application.unityVersion,
             nativeButtonsAndToggles = true,
-            modeAndTextSetup = "Dropdown, Slider and InputField values set by the test; buttons and toggles use native mouse clicks",
+            modeAndTextSetup = "Dropdown, Slider and TMP_InputField values set by the test; buttons and toggles use native mouse clicks",
             settingsUnchanged = true,
             scenes = completed,
             assertionCount = assertions.Count,
@@ -209,9 +210,9 @@ public static class ValidateResourceExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
         var resource = QGF.Resource;
         if (name == "LoadCubePrefab")
         {

@@ -7,6 +7,9 @@ using UnityQGameFramework.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace StarForce
 {
@@ -34,9 +37,6 @@ namespace StarForce
         private Slider m_UISoundVolumeSlider = null;
 
         [SerializeField]
-        private CanvasGroup m_LanguageTipsCanvasGroup = null;
-
-        [SerializeField]
         private Toggle m_EnglishToggle = null;
 
         [SerializeField]
@@ -49,6 +49,8 @@ namespace StarForce
         private Toggle m_KoreanToggle = null;
 
         private Language m_SelectedLanguage = Language.Unspecified;
+        private CancellationTokenSource m_LanguageCancellation;
+        private bool m_ApplyingLanguage;
 
         /// <summary>
         /// 修改音乐静音状态。
@@ -119,7 +121,6 @@ namespace StarForce
             }
 
             m_SelectedLanguage = Language.English;
-            RefreshLanguageTips();
         }
 
         /// <summary>
@@ -134,7 +135,6 @@ namespace StarForce
             }
 
             m_SelectedLanguage = Language.ChineseSimplified;
-            RefreshLanguageTips();
         }
 
         /// <summary>
@@ -149,7 +149,6 @@ namespace StarForce
             }
 
             m_SelectedLanguage = Language.ChineseTraditional;
-            RefreshLanguageTips();
         }
 
         /// <summary>
@@ -164,25 +163,60 @@ namespace StarForce
             }
 
             m_SelectedLanguage = Language.Korean;
-            RefreshLanguageTips();
         }
 
         /// <summary>
         /// 提交设置并关闭界面。
         /// </summary>
-        public void OnSubmitButtonClick()
+        public async void OnSubmitButtonClick()
         {
+            if (m_ApplyingLanguage)
+            {
+                return;
+            }
             if (m_SelectedLanguage == GameEntry.Localization.Language)
             {
                 Close();
                 return;
             }
 
-            GameEntry.Setting.SetString(Constant.Setting.Language, m_SelectedLanguage.ToString());
-            GameEntry.Setting.Save();
-
-            GameEntry.Sound.StopMusic();
-            UnityQGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
+            m_ApplyingLanguage = true;
+            var request = m_LanguageCancellation;
+            CanvasGroup interaction = GetComponent<CanvasGroup>();
+            interaction.interactable = false;
+            Language language = m_SelectedLanguage;
+            CancellationToken cancellationToken = request.Token;
+            try
+            {
+                // 字典与字体完整准备后统一提交，已打开的窗口由 Localize 组件刷新。
+                await GameEntry.Localization.SetLanguageAsync(language, cancellationToken);
+                GameEntry.Setting.SetString(Constant.Setting.Language, language.Code);
+                if (!GameEntry.Setting.Save())
+                {
+                    Log.Warning("Language changed, but the preference could not be saved.");
+                }
+                Close();
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Cannot change language: {0}", exception.Message);
+                GameEntry.BuiltinData.OpenDialog(new DialogParams
+                {
+                    Title = "Language change failed",
+                    Message = exception.Message
+                });
+            }
+            finally
+            {
+                if (ReferenceEquals(m_LanguageCancellation, request))
+                {
+                    m_ApplyingLanguage = false;
+                    interaction.interactable = true;
+                }
+            }
         }
 
         /// <summary>
@@ -192,6 +226,10 @@ namespace StarForce
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
+
+            m_LanguageCancellation = CancellationTokenSource.CreateLinkedTokenSource(destroyCancellationToken);
+            m_ApplyingLanguage = false;
+            GetComponent<CanvasGroup>().interactable = true;
 
             m_MusicMuteToggle.isOn = !GameEntry.Sound.IsMuted("Music");
             m_MusicVolumeSlider.value = GameEntry.Sound.GetVolume("Music");
@@ -210,23 +248,21 @@ namespace StarForce
         }
 
         /// <summary>
-        /// 更新界面状态。
+        /// 关闭窗口时取消尚未提交的切换，避免池内窗口继续处理旧请求。
         /// </summary>
-        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        /// <param name="isShutdown">是否关闭框架。</param>
+        /// <param name="userData">关闭时传入的数据。</param>
+        protected override void OnClose(bool isShutdown, object userData)
         {
-            base.OnUpdate(elapseSeconds, realElapseSeconds);
-
-            if (m_LanguageTipsCanvasGroup.gameObject.activeSelf)
+            GetComponent<CanvasGroup>().interactable = true;
+            if (m_LanguageCancellation != null)
             {
-                m_LanguageTipsCanvasGroup.alpha = 0.5f + 0.5f * Mathf.Sin(Mathf.PI * Time.time);
+                m_LanguageCancellation.Cancel();
+                m_LanguageCancellation.Dispose();
+                m_LanguageCancellation = null;
             }
+            base.OnClose(isShutdown, userData);
         }
 
-        private void RefreshLanguageTips()
-        {
-            m_LanguageTipsCanvasGroup.gameObject.SetActive(m_SelectedLanguage != GameEntry.Localization.Language);
-        }
     }
 }

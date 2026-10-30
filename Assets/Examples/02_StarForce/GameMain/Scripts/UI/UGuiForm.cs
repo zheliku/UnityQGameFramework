@@ -1,3 +1,4 @@
+using TMPro;
 //------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
@@ -23,7 +24,6 @@ namespace StarForce
         /// </summary>
         public const int DepthFactor = 100;
         private const float FadeTime = 0.3f;
-        private static Font s_MainFont = null;
         private Canvas m_CachedCanvas = null;
         private CanvasGroup m_CanvasGroup = null;
         private List<Canvas> m_CachedCanvasContainer = new List<Canvas>();
@@ -83,21 +83,6 @@ namespace StarForce
         }
 
         /// <summary>
-        /// 替换当前界面文本使用的字体。
-        /// </summary>
-        /// <param name="mainFont">界面使用的字体。</param>
-        public static void SetMainFont(Font mainFont)
-        {
-            if (mainFont == null)
-            {
-                Log.Error("Main font is invalid.");
-                return;
-            }
-
-            s_MainFont = mainFont;
-        }
-
-        /// <summary>
         /// 初始化实例。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
@@ -114,15 +99,6 @@ namespace StarForce
             transform.anchoredPosition = Vector2.zero;
             transform.sizeDelta = Vector2.zero;
             gameObject.GetOrAddComponent<GraphicRaycaster>();
-            Text[] texts = GetComponentsInChildren<Text>(true);
-            for (int i = 0; i < texts.Length; i++)
-            {
-                texts[i].font = s_MainFont;
-                if (!string.IsNullOrEmpty(texts[i].text))
-                {
-                    texts[i].text = GameEntry.Localization.GetString(texts[i].text);
-                }
-            }
         }
 
         /// <summary>

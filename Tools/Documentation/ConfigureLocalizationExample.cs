@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -43,7 +44,7 @@ public static class ConfigureLocalizationExample
             Button first = (Button)exampleData.FindProperty("action1Button").objectReferenceValue;
             Transform content = first.transform.parent;
             Canvas canvas = first.GetComponentInParent<Canvas>();
-            Text template = canvas.GetComponentsInChildren<Text>(true).First(text => text.gameObject.name == "Text_Output" || text.gameObject.name == "Text_GameName");
+            TMP_Text template = canvas.GetComponentsInChildren<TMP_Text>(true).First(text => text.gameObject.name == "Text_Output" || text.gameObject.name == "Text_GameName");
             GameObject oldPreview = canvas.GetComponentsInChildren<RectTransform>(true).FirstOrDefault(rect => rect.name == "Panel_LocalizedPreview")?.gameObject;
             if (oldPreview != null)
             {
@@ -72,8 +73,8 @@ public static class ConfigureLocalizationExample
             layout.childControlWidth = layout.childControlHeight = true;
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = false;
-            Text fallback = CopyText(template, panel.transform, "Text_FallbackHint", 72);
-            Text reward = CopyText(template, panel.transform, "Text_Reward", 42);
+            TMP_Text fallback = CopyText(template, panel.transform, "Text_FallbackHint", 72);
+            TMP_Text reward = CopyText(template, panel.transform, "Text_Reward", 42);
             template.name = "Text_GameName";
             template.transform.SetParent(panel.transform, false);
             template.transform.SetAsFirstSibling();
@@ -87,25 +88,29 @@ public static class ConfigureLocalizationExample
             logo.GetComponent<Image>().preserveAspect = true;
             logo.GetComponent<Image>().raycastTarget = false;
             logo.GetComponent<LocalizeImage>().Key = "UI.Badge";
-            Text hint = CopyText(template, content, "Text_BindingHint", 84);
+            TMP_Text hint = CopyText(template, content, "Text_BindingHint", 84);
             UnityEngine.Object.DestroyImmediate(hint.GetComponent<LocalizeText>());
             hint.text = "Text, font and badge update through localization components. Hide the preview, switch language, then show it again.";
             hint.fontSize = 22;
             hint.transform.SetSiblingIndex(3);
             Button add = UnityEngine.Object.Instantiate(first, content);
             add.name = "Button_AddCoin";
-            add.GetComponentInChildren<Text>().text = "Add Coin (+1)";
+            add.GetComponentInChildren<TMP_Text>().text = "Add Coin (+1)";
             add.transform.SetSiblingIndex(3);
             GameObject toggle = DefaultControls.CreateToggle(default);
+            UnityEngine.UI.Text oldLabel = toggle.GetComponentInChildren<UnityEngine.UI.Text>();
+            GameObject labelOwner = oldLabel.gameObject;
+            UnityEngine.Object.DestroyImmediate(oldLabel);
+            labelOwner.AddComponent<TextMeshProUGUI>();
             toggle.name = "Toggle_Preview";
             toggle.transform.SetParent(content, false);
             toggle.transform.SetSiblingIndex(4);
             var toggleElement = toggle.AddComponent<LayoutElement>();
             toggleElement.preferredHeight = 48;
-            Text toggleLabel = toggle.GetComponentInChildren<Text>();
-            EditorUtility.CopySerialized(first.GetComponentInChildren<Text>(), toggleLabel);
+            TMP_Text toggleLabel = toggle.GetComponentInChildren<TMP_Text>();
+            EditorUtility.CopySerialized(first.GetComponentInChildren<TMP_Text>(), toggleLabel);
             toggleLabel.text = "Show localized preview";
-            toggleLabel.alignment = TextAnchor.MiddleLeft;
+            toggleLabel.alignment = TextAlignmentOptions.Left;
             var labelRect = (RectTransform)toggleLabel.transform;
             labelRect.offsetMin = new Vector2(44, 0);
             labelRect.offsetMax = Vector2.zero;
@@ -118,12 +123,6 @@ public static class ConfigureLocalizationExample
             backgroundRect.anchorMin = backgroundRect.anchorMax = new Vector2(0, .5f);
             backgroundRect.anchoredPosition = new Vector2(14, 0);
             backgroundRect.sizeDelta = new Vector2(24, 24);
-            var responsive = canvas.GetComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>()
-                ?? canvas.gameObject.AddComponent<UnityQGameFramework.Examples.Modules.Presentation.ExampleSceneLayout>();
-            var responsiveData = new SerializedObject(responsive);
-            responsiveData.FindProperty("controls").objectReferenceValue = first.GetComponentInParent<ScrollRect>().GetComponent<RectTransform>();
-            responsiveData.FindProperty("window").objectReferenceValue = panelRect;
-            responsiveData.ApplyModifiedPropertiesWithoutUndo();
             exampleData.FindProperty("rewardButton").objectReferenceValue = add;
             exampleData.FindProperty("previewToggle").objectReferenceValue = toggle.GetComponent<Toggle>();
             exampleData.FindProperty("preview").objectReferenceValue = panel;
@@ -164,9 +163,9 @@ public static class ConfigureLocalizationExample
     /// <param name="name">物体名。</param>
     /// <param name="height">首选高度。</param>
     /// <returns>新文本。</returns>
-    private static Text CopyText(Text template, Transform parent, string name, float height)
+    private static TMP_Text CopyText(TMP_Text template, Transform parent, string name, float height)
     {
-        Text text = UnityEngine.Object.Instantiate(template, parent);
+        TMP_Text text = UnityEngine.Object.Instantiate(template, parent);
         text.name = name;
         text.text = "Loading language...";
         text.GetComponent<LayoutElement>().preferredHeight = height;
@@ -179,7 +178,7 @@ public static class ConfigureLocalizationExample
     /// <param name="text">目标文本。</param>
     /// <param name="key">字典键。</param>
     /// <returns>本地化文本组件。</returns>
-    private static LocalizeText BindText(Text text, string key)
+    private static LocalizeText BindText(TMP_Text text, string key)
     {
         LocalizeText binding = text.GetComponent<LocalizeText>() ?? text.gameObject.AddComponent<LocalizeText>();
         var data = new SerializedObject(binding);

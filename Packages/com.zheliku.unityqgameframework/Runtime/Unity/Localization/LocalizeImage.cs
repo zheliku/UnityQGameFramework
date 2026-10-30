@@ -12,8 +12,11 @@ namespace UnityQGameFramework.Runtime
     [AddComponentMenu("Unity Q Game Framework/Localization/Localize Image")]
     public sealed class LocalizeImage : LocalizeComponent
     {
+        [SerializeField, Tooltip("Resize the RectTransform to the localized sprite dimensions.")]
+        private bool m_SetNativeSize;
         private Image m_Image;
         private Sprite m_OriginalSprite;
+        private Vector2 m_OriginalSize;
 
         /// <summary>
         /// 保存预制体图片。
@@ -22,6 +25,7 @@ namespace UnityQGameFramework.Runtime
         {
             m_Image = GetComponent<Image>();
             m_OriginalSprite = m_Image.sprite;
+            m_OriginalSize = m_Image.rectTransform.sizeDelta;
         }
 
         /// <summary>
@@ -32,6 +36,10 @@ namespace UnityQGameFramework.Runtime
             if (m_Image != null && Localization != null && !string.IsNullOrEmpty(Key))
             {
                 m_Image.sprite = Localization.GetAsset<Sprite>(Key) ?? m_OriginalSprite;
+                if (m_SetNativeSize)
+                {
+                    m_Image.SetNativeSize();
+                }
             }
             else
             {
@@ -47,6 +55,10 @@ namespace UnityQGameFramework.Runtime
             if (m_Image != null)
             {
                 m_Image.sprite = m_OriginalSprite;
+                if (m_SetNativeSize)
+                {
+                    m_Image.rectTransform.sizeDelta = m_OriginalSize;
+                }
             }
         }
     }

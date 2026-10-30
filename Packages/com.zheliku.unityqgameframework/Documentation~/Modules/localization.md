@@ -50,13 +50,27 @@ string named = QGF.Localization.GetString("Reward.Coins",
 
 ## 自动刷新界面
 
-- uGUI Text 添加 `LocalizeText` 并设置 Key，可用 SetArguments 更新动态参数。
+- TMP Text 添加 `LocalizeText` 并设置 Key。
 - uGUI Image 添加 `LocalizeImage`，Key 对应语言资源的业务键。
-- TMP Text 添加可选程序集中的 `LocalizeTmpText`；支持 Unity 2022.3 的 TextMeshPro 包与 Unity 6 的 uGUI 2。
 
-Languages 的 Assets 配置业务键、YooAsset 地址和加载类型：图片选 Sprite，uGUI 字体选 Font，TMP 字体等主资产选 Object。LocalizeText / LocalizeTmpText 的 Font Key 对应此处的业务键。未配置资源时使用预制体原始资源。
+Languages 的 Assets 配置业务键、YooAsset 地址和加载类型：图片选 Sprite，TMP 字体选 Font。LocalizeText 的 Font Key 对应此处的业务键；留空则使用预制体字体。TMP 是统一文本实现，2022.3 使用 TextMeshPro 包，Unity 6 由官方转接包使用 uGUI 中的 TMP。项目首次使用 TMP 时，按官方提示导入 TMP Essential Resources；这些是宿主共用的官方字体、材质和设置。
 
-组件持有语言资源句柄，在界面收到刷新通知后释放旧句柄。`GetAsset<T>(key)` 返回借用对象，调用方不可释放，且不可跨语言切换保存。绑定组件在禁用时取消订阅并还原字体或图片，重新启用时读取当前语言，适用于池化界面。示例中文字体是 Noto Sans CJK 的字符子集，只覆盖示例字符；实际项目使用完整或自制的项目字体。
+动态文本使用命名占位符，避免依赖参数下标：
+
+```csharp
+rewardText.SetFormatValues(new Dictionary<string, object>
+{
+    { "Player", "Pilot" },
+    { "Count", 0 }
+});
+rewardText.SetFormatValue("Count", 2);
+```
+
+对应翻译为 `{Player} received {Count} {Count:plural:coin|coins}`。SetFormatValues 复制传入字典；SetFormatValue 只更新一个值。Inspector 的 Initial Format Values 可声明文本、整数、小数和布尔初值，业务代码可覆盖。隐藏到池中时保留格式值；新业务打开复用窗口时应设置自己的值。
+
+Missing Translation 选择回退后仍缺键时显示诊断、预制体原文或空文本。字体回退列表、富文本、颜色、对齐和换行由 TMP 组件配置，不在 LocalizeText 中重复配置。LocalizeImage 可选择 Set Native Size；禁用时还原原始图片和尺寸。
+
+组件持有语言资源句柄，在界面收到刷新通知后释放旧句柄。`GetAsset<T>(key)` 返回借用对象，调用方不可释放，且不可跨语言切换保存。绑定组件在禁用时取消订阅并还原字体、材质或图片，重新启用时读取当前语言，适用于池化界面。示例字体是 Noto Sans CJK 的字符子集，只覆盖示例字符；实际项目使用完整或自制的项目字体。TMP 的 RTL 开关与格式化库不能代替阿拉伯文字形处理，相关语言需另行验证排版。
 
 内置库的职责：YooAsset 负责资源与句柄，UniTask 提供异步等待与取消，Tomlyn 解析 TOML，SmartFormat 格式化占位符、复数和数字。ZString 是 SmartFormat 的字符串构建依赖，Unsafe 是相关底层支持；业务只需调用 QGF，不必直接调用这两个库。Alchemy 和 Rainbow Folders 属于可选编辑器工具，与运行时本地化无依赖关系。
 

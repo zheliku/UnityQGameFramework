@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -10,7 +11,7 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class LoadLubanTablesExample : MonoBehaviour
     {
-        [SerializeField] private Text rowsText;
+        [SerializeField] private TMP_Text rowsText;
 
         private void Start()
         {

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ReadBinaryResource : MonoBehaviour
     {
         [SerializeField] private Button initializeButton, readButton;
-        [SerializeField] private Text stateText, pathText, bytesText;
+        [SerializeField] private TMP_Text stateText, pathText, bytesText;
         private byte[] result;
         private bool initialized, loading;
 

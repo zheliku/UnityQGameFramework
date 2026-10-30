@@ -8,6 +8,8 @@
 
 代码阅读顺序见包内 `Documentation~/05-starforce.md`。
 
+文本统一使用 TMP。首次使用 TMP 的宿主工程按官方提示导入 TMP Essential Resources。语言字典直接放在 `GameMain/Localization/en.toml`、`zh-Hans.toml`、`zh-Hant.toml` 和 `ko.toml`；字体资产在 `GameMain/Fonts`。设置窗口提交语言后立即异步应用，菜单和池化界面由 LocalizeText 自动刷新，不需要重启。
+
 修改表格时，在 DataTable 组件 Inspector 选择 `UnityQGameFramework/Config/LubanProfile.asset` 并点击 `Set Global`，编辑 `UnityQGameFramework/Config/Source` 下的 Excel，再点击 `Generate`。命名空间和源表路径在 `UnityQGameFramework/Config/luban.conf` 设置；组件中展开 `Generation Settings` 可直接编辑 Profile。启动参数和语言字典使用 TOML。
 
 资源来源见 [THIRD-PARTY.md](THIRD-PARTY.md)，许可见 [LICENSE.md](LICENSE.md)。

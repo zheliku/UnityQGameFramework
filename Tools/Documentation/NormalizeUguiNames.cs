@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -111,7 +112,7 @@ public static class NormalizeUguiNames
                 string role = Role(hints.TryGetValue(item.gameObject, out string hint) ? hint : item.name, prefix);
                 if (prefix == "Text" && role == "Label" && item.parent != null
                     && item.parent.GetComponent<Selectable>() == null && !item.parent.name.StartsWith("Button_", StringComparison.Ordinal))
-                    role = item.GetComponent<Text>().fontSize >= 24 ? "Title" : "Description";
+                    role = item.GetComponent<TMP_Text>().fontSize >= 24 ? "Title" : "Description";
                 if (role == "Example" && (prefix == "Canvas" || prefix == "ScrollView"))
                     role = "Example";
                 string name = prefix + "_" + role;
@@ -153,13 +154,13 @@ public static class NormalizeUguiNames
             return "Slider";
         if (go.GetComponent<Scrollbar>() != null)
             return "Scrollbar";
-        if (go.GetComponent<Dropdown>() != null)
+        if (go.GetComponent<TMP_Dropdown>() != null)
             return "Dropdown";
-        if (go.GetComponent<InputField>() != null)
+        if (go.GetComponent<TMP_InputField>() != null)
             return "InputField";
         if (go.GetComponent<ScrollRect>() != null)
             return "ScrollView";
-        if (go.GetComponent<Text>() != null)
+        if (go.GetComponent<TMP_Text>() != null)
             return "Text";
         if (go.GetComponent<RawImage>() != null)
             return "RawImage";

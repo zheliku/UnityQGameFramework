@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Net;
 using UnityEngine;
@@ -13,15 +14,15 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class EchoNetworkExample : MonoBehaviour
     {
         [SerializeField]
-        private Dropdown serviceMode;
+        private TMP_Dropdown serviceMode;
         [SerializeField]
         private Toggle splitToggle;
         [SerializeField]
-        private InputField firstInput, secondInput;
+        private TMP_InputField firstInput, secondInput;
         [SerializeField]
         private Button connectButton, sendButton, noticeButton;
         [SerializeField]
-        private Text stateText, responseText;
+        private TMP_Text stateText, responseText;
         private readonly System.Collections.Generic.List<string> responses = new System.Collections.Generic.List<string>();
         private int received, notices;
         private bool connecting;

@@ -1,3 +1,4 @@
+using TMPro;
 //------------------------------------------------------------
 // Unity Q Game Framework
 // Copyright © 2013-2021 Jiang Yin. All rights reserved.
@@ -16,17 +17,17 @@ namespace StarForce
     public class DialogForm : UGuiForm
     {
         [SerializeField]
-        private Text m_TitleText = null;
+        private TMP_Text m_TitleText = null;
         [SerializeField]
-        private Text m_MessageText = null;
+        private TMP_Text m_MessageText = null;
         [SerializeField]
         private GameObject[] m_ModeObjects = null;
         [SerializeField]
-        private Text[] m_ConfirmTexts = null;
+        private TMP_Text[] m_ConfirmTexts = null;
         [SerializeField]
-        private Text[] m_CancelTexts = null;
+        private TMP_Text[] m_CancelTexts = null;
         [SerializeField]
-        private Text[] m_OtherTexts = null;
+        private TMP_Text[] m_OtherTexts = null;
         private int m_DialogMode = 1;
         private GameFrameworkAction<object> m_OnClickConfirm = null;
         private GameFrameworkAction<object> m_OnClickCancel = null;

@@ -1,3 +1,4 @@
+using TMPro;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,9 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class DrawRandom : MonoBehaviour
     {
-        [SerializeField] private InputField minInput, maxInput, seedInput;
+        [SerializeField] private TMP_InputField minInput, maxInput, seedInput;
         [SerializeField] private Button drawButton, seedButton;
-        [SerializeField] private Text resultText, seedText;
+        [SerializeField] private TMP_Text resultText, seedText;
 
         private void Start()
         {

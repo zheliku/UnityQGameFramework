@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,9 +13,9 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ReadTranslation : MonoBehaviour
     {
         [SerializeField] private TextAsset dictionary;
-        [SerializeField] private InputField nameInput;
+        [SerializeField] private TMP_InputField nameInput;
         [SerializeField] private Button rewardButton;
-        [SerializeField] private Text titleText, rewardText;
+        [SerializeField] private TMP_Text titleText, rewardText;
         private int coins;
 
         private void Start()
@@ -33,8 +35,8 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void RefreshReward()
         {
-            // 数据变化时才格式化；翻译中的 {0}、{1} 分别对应名字和金币数。
-            rewardText.text = QGF.Localization.GetString("Reward.Coins", nameInput.text, coins);
+            // 数据变化时才格式化；翻译中的 Player 和 Count 分别对应玩家名称和金币数。
+            rewardText.text = QGF.Localization.GetString("Reward.Coins", new Dictionary<string, object> { { "Player", nameInput.text }, { "Count", coins } });
         }
     }
 }

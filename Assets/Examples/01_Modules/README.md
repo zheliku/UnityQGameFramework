@@ -1,5 +1,7 @@
 # 模块示例
 
+示例文本统一使用 TMP；宿主首次使用时按官方提示导入 TMP Essential Resources。场景布局直接保存在 RectTransform、CanvasScaler 和摄像机中，可在场景或预制体上编辑。
+
 打开下表任一场景并运行，操作按钮观察结果，再阅读同名 C#。全部模块共用 Common/Prefabs/QGF.prefab 和公共 UI，不需要逐场景配置框架。
 
 ## 运行前准备

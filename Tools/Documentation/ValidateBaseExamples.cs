@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -186,7 +187,7 @@ public static class ValidateBaseExamples
             float gameDelta = Field<float>(owner, "gameSeconds") - game, realDelta = Field<float>(owner, "realSeconds") - real;
             Require(realDelta > .1f && Mathf.Abs(gameDelta / realDelta - .25f) < .06f,
                 $"Game and real clocks show selected ratio: game={gameDelta:F4}, real={realDelta:F4}, scale={Time.timeScale:F2}");
-            Require(Field<Text>(owner, "speedValueText").text.Contains("0.25"), "Live speed label");
+            Require(Field<TMP_Text>(owner, "speedValueText").text.Contains("0.25"), "Live speed label");
         }
         else if (name == "PauseGameExample")
         {
@@ -202,7 +203,7 @@ public static class ValidateBaseExamples
             await Until(() => Time.frameCount >= frame + 8, "Paused clock sample spans eight frames");
             Require(Mathf.Approximately(game, Field<float>(owner, "gameSeconds")) && Field<float>(owner, "realSeconds") > real + .1f,
                 "Pause freezes game clock while real clock advances");
-            Require(Field<Text>(owner, "stateText").text == "已暂停", "Live paused label");
+            Require(Field<TMP_Text>(owner, "stateText").text == "已暂停", "Live paused label");
             Field<Button>(owner, "pauseButton").onClick.Invoke();
             Require(QGF.Base.GameSpeed == .5f && Time.timeScale == .5f, "Resume remembers half speed");
             Field<Button>(owner, "pauseButton").onClick.Invoke();
@@ -215,7 +216,7 @@ public static class ValidateBaseExamples
                 Require(QGF.Base.FrameRate == pair.Item2 && Application.targetFrameRate == pair.Item2, "Frame-rate button " + pair.Item2);
             }
             await Task.Delay(100);
-            Require(Field<Text>(owner, "fpsText").text.Contains("-1"), "Live frame-rate label");
+            Require(Field<TMP_Text>(owner, "fpsText").text.Contains("-1"), "Live frame-rate label");
             Field<Toggle>(owner, "backgroundToggle").isOn = !QGF.Base.RunInBackground;
             Field<Toggle>(owner, "neverSleepToggle").isOn = !QGF.Base.NeverSleep;
             Require(QGF.Base.RunInBackground == Application.runInBackground && Screen.sleepTimeout == (QGF.Base.NeverSleep ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting),

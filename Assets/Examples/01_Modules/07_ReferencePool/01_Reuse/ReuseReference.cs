@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -10,7 +11,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ReuseReference : MonoBehaviour
     {
         [SerializeField]
-        private Text heldText, previousText, poolText;
+        private TMP_Text heldText, previousText, poolText;
         [SerializeField]
         private Button acquireButton, releaseButton;
         private Cargo held;

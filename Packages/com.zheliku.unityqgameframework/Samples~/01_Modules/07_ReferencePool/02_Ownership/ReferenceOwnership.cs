@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ReferenceOwnership : MonoBehaviour
     {
         [SerializeField]
-        private Text localText, nodeText;
+        private TMP_Text localText, nodeText;
         [SerializeField]
         private Button acquireButton, releaseButton, transferButton, removeButton;
         private VarInt32 local;

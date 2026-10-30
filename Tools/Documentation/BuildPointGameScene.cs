@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Linq;
@@ -138,19 +139,19 @@ public static class BuildPointGameScene
         return rect;
     }
 
-    private static Text Label(string name, Transform parent, string caption, float x, float y, float height, int size = 18)
+    private static TMP_Text Label(string name, Transform parent, string caption, float x, float y, float height, int size = 18)
     {
         var rect = Panel(name, parent, new Vector2(0, 1), Vector2.one);
         rect.pivot = new Vector2(0, 1);
         rect.offsetMin = new Vector2(x, -y - height);
         rect.offsetMax = new Vector2(-24, -y);
-        var label = rect.gameObject.AddComponent<Text>();
+        var label = rect.gameObject.AddComponent<TextMeshProUGUI>();
         rect.name = "Text_" + name;
-        label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        label.font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Examples/01_Modules/10_Localization/Common/ChineseFont.asset");
         label.fontSize = size;
         label.text = caption;
         label.color = new Color(0.9f, 0.92f, 0.96f);
-        label.supportRichText = false;
+        label.richText = false;
         label.raycastTarget = false;
         return label;
     }
@@ -167,7 +168,7 @@ public static class BuildPointGameScene
         rect.name = "Button_" + name.Replace("Button", string.Empty);
         button.targetGraphic = image;
         var label = Label("Text", rect, caption, 0, 0, size.y);
-        label.alignment = TextAnchor.MiddleCenter;
+        label.alignment = TextAlignmentOptions.Center;
         ((RectTransform)label.transform).offsetMax = Vector2.zero;
         return button;
     }

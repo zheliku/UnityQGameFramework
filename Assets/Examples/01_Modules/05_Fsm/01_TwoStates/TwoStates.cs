@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class TwoStates : MonoBehaviour
     {
         [SerializeField]
-        private Text stateText, timeText, completedText;
+        private TMP_Text stateText, timeText, completedText;
         [SerializeField]
         private Slider progress;
         [SerializeField]

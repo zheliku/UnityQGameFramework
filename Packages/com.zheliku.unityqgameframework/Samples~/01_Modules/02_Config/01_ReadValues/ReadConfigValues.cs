@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -11,7 +12,7 @@ namespace UnityQGameFramework.Examples.Modules
     {
         [SerializeField] private TextAsset config;
         [SerializeField] private Button parseButton;
-        [SerializeField] private Text valuesText;
+        [SerializeField] private TMP_Text valuesText;
 
         private void Start()
         {

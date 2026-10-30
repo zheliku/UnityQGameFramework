@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -10,7 +11,7 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class ProcedureEntryExample : MonoBehaviour
     {
-        [SerializeField] private Text currentText, elapsedText, enteredText;
+        [SerializeField] private TMP_Text currentText, elapsedText, enteredText;
         internal int Entered;
 
         private void Update()

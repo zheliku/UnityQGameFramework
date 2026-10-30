@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Text;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button requestButton;
         [SerializeField]
-        private Text stateText, responseText;
+        private TMP_Text stateText, responseText;
         [SerializeField]
         private TextAsset response;
         private LocalHttpServer server;

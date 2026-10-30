@@ -2,13 +2,13 @@
 Name = "我的飞行游戏"
 
 [zh-Hans.Reward]
-Coins = "{0} 获得 {1} 金币"
+Coins = "{Player} 获得 {Count} 金币"
 
 [en.Game]
 Name = "My Flying Game"
 
 [en.Reward]
-Coins = "{0} received {1} {1:plural:coin|coins}"
+Coins = "{Player} received {Count} {Count:plural:coin|coins}"
 
 [en-US.Game]
 Name = "My Flying Game (US)"

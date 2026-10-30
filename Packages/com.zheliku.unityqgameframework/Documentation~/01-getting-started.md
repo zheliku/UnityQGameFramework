@@ -8,7 +8,7 @@
 https://github.com/zheliku/UnityQGameFramework.git?path=/Packages/com.zheliku.unityqgameframework
 ```
 
-示例使用 URP、uGUI 和 Input System。先将 **Player Settings > Active Input Handling** 设为 **Input System Package (New)** 或 **Both**，等待编译完成。
+示例使用 URP、uGUI、TMP 和 Input System。先将 **Player Settings > Active Input Handling** 设为 **Input System Package (New)** 或 **Both**，等待编译完成。宿主首次使用 TMP 时，在官方提示中导入 TMP Essential Resources（也可通过 Window > TextMeshPro > Import TMP Essential Resources）。这些资源由宿主共用，示例不会覆写其设置。
 
 在包的 Samples 中导入 **00 · PointPointPoint**，打开 `GameMain/Scenes/PointPointPoint.unity` 并运行。点击目标得分，点击空白扣分，结算保存最高分。其他示例见[运行示例](06-module-examples.md)。
 

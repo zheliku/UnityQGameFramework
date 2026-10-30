@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,8 +12,8 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class QueryRowsExample : MonoBehaviour
     {
-        [SerializeField] private InputField idInput;
-        [SerializeField] private Text selectedText;
+        [SerializeField] private TMP_InputField idInput;
+        [SerializeField] private TMP_Text selectedText;
         private TbItem items;
 
         private void Start()

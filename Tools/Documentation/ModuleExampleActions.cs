@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +61,7 @@ public static class ModuleExampleActions
             case "LoadAddressRules":
                 for (int mode = 0; mode < 3; mode++)
                 {
-                    Field<Dropdown>("ruleDropdown").value = mode;
+                    Field<TMP_Dropdown>("ruleDropdown").value = mode;
                     await Click("loadButton");
                     await Until(() => Field<GameObject>("asset") != null, "String address resolves under each rule");
                     Require(Field<GameObject>("instance") != null, "Address load creates a scene instance");
@@ -71,7 +72,7 @@ public static class ModuleExampleActions
             case "LoadConfigAsset":
                 await Click("loadButton");
                 await Until(() => QGF.Config.HasConfig("Level.Name"), "TOML asset loaded");
-                Require(Field<Text>("contextText").text.Contains("current object"), "Config UserData identifies the request owner");
+                Require(Field<TMP_Text>("contextText").text.Contains("current object"), "Config UserData identifies the request owner");
                 break;
             case "LoadCatalogExample":
                 Field<Button>("loadButton").onClick.Invoke();
@@ -86,9 +87,9 @@ public static class ModuleExampleActions
                 break;
             case "FilterRowsExample":
                 Field<Slider>("priceSlider").value = 0;
-                Require(Field<Text>("rowsText").text.Split('\n').Length == 1, "Price filter excludes positive-price items");
+                Require(Field<TMP_Text>("rowsText").text.Split('\n').Length == 1, "Price filter excludes positive-price items");
                 Field<Slider>("priceSlider").value = 100;
-                Require(Field<Text>("rowsText").text.Split('\n').Length > 1, "Price filter includes matching items");
+                Require(Field<TMP_Text>("rowsText").text.Split('\n').Length > 1, "Price filter includes matching items");
                 break;
             case "TableRegistryExample":
                 int count = QGF.DataTable.Count;
@@ -98,7 +99,7 @@ public static class ModuleExampleActions
                 Require(ReferenceEquals(originalTable, QGF.DataTable.GetDataTable<TbItem>()), "Default table survives named registration");
                 Require(ReferenceEquals(QGF.DataTable.GetDataTable<TbItem>("Preview"), QGF.DataTable.GetDataTable(typeof(TbItem), "Preview")), "Typed and untyped named lookups agree");
                 await Click("m_ListButton");
-                Require(Field<Text>("m_TablesText").text.Contains("Preview"), "Table metadata lists the named table");
+                Require(Field<TMP_Text>("m_TablesText").text.Contains("Preview"), "Table metadata lists the named table");
                 await Click("m_RemoveButton");
                 Require(QGF.DataTable.Count == count && !QGF.DataTable.HasDataTable<TbItem>("Preview"), "Named removal leaves the default table");
                 break;
@@ -172,10 +173,10 @@ public static class ModuleExampleActions
                 Require(Field<UnityQGameFramework.Core.IObjectPool<PolicyCubeItem>>("pool").Count == 3, "Recycling example can be repeated");
                 break;
             case "FsmStateData":
-                Field<InputField>("jobsInput").text = "1";
+                Field<TMP_InputField>("jobsInput").text = "1";
                 await Click("loadButton");
                 await Click("runButton");
-                await Until(() => Field<int>("lastBatch") == 1 && Field<Text>("jobsText").text.Contains("removed"), "State reads shared data, completes and removes it");
+                await Until(() => Field<int>("lastBatch") == 1 && Field<TMP_Text>("jobsText").text.Contains("removed"), "State reads shared data, completes and removes it");
                 break;
             case "NamedMachines":
                 var right = Field<object>("right");
@@ -219,7 +220,7 @@ public static class ModuleExampleActions
                 Require(QGF.Procedure.CurrentProcedureTime > procedureTime, "Current procedure time advances");
                 break;
             case "ProcedureDataExample":
-                Field<Dropdown>("levelChoice").value = 1;
+                Field<TMP_Dropdown>("levelChoice").value = 1;
                 await Click("confirmButton");
                 await Until(() => QGF.Procedure.CurrentProcedure?.GetType().Name == "ExampleLoad03", "Procedure receives the selected level");
                 Require(Field<string>("LoadedLevel") == "Desert" && Field<bool>("HasLevelData"), "Temporary data survives the procedure change");
@@ -248,7 +249,7 @@ public static class ModuleExampleActions
                 {
                     QGF.Setting.RemoveSetting("Pilot");
                     QGF.Setting.Save();
-                    Field<InputField>("nameInput").text = "QGF验证";
+                    Field<TMP_InputField>("nameInput").text = "QGF验证";
                     Field<Slider>("levelSlider").value = 7;
                     await Click("saveButton");
                     SaveSettingObject.Pilot storedPilot = QGF.Setting.GetObject("Pilot", new SaveSettingObject.Pilot());
@@ -353,7 +354,7 @@ public static class ModuleExampleActions
                 Require(Field<long>("received") == Field<int>("totalLength"), "Progress reports cumulative bytes");
                 break;
             case "CancelDownloadExample":
-                Field<Dropdown>("cancelMode").value = 0;
+                Field<TMP_Dropdown>("cancelMode").value = 0;
                 await Click("downloadButton");
                 await Until(() => Field<long>("received") > 0, "Download has received bytes");
                 await Click("cancelButton");
@@ -367,7 +368,7 @@ public static class ModuleExampleActions
                 Require(resumedFrom > 0 && lastRange == resumedFrom,
                     "The next request resumes from the partial file length");
                 Require(Field<bool>("matched"), "Resumed output matches the source payload");
-                Field<Dropdown>("cancelMode").value = 1;
+                Field<TMP_Dropdown>("cancelMode").value = 1;
                 await Click("downloadButton");
                 await Until(() => Field<long>("received") > 0 && Field<int>("serial") != 0, "Second download starts");
                 await Click("cancelButton");
@@ -379,8 +380,8 @@ public static class ModuleExampleActions
                 await Click("sendButton");
                 await Until(() => Field<int>("received") == 2, "Both messages receive replies");
                 var responses = Field<List<string>>("responses");
-                Require(responses[0] == Field<InputField>("firstInput").text
-                    && responses[1] == Field<InputField>("secondInput").text, "TCP framing preserves both message boundaries");
+                Require(responses[0] == Field<TMP_InputField>("firstInput").text
+                    && responses[1] == Field<TMP_InputField>("secondInput").text, "TCP framing preserves both message boundaries");
                 await Click("noticeButton");
                 await Until(() => Field<int>("notices") == 1, "Unregistered message reaches the default handler");
                 break;
@@ -440,12 +441,12 @@ public static class ModuleExampleActions
                 await Until(() => Field<GameObject>("asset") == null, "The asset borrow is returned");
                 break;
             case "TextAndPaths":
-                Field<InputField>("nameInput").text = "QGF";
-                Field<InputField>("countInput").text = "3";
-                Field<InputField>("pathInput").text = "folder\\item";
+                Field<TMP_InputField>("nameInput").text = "QGF";
+                Field<TMP_InputField>("countInput").text = "3";
+                Field<TMP_InputField>("pathInput").text = "folder\\item";
                 await Click("formatButton");
-                Require(Field<Text>("resultText").text.Contains("QGF") && Field<Text>("resultText").text.Contains("30")
-                    && Field<Text>("resultText").text.Contains("folder/item"), "Formatting and path normalization use the supplied values");
+                Require(Field<TMP_Text>("resultText").text.Contains("QGF") && Field<TMP_Text>("resultText").text.Contains("30")
+                    && Field<TMP_Text>("resultText").text.Contains("folder/item"), "Formatting and path normalization use the supplied values");
                 await Click("directoryButton");
                 string ownedDirectory = Field<string>("directory");
                 Require(!Directory.Exists(Path.Combine(ownedDirectory, "Empty"))
@@ -454,23 +455,23 @@ public static class ModuleExampleActions
                 Require(!Directory.Exists(ownedDirectory), "Cleanup removes only the example's temporary files");
                 break;
             case "ConvertBytes":
-                Field<InputField>("valueInput").text = "-12345";
+                Field<TMP_InputField>("valueInput").text = "-12345";
                 await Click("convertButton");
-                Require(Field<Text>("resultText").text.Contains("51-47") && Field<Text>("resultText").text.Contains("-12345"),
+                Require(Field<TMP_Text>("resultText").text.Contains("51-47") && Field<TMP_Text>("resultText").text.Contains("-12345"),
                     "Converter writes a header and restores the Int32 at the matching offset");
                 break;
             case "DrawRandom":
-                Field<InputField>("seedInput").text = "1729";
+                Field<TMP_InputField>("seedInput").text = "1729";
                 await Click("seedButton");
-                string firstDraw = Field<Text>("resultText").text;
+                string firstDraw = Field<TMP_Text>("resultText").text;
                 await Click("seedButton");
-                Require(Field<Text>("resultText").text == firstDraw, "Applying the same seed reproduces the same random draw");
+                Require(Field<TMP_Text>("resultText").text == firstDraw, "Applying the same seed reproduces the same random draw");
                 break;
             case "ConvertStructure":
-                Field<InputField>("idInput").text = "17";
-                Field<InputField>("speedInput").text = "1.25";
+                Field<TMP_InputField>("idInput").text = "17";
+                Field<TMP_InputField>("speedInput").text = "1.25";
                 await Click("convertButton");
-                Require(Field<Text>("resultText").text.Contains("Id 17") && Field<Text>("resultText").text.Contains("Speed 1.25"),
+                Require(Field<TMP_Text>("resultText").text.Contains("Id 17") && Field<TMP_Text>("resultText").text.Contains("Speed 1.25"),
                     "Structure serialization round-trips both fields");
                 await Click("reserveButton");
                 Require(Utility.Marshal.CachedHGlobalSize >= 8192, "Reserve grows the shared marshal cache");
@@ -481,7 +482,7 @@ public static class ModuleExampleActions
                 Field<Slider>("offsetSlider").value = 14;
                 Field<Slider>("lengthSlider").value = 8;
                 await Click("readButton");
-                Require(Field<Text>("resultText").text.EndsWith("EF"), "File segment clips at source end");
+                Require(Field<TMP_Text>("resultText").text.EndsWith("EF"), "File segment clips at source end");
                 break;
             default:
                 throw new NotSupportedException("No behavior check is registered for module example: " + name);

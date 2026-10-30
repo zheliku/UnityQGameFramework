@@ -1,3 +1,4 @@
+using TMPro;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class TableModesExample : MonoBehaviour
     {
         [SerializeField] private Button m_AliasesButton, m_IndexesButton, m_ModesButton;
-        [SerializeField] private Text m_StateText, m_DetailsText;
+        [SerializeField] private TMP_Text m_StateText, m_DetailsText;
 
         private readonly StringBuilder m_Text = new StringBuilder();
 

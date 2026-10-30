@@ -87,7 +87,7 @@ namespace UnityQGameFramework.Runtime
         private string m_Key;
         [SerializeField, Tooltip("Asset address collected by the default YooAsset package.")]
         private string m_AssetName;
-        [SerializeField, Tooltip("Use Sprite for images, Font for uGUI fonts, and Object for TMP font assets.")]
+        [SerializeField, Tooltip("Use Sprite for images, Font for TMP font assets, or Object for other main assets.")]
         private LocalizationAssetType m_AssetType;
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace UnityQGameFramework.Runtime
         /// </summary>
         /// <param name="key">业务键，如 UI.Font 或 UI.Logo。</param>
         /// <param name="assetName">YooAsset 资源地址。</param>
-        /// <param name="assetType">加载类型；图片须指定 Sprite，TMP 字体等独立资产可使用 Object。</param>
+        /// <param name="assetType">加载类型；图片使用 Sprite，TMP 字体使用 Font。</param>
         public LocalizationAssetMapping(string key, string assetName, LocalizationAssetType assetType = LocalizationAssetType.Object)
         {
             m_Key = key;
@@ -153,7 +153,7 @@ namespace UnityQGameFramework.Runtime
         Sprite,
 
         /// <summary>
-        /// 加载 uGUI 使用的字体。
+        /// 加载 TMP 字体资产。
         /// </summary>
         Font
     }

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,9 +152,9 @@ public static class ValidateNetworkExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
         var server = Field<NetworkEchoServer>(example, "server");
         Require(QGF.Network.NetworkChannelCount == 0, "No implicit connections or registered channels");
         if (name == "ConnectNetworkExample")
@@ -199,8 +200,8 @@ public static class ValidateNetworkExamples
         }
         else if (name == "EchoNetworkExample")
         {
-            var first = (InputField)data.FindProperty("firstInput").objectReferenceValue;
-            var second = (InputField)data.FindProperty("secondInput").objectReferenceValue;
+            var first = (TMP_InputField)data.FindProperty("firstInput").objectReferenceValue;
+            var second = (TMP_InputField)data.FindProperty("secondInput").objectReferenceValue;
             for (int service = 0; service < 2; service++)
             {
                 dropdown("serviceMode").value = service;

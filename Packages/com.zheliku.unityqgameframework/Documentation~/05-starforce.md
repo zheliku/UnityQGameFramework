@@ -18,7 +18,9 @@
 
 ## 修改与构建
 
-Excel 位于 Sample 的 `UnityQGameFramework/Config/Source`。在 DataTable Inspector 选择该目录的 LubanProfile 并生成；生成结果已经随示例提供，首次运行不用重新生成。运行参数与翻译位于 `GameMain/Configs/*.toml`。
+Excel 位于 Sample 的 `UnityQGameFramework/Config/Source`。在 DataTable Inspector 选择该目录的 LubanProfile 并生成；生成结果已经随示例提供，首次运行不用重新生成。运行参数位于 `GameMain/Configs/*.toml`，翻译位于 `GameMain/Localization/<language>.toml`。
+
+设置窗口使用 SetLanguageAsync 即时切换语言并保存偏好，不重启框架；菜单与池化窗口上的 LocalizeText 自动刷新。文本统一使用 TMP，首次使用 TMP 的宿主需导入官方 TMP Essential Resources。字体和图集在 `GameMain/Fonts`。
 
 资源使用 Sample 自己的 ResourceSettings 和 YooAssetCollector，普通 Play 自动生成 Editor Simulation。打包时改为 OfflinePlayMode，先用 YooAsset Builder 构建并复制完整首包，再用 Unity 构建 Launcher 场景，步骤见[资源构建](Modules/resource-build.md)。
 

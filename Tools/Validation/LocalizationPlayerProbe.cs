@@ -32,14 +32,14 @@ public sealed class LocalizationPlayerProbe : MonoBehaviour
                 && GameEntry.GetComponent<LocalizationComponent>().Language == Language.EnglishUnitedStates
                 && !GameEntry.GetComponent<LocalizationComponent>().IsChangingLanguage).Timeout(TimeSpan.FromSeconds(40));
             LocalizationComponent localization = GameEntry.GetComponent<LocalizationComponent>();
-            LocalizeText title = FindObjectsByType<LocalizeText>(FindObjectsSortMode.None).Single(binding => binding.Key == "Game.Name");
-            LocalizeTmpText tmp = FindFirstObjectByType<LocalizeTmpText>();
+            LocalizeText title = FindObjectsByType<LocalizeText>(FindObjectsSortMode.None).Single(binding => binding.Key == "Game.Name" && binding.name != "Text_TMPValidation");
+            LocalizeText tmp = FindObjectsByType<LocalizeText>(FindObjectsSortMode.None).Single(binding => binding.name == "Text_TMPValidation");
             LocalizeImage image = FindFirstObjectByType<LocalizeImage>();
-            Require(title.GetComponent<Text>().text == "My Flying Game (US)", "English uGUI text");
+            Require(title.GetComponent<TMP_Text>().text == "My Flying Game (US)", "English uGUI text");
             Require(tmp.GetComponent<TMP_Text>().text == "My Flying Game (US)", "English TMP text");
             TMP_FontAsset original = tmp.GetComponent<TMP_Text>().font;
             await localization.SetLanguageAsync(Language.ChineseSimplified, destroyCancellationToken);
-            Require(title.GetComponent<Text>().text == "我的飞行游戏" && tmp.GetComponent<TMP_Text>().text == "我的飞行游戏", "Atomic uGUI and TMP refresh");
+            Require(title.GetComponent<TMP_Text>().text == "我的飞行游戏" && tmp.GetComponent<TMP_Text>().text == "我的飞行游戏", "Atomic uGUI and TMP refresh");
             Require(tmp.GetComponent<TMP_Text>().font == localization.GetAsset<TMP_FontAsset>("UI.TMPFont")
                 && tmp.GetComponent<TMP_Text>().font != original, "Localized TMP font loaded through Resource");
             Require(image.GetComponent<Image>().sprite == localization.GetAsset<Sprite>("UI.Badge"), "Localized image loaded through Resource");

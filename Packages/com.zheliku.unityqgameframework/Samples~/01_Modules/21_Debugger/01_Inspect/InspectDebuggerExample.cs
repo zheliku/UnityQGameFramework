@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Toggle activeToggle;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private Vector2Int screenSize;
         private void Start()
         {
@@ -26,7 +27,7 @@ namespace UnityQGameFramework.Examples.Modules
 
         private void PlaceWindow()
         {
-            Rect area = DebuggerExampleLayout.Arrange(stateText);
+            Rect area = new Rect(Screen.width * .53f, Screen.height * .06f, Screen.width * .44f, Screen.height * .88f);
             float scale = Mathf.Min(1f, area.width / 800f);
             QGF.Debugger.WindowScale = scale;
             QGF.Debugger.WindowRect = new Rect(area.x / scale, area.y / scale, area.width / scale, area.height / scale);

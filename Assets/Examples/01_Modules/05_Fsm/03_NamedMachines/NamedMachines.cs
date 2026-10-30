@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,7 +12,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class NamedMachines : MonoBehaviour
     {
         [SerializeField]
-        private Text leftText, rightText, machinesText, resultText;
+        private TMP_Text leftText, rightText, machinesText, resultText;
         [SerializeField]
         private Button destroyButton, recreateButton;
         private IFsm<NamedMachines> left, right;

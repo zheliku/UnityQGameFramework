@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
 
-// 仅供隔离工程验收。按钮使用输入系统鼠标，文本与 Dropdown 是测试输入。
+// 仅供隔离工程验收。按钮使用输入系统鼠标，文本与 TMP_Dropdown 是测试输入。
 public static class ValidateAdvancedUtilityExamples
 {
     private static readonly List<string> assertions = new List<string>();
@@ -135,7 +136,7 @@ public static class ValidateAdvancedUtilityExamples
             assertionCount = assertions.Count,
             scenes = completed,
             nativeButtons = true,
-            testInputs = "Dropdown and InputField values assigned by test; Global random seed explicitly applied; shared native cache reserve/free explicitly clicked",
+            testInputs = "Dropdown and TMP_InputField values assigned by test; Global random seed explicitly applied; shared native cache reserve/free explicitly clicked",
             settingsUnchanged = true
         };
         Directory.CreateDirectory("Artifacts~/AdvancedUtilityExamples");
@@ -153,9 +154,9 @@ public static class ValidateAdvancedUtilityExamples
     private static async Task Check(string name, MonoBehaviour owner, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = field => (Button)data.FindProperty(field).objectReferenceValue;
-        Func<string, Dropdown> dropdown = field => (Dropdown)data.FindProperty(field).objectReferenceValue;
-        Func<string, InputField> input = field => (InputField)data.FindProperty(field).objectReferenceValue;
-        Func<string, Text> text = field => (Text)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = field => (TMP_Dropdown)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_InputField> input = field => (TMP_InputField)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_Text> text = field => (TMP_Text)data.FindProperty(field).objectReferenceValue;
         if (name == "DrawRandom")
         {
             Require(dropdown("mode").options.Count == 5, "Five random operations grouped");

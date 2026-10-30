@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using StarForce;
@@ -28,7 +29,7 @@ public static class BuildBuiltinDialog
             size.flexibleWidth = 0;
             var layout = mask.GetComponent<HorizontalLayoutGroup>() ?? mask.gameObject.AddComponent<HorizontalLayoutGroup>();
             layout.padding = new RectOffset(24, 24, 0, 0);
-            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childAlignment = TextAlignmentOptions.Center;
             layout.childControlWidth = true;
             layout.childControlHeight = false;
             layout.childForceExpandWidth = layout.childForceExpandHeight = false;
@@ -42,7 +43,7 @@ public static class BuildBuiltinDialog
             var message = (RectTransform)panel.Find("Text_Message");
             message.sizeDelta = new Vector2(-64, -176);
             message.anchoredPosition = new Vector2(0, 16);
-            message.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+            message.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
             PrefabUtility.SaveAsPrefabAsset(root, path);
             return new
             {
@@ -95,8 +96,8 @@ public static class BuildBuiltinDialog
                 serialized.ApplyModifiedPropertiesWithoutUndo();
             }
             UnityEngine.Object.DestroyImmediate(original);
-            var font = AssetDatabase.LoadAssetAtPath<Font>(folder + "Fonts/MainFont.ttf");
-            foreach (var text in instance.GetComponentsInChildren<Text>(true))
+            var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(folder + "Fonts/MainFont.asset");
+            foreach (var text in instance.GetComponentsInChildren<TMP_Text>(true))
                 text.font = font;
             var canvas = instance.GetComponent<Canvas>();
             canvas.sortingOrder = 30000;

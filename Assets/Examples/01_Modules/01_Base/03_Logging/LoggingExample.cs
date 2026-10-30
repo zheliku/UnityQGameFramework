@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,12 +11,12 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class LoggingExample : MonoBehaviour
     {
-        [SerializeField] private InputField messageInput;
+        [SerializeField] private TMP_InputField messageInput;
         [SerializeField] private Button debugButton;
         [SerializeField] private Button infoButton;
         [SerializeField] private Button warningButton;
         [SerializeField] private Button errorButton;
-        [SerializeField] private Text statusText;
+        [SerializeField] private TMP_Text statusText;
         private void Start()
         {
 

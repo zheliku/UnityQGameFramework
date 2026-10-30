@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button enqueueButton, cancelButton;
         [SerializeField]
-        private Text queueText, orderText, resultText;
+        private TMP_Text queueText, orderText, resultText;
         private readonly List<TaskInfo> tasks = new List<TaskInfo>();
         private readonly List<string> order = new List<string>();
         private LocalHttpServer server;

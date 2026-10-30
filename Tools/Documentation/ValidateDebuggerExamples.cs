@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -135,7 +136,7 @@ public static class ValidateDebuggerExamples
             passed = true,
             unity = Application.unityVersion,
             nativeButtonsAndToggles = true,
-            modeAndTextSetup = "Dropdown, Slider and InputField values set by the test; buttons and toggles use native mouse clicks",
+            modeAndTextSetup = "Dropdown, Slider and TMP_InputField values set by the test; buttons and toggles use native mouse clicks",
             logScope = "Conditional calls checked against example assembly symbols; with Info disabled, three Unity log fixtures exercise collection and list queries",
             settingsUnchanged = true,
             scenes = completed,
@@ -158,10 +159,10 @@ public static class ValidateDebuggerExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
         Func<string, Toggle> toggle = key => (Toggle)data.FindProperty(key).objectReferenceValue;
         Func<string, Slider> slider = key => (Slider)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
         var debugger = QGF.Debugger;
         Require(debugger.ActiveWindow && debugger.ShowFullWindow, "Visible full debugger");
         CheckPlacement(debugger);
@@ -238,7 +239,7 @@ public static class ValidateDebuggerExamples
         }
         else if (name == "RecentDebuggerLogs")
         {
-            var input = (InputField)data.FindProperty("messageInput").objectReferenceValue;
+            var input = (TMP_InputField)data.FindProperty("messageInput").objectReferenceValue;
             var logs = new List<DebuggerComponent.LogNode>();
             bool infoCompiled = LogCompiled(example, "Info"), warningCompiled = LogCompiled(example, "Warning");
             input.text = "dbg-test-中文 + & =";

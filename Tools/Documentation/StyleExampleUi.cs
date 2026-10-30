@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -98,14 +99,14 @@ public static class StyleExampleUi
                 scaler.matchWidthOrHeight = 1;
         var outline = SpriteFor(path, "button-outline.png", "ButtonOutline.png");
         var checkmark = SpriteFor(path, "checked.png", "Checkmark.png");
-        foreach (var text in root.GetComponentsInChildren<Text>(true))
+        foreach (var text in root.GetComponentsInChildren<TMP_Text>(true))
         {
             text.color = Ink;
             text.lineSpacing = 1.05f;
             foreach (var shadow in text.GetComponents<Shadow>())
                 UnityEngine.Object.DestroyImmediate(shadow);
             if (text.name.Contains("Title"))
-                text.fontStyle = FontStyle.Bold;
+                text.fontStyle = FontStyles.Bold;
             if (!starForce && text.fontSize >= 26)
                 text.fontSize = 26;
         }
@@ -144,14 +145,14 @@ public static class StyleExampleUi
                 else
                     Border(image, outline);
             }
-            foreach (var text in button.GetComponentsInChildren<Text>(true))
+            foreach (var text in button.GetComponentsInChildren<TMP_Text>(true))
             {
                 text.color = Ink;
-                text.fontStyle = FontStyle.Bold;
+                text.fontStyle = FontStyles.Bold;
             }
             Colors(button);
         }
-        foreach (var input in root.GetComponentsInChildren<InputField>(true))
+        foreach (var input in root.GetComponentsInChildren<TMP_InputField>(true))
         {
             input.caretColor = Accent;
             input.selectionColor = new Color(.15f, .6f, .8f, .3f);
@@ -162,13 +163,13 @@ public static class StyleExampleUi
                 Border(image, outline);
             Colors(input);
         }
-        foreach (var dropdown in root.GetComponentsInChildren<Dropdown>(true))
+        foreach (var dropdown in root.GetComponentsInChildren<TMP_Dropdown>(true))
         {
             StyleDropdown(dropdown, outline, checkmark);
         }
         foreach (var toggle in root.GetComponentsInChildren<Toggle>(true))
         {
-            if (toggle.GetComponentInParent<Dropdown>(true) != null)
+            if (toggle.GetComponentInParent<TMP_Dropdown>(true) != null)
                 continue;
             if (toggle.graphic != null)
                 toggle.graphic.color = Accent;
@@ -205,9 +206,9 @@ public static class StyleExampleUi
         }
         if (path.Contains("/14_UI/") && path.EndsWith("/Art/Window.prefab", StringComparison.Ordinal))
         {
-            var label = root.GetComponentInChildren<Text>(true);
+            var label = root.GetComponentInChildren<TMP_Text>(true);
             label.fontSize = 20;
-            label.fontStyle = FontStyle.Normal;
+            label.fontStyle = FontStyles.Normal;
             var panel = (RectTransform)label.transform.parent;
             var border = panel.Find("Image_Border") as RectTransform;
             if (border == null)
@@ -229,19 +230,19 @@ public static class StyleExampleUi
         }
     }
 
-    private static void StyleDropdown(Dropdown dropdown, Sprite outline, Sprite checkmark)
+    private static void StyleDropdown(TMP_Dropdown dropdown, Sprite outline, Sprite checkmark)
     {
         if (dropdown.targetGraphic is Image image)
             Border(image, outline);
         Colors(dropdown);
         dropdown.captionText.color = Ink;
         dropdown.captionText.lineSpacing = 1;
-        dropdown.captionText.horizontalOverflow = HorizontalWrapMode.Wrap;
+        dropdown.captionText.enableWordWrapping = true;
         // 长选项适配标题区域，避免换行后溢出到下面的按钮。
         dropdown.captionText.verticalOverflow = VerticalWrapMode.Truncate;
-        dropdown.captionText.resizeTextForBestFit = true;
-        dropdown.captionText.resizeTextMinSize = 14;
-        dropdown.captionText.resizeTextMaxSize = 18;
+        dropdown.captionText.enableAutoSizing = true;
+        dropdown.captionText.fontSizeMin = 14;
+        dropdown.captionText.fontSizeMax = 18;
         dropdown.captionText.rectTransform.offsetMin = new Vector2(14, 4);
         dropdown.captionText.rectTransform.offsetMax = new Vector2(-34, -4);
         foreach (var arrow in dropdown.GetComponentsInChildren<Image>(true).Where(i => i.transform.parent == dropdown.transform && i.name.Contains("Arrow")))
@@ -304,16 +305,16 @@ public static class StyleExampleUi
         itemRect.pivot = new Vector2(.5f, .5f);
         itemRect.sizeDelta = new Vector2(0, 40);
         itemRect.anchoredPosition = new Vector2(0, -20);
-        // 默认模板只有 20 高，18 号字体加行距后会被 Text 自身裁空。
+        // 默认模板只有 20 高，18 号字体加行距后会被 TMP_Text 自身裁空。
         var label = dropdown.itemText;
         label.fontSize = 18;
         label.lineSpacing = 1;
-        label.alignment = TextAnchor.MiddleLeft;
-        label.horizontalOverflow = HorizontalWrapMode.Wrap;
+        label.alignment = TextAlignmentOptions.Left;
+        label.enableWordWrapping = true;
         label.verticalOverflow = VerticalWrapMode.Truncate;
-        label.resizeTextForBestFit = true;
-        label.resizeTextMinSize = 14;
-        label.resizeTextMaxSize = 18;
+        label.enableAutoSizing = true;
+        label.fontSizeMin = 14;
+        label.fontSizeMax = 18;
         label.color = Ink;
         label.rectTransform.anchorMin = Vector2.zero;
         label.rectTransform.anchorMax = Vector2.one;
@@ -396,7 +397,7 @@ public static class StyleExampleUi
             {
                 image.color = primary ? Hex("C1F0FF") : Hex("B7D6E8");
             }
-            foreach (var text in button.GetComponentsInChildren<Text>(true))
+            foreach (var text in button.GetComponentsInChildren<TMP_Text>(true))
                 text.color = Ink;
         }
     }
@@ -425,7 +426,7 @@ public static class StyleExampleUi
         headline.anchorMin = new Vector2(.08f, .58f);
         headline.anchorMax = new Vector2(.92f, .76f);
         headline.offsetMin = headline.offsetMax = Vector2.zero;
-        var labels = headline.GetComponentsInChildren<Text>(true);
+        var labels = headline.GetComponentsInChildren<TMP_Text>(true);
         for (int index = 0; index < labels.Length; index++)
         {
             var rect = (RectTransform)labels[index].transform;
@@ -433,11 +434,11 @@ public static class StyleExampleUi
             rect.anchorMax = new Vector2(1, index == 0 ? 1 : .42f);
             rect.offsetMin = rect.offsetMax = Vector2.zero;
             labels[index].fontSize = index == 0 ? 64 : 30;
-            labels[index].fontStyle = index == 0 ? FontStyle.Bold : FontStyle.Normal;
-            labels[index].resizeTextForBestFit = true;
-            labels[index].resizeTextMinSize = index == 0 ? 36 : 18;
-            labels[index].resizeTextMaxSize = labels[index].fontSize;
-            labels[index].alignment = TextAnchor.MiddleCenter;
+            labels[index].fontStyle = index == 0 ? FontStyles.Bold : FontStyles.Normal;
+            labels[index].enableAutoSizing = true;
+            labels[index].fontSizeMin = index == 0 ? 36 : 18;
+            labels[index].fontSizeMax = labels[index].fontSize;
+            labels[index].alignment = TextAlignmentOptions.Center;
             labels[index].color = index == 0 ? Ink : Muted;
         }
         var buttons = center.Cast<Transform>().Single(item => item.name == "Panel_Buttons") as RectTransform;
@@ -458,14 +459,14 @@ public static class StyleExampleUi
                 rect.anchorMax = Vector2.one;
                 rect.offsetMin = rect.offsetMax = Vector2.zero;
             }
-            foreach (var label in button.GetComponentsInChildren<Text>(true))
+            foreach (var label in button.GetComponentsInChildren<TMP_Text>(true))
             {
                 var rect = (RectTransform)label.transform;
                 rect.anchorMin = Vector2.zero;
                 rect.anchorMax = Vector2.one;
                 rect.offsetMin = rect.offsetMax = Vector2.zero;
                 label.fontSize = 30;
-                label.alignment = TextAnchor.MiddleCenter;
+                label.alignment = TextAlignmentOptions.Center;
             }
         }
     }

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using UnityEngine;
@@ -13,11 +14,11 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class TextAndPaths : MonoBehaviour
     {
         [SerializeField]
-        private InputField nameInput;
+        private TMP_InputField nameInput;
         [SerializeField]
-        private InputField countInput;
+        private TMP_InputField countInput;
         [SerializeField]
-        private InputField pathInput;
+        private TMP_InputField pathInput;
         [SerializeField]
         private Button formatButton;
         [SerializeField]
@@ -25,9 +26,9 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button cleanupButton;
         [SerializeField]
-        private Text resultText;
+        private TMP_Text resultText;
         [SerializeField]
-        private Text directoryText;
+        private TMP_Text directoryText;
         private string directory;
         private string ownedFile;
         private void Start()

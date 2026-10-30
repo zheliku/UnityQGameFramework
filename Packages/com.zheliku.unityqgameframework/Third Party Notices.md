@@ -67,10 +67,11 @@ The binary is retained to preserve the upstream compression baseline. Dependency
 - QGF registers positional, dictionary, plural and default formatting extensions explicitly. It does not copy vendor source or enable reflection over business objects. Binary and license hashes are recorded in `Tools/Packaging/localization-source.json` in the development repository.
 - These assemblies are bundled with QGF; avoid installing duplicate copies alongside them.
 
-## Localization sample font
+## Sample fonts
 
-- `Samples~/01_Modules/10_Localization/Common/ChineseFont.otf` is a renamed character subset of Noto Sans CJK SC Regular 2.004, official commit `523d033d6cb47f4a80c58a35753646f5c3608a78` from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk/tree/523d033d6cb47f4a80c58a35753646f5c3608a78).
-- The subset retains the source copyright and license metadata, uses the family name `QGF Example Chinese`, and includes only printable ASCII plus this sample's dictionary characters.
+- `Samples~/01_Modules/10_Localization/Common/ChineseFontSource.otf` is a renamed character subset of Noto Sans CJK SC Regular 2.004, official commit `523d033d6cb47f4a80c58a35753646f5c3608a78` from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk/tree/523d033d6cb47f4a80c58a35753646f5c3608a78).
+- The subset retains the source copyright and license metadata, uses the family name `QGF Example UI`, and includes the Sample UI and dictionary characters, including English, Simplified/Traditional Chinese and Korean.
+- All three Samples use their own TMP font assets and atlases so each can be imported independently. The old StarForce font has been replaced.
 - SIL Open Font License 1.1; [full license](Samples~/01_Modules/10_Localization/Common/ChineseFont-OFL.txt). Source and subset hashes are recorded in `Tools/Packaging/localization-font-source.json`.
 
 ## Optional editor tools (not bundled)

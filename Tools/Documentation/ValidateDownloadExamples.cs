@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -156,8 +157,8 @@ public static class ValidateDownloadExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
         Require(QGF.Download.TotalAgentCount == 1 && QGF.Download.GetAllDownloadInfos().Length == 0, "One agent; no implicit downloads");
         string path = name == "DownloadQueue" ? null : Field<string>(example, "path");
         byte[] payload = name == "DownloadQueue" ? null : Field<TextAsset>(example, "payload").bytes;

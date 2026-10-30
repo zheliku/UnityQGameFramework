@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button registerButton, unregisterButton, selectButton, timeButton, incrementButton;
         [SerializeField]
-        private Text stateText, resultText;
+        private TMP_Text stateText, resultText;
         private const string WindowPath = "Examples/Counter";
         private readonly CounterWindow window = new CounterWindow();
         private bool ready;
@@ -24,7 +25,7 @@ namespace UnityQGameFramework.Examples.Modules
         private void Start()
         {
             QGF.Debugger.ActiveWindow = QGF.Debugger.ShowFullWindow = true;
-            DebuggerExampleLayout.Place(stateText, ref screenSize);
+            PlaceDebuggerWindow();
             initialValueSlider.wholeNumbers = true;
             registerButton.onClick.AddListener(() =>
             {
@@ -52,12 +53,26 @@ namespace UnityQGameFramework.Examples.Modules
                 return;
             }
 
-            DebuggerExampleLayout.Place(stateText, ref screenSize);
+            PlaceDebuggerWindow();
             // 查询返回注册时的同一个窗口对象，两个界面操作同一份 Count。
             bool registered = ReferenceEquals(QGF.Debugger.GetDebuggerWindow(WindowPath), window);
             registerButton.interactable = !registered;
             unregisterButton.interactable = selectButton.interactable = incrementButton.interactable = registered;
             stateText.text = $"{(registered ? "Registered" : "Not registered")}    Initial value {(int)initialValueSlider.value}\n" + $"Count {window.Count}    Active for {window.ActiveSeconds:F1} s\n" + $"Initialize {window.InitializeCalls} times    Shutdown {window.ShutdownCalls} times\n" + $"Tab entries {window.EnterCalls} times    Leave {window.LeaveCalls} times";
+        }
+
+        private void PlaceDebuggerWindow()
+        {
+            var size = new Vector2Int(Screen.width, Screen.height);
+            if (size == screenSize)
+            {
+                return;
+            }
+            screenSize = size;
+            Rect area = new Rect(Screen.width * .53f, Screen.height * .06f, Screen.width * .44f, Screen.height * .88f);
+            float scale = Mathf.Min(1f, area.width / 800f);
+            QGF.Debugger.WindowScale = scale;
+            QGF.Debugger.WindowRect = new Rect(area.x / scale, area.y / scale, area.width / scale, area.height / scale);
         }
 
         private void OnDestroy()

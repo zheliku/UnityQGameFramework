@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button openButton, closeButton, refocusButton;
         [SerializeField]
-        private Text stateText, callbacksText;
+        private TMP_Text stateText, callbacksText;
         private int bottom, top;
         private bool ready;
         private void Start()

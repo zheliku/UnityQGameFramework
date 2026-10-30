@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -159,9 +160,9 @@ public static class ValidateFlowExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = field => (Button)data.FindProperty(field).objectReferenceValue;
-        Func<string, Text> text = field => (Text)data.FindProperty(field).objectReferenceValue;
-        Func<string, Dropdown> dropdown = field => (Dropdown)data.FindProperty(field).objectReferenceValue;
-        Func<string, InputField> input = field => (InputField)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_Text> text = field => (TMP_Text)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = field => (TMP_Dropdown)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_InputField> input = field => (TMP_InputField)data.FindProperty(field).objectReferenceValue;
         if (name == "TwoStates")
         {
             var fsm = QGF.Fsm.GetFsm<TwoStates>();

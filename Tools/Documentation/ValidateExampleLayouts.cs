@@ -12,7 +12,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using UnityQGameFramework.Examples.Modules.Presentation;
 
 /// <summary>
 /// 检查模块示例在不同分辨率下的布局。
@@ -93,8 +92,8 @@ public static class ValidateExampleLayouts
                     disabled.Add(pointer);
                 }
                 await Task.Delay(600);
-                var layout = UnityEngine.Object.FindObjectsByType<ExampleSceneLayout>(FindObjectsSortMode.None)
-                    .Single(item => Get<RectTransform>(item, "controls") != null);
+                var panel = UnityEngine.Object.FindObjectsByType<ScrollRect>(FindObjectsSortMode.None)
+                    .Single(item => item.name == "Panel_Controls").GetComponent<RectTransform>();
                 var example = UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
                     .Single(item => item.GetType().Name == Path.GetFileName(path));
                 var fields = new SerializedObject(example);
@@ -115,17 +114,16 @@ public static class ValidateExampleLayouts
                     Require(Screen.width == resolutions[mode].x && Screen.height == resolutions[mode].y, "Requested GameView size");
                     Canvas.ForceUpdateCanvases();
                     bool portrait = Screen.width < Screen.height;
-                    var panel = Get<RectTransform>(layout, "controls");
                     var panelBounds = ScreenRect(panel);
                     Require(panelBounds.xMin >= 0 && panelBounds.yMin >= 0 && panelBounds.xMax <= 1 && panelBounds.yMax <= 1, "Controls remain in screen");
-                    Require(portrait ? panelBounds.yMin >= .51f && panelBounds.width > .9f : panelBounds.xMax < .5f, "Control arrangement matches aspect");
+                    Require(panelBounds.xMax < .5f, "Native anchors keep controls beside the example");
                     var scroll = panel.GetComponent<ScrollRect>();
                     Require(scroll.verticalScrollbar != null && scroll.verticalScrollbarVisibility == ScrollRect.ScrollbarVisibility.AutoHide,
                         "Scrollable controls have a native scrollbar");
                     if (example.name == "CoverWindowExample")
                     {
-                        var windows = UnityEngine.Object.FindObjectsByType<ExampleSceneLayout>(FindObjectsSortMode.None)
-                            .Select(item => Get<RectTransform>(item, "window")).Where(item => item != null).ToArray();
+                        var windows = UnityEngine.Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None)
+                            .Where(item => item.name == "Panel_Window").ToArray();
                         Require(windows.Length == 2, "Both overlapping windows are present");
                         foreach (var window in windows)
                         {
@@ -137,9 +135,8 @@ public static class ValidateExampleLayouts
                     }
                     else
                     {
-                        Rect area = portrait ? new Rect(.04f, .04f, .92f, Get<RectTransform>(layout, "legend") == null ? .44f : .29f)
-                            : new Rect(.53f, .06f, .44f, Get<RectTransform>(layout, "legend") == null ? .88f : .62f);
-                        var camera = Get<Camera>(layout, "sceneCamera");
+                        Rect area = new Rect(.5f, 0f, .5f, 1f);
+                        var camera = Camera.main;
                         var renderers = UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None);
                         Require(renderers.Length >= 1, "Visible demonstration objects");
                         foreach (var renderer in renderers)

@@ -6,10 +6,14 @@
 
 - An extensible, strongly typed `Language` value with familiar predefined members, configured language fallback, atomic `SetLanguageAsync`, and immediate language-change notifications. Language APIs accept only `Language`; standard codes are used at configuration boundaries. StarForce dictionaries now use the same code names.
 - SmartFormat 3.6.2 with official ZString 2.6.0 and Unsafe 6.0.0 binaries and license notices; named dictionary arguments, plural rules and culture-aware formatting use one formatter.
-- LocalizeText, LocalizeImage and optional LocalizeTmpText bindings; fonts and images follow language changes and pooled bindings unsubscribe while disabled.
+- TMP LocalizeText and LocalizeImage bindings; fonts and images follow language changes and pooled bindings unsubscribe while disabled. Text supports named initial values and a missing-key display policy; images can use native sprite dimensions.
 - Inspector and scene-build validation for localization dictionaries, fallback chains, format arguments and collected assets.
 
 ### Changed
+
+- Use TMP throughout Sample UI, with independent font assets and atlases for each Sample. LocalizeText now binds TMP; the separate LocalizeTmpText adapter was removed. Named SetFormatValues / SetFormatValue calls replace component positional SetArguments calls.
+- Apply StarForce language changes asynchronously without restarting the framework, refresh pooled UI through localization bindings, and store each dictionary directly in Localization/<language>.toml.
+- Save module UI layout in native scene and prefab properties instead of attaching ExampleSceneLayout; remove the duplicate Debugger layout wrapper.
 
 - Create built-in Core modules through explicit factories and generate Player preservation rules from dynamic extension contracts instead of preserving entire framework assemblies.
 - Commit default settings through a same-directory temporary file and atomic replacement, recover from the previous backup, and expose save failures through SettingComponent. Setting examples customize only their file path.

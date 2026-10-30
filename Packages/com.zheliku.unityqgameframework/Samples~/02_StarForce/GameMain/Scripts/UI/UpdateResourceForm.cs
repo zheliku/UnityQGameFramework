@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ namespace StarForce
     public class UpdateResourceForm : MonoBehaviour
     {
         [SerializeField]
-        private Text m_DescriptionText = null;
+        private TMP_Text m_DescriptionText = null;
 
         [SerializeField]
         private Slider m_ProgressSlider = null;

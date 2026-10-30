@@ -52,14 +52,11 @@ namespace StarForce
         /// <summary>
         /// 取得语言字典资产路径。
         /// </summary>
-        /// <param name="assetName">配置表中的资源名称，不含目录和扩展名。</param>
+        /// <param name="language">需要加载字典的语言。</param>
         /// <returns>相对于项目的完整资产路径。</returns>
-        public static string GetDictionaryAsset(string assetName)
+        public static string GetDictionaryAsset(Language language)
         {
-            return Utility.Text.Format(
-                GameMainPath + "/Localization/{0}/Dictionaries/{1}.toml",
-                GameEntry.Localization.Language,
-                assetName);
+            return Utility.Text.Format(GameMainPath + "/Localization/{0}.toml", language.Code);
         }
 
         /// <summary>
@@ -69,7 +66,7 @@ namespace StarForce
         /// <returns>相对于项目的完整资产路径。</returns>
         public static string GetFontAsset(string assetName)
         {
-            return Utility.Text.Format(GameMainPath + "/Fonts/{0}.ttf", assetName);
+            return Utility.Text.Format(GameMainPath + "/Fonts/{0}.asset", assetName);
         }
 
         /// <summary>

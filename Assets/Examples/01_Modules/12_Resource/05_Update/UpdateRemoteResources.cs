@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using Cysharp.Threading.Tasks;
@@ -14,9 +15,9 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class UpdateRemoteResources : MonoBehaviour
     {
         [SerializeField] private Button versionButton, checkButton, updateButton, stopButton, loadButton;
-        [SerializeField] private Dropdown concurrencyMode, groupMode;
+        [SerializeField] private TMP_Dropdown concurrencyMode, groupMode;
         [SerializeField] private Toggle autoLoadToggle, failureToggle;
-        [SerializeField] private Text stateText, groupsText, transferText, serverText;
+        [SerializeField] private TMP_Text stateText, groupsText, transferText, serverText;
         private ResourceHttpServer server;
         private HostPlayModeOptions options;
         private ResourcePackage package;

@@ -1,3 +1,4 @@
+using TMPro;
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button recycleButton;
         [SerializeField]
-        private Text stateText, policyText, lifecycleText;
+        private TMP_Text stateText, policyText, lifecycleText;
         private int previousInstance, currentInstance;
         private float idleRemaining;
         private bool ready, recycling;

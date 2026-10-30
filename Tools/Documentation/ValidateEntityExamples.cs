@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -174,8 +175,8 @@ public static class ValidateEntityExamples
     private static async Task Check(string name, int mode, MonoBehaviour example, SerializedObject data, Mouse mouse)
     {
         Func<string, Button> button = key => (Button)data.FindProperty(key).objectReferenceValue;
-        Func<string, Text> text = key => (Text)data.FindProperty(key).objectReferenceValue;
-        Func<string, Dropdown> dropdown = key => (Dropdown)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Text> text = key => (TMP_Text)data.FindProperty(key).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = key => (TMP_Dropdown)data.FindProperty(key).objectReferenceValue;
         if (mode == 2)
         {
             Require(QGF.Entity.IsLoadingEntity(1), "Owner request still loading before destruction");
@@ -290,7 +291,7 @@ public static class ValidateEntityExamples
             await Until(() => QGF.Entity.EntityCount == 2, 6000, "Two entities loaded");
             Require(QGF.Entity.EntityGroupCount == 2 && QGF.Entity.GetEntity(1) != QGF.Entity.GetEntity(2), "Independent entity identities and groups");
             Require(QGF.Entity.GetEntityGroup("Left").EntityCount == 1 && QGF.Entity.GetEntityGroup("Right").EntityCount == 1, "Each group owns one entity");
-            var idInput = (InputField)data.FindProperty("entityIdInput").objectReferenceValue;
+            var idInput = (TMP_InputField)data.FindProperty("entityIdInput").objectReferenceValue;
             for (int groupIndex = 0; groupIndex < 2; groupIndex++)
             {
                 int id = groupIndex + 1;

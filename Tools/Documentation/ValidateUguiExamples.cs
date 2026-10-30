@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -171,8 +172,8 @@ public static class ValidateUguiExamples
     {
         var data = new SerializedObject(example);
         Func<string, Button> button = field => (Button)data.FindProperty(field).objectReferenceValue;
-        Func<string, Text> text = field => (Text)data.FindProperty(field).objectReferenceValue;
-        Func<string, Dropdown> dropdown = field => (Dropdown)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_Text> text = field => (TMP_Text)data.FindProperty(field).objectReferenceValue;
+        Func<string, TMP_Dropdown> dropdown = field => (TMP_Dropdown)data.FindProperty(field).objectReferenceValue;
         if (name == "GameSpeedExample")
         {
             Require(Math.Abs(QGF.Base.GameSpeed - 2) < 0.01f, "Speed buttons");
@@ -246,8 +247,8 @@ public static class ValidateUguiExamples
         }
         else if (name == "JsonUtilityExample")
         {
-            var nameInput = (InputField)data.FindProperty("nameInput").objectReferenceValue;
-            var jsonInput = (InputField)data.FindProperty("jsonInput").objectReferenceValue;
+            var nameInput = (TMP_InputField)data.FindProperty("nameInput").objectReferenceValue;
+            var jsonInput = (TMP_InputField)data.FindProperty("jsonInput").objectReferenceValue;
             var playerField = example.GetType().GetField("player", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
             Require(dropdown("readMode").options.Count == 2 && nameInput.text == "小飞行员" && text("levelText").text == "等级：3",
                 "Referenced TextAsset initializes the player; both JSON read modes available");
@@ -315,7 +316,7 @@ public static class ValidateUguiExamples
             await Click(button("addButton"), mouse);
             await Click(button("clearButton"), mouse);
             Require(QGF.Config.Count == 0, "Clear runtime values");
-            var input = (InputField)data.FindProperty("valueInput").objectReferenceValue;
+            var input = (TMP_InputField)data.FindProperty("valueInput").objectReferenceValue;
             Require(dropdown("addMode").options.Count == 2 && !input.interactable, "Typed/default and Core string input options");
             dropdown("addMode").value = 1;
             Require(input.interactable, "String conversion enables input");
@@ -357,7 +358,7 @@ public static class ValidateUguiExamples
         }
         else if (name == "ReadTranslation")
         {
-            ((InputField)data.FindProperty("nameInput").objectReferenceValue).text = "飞行员";
+            ((TMP_InputField)data.FindProperty("nameInput").objectReferenceValue).text = "飞行员";
             await Click(button("rewardButton"), mouse);
             await Click(button("rewardButton"), mouse);
             Require(text("titleText").text == "我的飞行游戏" && text("rewardText").text == "飞行员 获得 20 金币"

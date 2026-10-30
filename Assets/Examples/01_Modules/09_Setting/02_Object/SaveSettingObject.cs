@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,13 +12,13 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class SaveSettingObject : MonoBehaviour
     {
         [SerializeField]
-        private InputField nameInput;
+        private TMP_InputField nameInput;
         [SerializeField]
         private Slider levelSlider;
         [SerializeField]
         private Button saveButton, readButton, removeButton;
         [SerializeField]
-        private Text stateText, resultText;
+        private TMP_Text stateText, resultText;
         private const string Key = "Pilot";
         private readonly Pilot fallback = new Pilot
         {

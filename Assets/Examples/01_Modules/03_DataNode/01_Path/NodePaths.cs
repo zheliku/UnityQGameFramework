@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,7 +12,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class NodePaths : MonoBehaviour
     {
         [SerializeField] private Button relativeButton, absoluteButton;
-        [SerializeField] private Text treeText;
+        [SerializeField] private TMP_Text treeText;
         private const string ScorePath = "Example/Battle/Score";
 
         private void Start()

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -143,7 +144,7 @@ public static class ValidateStarForceDialogs
                 Check(form != null && answers == 0 && Entry.Base.IsGamePaused, "Builtin dialog waits without tables: " + language);
                 var builtinBackground = form.transform.Find("Panel_Mask/Panel_Background").GetComponent<Image>();
                 Check(builtinBackground.sprite != null && builtinBackground.color.a >= 1f, "Builtin dialog card is opaque: " + language);
-                Check(form.GetComponentsInChildren<Text>(true).All(text => text.font != null), "Builtin fonts exist: " + language);
+                Check(form.GetComponentsInChildren<TMP_Text>(true).All(text => text.font != null), "Builtin fonts exist: " + language);
                 await Task.Delay(200);
                 if (language == Language.ChineseSimplified)
                 {
@@ -151,7 +152,7 @@ public static class ValidateStarForceDialogs
                     ScreenCapture.CaptureScreenshot(Path.GetFullPath("Artifacts~/StarForceDialogs/startup-dialog.png"));
                     await Task.Delay(250);
                     var cancel = form.GetComponentsInChildren<CommonButton>().Single(button => button.name == "Button_Cancel");
-                    var label = cancel.GetComponentInChildren<Text>();
+                    var label = cancel.GetComponentInChildren<TMP_Text>();
                     var canvas = form.GetComponent<Canvas>();
                     Vector2 point = RectTransformUtility.WorldToScreenPoint(canvas.worldCamera, label.rectTransform.TransformPoint(label.rectTransform.rect.center));
                     var hits = new List<RaycastResult>();

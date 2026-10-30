@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Linq;
@@ -17,11 +18,11 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button downloadButton;
         [SerializeField]
-        private Dropdown flushMode;
+        private TMP_Dropdown flushMode;
         [SerializeField]
         private Slider progressSlider;
         [SerializeField]
-        private Text stateText, fileText;
+        private TMP_Text stateText, fileText;
         [SerializeField]
         private TextAsset payload;
         private int totalLength;

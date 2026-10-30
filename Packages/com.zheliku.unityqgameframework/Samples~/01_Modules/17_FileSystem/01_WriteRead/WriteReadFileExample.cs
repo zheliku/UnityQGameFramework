@@ -1,3 +1,4 @@
+using TMPro;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -13,11 +14,11 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class WriteReadFileExample : MonoBehaviour
     {
         [SerializeField]
-        private InputField contentInput;
+        private TMP_InputField contentInput;
         [SerializeField]
         private Button writeButton, readButton;
         [SerializeField]
-        private Text resultText;
+        private TMP_Text resultText;
         private IFileSystem container;
         private string path;
         private const string FileName = "player/name.txt";

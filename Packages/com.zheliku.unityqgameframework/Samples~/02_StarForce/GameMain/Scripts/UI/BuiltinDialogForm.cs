@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -10,9 +11,9 @@ namespace StarForce
     /// </summary>
     public sealed class BuiltinDialogForm : MonoBehaviour
     {
-        [SerializeField] private Text m_TitleText, m_MessageText;
+        [SerializeField] private TMP_Text m_TitleText, m_MessageText;
         [SerializeField] private GameObject[] m_ModeObjects;
-        [SerializeField] private Text[] m_ConfirmTexts, m_CancelTexts, m_OtherTexts;
+        [SerializeField] private TMP_Text[] m_ConfirmTexts, m_CancelTexts, m_OtherTexts;
         private DialogParams parameters;
         private bool answered, pausedByDialog;
 
@@ -79,7 +80,7 @@ namespace StarForce
             callback?.Invoke(userData);
         }
 
-        private static void SetText(Text[] texts, string label, string key)
+        private static void SetText(TMP_Text[] texts, string label, string key)
         {
             if (string.IsNullOrEmpty(label))
             {

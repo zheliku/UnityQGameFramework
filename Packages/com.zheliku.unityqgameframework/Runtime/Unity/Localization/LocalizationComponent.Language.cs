@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityQGameFramework.Core;
 using YooAsset;
+using TMPro;
 
 namespace UnityQGameFramework.Runtime
 {
@@ -130,7 +131,7 @@ namespace UnityQGameFramework.Runtime
                     }
                     else if (entry.Value.AssetType == LocalizationAssetType.Font)
                     {
-                        assetType = typeof(Font);
+                        assetType = typeof(TMP_FontAsset);
                     }
                     assets.Add(entry.Key, await resources.LoadAssetHandleAsync(entry.Value.AssetName, assetType, cancellationToken: cancellation.Token));
                 }

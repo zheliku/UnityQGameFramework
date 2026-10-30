@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button reopenButton;
         [SerializeField]
-        private Text stateText, lifecycleText, policyText;
+        private TMP_Text stateText, lifecycleText, policyText;
         private int serialId, previousSerial, previousInstance, openCount;
         private float remaining;
         private bool ready, changing;

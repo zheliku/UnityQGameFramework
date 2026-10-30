@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -13,11 +14,11 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ConvertStructure : MonoBehaviour
     {
         [SerializeField]
-        private InputField idInput, speedInput;
+        private TMP_InputField idInput, speedInput;
         [SerializeField]
         private Button convertButton, reserveButton, freeButton;
         [SerializeField]
-        private Text resultText, cacheText;
+        private TMP_Text resultText, cacheText;
 
         /// <summary>
         /// 用于结构体字节转换的编号和速度记录。

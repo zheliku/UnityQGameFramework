@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class LoadResourcePackage : MonoBehaviour
     {
         [SerializeField] private Button initializeButton, loadButton, releaseButton;
-        [SerializeField] private Text stateText, assetText, groupsText;
+        [SerializeField] private TMP_Text stateText, assetText, groupsText;
         private AssetHandle handle;
         private GameObject instance;
         private bool initialized, loading;
@@ -44,7 +45,7 @@ namespace UnityQGameFramework.Examples.Modules
                     initialized = true;
                     stateText.text = "Resource package ready.";
                 }
-                initializeButton.GetComponentInChildren<Text>().text = initialized ? "Destroy Package" : "Initialize Package";
+                initializeButton.GetComponentInChildren<TMP_Text>().text = initialized ? "Destroy Package" : "Initialize Package";
             }
             catch (OperationCanceledException) when (destroyCancellationToken.IsCancellationRequested)
             {

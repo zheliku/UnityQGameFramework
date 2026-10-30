@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -13,7 +14,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button playButton;
         [SerializeField]
-        private Text outputText;
+        private TMP_Text outputText;
         private int serialId;
         private void Start()
         {

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button playButton, stopButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private ISoundAgent agent;
         private int serialId;
         private bool ready;

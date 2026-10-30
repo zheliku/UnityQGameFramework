@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -17,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button createButton, releaseButton;
         [SerializeField]
-        private Text stateText, resultText;
+        private TMP_Text stateText, resultText;
         private IObjectPool<PolicyCubeItem> pool;
         private PolicyCubeItem keep;
         private void Start()

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Reflection;
@@ -39,7 +40,7 @@ public static class ValidateDataTableExamples
             if (name == "QueryRowsExample")
             {
                 var field = example.GetType().GetField("idInput", BindingFlags.NonPublic | BindingFlags.Instance);
-                ((InputField)field.GetValue(example)).text = "999999";
+                ((TMP_InputField)field.GetValue(example)).text = "999999";
                 if (items.GetDataRow(999999) != null)
                     throw new Exception("Missing key did not return null");
             }

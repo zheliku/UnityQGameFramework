@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -170,16 +171,16 @@ public static class ValidateModuleExamples
                 Require(Mathf.Approximately(QGF.Base.GameSpeed, 0.5f), "Game speed");
                 break;
             case "JsonUtilityExample":
-                Require(!Field<InputField>("jsonInput").readOnly, "JSON input is editable");
-                Field<InputField>("nameInput").text = "QGF";
+                Require(!Field<TMP_InputField>("jsonInput").readOnly, "JSON input is editable");
+                Field<TMP_InputField>("nameInput").text = "QGF";
                 Click("serializeButton");
-                Field<InputField>("nameInput").text = "Changed";
+                Field<TMP_InputField>("nameInput").text = "Changed";
                 Click("deserializeButton");
-                Require(Field<InputField>("nameInput").text == "QGF", "JSON snapshot restore");
-                Field<InputField>("jsonInput").text = "{\"Name\":\"手动修改\",\"Level\":9}";
+                Require(Field<TMP_InputField>("nameInput").text == "QGF", "JSON snapshot restore");
+                Field<TMP_InputField>("jsonInput").text = "{\"Name\":\"手动修改\",\"Level\":9}";
                 Click("deserializeButton");
                 await Task.Delay(80);
-                Require(Field<InputField>("nameInput").text == "手动修改" && Field<Text>("levelText").text == "Level: 9", "Edited JSON restores object");
+                Require(Field<TMP_InputField>("nameInput").text == "手动修改" && Field<TMP_Text>("levelText").text == "Level: 9", "Edited JSON restores object");
                 break;
             case "LoggingExample":
                 break; // 不主动制造 Error 日志；按钮按日志编译宏显示。
@@ -193,7 +194,7 @@ public static class ValidateModuleExamples
                 break;
             case "SubscribeEvent":
                 Click("sendButton");
-                await Wait(() => Field<Text>("coinsText").text.Contains("10"));
+                await Wait(() => Field<TMP_Text>("coinsText").text.Contains("10"));
                 break;
             case "TwoStates":
                 Click("workButton");
@@ -241,32 +242,32 @@ public static class ValidateModuleExamples
             case "ReadTranslation":
                 Click("rewardButton");
                 await Task.Delay(80);
-                Require(Field<Text>("rewardText").text.Contains("10"), "Localized format");
+                Require(Field<TMP_Text>("rewardText").text.Contains("10"), "Localized format");
                 break;
             case "SwitchLanguage":
                 Click("action1Button");
                 await Wait(() => QGF.Localization.Language == Language.EnglishUnitedStates && !QGF.Localization.IsChangingLanguage);
                 LocalizeText title = UnityEngine.Object.FindObjectsByType<LocalizeText>(FindObjectsSortMode.None).Single(binding => binding.Key == "Game.Name");
-                string english = title.GetComponent<Text>().text;
+                string english = title.GetComponent<TMP_Text>().text;
                 Click("action2Button");
                 await Wait(() => QGF.Localization.Language == Language.ChineseSimplified && !QGF.Localization.IsChangingLanguage);
-                Require(title.GetComponent<Text>().text != english, "Language event refreshes the bound text");
+                Require(title.GetComponent<TMP_Text>().text != english, "Language event refreshes the bound text");
                 Click("rewardButton");
-                Require(Field<LocalizeText>("rewardText").GetComponent<Text>().text.Contains("1"), "Bound translation receives dynamic arguments");
+                Require(Field<LocalizeText>("rewardText").GetComponent<TMP_Text>().text.Contains("1"), "Bound translation receives dynamic arguments");
                 Field<Toggle>("previewToggle").isOn = false;
                 Click("action1Button");
                 await Wait(() => QGF.Localization.Language == Language.EnglishUnitedStates && !QGF.Localization.IsChangingLanguage);
                 Field<Toggle>("previewToggle").isOn = true;
-                Require(title.GetComponent<Text>().text == english, "Re-enabled bindings read the current language");
+                Require(title.GetComponent<TMP_Text>().text == english, "Re-enabled bindings read the current language");
                 break;
             case "LoadLubanTablesExample":
                 Require(QGF.DataTable.IsLoaded && QGF.DataTable.Count > 0, "Luban tables published");
-                Require(!string.IsNullOrWhiteSpace(Field<Text>("rowsText").text), "Generated records displayed");
+                Require(!string.IsNullOrWhiteSpace(Field<TMP_Text>("rowsText").text), "Generated records displayed");
                 break;
             case "QueryRowsExample":
                 Require(QGF.DataTable.IsLoaded, "Query table loaded");
-                Field<InputField>("idInput").text = "999999";
-                Require(Field<Text>("selectedText").text == "ID not found.", "Missing Id");
+                Field<TMP_InputField>("idInput").text = "999999";
+                Require(Field<TMP_Text>("selectedText").text == "ID not found.", "Missing Id");
                 break;
             case "LoadCubePrefab":
                 await Wait(() => Field<GameObject>("first") != null && Field<GameObject>("second") != null);
@@ -301,22 +302,22 @@ public static class ValidateModuleExamples
                 Require(!QGF.Scene.SceneIsLoaded("Scene_LoadRoom_BlueRoom"), "Room unloaded");
                 break;
             case "WriteReadFileExample":
-                Field<InputField>("contentInput").text = "QGF 读写";
+                Field<TMP_InputField>("contentInput").text = "QGF 读写";
                 Click("writeButton");
                 await Task.Delay(80);
                 Click("readButton");
-                Require(Field<Text>("resultText").text == "QGF 读写", "Container UTF8 roundtrip");
+                Require(Field<TMP_Text>("resultText").text == "QGF 读写", "Container UTF8 roundtrip");
                 break;
             case "GetWebRequestExample":
                 Click("requestButton");
                 await Wait(() => Field<int>("serial") == 0);
-                Require(Field<Text>("responseText").text.Contains("{"), "HTTP GET result");
+                Require(Field<TMP_Text>("responseText").text.Contains("{"), "HTTP GET result");
                 break;
             case "PostWebRequest":
-                Field<InputField>("messageInput").text = "QGF + &= 你好";
+                Field<TMP_InputField>("messageInput").text = "QGF + &= 你好";
                 Click("formButton");
                 await Wait(() => Field<int>("serial") == 0);
-                Require(Field<Text>("responseText").text.Contains("QGF + &= 你好"), "POST field encoding");
+                Require(Field<TMP_Text>("responseText").text.Contains("QGF + &= 你好"), "POST field encoding");
                 break;
             case "DownloadFileExample":
                 Click("downloadButton");
@@ -325,9 +326,9 @@ public static class ValidateModuleExamples
                 break;
             case "ConnectNetworkExample":
                 Click("connectButton");
-                await Wait(() => Field<Text>("stateText").text == "Connected");
+                await Wait(() => Field<TMP_Text>("stateText").text == "Connected");
                 Click("closeButton");
-                await Wait(() => Field<Text>("stateText").text.Contains("Disconnected"));
+                await Wait(() => Field<TMP_Text>("stateText").text.Contains("Disconnected"));
                 break;
             case "InspectDebuggerExample":
                 Field<Toggle>("activeToggle").isOn = false;

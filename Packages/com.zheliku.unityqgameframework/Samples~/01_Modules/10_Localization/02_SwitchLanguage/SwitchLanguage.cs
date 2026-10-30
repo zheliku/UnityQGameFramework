@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,9 +28,9 @@ namespace UnityQGameFramework.Examples.Modules
             {
                 // 业务只更新动态参数；文字顺序与复数规则由翻译决定。
                 coins++;
-                rewardText.SetArguments("Pilot", coins);
+                rewardText.SetFormatValue("Count", coins);
             });
-            rewardText.SetArguments("Pilot", coins);
+            rewardText.SetFormatValues(new Dictionary<string, object> { { "Player", "Pilot" }, { "Count", coins } });
             ChangeLanguage(Language.EnglishUnitedStates);
         }
 

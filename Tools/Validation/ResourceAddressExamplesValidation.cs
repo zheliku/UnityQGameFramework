@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ public static class ResourceAddressExamplesValidation
             FieldInfo release = type.GetField("releaseButton", BindingFlags.Instance | BindingFlags.NonPublic);
             FieldInfo asset = type.GetField("asset", BindingFlags.Instance | BindingFlags.NonPublic);
             FieldInfo instance = type.GetField("instance", BindingFlags.Instance | BindingFlags.NonPublic);
-            var dropdown = (Dropdown)rule.GetValue(example);
+            var dropdown = (TMP_Dropdown)rule.GetValue(example);
             var loadButton = (Button)load.GetValue(example);
             var releaseButton = (Button)release.GetValue(example);
             for (int index = 0; index < 3; index++)

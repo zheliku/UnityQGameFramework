@@ -12,4 +12,4 @@
 
 protobuf-net 的许可全文保留在 `Licenses~/`。JSON 使用框架默认辅助器，基于 Unity JsonUtility；示例不再携带 LitJson。
 
-美术、音频和字体沿用 StarForce 提供的资源及其上游许可。
+美术和音频沿用 StarForce 提供的资源及其上游许可。示例字体已替换为 Noto Sans CJK SC 的字符子集，覆盖示例的中英韩文字；OFL 许可位于 GameMain/Fonts/NotoSans-OFL.txt。

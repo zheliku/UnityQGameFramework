@@ -6,7 +6,8 @@
     "UnityQGameFramework.Runtime",
     "UnityEngine.UI",
     "UniTask",
-    "YooAsset"
+    "YooAsset",
+    "Unity.TextMeshPro"
   ],
   "autoReferenced": true
 }

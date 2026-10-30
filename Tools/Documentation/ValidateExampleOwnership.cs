@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -157,7 +158,7 @@ public static class ValidateExampleOwnership
             owner.enabled = true;
             if (name == "OpenWindowExample")
             {
-                await Until(() => Field<Text>(owner, "stateText").text == "窗口已关闭", "Controller initialized");
+                await Until(() => Field<TMP_Text>(owner, "stateText").text == "窗口已关闭", "Controller initialized");
             }
             else
             {

@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,9 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class ConvertBytes : MonoBehaviour
     {
-        [SerializeField] private InputField valueInput;
+        [SerializeField] private TMP_InputField valueInput;
         [SerializeField] private Button convertButton;
-        [SerializeField] private Text resultText;
+        [SerializeField] private TMP_Text resultText;
 
         private void Start()
         {

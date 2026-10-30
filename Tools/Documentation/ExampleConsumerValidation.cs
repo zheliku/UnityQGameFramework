@@ -186,19 +186,10 @@ public static class ExampleConsumerValidation
                             && (!sourceModule.EndsWith("/15_Sound", StringComparison.Ordinal) || (bool?)ui["spatialSound"] == true);
                         if (responsive)
                         {
-                            string expectedNamespace = exampleNamespace.TrimEnd('.') + ".Presentation";
-                            var layout = UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-                                .SingleOrDefault(item => item != null && item.gameObject.name == "Canvas_Example" && item.GetType().Name == "ExampleSceneLayout");
-                            Require(layout != null && layout.GetType().Namespace == expectedNamespace
-                                && layout.GetType().Assembly.GetName().Name == exampleNamespace.TrimEnd('.'),
-                                "Shared layout namespace and assembly follow the Sample group");
-                            if (sourceModule.EndsWith("/14_UI", StringComparison.Ordinal))
-                            {
-                                string prefab = Path.GetDirectoryName(scene).Replace('\\', '/') + "/Art/Window.prefab";
-                                Require(AssetDatabase.LoadAssetAtPath<GameObject>(prefab).GetComponents<MonoBehaviour>()
-                                    .Any(item => item != null && item.GetType().Name == "ExampleSceneLayout" && item.GetType().Namespace == expectedNamespace),
-                                    "Window layout retains its remapped script binding");
-                            }
+                            var canvas = UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None)
+                                .Single(item => item.gameObject.name == "Canvas_Example");
+                            Require(canvas.GetComponents<MonoBehaviour>().All(item => item == null || item.GetType().Name != "ExampleSceneLayout"),
+                                "Example layout is stored in the scene.");
                         }
                     }
                 }

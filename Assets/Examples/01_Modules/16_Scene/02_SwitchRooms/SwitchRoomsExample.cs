@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Button switchButton;
         [SerializeField]
-        private Text stateText;
+        private TMP_Text stateText;
         private string current, target, pending, phase = "Ready";
         private bool ready, changing;
         private float started, elapsed;

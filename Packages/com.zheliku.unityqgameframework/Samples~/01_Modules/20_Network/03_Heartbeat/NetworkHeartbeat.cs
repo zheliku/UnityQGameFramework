@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Net;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Toggle replyToggle;
         [SerializeField]
-        private Text stateText, counterText;
+        private TMP_Text stateText, counterText;
         private NetworkTextProtocol protocol;
         private bool connecting;
         private int misses;

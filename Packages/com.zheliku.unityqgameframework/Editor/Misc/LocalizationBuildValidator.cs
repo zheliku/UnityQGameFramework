@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 using UnityQGameFramework.Core;
 using UnityQGameFramework.Runtime;
 using YooAsset.Editor;
+using TMPro;
 
 namespace UnityQGameFramework.Editor
 {
@@ -210,7 +211,7 @@ namespace UnityQGameFramework.Editor
         {
             string path = Resolve(locations, mapping.AssetName);
             System.Type type = mapping.AssetType == LocalizationAssetType.Sprite ? typeof(Sprite)
-                : mapping.AssetType == LocalizationAssetType.Font ? typeof(Font) : typeof(UnityEngine.Object);
+                : mapping.AssetType == LocalizationAssetType.Font ? typeof(TMP_FontAsset) : typeof(UnityEngine.Object);
             if (!AssetDatabase.LoadAllAssetsAtPath(path).Any(asset => asset != null && type.IsInstanceOfType(asset)))
             {
                 throw new InvalidOperationException("Localized asset has an unexpected type: " + mapping.Key + " at " + path);
@@ -283,6 +284,19 @@ namespace UnityQGameFramework.Editor
             {
                 var serialized = new SerializedObject(binding);
                 SerializedProperty fontKey = serialized.FindProperty("m_FontKey");
+                SerializedProperty values = serialized.FindProperty("m_InitialFormatValues");
+                if (values != null)
+                {
+                    var names = new HashSet<string>(StringComparer.Ordinal);
+                    for (int index = 0; index < values.arraySize; index++)
+                    {
+                        string name = values.GetArrayElementAtIndex(index).FindPropertyRelative("m_Name").stringValue;
+                        if (string.IsNullOrEmpty(name) || !names.Add(name))
+                        {
+                            throw new InvalidOperationException("Format values require unique, non-empty names: " + binding.name);
+                        }
+                    }
+                }
                 foreach (Language language in dictionaries.Keys)
                 {
                     if (!string.IsNullOrEmpty(binding.Key) && (binding is LocalizeImage
@@ -293,8 +307,7 @@ namespace UnityQGameFramework.Editor
                     }
                     if (fontKey != null && !string.IsNullOrEmpty(fontKey.stringValue)
                         && assets[language].TryGetValue(fontKey.stringValue, out LocalizationAssetMapping font)
-                        && (binding is LocalizeText ? font.AssetType != LocalizationAssetType.Font
-                            : AssetDatabase.LoadMainAssetAtPath(Resolve(locations, font.AssetName))?.GetType().FullName != "TMPro.TMP_FontAsset"))
+                        && !(AssetDatabase.LoadMainAssetAtPath(Resolve(locations, font.AssetName)) is TMP_FontAsset))
                     {
                         throw new InvalidOperationException("Missing localized font: " + language + " / " + fontKey.stringValue);
                     }

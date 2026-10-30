@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -11,9 +12,9 @@ namespace UnityQGameFramework.Examples.Modules
     /// </summary>
     public sealed class LoadAddressRules : MonoBehaviour
     {
-        [SerializeField] private Dropdown ruleDropdown;
+        [SerializeField] private TMP_Dropdown ruleDropdown;
         [SerializeField] private Button loadButton, releaseButton;
-        [SerializeField] private Text ruleText, stateText;
+        [SerializeField] private TMP_Text ruleText, stateText;
 
         private static readonly string[] PackageNames =
         {

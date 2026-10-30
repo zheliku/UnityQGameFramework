@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Core;
@@ -11,7 +12,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class ChangeProcedureExample : MonoBehaviour
     {
         [SerializeField]
-        private Text currentText, enteredText;
+        private TMP_Text currentText, enteredText;
         [SerializeField]
         private Button enterButton, backButton;
         internal bool EnterRequested, BackRequested;

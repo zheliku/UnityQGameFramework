@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class FilterRowsExample : MonoBehaviour
     {
         [SerializeField] private Slider priceSlider;
-        [SerializeField] private Text rowsText;
+        [SerializeField] private TMP_Text rowsText;
         private TbItem items;
         private readonly List<DRItem> results = new List<DRItem>();
         private static readonly Comparison<DRItem> ComparePrice = (left, right) => left.Price.CompareTo(right.Price);

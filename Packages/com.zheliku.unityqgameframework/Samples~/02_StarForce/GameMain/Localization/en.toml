@@ -1,0 +1,58 @@
+[en.Game]
+Name = "STAR FORCE"
+Description = "Unity Q Game Framework Demo Program"
+Website = "https://github.com/zheliku/UnityQGameFramework"
+Summary = "This project is a demo game made with Unity Q Game Framework. It's intended to demonstrate how this game framework should be used for developers' reference."
+Introduction = "Unity Q Game Framework is literally a game framework, based on Unity game engine. It encapsulates commonly used game modules during development, and, to a large degree, standardises the process, enhances the development speed and ensures the product quality."
+
+[en.Menu]
+StartButton = "START"
+SettingButton = "SETTINGS"
+AboutButton = "ABOUT"
+QuitButton = "QUIT"
+
+[en.AskQuitGame]
+Title = "CONFIRM TO QUIT"
+Message = "Are you sure to quit the game?"
+
+[en.Setting]
+Title = "SETTINGS"
+Music = "Music"
+Sound = "Sound FX"
+UISound = "UI Sound FX"
+Language = "Language"
+
+[en.Language]
+English = "English"
+ChineseSimplified = "Chinese Simplified"
+ChineseTraditional = "Chinese Traditional"
+Korean = "Korean"
+
+[en.CheckVersion]
+Tips = "Checking if the game needs update. Please wait..."
+
+[en.UpdateResource]
+Tips = "{0}/{1}, {2:F1}/{3:F1} MB, {4:P0}, {5:F1} KB/s"
+Title = "RESOURCE UPDATE"
+Message = "Download {0} files ({1:F1} MB) now?"
+DownloadButton = "DOWNLOAD"
+RetryButton = "RETRY"
+QuitButton = "QUIT"
+Cleaning = "Cleaning unused resource cache..."
+
+[en.Dialog]
+ConfirmButton = "OK"
+CancelButton = "CANCEL"
+OtherButton = ""
+
+[en.ForceUpdate]
+Title = "OUT OF DATE"
+Message = "The current game version is out-of-date. Would you like to go for update now?"
+UpdateButton = "UPDATE"
+QuitButton = "QUIT"
+
+[en.UpdateResourceViaCarrierDataNetwork]
+Title = "MOBILE DATA"
+Message = "Download {0} files ({1:F1} MB) using mobile data?"
+UpdateButton = "DOWNLOAD"
+QuitButton = "QUIT"

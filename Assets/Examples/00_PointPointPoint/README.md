@@ -2,6 +2,8 @@
 
 宿主需启用 Input System：在 Player Settings 的 Active Input Handling 选择 Input System Package (New) 或 Both。示例不会替项目修改该设置。
 
+文本使用 TMP；宿主首次使用时按官方提示导入 TMP Essential Resources。示例字体和图集已随 Sample 提供。
+
 打开 [PointPointPoint.unity](GameMain/Scenes/PointPointPoint.unity) 并运行。点击目标得分，点击棋盘空白会扣分并失去一次机会。完成目标、耗尽机会或倒计时结束后进入结算；最高分会保存。
 
 导入 Sample 后等待编译完成即可运行，默认使用 YooAsset Editor Simulation，无需先点击 `Fix` 或 `Save`。构建应用时，将资源配置的`Play Mode`设为 `OfflinePlayMode`；在`Open Builder`打开 YooAsset Builder，选择对应包并使用完整首包复制选项，将内置文件输出到项目 `Assets/StreamingAssets/yoo`。再用 Unity 的 Build Profiles（2022.3 为 Build Settings）选择启动场景并构建。

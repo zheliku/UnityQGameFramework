@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityQGameFramework.Runtime;
@@ -12,7 +13,7 @@ namespace UnityQGameFramework.Examples.Modules
         [SerializeField]
         private Slider speedSlider;
         [SerializeField]
-        private Text speedValueText, gameTimeText, realTimeText;
+        private TMP_Text speedValueText, gameTimeText, realTimeText;
         private float originalSpeed, gameSeconds, realSeconds;
         private void Start()
         {

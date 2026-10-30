@@ -37,11 +37,11 @@ public static class LocalizationBuildValidation
         string text = File.ReadAllText(dictionary);
         try
         {
-            File.WriteAllText(dictionary, text.Replace("{0} received", "{3} received"));
+            File.WriteAllText(dictionary, text.Replace("{Player} received", "{Invalid} received"));
             Reject(run, "argument mismatch", checks);
-            File.WriteAllText(dictionary, text.Replace("Coins = \"{0} received", "Other = \"{0} received"));
+            File.WriteAllText(dictionary, text.Replace("Coins = \"{Player} received", "Other = \"{Player} received"));
             Reject(run, "Missing translation", checks);
-            File.WriteAllText(dictionary, text.Replace("{0} received", "{0 received"));
+            File.WriteAllText(dictionary, text.Replace("{Player} received", "{Player received"));
             Reject(run, "Localization validation failed", checks);
             File.WriteAllText(dictionary, "[en]\n[en-US]\n[zh-Hans]\n");
             Reject(run, "dictionary is empty", checks);

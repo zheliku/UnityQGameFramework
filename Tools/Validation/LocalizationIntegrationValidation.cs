@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ public static class LocalizationIntegrationValidation
         EventComponent events = GameEntry.GetComponent<EventComponent>();
         var english = new LocalizationLanguage(Language.English, Root + "/Content/English.txt", Language.Unspecified,
             new LocalizationAssetMapping("Logo", Root + "/Content/English.png", LocalizationAssetType.Sprite),
-            new LocalizationAssetMapping("Font", Root + "/Content/Font.ttf", LocalizationAssetType.Font));
+            new LocalizationAssetMapping("Font", "Assets/Examples/02_StarForce/GameMain/Fonts/MainFont.asset", LocalizationAssetType.Font));
         var chinese = new LocalizationLanguage(Language.ChineseSimplified, Root + "/Content/Chinese.txt", Language.English,
             new LocalizationAssetMapping("Logo", Root + "/Content/Chinese.png", LocalizationAssetType.Sprite));
         localization.SetLanguages(english, chinese,
@@ -94,9 +95,9 @@ public static class LocalizationIntegrationValidation
         Require(localization.GetString("Game.Name") == "Regional" && localization.Language == Language.EnglishUnitedStates, "Regional dictionary is selected");
         Require(localization.GetString("Fallback.Hint") == "Fallback" && notifications == 1, "Parent language fills missing keys before notification");
 
-        var textObject = new GameObject("Localized Text", typeof(RectTransform), typeof(Text));
-        Text text = textObject.GetComponent<Text>();
-        Font originalFont = text.font;
+        var textObject = new GameObject("Localized Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+        TMP_Text text = textObject.GetComponent<TMP_Text>();
+        TMP_FontAsset originalFont = text.font;
         LocalizeText binding = textObject.AddComponent<LocalizeText>();
         typeof(LocalizeText).GetField("m_FontKey", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(binding, "Font");
         binding.Key = "Game.Name";
@@ -105,16 +106,16 @@ public static class LocalizationIntegrationValidation
         LocalizeImage imageBinding = imageObject.AddComponent<LocalizeImage>();
         imageBinding.Key = "Logo";
         await Task.Delay(50);
-        Require(text.text == "Regional" && text.font == localization.GetAsset<Font>("Font"), "LocalizeText uses the prepared language font");
+        Require(text.text == "Regional" && text.font == localization.GetAsset<TMP_FontAsset>("Font"), "LocalizeText uses the prepared language font");
         Require(image.sprite == localization.GetAsset<Sprite>("Logo"), "PNG is loaded as Sprite for LocalizeImage");
         AssetHandle[] previousHandles = GetLanguageHandles(localization);
         await localization.SetLanguageAsync(Language.ChineseSimplified);
         Require(text.text == "Chinese" && image.sprite == localization.GetAsset<Sprite>("Logo"), "Text and image refresh on language notification");
         Require(previousHandles.All(handle => !handle.IsValid), "Old language handles are released after interface refresh");
         binding.Key = "Coins";
-        binding.SetArguments(2);
-        Require(text.text == localization.GetString("Coins", 2), "Text binding expands positional arguments using the selected language culture");
-        Require(localization.GetAsset<Font>("Font") != null, "Missing target assets fall back to the configured language");
+        binding.SetFormatValue("Count", 2);
+        Require(text.text == localization.GetString("Coins", new Dictionary<string, object> { { "Count", 2 } }), "Text binding formats named values using the selected language culture");
+        Require(localization.GetAsset<TMP_FontAsset>("Font") != null, "Missing target assets fall back to the configured language");
         Language committedCode = localization.Language;
         AssetHandle[] committedHandles = GetLanguageHandles(localization);
         int committedNotifications = notifications;
@@ -212,14 +213,13 @@ public static class LocalizationIntegrationValidation
             AssetDatabase.DeleteAsset(Root);
         }
         Directory.CreateDirectory(Root + "/Content");
-        File.WriteAllText(Root + "/Content/English.txt", "[en.Game]\nName = \"English\"\n[en-US.Game]\nName = \"Regional\"\n[en.Fallback]\nHint = \"Fallback\"\n[en]\nCoins = \"{0} {0:plural:coin|coins}\"\n");
+        File.WriteAllText(Root + "/Content/English.txt", "[en.Game]\nName = \"English\"\n[en-US.Game]\nName = \"Regional\"\n[en.Fallback]\nHint = \"Fallback\"\n[en]\nCoins = \"{Count} {Count:plural:coin|coins}\"\n");
         File.WriteAllText(Root + "/Content/Chinese.txt", "[zh-Hans.Game]\nName = \"Chinese\"\n");
         File.WriteAllText(Root + "/Content/Broken.txt", "[fr\n");
         File.WriteAllText(Root + "/Content/InvalidFormat.txt", "[de.Game]\nName = \"{0\"\n");
         File.WriteAllText(Root + "/Content/Spanish.txt", "[es.Game]\nName = \"Spanish\"\n");
         File.WriteAllText(Root + "/Content/Italian.txt", "[it.Game]\nName = \"Italian\"\n");
         File.WriteAllText(Root + "/Content/Portuguese.txt", "[pt.Game]\nName = \"Portuguese\"\n");
-        File.Copy("Assets/Examples/02_StarForce/GameMain/Fonts/MainFont.ttf", Root + "/Content/Font.ttf");
         foreach (string name in new[] { "English", "Chinese" })
         {
             var texture = new Texture2D(2, 2);
@@ -247,6 +247,13 @@ public static class LocalizationIntegrationValidation
         {
             CollectPath = Root + "/Content",
             CollectorGUID = AssetDatabase.AssetPathToGUID(Root + "/Content"),
+            PackRuleName = nameof(PackSeparately),
+            AddressRuleName = nameof(AddressDisable)
+        });
+        group.Collectors.Add(new BundleCollector
+        {
+            CollectPath = "Assets/Examples/02_StarForce/GameMain/Fonts",
+            CollectorGUID = AssetDatabase.AssetPathToGUID("Assets/Examples/02_StarForce/GameMain/Fonts"),
             PackRuleName = nameof(PackSeparately),
             AddressRuleName = nameof(AddressDisable)
         });

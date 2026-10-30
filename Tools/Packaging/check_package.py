@@ -76,7 +76,7 @@ def main():
         if not path.is_file() or file_digest(path) != digest:
             errors.append('Bundled localization dependency differs from its official binary or license: ' + name)
     font = json.loads((root / 'Tools/Packaging/localization-font-source.json').read_text(encoding='utf-8'))
-    font_path = package / 'Samples~/01_Modules/10_Localization/Common/ChineseFont.otf'
+    font_path = package / 'Samples~/01_Modules/10_Localization/Common/ChineseFontSource.otf'
     if not font_path.is_file() or file_digest(font_path) != font['subsetSha256']:
         errors.append('Localization sample font differs from its recorded subset.')
     if manifest['name'] != package.name:

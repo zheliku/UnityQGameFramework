@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,9 +13,9 @@ namespace UnityQGameFramework.Examples.Modules
     public sealed class LoadConfigAsset : MonoBehaviour
     {
         [SerializeField] private Button loadButton;
-        [SerializeField] private Text stateText;
-        [SerializeField] private Text contextText;
-        [SerializeField] private Text cacheText;
+        [SerializeField] private TMP_Text stateText;
+        [SerializeField] private TMP_Text contextText;
+        [SerializeField] private TMP_Text cacheText;
         [SerializeField] private Button reserveButton, freeButton;
         private const string ConfigAddress = "Config_Asset_Level";
 
